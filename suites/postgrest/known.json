@@ -936,31 +936,7 @@
     "why": "status 400 not 201"
   },
   {
-    "name": "insert: parses values in POST body and formats individually selected values in return=representation",
-    "why": "status 400 not 201"
-  },
-  {
-    "name": "insert: parses values in POST body and formats values in return=representation",
-    "why": "status 400 not 201"
-  },
-  {
-    "name": "insert: ignores json keys not included in ?columns; parses only the ones specified",
-    "why": "status 400 not 201"
-  },
-  {
     "name": "insert: parses values in POST body (2)",
-    "why": "status 400 not 201"
-  },
-  {
-    "name": "insert: parses values in POST body and formats individually selected values in return=representation (2)",
-    "why": "status 400 not 201"
-  },
-  {
-    "name": "insert: parses values in POST body and formats values in return=representation (2)",
-    "why": "status 400 not 201"
-  },
-  {
-    "name": "insert: ignores json keys not included in ?columns; parses only the ones specified (2)",
     "why": "status 400 not 201"
   },
   {
@@ -2026,30 +2002,6 @@
   {
     "name": "update: with filters (3)",
     "why": "status 300 not 200"
-  },
-  {
-    "name": "update: parses values in payload",
-    "why": "status 400 not 204"
-  },
-  {
-    "name": "update: parses values in payload and formats individually selected values in return=representation",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "update: parses values in payload and formats values in return=representation",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "update: parses values in payload and formats individually selected values in return=representation (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "update: parses values in payload and formats values in return=representation (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "update: ignores json keys not included in ?columns; parses only the ones specified",
-    "why": "status 400 not 200"
   },
   {
     "name": "update: works with request method PATCH and embedded resource",
