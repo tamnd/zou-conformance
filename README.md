@@ -12,6 +12,7 @@ The harness that reads these files lives in the zou repository, in `conformance/
 versions.json          what compatibility is measured against
 suites/rest/           82 questions about the surface a supabase project uses
 suites/postgrest/      1233 questions, derived from PostgREST's own spec files
+js/                    supabase-js's own integration tests, run against zou
 ```
 
 A suite is a directory:
@@ -23,6 +24,8 @@ cases.json      the questions
 recorded.json   what the reference answered, per case
 known.json      the cases zou answers differently, and why
 ```
+
+`js/` is not a suite in that shape and is described in [js/README.md](js/README.md). It is upstream's own test file, run against zou with the url and the keys made pluggable, and it is the one place here where the assertions are somebody else's rather than a recording, because upstream wrote them about upstream's own client.
 
 The `rest` suite is hand written, about the endpoints and the headers a Supabase project actually uses. The `postgrest` suite is not written at all: `zou-conformance derive` reads a PostgREST checkout at the pinned version, walks the spec files its default test application runs, and turns every request it finds into a case. Only the request comes across. The `shouldRespondWith` next to it is read past on purpose, because an assertion copied from upstream only proves that somebody copied it.
 
@@ -66,9 +69,13 @@ A known case that starts passing also fails the run. The list is meant to shrink
 
 The `rest` suite is 82 cases and zou passes 71 of them, 86%, with 11 known differences.
 
+The supabase-js suite runs 16 of its 34 tests and zou passes all 16. The other 18 are Realtime and Storage, which zou does not serve yet.
+
 The `postgrest` suite is 1233 cases and zou passes 589 of them, 47%, with 644 known differences. That number is meant to be uncomfortable. It asks everything upstream asks itself, including the parts of PostgREST nobody using Supabase has ever typed, and the gap is a small number of missing features rather than 644 separate bugs. It is broken down in [tamnd/zou#118](https://github.com/tamnd/zou/issues/118).
 
 ## Provenance
+
+`js/` is derived from [supabase-js](https://github.com/supabase/supabase-js), which is MIT licensed, and keeps upstream's licence in `js/UPSTREAM-LICENSE`.
 
 `suites/postgrest` is derived from the test fixtures and spec files of [PostgREST](https://github.com/PostgREST/postgrest), which is MIT licensed. Upstream's licence is kept next to the files it covers, in `suites/postgrest/UPSTREAM-LICENSE`. The fixtures are upstream's with four differences, each noted at the top of `setup.sql`: the psql includes and variables are gone because the file is applied over a connection, the rows that arrived over `copy ... from stdin` are inserts, PostGIS is stripped a whole statement at a time, and two statements are swept up so the file can be applied twice to the same database.
 

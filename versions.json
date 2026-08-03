@@ -37,7 +37,7 @@
   "supabase_js": {
     "version": "2.111.0",
     "package": "@supabase/supabase-js",
-    "covers": ["client integration"]
+    "covers": ["js"]
   },
   "supabase_cli": {
     "version": "2.111.0",

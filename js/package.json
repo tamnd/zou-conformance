@@ -1,0 +1,17 @@
+{
+  "name": "zou-conformance-js",
+  "private": true,
+  "version": "0.0.0",
+  "description": "supabase-js's own integration suite, run against zou",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "2.111.0",
+    "@types/jsonwebtoken": "9.0.10",
+    "jsonwebtoken": "9.0.2",
+    "vitest": "3.2.4",
+    "ws": "8.18.3"
+  }
+}
