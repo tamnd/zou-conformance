@@ -1056,106 +1056,6 @@
     "why": "status 404 not 200"
   },
   {
-    "name": "prefer: throws error when handling=strict and invalid prefs are given",
-    "why": "status 200 not 400"
-  },
-  {
-    "name": "prefer: throws error with post request",
-    "why": "status 201 not 400"
-  },
-  {
-    "name": "prefer: throws error with rpc",
-    "why": "status 200 not 400"
-  },
-  {
-    "name": "prefer: does not throw error when handling=lenient and invalid prefs",
-    "why": "preference-applied absent not \"handling=lenient\""
-  },
-  {
-    "name": "prefer: does not throw error with post request",
-    "why": "preference-applied \"return=representation\" not \"return=representation, handling=lenient\""
-  },
-  {
-    "name": "prefer: does not throw error with rpc",
-    "why": "preference-applied absent not \"handling=lenient\""
-  },
-  {
-    "name": "prefer: should change timezone with handling=strict",
-    "why": "preference-applied absent not \"handling=strict, timezone=America/Los_Angeles\""
-  },
-  {
-    "name": "prefer: should change timezone without handling=strict",
-    "why": "preference-applied absent not \"timezone=America/Los_Angeles\""
-  },
-  {
-    "name": "prefer: should throw error with handling=strict",
-    "why": "status 200 not 400"
-  },
-  {
-    "name": "prefer: should return with default timezone without handling or with handling=lenient (2)",
-    "why": "preference-applied absent not \"handling=lenient\""
-  },
-  {
-    "name": "prefer: should fail if items deleted more than 10",
-    "why": "status 204 not 400"
-  },
-  {
-    "name": "prefer: should succeed if items deleted less than 10",
-    "why": "preference-applied absent not \"handling=strict, max-affected=10\""
-  },
-  {
-    "name": "prefer: should fail if items updated more than 0",
-    "why": "status 204 not 400"
-  },
-  {
-    "name": "prefer: should succeed if items updated equal 1",
-    "why": "preference-applied absent not \"handling=strict, max-affected=1\""
-  },
-  {
-    "name": "prefer: should not fail",
-    "why": "preference-applied absent not \"handling=lenient\""
-  },
-  {
-    "name": "prefer: should succeed if items deleted less than 10 (2)",
-    "why": "preference-applied absent not \"handling=lenient\""
-  },
-  {
-    "name": "prefer: should not fail (2)",
-    "why": "preference-applied absent not \"handling=lenient\""
-  },
-  {
-    "name": "prefer: should succeed if items updated equal 1 (2)",
-    "why": "preference-applied absent not \"handling=lenient\""
-  },
-  {
-    "name": "prefer: should fail with rpc when deleting rows more than prefered with returns setof",
-    "why": "status 200 not 400"
-  },
-  {
-    "name": "prefer: should fail with rpc when deleting rows more than prefered with returns table",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column _zou_rpc.delete_items_returns_table does not exist\"} not {\"code\":\"PGRST124\",\"details\":\"The query affects 15 rows\",\"hint\":null,\"message\":\"Query result exceeds max-affected preference constraint\"}"
-  },
-  {
-    "name": "prefer: should succeed with rpc deleting rows less than prefered with returns setof",
-    "why": "preference-applied absent not \"handling=strict, max-affected=20\""
-  },
-  {
-    "name": "prefer: should succeed with rpc deleting rows less than prefered with returns table",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "prefer: should fail with rpc when returns void with handling=strict",
-    "why": "status 204 not 400"
-  },
-  {
-    "name": "range: returns whole range with status 200",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
-    "name": "range: returns range Content-Range with range/*",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
     "name": "range: refuses a range with nonzero start when there are no items",
     "why": "status 200 not 416"
   },
@@ -1164,80 +1064,12 @@
     "why": "status 200 not 416"
   },
   {
-    "name": "range: understands open-ended ranges",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
-    "name": "range: refuses a range requesting start past last item (2)",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
-    "name": "range: returns whole range with status 200 (2)",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
-    "name": "range: returns range Content-Range with range/* (2)",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
-    "name": "range: returns range Content-Range with range/* even using other filters",
-    "why": "content-range \"*/*\" not \"0-0/*\""
-  },
-  {
-    "name": "range: no parameters return everything",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
-    "name": "range: top level limit with parameter",
-    "why": "content-range \"*/*\" not \"0-2/*\""
-  },
-  {
-    "name": "range: headers override get parameters",
-    "why": "content-range \"*/*\" not \"0-2/*\""
-  },
-  {
-    "name": "range: limit and offset works on first level",
-    "why": "content-range \"*/*\" not \"2-4/*\""
-  },
-  {
-    "name": "range: limit and offset works on first level (2)",
-    "why": "content-range \"*/*\" not \"2-4/*\""
-  },
-  {
-    "name": "range: one or more items",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
     "name": "range: succeeds if offset is negative as a no-op",
     "why": "status 400 not 200"
   },
   {
     "name": "range: fails if limit is negative",
     "why": "status 400 not 416"
-  },
-  {
-    "name": "range: refuses a range requesting start past last item (3)",
-    "why": "content-range \"*/0\" not \"*/15\""
-  },
-  {
-    "name": "range: understands open-ended ranges (2)",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
-    "name": "range: fails with 416 for offside range (2)",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
-    "name": "range: refuses a range requesting start past last item (4)",
-    "why": "content-range \"*/*\" not \"0-14/*\""
-  },
-  {
-    "name": "raw: responds json to a GET request with Firefox Accept headers",
-    "why": "content-range \"*/*\" not \"0-0/*\""
-  },
-  {
-    "name": "raw: responds json to a GET request with Chrome Accept headers",
-    "why": "content-range \"*/*\" not \"0-0/*\""
   },
   {
     "name": "related: works on a many-to-one relationship",
@@ -1354,10 +1186,6 @@
   {
     "name": "related: works with count=exact (3)",
     "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: using the Range header",
-    "why": "content-range \"*/*\" not \"1-1/*\""
   },
   {
     "name": "rpc: using the Range header (2)",
@@ -1545,11 +1373,11 @@
   },
   {
     "name": "rpc: returns an object result when there is a single OUT param",
-    "why": "status 400 not 200"
+    "why": "content-range absent not \"0-0/*\""
   },
   {
     "name": "rpc: returns an object result when there is a single OUT param (2)",
-    "why": "status 400 not 200"
+    "why": "content-range absent not \"0-0/*\""
   },
   {
     "name": "rpc: returns an object result when there is a single INOUT param",
@@ -1562,10 +1390,6 @@
   {
     "name": "rpc: returns an object result when there are many INOUT params",
     "why": "content-range absent not \"0-0/*\""
-  },
-  {
-    "name": "rpc: returns an object result when there is a single-column TABLE return type",
-    "why": "status 400 not 200"
   },
   {
     "name": "rpc: n=1 (2)",
