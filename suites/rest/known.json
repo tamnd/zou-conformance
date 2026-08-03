@@ -8,10 +8,6 @@
     "why": "the details say 'in the schema cache' where upstream names the schema, tamnd/zou#116"
   },
   {
-    "name": "a body that is not json at all",
-    "why": "serde's message goes out where upstream says 'Empty or invalid json', tamnd/zou#116"
-  },
-  {
     "name": "a row put in over the one that is there",
     "why": "an upsert that updated answers 201, upstream answers 200, tamnd/zou#116"
   },

@@ -429,7 +429,7 @@
   },
   {
     "name": "query: formats two columns with different formatters",
-    "why": "body [{\"due_at\":\"2018-01-02T00:00:00+07:00\",\"id\":1,\"label_color\":0},{\"due_at\":\"2018-01-03T00:00:00+07:00\",\"id\":2,\"label_color\":256},{\"due_at\":\"2018-01-01T14:12:34.123456+07:00\",\"id\":3,\"label_color\":123456}... not [{\"due_at\":\"2018-01-02T00:00:00+07:00\",\"id\":1,\"label_color\":\"#000000\"},{\"due_at\":\"2018-01-03T00:00:00+07:00\",\"id\":2,\"label_color\":\"#000100\"},{\"due_at\":\"2018-01-01T14:12:34.123456+07:00\",\"id\":3,\"label_..."
+    "why": "body [{\"due_at\":\"2018-01-02T00:00:00+00:00\",\"id\":1,\"label_color\":0},{\"due_at\":\"2018-01-03T00:00:00+00:00\",\"id\":2,\"label_color\":256},{\"due_at\":\"2018-01-01T14:12:34.123456+00:00\",\"id\":3,\"label_color\":123456}... not [{\"due_at\":\"2018-01-02T00:00:00Z\",\"id\":1,\"label_color\":\"#000000\"},{\"due_at\":\"2018-01-03T00:00:00Z\",\"id\":2,\"label_color\":\"#000100\"},{\"due_at\":\"2018-01-01T14:12:34.123456Z\",\"id\":3,\"label_color\":\"#01E240..."
   },
   {
     "name": "query: fails in some reasonable way when selecting fields that don't exist",
@@ -449,27 +449,27 @@
   },
   {
     "name": "query: formats nulls",
-    "why": "body [{\"due_at\":\"2018-01-01T14:12:34.123456+07:00\",\"id\":3,\"label_color\":123456},{\"due_at\":null,\"id\":4,\"label_color\":null}] not [{\"due_at\":\"2018-01-01T14:12:34.123456+07:00\",\"id\":3,\"label_color\":\"#01E240\"},{\"due_at\":null,\"id\":4,\"label_color\":\"\"}]"
+    "why": "body [{\"due_at\":\"2018-01-01T14:12:34.123456+00:00\",\"id\":3,\"label_color\":123456},{\"due_at\":null,\"id\":4,\"label_color\":null}] not [{\"due_at\":\"2018-01-01T14:12:34.123456Z\",\"id\":3,\"label_color\":\"#01E240\"},{\"due_at\":null,\"id\":4,\"label_color\":\"\"}]"
   },
   {
     "name": "query: formats star select",
-    "why": "body [{\"budget\":12.5,\"created_at\":\"2017-12-14T01:02:30+07:00\",\"due_at\":\"2018-01-02T00:00:00+07:00\",\"icon_image\":\"\\\\x89504e470d0a1a0a0000000d4948445200000001000000010100000000376ef924000000001049444154789c6... not [{\"budget\":\"12.50\",\"created_at\":1513188150,\"due_at\":\"2018-01-02T00:00:00+07:00\",\"icon_image\":\"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQAAAAA3bvkkAAAAABBJREFUeJxiYAEAAAAA//8DAAAABgAFBXv6vUAAAAAASUVORK5CYII=\",..."
+    "why": "body [{\"budget\":12.5,\"created_at\":\"2017-12-14T01:02:30+00:00\",\"due_at\":\"2018-01-02T00:00:00+00:00\",\"icon_image\":\"\\\\x89504e470d0a1a0a0000000d4948445200000001000000010100000000376ef924000000001049444154789c6... not [{\"budget\":\"12.50\",\"created_at\":1513213350,\"due_at\":\"2018-01-02T00:00:00Z\",\"icon_image\":\"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQAAAAA3bvkkAAAAABBJREFUeJxiYAEAAAAA//8DAAAABgAFBXv6vUAAAAAASUVORK5CYII=\",\"id\":..."
   },
   {
     "name": "query: formats implicit star select",
-    "why": "body [{\"budget\":12.5,\"created_at\":\"2017-12-14T01:02:30+07:00\",\"due_at\":\"2018-01-02T00:00:00+07:00\",\"icon_image\":\"\\\\x89504e470d0a1a0a0000000d4948445200000001000000010100000000376ef924000000001049444154789c6... not [{\"budget\":\"12.50\",\"created_at\":1513188150,\"due_at\":\"2018-01-02T00:00:00+07:00\",\"icon_image\":\"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQAAAAA3bvkkAAAAABBJREFUeJxiYAEAAAAA//8DAAAABgAFBXv6vUAAAAAASUVORK5CYII=\",..."
+    "why": "body [{\"budget\":12.5,\"created_at\":\"2017-12-14T01:02:30+00:00\",\"due_at\":\"2018-01-02T00:00:00+00:00\",\"icon_image\":\"\\\\x89504e470d0a1a0a0000000d4948445200000001000000010100000000376ef924000000001049444154789c6... not [{\"budget\":\"12.50\",\"created_at\":1513213350,\"due_at\":\"2018-01-02T00:00:00Z\",\"icon_image\":\"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQAAAAA3bvkkAAAAABBJREFUeJxiYAEAAAAA//8DAAAABgAFBXv6vUAAAAAASUVORK5CYII=\",\"id\":..."
   },
   {
     "name": "query: formats star and explicit mix",
-    "why": "body [{\"budget\":12.5,\"created_at\":\"2017-12-14T01:02:30+07:00\",\"due_at\":\"2018-01-02T00:00:00+07:00\",\"icon_image\":\"\\\\x89504e470d0a1a0a0000000d4948445200000001000000010100000000376ef924000000001049444154789c6... not [{\"budget\":\"12.50\",\"created_at\":1513188150,\"due_at\":\"2018-01-02T00:00:00+07:00\",\"icon_image\":\"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQAAAAA3bvkkAAAAABBJREFUeJxiYAEAAAAA//8DAAAABgAFBXv6vUAAAAAASUVORK5CYII=\",..."
+    "why": "body [{\"budget\":12.5,\"created_at\":\"2017-12-14T01:02:30+00:00\",\"due_at\":\"2018-01-02T00:00:00+00:00\",\"icon_image\":\"\\\\x89504e470d0a1a0a0000000d4948445200000001000000010100000000376ef924000000001049444154789c6... not [{\"budget\":\"12.50\",\"created_at\":1513213350,\"due_at\":\"2018-01-02T00:00:00Z\",\"icon_image\":\"iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQAAAAA3bvkkAAAAABBJREFUeJxiYAEAAAAA//8DAAAABgAFBXv6vUAAAAAASUVORK5CYII=\",\"id\":..."
   },
   {
     "name": "query: formats through join",
-    "why": "body [{\"first_item\":{\"due_at\":\"2018-01-03T00:00:00+07:00\",\"label_color\":256},\"id\":1,\"name\":\"school related\"},{\"first_item\":{\"due_at\":\"2018-01-02T00:00:00+07:00\",\"label_color\":0},\"id\":2,\"name\":\"do these fir... not [{\"first_item\":{\"due_at\":\"2018-01-03T00:00:00+07:00\",\"label_color\":\"#000100\"},\"id\":1,\"name\":\"school related\"},{\"first_item\":{\"due_at\":\"2018-01-02T00:00:00+07:00\",\"label_color\":\"#000000\"},\"id\":2,\"name\"..."
+    "why": "body [{\"first_item\":{\"due_at\":\"2018-01-03T00:00:00+00:00\",\"label_color\":256},\"id\":1,\"name\":\"school related\"},{\"first_item\":{\"due_at\":\"2018-01-02T00:00:00+00:00\",\"label_color\":0},\"id\":2,\"name\":\"do these fir... not [{\"first_item\":{\"due_at\":\"2018-01-03T00:00:00Z\",\"label_color\":\"#000100\"},\"id\":1,\"name\":\"school related\"},{\"first_item\":{\"due_at\":\"2018-01-02T00:00:00Z\",\"label_color\":\"#000000\"},\"id\":2,\"name\":\"do these..."
   },
   {
     "name": "query: formats through join with star select",
-    "why": "body [{\"id\":1,\"name\":\"school related\",\"second_item\":{\"budget\":0.0,\"created_at\":\"2017-12-14T01:02:30+07:00\",\"due_at\":\"2018-01-01T14:12:34.123456+07:00\",\"icon_image\":null,\"id\":3,\"label_color\":123456,\"name\":\"... not [{\"id\":1,\"name\":\"school related\",\"second_item\":{\"budget\":\"0.00\",\"created_at\":1513188150,\"due_at\":\"2018-01-01T14:12:34.123456+07:00\",\"icon_image\":null,\"id\":3,\"label_color\":\"#01E240\",\"name\":\"Algebra\"}},..."
+    "why": "body [{\"id\":1,\"name\":\"school related\",\"second_item\":{\"budget\":0.0,\"created_at\":\"2017-12-14T01:02:30+00:00\",\"due_at\":\"2018-01-01T14:12:34.123456+00:00\",\"icon_image\":null,\"id\":3,\"label_color\":123456,\"name\":\"... not [{\"id\":1,\"name\":\"school related\",\"second_item\":{\"budget\":\"0.00\",\"created_at\":1513213350,\"due_at\":\"2018-01-01T14:12:34.123456Z\",\"icon_image\":null,\"id\":3,\"label_color\":\"#01E240\",\"name\":\"Algebra\"}},{\"id\"..."
   },
   {
     "name": "query: uses text parser on value for filter given through query parameters",
@@ -485,7 +485,7 @@
   },
   {
     "name": "query: uses text parser on value for filter across relations",
-    "why": "body [{\"datarep_todos\":{\"due_at\":\"2018-01-03T00:00:00+07:00\",\"label_color\":256},\"id\":1,\"name\":\"school related\"},{\"datarep_todos\":{\"due_at\":\"2018-01-02T00:00:00+07:00\",\"label_color\":0},\"id\":2,\"name\":\"do the... not [{\"datarep_todos\":null,\"id\":1,\"name\":\"school related\"},{\"datarep_todos\":{\"due_at\":\"2018-01-02T00:00:00+07:00\",\"label_color\":\"#000000\"},\"id\":2,\"name\":\"do these first\"}]"
+    "why": "body [{\"datarep_todos\":{\"due_at\":\"2018-01-03T00:00:00+00:00\",\"label_color\":256},\"id\":1,\"name\":\"school related\"},{\"datarep_todos\":{\"due_at\":\"2018-01-02T00:00:00+00:00\",\"label_color\":0},\"id\":2,\"name\":\"do the... not [{\"datarep_todos\":null,\"id\":1,\"name\":\"school related\"},{\"datarep_todos\":{\"due_at\":\"2018-01-02T00:00:00Z\",\"label_color\":\"#000000\"},\"id\":2,\"name\":\"do these first\"}]"
   },
   {
     "name": "query: return http status 404",
@@ -546,10 +546,6 @@
   {
     "name": "andor: can have four conditions combining and/or (2)",
     "why": "status 400 not 200"
-  },
-  {
-    "name": "andor: succeeds when using and/or params",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
   },
   {
     "name": "andor: can query columns that begin with and/or reserved words",
@@ -912,14 +908,6 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "insert: rejects json array that isn't exclusivily composed of objects",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"every element of an insert array must be an object\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"All object keys must match\"}"
-  },
-  {
-    "name": "insert: rejects json array that has objects with different keys",
-    "why": "status 201 not 400"
-  },
-  {
     "name": "insert: should not throw and return location header when selecting without PK (2)",
     "why": "location \"/rest/v1/projects?id=eq.11\" not \"/projects?id=eq.11\""
   },
@@ -929,31 +917,11 @@
   },
   {
     "name": "insert: accepts disparate json types (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"23502\",\"details\":\"Failing row contains (null, null, null, null, null, null, null).\",\"hint\":null,\"message\":\"null value in column \\\"integer\\\" of relation \\\"menagerie\\\" violates not-null constra..."
+    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"} not {\"code\":\"23502\",\"details\":\"Failing row contains (null, null, null, null, null, null, null).\",\"hint\":null,\"message\":\"null value in column \\\"integer\\\" of relation \\\"menagerie\\\" violates not-null constra..."
   },
   {
     "name": "insert: succeeds with 201 and location header (2)",
     "why": "location \"/rest/v1/auto_incrementing_pk?id=eq.2\" not \"/auto_incrementing_pk?id=eq.2\""
-  },
-  {
-    "name": "insert: returns 201 but no location header",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "insert: fails with 400 and error (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"expected value at line 1 column 1\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "insert: fails with 400 and error (3)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "insert: serializes nested object",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "insert: serializes nested array",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
   },
   {
     "name": "insert: disallows blank ?columns",
@@ -969,7 +937,7 @@
   },
   {
     "name": "insert: disallows array elements that are not json objects",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"every element of an insert array must be an object\"} not {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"argument of json_to_recordset must be an array of objects\"}"
+    "why": "body {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"argument of json_populate_recordset must be an array of objects\"} not {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"argument of json_to_recordset must be an array of objects\"}"
   },
   {
     "name": "insert: inserts table default values(field-with_sep) when json keys are undefined",
@@ -1005,7 +973,7 @@
   },
   {
     "name": "insert: succeeds with multipart response",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"parse error (not enough input) at \\\"\\\"\"}"
+    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"parse error (not enough input) at \\\"\\\"\"}"
   },
   {
     "name": "insert: returns full details of inserted record",
@@ -1021,15 +989,7 @@
   },
   {
     "name": "insert: fails for too few",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"expected value at line 1 column 1\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"All lines must have same number of fields\"}"
-  },
-  {
-    "name": "insert: set user_id when inserting rows",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "insert: set user_id when inserting rows (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
+    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"All lines must have same number of fields\"}"
   },
   {
     "name": "insert: embeds parent after insert",
@@ -1240,22 +1200,6 @@
     "why": "status 404 not 200"
   },
   {
-    "name": "nulls: strips nulls when Accept: application/vnd.pgrst.array+json;nulls=stripped (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "nulls: strips nulls when Accept: application/vnd.pgrst.array+json;nulls=stripped (3)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "nulls: strips nulls when Accept: application/vnd.pgrst.array+json;nulls=stripped (5)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "nulls: strips nulls when Accept: application/vnd.pgrst.array+json;nulls=stripped (6)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
     "name": "prefer: throws error when handling=strict and invalid prefs are given",
     "why": "status 200 not 400"
   },
@@ -1305,7 +1249,7 @@
   },
   {
     "name": "prefer: should fail if items updated more than 0",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"the update body must be a json object\"} not {\"code\":\"PGRST124\",\"details\":\"The query affects 1 rows\",\"hint\":null,\"message\":\"Query result exceeds max-affected preference constraint\"}"
+    "why": "status 204 not 400"
   },
   {
     "name": "prefer: should succeed if items updated equal 1",
@@ -1321,7 +1265,7 @@
   },
   {
     "name": "prefer: should not fail (2)",
-    "why": "status 400 not 204"
+    "why": "preference-applied absent not \"handling=lenient\""
   },
   {
     "name": "prefer: should succeed if items updated equal 1 (2)",
@@ -1857,7 +1801,7 @@
   },
   {
     "name": "rpc: can override the status through trigger",
-    "why": "status 400 not 205"
+    "why": "status 204 not 205"
   },
   {
     "name": "rpc: fails when setting invalid status guc",
@@ -1938,58 +1882,6 @@
   {
     "name": "single: can shape plurality singular object routes",
     "why": "status 400 not 200"
-  },
-  {
-    "name": "single: works for one row with return=rep",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: works for one row with return=minimal",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: raises an error for multiple rows",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: raises an error for multiple rows with return=rep",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: raises an error for zero rows",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: raises an error for zero rows with return=rep",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: works for one row with return=rep (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: works for one row with return=minimal (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: raises an error when attempting to create multiple entities",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: raises an error when attempting to create multiple entities with return=rep",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: raises an error regardless of return=minimal",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: raises an error when creating zero entities",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "single: raises an error when creating zero entities with return=rep",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
   },
   {
     "name": "spread: works on a many-to-one relationship (3)",
@@ -2196,116 +2088,24 @@
     "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"fake\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'test.fake' in the schema cache\"}"
   },
   {
-    "name": "update: fails with 400 and error",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"expected value at line 1 column 1\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: fails with 400 and error (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: can update multiple items (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: can update multiple items (4)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: can set a column to NULL",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: is successful",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: returns empty array when no rows updated and return=rep (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: can provide a representation",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: can return computed columns",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: can select overloaded computed columns",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: can select overloaded computed columns (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: ignores ?select= when return not set or return=minimal",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: ignores ?select= when return not set or return=minimal (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 3\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
-  },
-  {
-    "name": "update: makes no updates and returns 204 without return= and without ?select=",
-    "why": "content-range absent not \"*/*\""
-  },
-  {
-    "name": "update: makes no updates and returns 204 without return= and without ?select= (2)",
-    "why": "status 400 not 204"
-  },
-  {
-    "name": "update: makes no updates and returns 204 without return= and without ?select= (3)",
-    "why": "status 400 not 204"
-  },
-  {
-    "name": "update: makes no updates and returns 204 without return= and with ?select=",
-    "why": "content-range absent not \"*/*\""
-  },
-  {
-    "name": "update: makes no updates and returns 204 without return= and with ?select= (2)",
-    "why": "status 400 not 204"
-  },
-  {
-    "name": "update: makes no updates and returns 204 without return= and with ?select= (3)",
-    "why": "status 400 not 204"
-  },
-  {
-    "name": "update: makes no updates and returns 200 with return=rep and without ?select=",
-    "why": "content-range absent not \"*/*\""
-  },
-  {
-    "name": "update: makes no updates and returns 200 with return=rep and with ?select=",
-    "why": "content-range absent not \"*/*\""
-  },
-  {
     "name": "update: makes no updates and returns 200 with return=rep and with ?select= for overloaded computed columns",
-    "why": "content-range absent not \"*/*\""
-  },
-  {
-    "name": "update: ignores json keys not included in ?columns",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "update: ignores json keys and gives 200 if no record updated",
     "why": "status 400 not 200"
   },
   {
     "name": "update: disallows ?columns which don't exist",
-    "why": "status 200 not 400"
+    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column _zou_src.helicopter does not exist\"} not {\"code\":\"PGRST204\",\"details\":null,\"hint\":null,\"message\":\"Could not find the 'helicopter' column of 'articles' in the schema cache\"}"
   },
   {
     "name": "update: returns missing table error even if also has invalid ?columns",
-    "why": "status 400 not 404"
+    "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"garlic\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'test.garlic' in the schema cache\"}"
   },
   {
     "name": "update: updates table using default values(field-with_sep) when json keys are undefined",
-    "why": "preference-applied absent not \"missing=default\""
+    "why": "status 400 not 204"
   },
   {
     "name": "update: updates table default values(field-with_sep) when json keys are undefined",
-    "why": "preference-applied absent not \"missing=default\""
+    "why": "status 400 not 204"
   },
   {
     "name": "update: updates view default values(field-with_sep) when json keys are undefined",
@@ -2361,11 +2161,7 @@
   },
   {
     "name": "update: fails if at least one specified column doesn't exist",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column _zou_src.fake_id does not exist\"} not {\"code\":\"PGRST204\",\"details\":null,\"hint\":null,\"message\":\"Could not find the 'helicopters' column of 'datarep_todos_computed' in the schema cache\"}"
-  },
-  {
-    "name": "update: ignores json keys and gives 200 if no record updated (2)",
-    "why": "status 400 not 200"
+    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column _zou_src.helicopters does not exist\"} not {\"code\":\"PGRST204\",\"details\":null,\"hint\":null,\"message\":\"Could not find the 'helicopters' column of 'datarep_todos_computed' in the schema cache\"}"
   },
   {
     "name": "update: works with request method PATCH and embedded resource",
@@ -2385,7 +2181,7 @@
   },
   {
     "name": "upsert: works with request method PUT and embedded resource",
-    "why": "status 501 not 200"
+    "why": "status 300 not 200"
   },
   {
     "name": "upsert: works with batch upserts and embedded resource",
@@ -2434,9 +2230,5 @@
   {
     "name": "plan: doesn't work if db-plan-enabled=false(the default) (3)",
     "why": "body {\"code\":\"PGRST107\",\"details\":null,\"hint\":null,\"message\":\"None of these media types are available: application/vnd.pgrst.plan\"} not {\"code\":\"PGRST107\",\"details\":null,\"hint\":null,\"message\":\"None of these media types are available: application/vnd.pgrst.plan+text; for=\\\"application/json\\\"\"}"
-  },
-  {
-    "name": "safeupdate: works if no condition is present",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"EOF while parsing a value at line 1 column 0\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"}"
   }
 ]
