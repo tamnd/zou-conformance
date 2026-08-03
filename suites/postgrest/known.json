@@ -1,9 +1,5 @@
 [
   {
-    "name": "query: causes a 404",
-    "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"faketable\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'test.faketable' in the schema cache\"}"
-  },
-  {
     "name": "query: matches not_null using is operator",
     "why": "status 400 not 200"
   },
@@ -200,16 +196,8 @@
     "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z1.id does not exist\"} not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'car_models' and 'car_model_sales_202101' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'car..."
   },
   {
-    "name": "query: table not found error if first table does not exist",
-    "why": "status 400 not 404"
-  },
-  {
     "name": "query: cannot request a partition as parent from a partitioned table",
     "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z1.id does not exist\"} not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'car_model_sales' and 'car_models_default' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'ca..."
-  },
-  {
-    "name": "query: table not found error if first table does not exist (2)",
-    "why": "status 400 not 404"
   },
   {
     "name": "query: can detect fk relations through views to tables in the public schema",
@@ -656,10 +644,6 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "delete: fails with 404",
-    "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"foozle\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'test.foozle' in the schema cache\"}"
-  },
-  {
     "name": "delete: fails deleting the row when return=representation and selecting all the columns",
     "why": "status 403 not 401"
   },
@@ -928,14 +912,6 @@
     "why": "body {\"code\":\"23502\",\"details\":null,\"hint\":null,\"message\":\"null value in column \\\"id\\\" of relation \\\"articles\\\" violates not-null constraint\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected end of input expecting field name (* or [a..z0..9_$])\",\"hint\":null,\"message\":\"\\\"failed to parse columns parameter ()\\\" (line 1, column 1)\"}"
   },
   {
-    "name": "insert: disallows ?columns which don't exist",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column \\\"helicopter\\\" of relation \\\"articles\\\" does not exist\"} not {\"code\":\"PGRST204\",\"details\":null,\"hint\":null,\"message\":\"Could not find the 'helicopter' column of 'articles' in the schema cache\"}"
-  },
-  {
-    "name": "insert: returns missing table error even if also has invalid ?columns",
-    "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"garlic\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'test.garlic' in the schema cache\"}"
-  },
-  {
     "name": "insert: disallows array elements that are not json objects",
     "why": "body {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"argument of json_populate_recordset must be an array of objects\"} not {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"argument of json_to_recordset must be an array of objects\"}"
   },
@@ -1036,10 +1012,6 @@
     "why": "status 400 not 201"
   },
   {
-    "name": "insert: fails without parsing anything if at least one specified column doesn't exist",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column \\\"helicopters\\\" of relation \\\"datarep_todos\\\" does not exist\"} not {\"code\":\"PGRST204\",\"details\":null,\"hint\":null,\"message\":\"Could not find the 'helicopters' column of 'datarep_todos' in the schema cache\"}"
-  },
-  {
     "name": "insert: parses values in POST body (2)",
     "why": "status 400 not 201"
   },
@@ -1054,10 +1026,6 @@
   {
     "name": "insert: ignores json keys not included in ?columns; parses only the ones specified (2)",
     "why": "status 400 not 201"
-  },
-  {
-    "name": "insert: fails without parsing anything if at least one specified column doesn't exist (2)",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column \\\"helicopters\\\" of relation \\\"datarep_todos_computed\\\" does not exist\"} not {\"code\":\"PGRST204\",\"details\":null,\"hint\":null,\"message\":\"Could not find the 'helicopters' column of 'datarep_todos_computed' in the schema cache\"}"
   },
   {
     "name": "json: obtains a json subfield one level with casting",
@@ -2084,20 +2052,8 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "update: indicates no table found by returning 404",
-    "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"fake\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'test.fake' in the schema cache\"}"
-  },
-  {
     "name": "update: makes no updates and returns 200 with return=rep and with ?select= for overloaded computed columns",
     "why": "status 400 not 200"
-  },
-  {
-    "name": "update: disallows ?columns which don't exist",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column _zou_src.helicopter does not exist\"} not {\"code\":\"PGRST204\",\"details\":null,\"hint\":null,\"message\":\"Could not find the 'helicopter' column of 'articles' in the schema cache\"}"
-  },
-  {
-    "name": "update: returns missing table error even if also has invalid ?columns",
-    "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"garlic\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'test.garlic' in the schema cache\"}"
   },
   {
     "name": "update: updates table using default values(field-with_sep) when json keys are undefined",
@@ -2160,10 +2116,6 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "update: fails if at least one specified column doesn't exist",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column _zou_src.helicopters does not exist\"} not {\"code\":\"PGRST204\",\"details\":null,\"hint\":null,\"message\":\"Could not find the 'helicopters' column of 'datarep_todos_computed' in the schema cache\"}"
-  },
-  {
     "name": "update: works with request method PATCH and embedded resource",
     "why": "status 300 not 200"
   },
@@ -2188,16 +2140,8 @@
     "why": "status 201 not 200"
   },
   {
-    "name": "options: fails with 404 for an unknown table",
-    "why": "status 501 not 404"
-  },
-  {
     "name": "error: works with ApiRequest error",
     "why": "content-type \"application/json\" not \"application/json; charset=utf-8\""
-  },
-  {
-    "name": "error: works with SchemaCache error",
-    "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"non_existent_table\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'test.non_existent_table' in the schema cache\"}"
   },
   {
     "name": "error: works with Jwt error",
@@ -2206,18 +2150,6 @@
   {
     "name": "error: works with sqlstate PGRST custom error",
     "why": "status 400 not 332"
-  },
-  {
-    "name": "error: show hint when similarity score is at least 75%",
-    "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"projectx\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'test.projects'\",\"message\":\"Could not find the table 'test.projectx' in the schema cache\"}"
-  },
-  {
-    "name": "error: show hint when similarity score is at least 75% (2)",
-    "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"projecxx\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":\"Perhaps you meant the table 'test.projects'\",\"message\":\"Could not find the table 'test.projecxx' in the schema cache\"}"
-  },
-  {
-    "name": "error: don't show hint when similarity score is less than 75%",
-    "why": "body {\"code\":\"42P01\",\"details\":null,\"hint\":null,\"message\":\"relation \\\"projxxxx\\\" does not exist\"} not {\"code\":\"PGRST205\",\"details\":null,\"hint\":null,\"message\":\"Could not find the table 'test.projxxxx' in the schema cache\"}"
   },
   {
     "name": "plan: doesn't work if db-plan-enabled=false(the default)",
