@@ -1420,18 +1420,6 @@
     "why": "content-range \"*/0\" not \"*/15\""
   },
   {
-    "name": "range: obtains a filtered range",
-    "why": "content-range \"*/753\" not \"0-6/753\""
-  },
-  {
-    "name": "range: obtains the full range",
-    "why": "content-range \"*/2260\" not \"0-14/2260\""
-  },
-  {
-    "name": "range: ignores limit/offset on the planned count",
-    "why": "content-range \"*/2260\" not \"3-4/2260\""
-  },
-  {
     "name": "range: understands open-ended ranges (2)",
     "why": "content-range \"*/*\" not \"0-14/*\""
   },
@@ -1566,30 +1554,6 @@
   {
     "name": "related: works with count=exact (3)",
     "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works with count=planned",
-    "why": "status 400 not 206"
-  },
-  {
-    "name": "related: works with count=planned (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works with count=planned (3)",
-    "why": "status 400 not 206"
-  },
-  {
-    "name": "related: works with count=estimated",
-    "why": "status 400 not 206"
-  },
-  {
-    "name": "related: works with count=estimated (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works with count=estimated (3)",
-    "why": "status 400 not 206"
   },
   {
     "name": "rpc: using the Range header",

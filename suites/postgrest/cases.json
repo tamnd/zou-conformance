@@ -12,7 +12,12 @@
     "",
     "2 requests in the spec files were not understood by the scanner and",
     "are not here. They are the ones built out of a helper or a variable",
-    "rather than written out, and they are listed by the deriver when it runs."
+    "rather than written out, and they are listed by the deriver when it runs.",
+    "",
+    "16 more are left out on purpose: they ask for count=planned or",
+    "count=estimated, and the answer to those is the planner's row estimate,",
+    "which moves with the page count of the table and so is not a function",
+    "of the request. A recording of a guess is not something to compare."
   ],
   "schemas": [
     "test"
@@ -6559,106 +6564,6 @@
       }
     },
     {
-      "name": "range: obtains a filtered range",
-      "feature": "range",
-      "method": "GET",
-      "path": "/rest/v1/items?select=id&id=gt.8",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "range: obtains a filtered range (2)",
-      "feature": "range",
-      "method": "GET",
-      "path": "/rest/v1/child_entities?select=id&id=gt.3",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "range: obtains a filtered range (3)",
-      "feature": "range",
-      "method": "GET",
-      "path": "/rest/v1/getallprojects_view?select=id&id=lt.3",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "range: obtains the full range",
-      "feature": "range",
-      "method": "HEAD",
-      "path": "/rest/v1/items",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "range: obtains the full range (2)",
-      "feature": "range",
-      "method": "HEAD",
-      "path": "/rest/v1/child_entities",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "range: obtains the full range (3)",
-      "feature": "range",
-      "method": "HEAD",
-      "path": "/rest/v1/getallprojects_view",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "range: ignores limit/offset on the planned count",
-      "feature": "range",
-      "method": "HEAD",
-      "path": "/rest/v1/items?limit=2&offset=3",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "range: ignores limit/offset on the planned count (2)",
-      "feature": "range",
-      "method": "HEAD",
-      "path": "/rest/v1/child_entities?limit=2",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "range: ignores limit/offset on the planned count (3)",
-      "feature": "range",
-      "method": "HEAD",
-      "path": "/rest/v1/getallprojects_view?limit=2",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "range: works with two levels",
-      "feature": "range",
-      "method": "HEAD",
-      "path": "/rest/v1/child_entities?select=*,entities(*)",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
       "name": "range: understands open-ended ranges (2)",
       "feature": "range",
       "method": "GET",
@@ -6974,66 +6879,6 @@
       "key": "anon",
       "headers": {
         "Prefer": "count=exact"
-      }
-    },
-    {
-      "name": "related: works with count=planned",
-      "feature": "related",
-      "method": "GET",
-      "path": "/rest/v1/projects?select=name,clients(name)&clients=not.is.null",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "related: works with count=planned (2)",
-      "feature": "related",
-      "method": "GET",
-      "path": "/rest/v1/projects?select=name,clients()&clients=is.null",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "related: works with count=planned (3)",
-      "feature": "related",
-      "method": "GET",
-      "path": "/rest/v1/client?select=*,clientinfo(),contact()&clientinfo.other=ilike.*main*&contact.name=ilike.*tabby*&or=(clientinfo.not.is.null,contact.not.is.null)",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=planned"
-      }
-    },
-    {
-      "name": "related: works with count=estimated",
-      "feature": "related",
-      "method": "GET",
-      "path": "/rest/v1/projects?select=name,clients(name)&clients=not.is.null",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=estimated"
-      }
-    },
-    {
-      "name": "related: works with count=estimated (2)",
-      "feature": "related",
-      "method": "GET",
-      "path": "/rest/v1/projects?select=name,clients()&clients=is.null",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=estimated"
-      }
-    },
-    {
-      "name": "related: works with count=estimated (3)",
-      "feature": "related",
-      "method": "GET",
-      "path": "/rest/v1/client?select=*,clientinfo(),contact()&clientinfo.other=ilike.*main*&contact.name=ilike.*tabby*&or=(clientinfo.not.is.null,contact.not.is.null)",
-      "key": "anon",
-      "headers": {
-        "Prefer": "count=estimated"
       }
     },
     {
