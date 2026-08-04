@@ -164,115 +164,11 @@
     "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z1.id does not exist\"} not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'car_model_sales' and 'car_models_default' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'ca..."
   },
   {
-    "name": "query: can detect fk relations through views to tables in the public schema",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: can detect fk relations through materialized views to tables in the public schema",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: can request two parents",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: can detect relations in views from exposed schema that are based on tables in private schema and have columns renames",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "query: works when requesting parents and children on views",
     "why": "status 400 not 200"
   },
   {
     "name": "query: works when requesting parents and children on views with renamed keys",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: detects parent relations when having many views of a private table",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: detects parent relations when having many views of a private table (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: detects parent relations when having many views of a private table (3)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: detects parent relations when having many views of a private table (4)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: can detect fk relations through multiple views recursively when all views are in api schema",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works with views that have subselects",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works with views that have case subselects",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works with views that have subselect in the FROM clause",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works with views that have subselects in a function call",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works with views that have CTE",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when having a capitalized table name and camelCase fk column",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when embedding a view with a table that has a long compound pk",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when embedding a view with a table that has a long compound pk (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when embedding a view with a view that referes to a table that has a long compound pk",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when embedding a view with a view that referes to a table that has a long compound pk (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when embedding two views that refer to tables with different column ordering",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: can embed a view that has group by",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: can embed a view that has a subselect containing a select in a where",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works with one to one relationships",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works with one to one relationships (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works with one to one relationships (3)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works with one to one relationships (4)",
     "why": "status 400 not 200"
   },
   {
@@ -346,10 +242,6 @@
   {
     "name": "query: only returns an empty result set if the in value is empty",
     "why": "body {\"code\":\"22P02\",\"details\":null,\"hint\":null,\"message\":\"invalid input syntax for type integer: \\\" \\\"\"} not {\"code\":\"22P02\",\"details\":null,\"hint\":null,\"message\":\"invalid input syntax for type integer: \\\"\\\"\"}"
-  },
-  {
-    "name": "query: can be embedded",
-    "why": "status 400 not 200"
   },
   {
     "name": "query: works on nested relationships",
@@ -553,7 +445,7 @@
   },
   {
     "name": "embed: errs when there are o2m and m2m cardinalities to the target table",
-    "why": "body {\"code\":\"PGRST201\",\"details\":\"big_projects!main_project, big_projects!jobs\",\"hint\":\"Try changing 'big_projects' to one of the following: 'big_projects!main_project', 'big_projects!jobs'. Find the desi... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"many-to-one\",\"embedding\":\"sites with big_projects\",\"relationship\":\"main_project using sites(main_project_id) and big_projects(big_project_id)\"},{\"cardinal..."
+    "why": "body {\"code\":\"PGRST201\",\"details\":\"big_projects!main_project, big_projects!jobs, big_projects!main_jobs\",\"hint\":\"Try changing 'big_projects' to one of the following: 'big_projects!main_project', 'big_proje... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"many-to-one\",\"embedding\":\"sites with big_projects\",\"relationship\":\"main_project using sites(main_project_id) and big_projects(big_project_id)\"},{\"cardinal..."
   },
   {
     "name": "embed: errs on an ambiguous embed that has a circular reference",
@@ -569,50 +461,14 @@
   },
   {
     "name": "embed: errs with multiple references to the same composite key columns in a view",
-    "why": "status 400 not 300"
-  },
-  {
-    "name": "embed: can embed parent with view!fk and grandparent by using fk",
-    "why": "status 400 not 200"
+    "why": "body {\"code\":\"PGRST201\",\"details\":\"i2459_composite_v1!i2459_composite_t2_t1_a_t1_b_fkey, i2459_composite_v1!i2459_composite_t2_t1_a_t1_b_fkey, i2459_composite_v1!i2459_composite_t2_t1_a_t1_b_fkey, i2459_co... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"many-to-one\",\"embedding\":\"i2459_composite_v2 with i2459_composite_v1\",\"relationship\":\"i2459_composite_t2_t1_a_t1_b_fkey using i2459_composite_v2(t1_a1, t1..."
   },
   {
     "name": "embed: embeds by using two fks pointing to the same table",
     "why": "status 400 not 200"
   },
   {
-    "name": "embed: can request two parents with fks",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can specify a view!fk",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can embed parent by using view!column and grandparent by using the column",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "embed: embeds by using two columns pointing to the same table",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can specify all view column names that reference the same base column",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can specify all view column names that reference the same base column (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can specify all view column names that reference the same base column (3)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can specify all view column names that reference the same base column (4)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can specify the junction of an m2m relationship (2)",
     "why": "status 400 not 200"
   },
   {
@@ -624,76 +480,8 @@
     "why": "body [{\" children\":[{\"children\":[{\"id\":\"4\",\"name\":\"Grandkid One\"}],\"id\":\"2\",\"name\":\"Kid One\"},{\"children\":[{\"id\":\"5\",\"name\":\"Grandkid Two\"}],\"id\":\"3\",\"name\":\"Kid Two\"}],\"id\":\"1\",\"name\":\"Parental Unit\"}] not [{\"children\":[{\"children\":[{\"id\":\"4\",\"name\":\"Grandkid One\"}],\"id\":\"2\",\"name\":\"Kid One\"},{\"children\":[{\"id\":\"5\",\"name\":\"Grandkid Two\"}],\"id\":\"3\",\"name\":\"Kid Two\"}],\"id\":\"1\",\"name\":\"Parental Unit\"}]"
   },
   {
-    "name": "embed: embeds parent and then embeds children on a view",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can specify all view column names that reference the same base column (5)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can specify all view column names that reference the same base column (6)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works with no ambiguity when there's an exposed view of the junction",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works with no ambiguity when there's an exposed view of the junction (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: has to be explicit for a view embedding (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: should not expose hidden FKs",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works with views",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works with views (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works with views (3)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works with views (4)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works with views (5)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works with views (6)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works with views (7)",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "embed: works with rpc (2)",
     "why": "content-range \"0-1/*\" not \"0-1/2\""
-  },
-  {
-    "name": "embed: works alongside another embedding",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works alongside another embedding (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works alongside another embedding (3)",
-    "why": "status 400 not 200"
   },
   {
     "name": "insert: should not throw and return location header when selecting without PK (2)",
@@ -1057,11 +845,11 @@
   },
   {
     "name": "rpc: can embed if the related tables are in a hidden schema but exposed as views",
-    "why": "status 400 not 200"
+    "why": "content-range absent not \"0-0/*\""
   },
   {
     "name": "rpc: can embed if the related tables are in a hidden schema but exposed as views (2)",
-    "why": "status 400 not 200"
+    "why": "content-range absent not \"0-0/*\""
   },
   {
     "name": "rpc: can embed if rpc returns domain of table type",
@@ -1320,19 +1108,11 @@
     "why": "status 400 not 500"
   },
   {
-    "name": "single: can shape plurality singular object routes",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "spread: works on a many-to-one relationship (3)",
     "why": "status 400 not 200"
   },
   {
     "name": "spread: should return a single null element array, not an empty one, when the row exists but the value happens to be null (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "spread: should work return the same as empty embeddings",
     "why": "status 400 not 200"
   },
   {
