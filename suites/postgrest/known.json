@@ -528,10 +528,6 @@
     "why": "status 400 not 416"
   },
   {
-    "name": "rpc: includes exact count of 1 for functions that return a single scalar, domain or composite (3)",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "rpc: returns CSV",
     "why": "content-type \"application/json; charset=utf-8\" not \"text/csv; charset=utf-8\""
   },
@@ -572,44 +568,8 @@
     "why": "body {\"code\":\"PGRST203\",\"details\":null,\"hint\":null,\"message\":\"Could not choose the best candidate function between: test.overloaded_same_args(arg => integer), test.overloaded_same_args(arg => xml), test.ov... not {\"code\":\"PGRST203\",\"details\":null,\"hint\":\"Try renaming the parameters or the function itself in the database so function overloading can be resolved\",\"message\":\"Could not choose the best candidate fun..."
   },
   {
-    "name": "rpc: can embed if rpc returns domain of table type",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: can embed if rpc returns domain of table type (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: returns composite type in exposed schema",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "rpc: cannot return composite type in hidden schema",
-    "why": "status 400 not 401"
-  },
-  {
-    "name": "rpc: returns domain of composite type",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: returns a record type",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: returns a record type (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: returns a setof record type",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: returns a setof record type (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: returns composite type",
-    "why": "status 400 not 200"
+    "why": "status 403 not 401"
   },
   {
     "name": "rpc: accepts a variety of arguments from an html form",
@@ -622,10 +582,6 @@
   {
     "name": "rpc: rejects unknown content type even if payload is good (2)",
     "why": "status 200 not 406"
-  },
-  {
-    "name": "rpc: returns an object result when there is a single INOUT param",
-    "why": "status 400 not 200"
   },
   {
     "name": "rpc: n=1 (2)",
