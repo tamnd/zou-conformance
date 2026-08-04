@@ -296,10 +296,6 @@
     "why": "status 403 not 200"
   },
   {
-    "name": "embed: works with rpc (2)",
-    "why": "content-range \"0-1/*\" not \"0-1/2\""
-  },
-  {
     "name": "insert: should not throw and return location header when selecting without PK (2)",
     "why": "location \"/rest/v1/projects?id=eq.11\" not \"/projects?id=eq.11\""
   },
@@ -524,52 +520,12 @@
     "why": "status 404 not 200"
   },
   {
-    "name": "range: refuses a range with nonzero start when there are no items",
-    "why": "status 200 not 416"
-  },
-  {
-    "name": "range: refuses a range requesting start past last item",
-    "why": "status 200 not 416"
-  },
-  {
     "name": "range: succeeds if offset is negative as a no-op",
     "why": "status 400 not 200"
   },
   {
     "name": "range: fails if limit is negative",
     "why": "status 400 not 416"
-  },
-  {
-    "name": "rpc: using the Range header (2)",
-    "why": "status 200 not 206"
-  },
-  {
-    "name": "rpc: using limit and offset (4)",
-    "why": "status 200 not 206"
-  },
-  {
-    "name": "rpc: using limit and offset (5)",
-    "why": "status 200 not 206"
-  },
-  {
-    "name": "rpc: using limit and offset (6)",
-    "why": "status 200 not 206"
-  },
-  {
-    "name": "rpc: includes exact count if requested",
-    "why": "content-range \"0-4/*\" not \"0-4/5\""
-  },
-  {
-    "name": "rpc: includes exact count if requested (2)",
-    "why": "content-range \"0-1/*\" not \"0-1/2\""
-  },
-  {
-    "name": "rpc: includes exact count of 1 for functions that return a single scalar, domain or composite",
-    "why": "content-range \"0-0/*\" not \"0-0/1\""
-  },
-  {
-    "name": "rpc: includes exact count of 1 for functions that return a single scalar, domain or composite (2)",
-    "why": "content-range \"0-0/*\" not \"0-0/1\""
   },
   {
     "name": "rpc: includes exact count of 1 for functions that return a single scalar, domain or composite (3)",
@@ -586,30 +542,6 @@
   {
     "name": "rpc: returns CSV (3)",
     "why": "content-type \"application/json; charset=utf-8\" not \"text/csv; charset=utf-8\""
-  },
-  {
-    "name": "rpc: without limit and offset",
-    "why": "content-range \"1-1/*\" not \"0-1/2\""
-  },
-  {
-    "name": "rpc: without limit and offset (2)",
-    "why": "content-range \"1-1/*\" not \"0-1/2\""
-  },
-  {
-    "name": "rpc: with limit and offset",
-    "why": "status 200 not 206"
-  },
-  {
-    "name": "rpc: with limit and offset (2)",
-    "why": "status 200 not 206"
-  },
-  {
-    "name": "rpc: does not throw an invalid range error",
-    "why": "status 200 not 206"
-  },
-  {
-    "name": "rpc: does not throw an invalid range error (2)",
-    "why": "status 200 not 206"
   },
   {
     "name": "rpc: should fail with 404 and hint the closest proc on unknown proc name",
@@ -640,32 +572,12 @@
     "why": "body {\"code\":\"PGRST203\",\"details\":null,\"hint\":null,\"message\":\"Could not choose the best candidate function between: test.overloaded_same_args(arg => integer), test.overloaded_same_args(arg => xml), test.ov... not {\"code\":\"PGRST203\",\"details\":null,\"hint\":\"Try renaming the parameters or the function itself in the database so function overloading can be resolved\",\"message\":\"Could not choose the best candidate fun..."
   },
   {
-    "name": "rpc: can embed if the related tables are in a hidden schema but exposed as views",
-    "why": "content-range absent not \"0-0/*\""
-  },
-  {
-    "name": "rpc: can embed if the related tables are in a hidden schema but exposed as views (2)",
-    "why": "content-range absent not \"0-0/*\""
-  },
-  {
     "name": "rpc: can embed if rpc returns domain of table type",
     "why": "status 400 not 200"
   },
   {
     "name": "rpc: can embed if rpc returns domain of table type (2)",
     "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: returns empty json array",
-    "why": "content-range \"0-0/*\" not \"*/*\""
-  },
-  {
-    "name": "rpc: returns empty json array (2)",
-    "why": "content-range \"0-0/*\" not \"*/*\""
-  },
-  {
-    "name": "rpc: returns setof integers",
-    "why": "content-range \"0-0/*\" not \"0-2/*\""
   },
   {
     "name": "rpc: returns composite type in exposed schema",
@@ -678,10 +590,6 @@
   {
     "name": "rpc: returns domain of composite type",
     "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: returns single row from table",
-    "why": "content-range absent not \"0-0/*\""
   },
   {
     "name": "rpc: returns a record type",
@@ -716,24 +624,8 @@
     "why": "status 200 not 406"
   },
   {
-    "name": "rpc: returns an object result when there is a single OUT param",
-    "why": "content-range absent not \"0-0/*\""
-  },
-  {
-    "name": "rpc: returns an object result when there is a single OUT param (2)",
-    "why": "content-range absent not \"0-0/*\""
-  },
-  {
     "name": "rpc: returns an object result when there is a single INOUT param",
     "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: returns an object result when there are many OUT params",
-    "why": "content-range absent not \"0-0/*\""
-  },
-  {
-    "name": "rpc: returns an object result when there are many INOUT params",
-    "why": "content-range absent not \"0-0/*\""
   },
   {
     "name": "rpc: n=1 (2)",
@@ -750,18 +642,6 @@
   {
     "name": "rpc: returns last value for repeated non-variadic params in function with other VARIADIC arguments",
     "why": "body \"Hello, ignored\" not \"Hello, world\""
-  },
-  {
-    "name": "rpc: can handle procs with args that have a DEFAULT value",
-    "why": "content-range absent not \"0-0/*\""
-  },
-  {
-    "name": "rpc: overloaded()",
-    "why": "content-range \"0-0/*\" not \"0-2/*\""
-  },
-  {
-    "name": "rpc: overloaded_html_form()",
-    "why": "content-range \"0-0/*\" not \"0-2/*\""
   },
   {
     "name": "rpc: overloaded_html_form(int, int)",
