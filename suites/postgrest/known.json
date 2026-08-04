@@ -308,26 +308,6 @@
     "why": "status 403 not 200"
   },
   {
-    "name": "embed: errs when there are o2m and m2m cardinalities to the target table",
-    "why": "body {\"code\":\"PGRST201\",\"details\":\"big_projects!main_project, big_projects!jobs, big_projects!main_jobs\",\"hint\":\"Try changing 'big_projects' to one of the following: 'big_projects!main_project', 'big_proje... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"many-to-one\",\"embedding\":\"sites with big_projects\",\"relationship\":\"main_project using sites(main_project_id) and big_projects(big_project_id)\"},{\"cardinal..."
-  },
-  {
-    "name": "embed: errs on an ambiguous embed that has a circular reference",
-    "why": "body {\"code\":\"PGRST201\",\"details\":\"departments!agents_department_id_fkey, departments!departments_head_id_fkey\",\"hint\":\"Try changing 'departments' to one of the following: 'departments!agents_department_id... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"one-to-many\",\"embedding\":\"agents with departments\",\"relationship\":\"departments_head_id_fkey using agents(id) and departments(head_id)\"},{\"cardinality\":\"ma..."
-  },
-  {
-    "name": "embed: errs when there are more than two fks on a junction table but it can be disambiguated with spread embeds",
-    "why": "body {\"code\":\"PGRST201\",\"details\":\"whatev_projects!whatev_jobs, whatev_projects!whatev_jobs, whatev_projects!whatev_jobs, whatev_projects!whatev_jobs\",\"hint\":\"Try changing 'whatev_projects' to one of the f... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"many-to-many\",\"embedding\":\"whatev_sites with whatev_projects\",\"relationship\":\"whatev_jobs using whatev_jobs_site_id_1_fkey(site_id_1) and whatev_jobs_proj..."
-  },
-  {
-    "name": "embed: errs on an ambiguous embed that has two one-to-one relationships",
-    "why": "body {\"code\":\"PGRST201\",\"details\":\"second!first_second_id_1_fkey, second!first_second_id_2_fkey\",\"hint\":\"Try changing 'second' to one of the following: 'second!first_second_id_1_fkey', 'second!first_second... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"one-to-one\",\"embedding\":\"first with second\",\"relationship\":\"first_second_id_1_fkey using first(second_id_1) and second(id)\"},{\"cardinality\":\"one-to-one\",\"..."
-  },
-  {
-    "name": "embed: errs with multiple references to the same composite key columns in a view",
-    "why": "body {\"code\":\"PGRST201\",\"details\":\"i2459_composite_v1!i2459_composite_t2_t1_a_t1_b_fkey, i2459_composite_v1!i2459_composite_t2_t1_a_t1_b_fkey, i2459_composite_v1!i2459_composite_t2_t1_a_t1_b_fkey, i2459_co... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"many-to-one\",\"embedding\":\"i2459_composite_v2 with i2459_composite_v1\",\"relationship\":\"i2459_composite_t2_t1_a_t1_b_fkey using i2459_composite_v2(t1_a1, t1..."
-  },
-  {
     "name": "embed: works with rpc (2)",
     "why": "content-range \"0-1/*\" not \"0-1/2\""
   },
