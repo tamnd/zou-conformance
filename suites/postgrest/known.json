@@ -132,18 +132,6 @@
     "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z0.always_false does not exist\"} not {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column items.always_false does not exist\"}"
   },
   {
-    "name": "query: errs when the embedded resource doesn't exist and an embedded filter is applied to it",
-    "why": "body {\"code\":\"PGRST108\",\"details\":null,\"hint\":null,\"message\":\"'non_existent_projects' is not an embedded resource in this request, the filter on it has nowhere to go\"} not {\"code\":\"PGRST108\",\"details\":null,\"hint\":\"Verify that 'non_existent_projects' is included in the 'select' query parameter.\",\"message\":\"'non_existent_projects' is not an embedded resource in this reque..."
-  },
-  {
-    "name": "query: errs when the embedded resource doesn't exist and an embedded filter is applied to it (2)",
-    "why": "body {\"code\":\"PGRST108\",\"details\":null,\"hint\":null,\"message\":\"'amiga_projectsss' is not an embedded resource in this request, the filter on it has nowhere to go\"} not {\"code\":\"PGRST108\",\"details\":null,\"hint\":\"Verify that 'amiga_projectsss' is included in the 'select' query parameter.\",\"message\":\"'amiga_projectsss' is not an embedded resource in this request\"}"
-  },
-  {
-    "name": "query: errs when the embedded resource doesn't exist and an embedded filter is applied to it (3)",
-    "why": "body {\"code\":\"PGRST108\",\"details\":null,\"hint\":null,\"message\":\"'projects.tasks2' is not an embedded resource in this request, the filter on it has nowhere to go\"} not {\"code\":\"PGRST108\",\"details\":null,\"hint\":\"Verify that 'tasks2' is included in the 'select' query parameter.\",\"message\":\"'tasks2' is not an embedded resource in this request\"}"
-  },
-  {
     "name": "query: requesting parents and children",
     "why": "status 400 not 200"
   },
@@ -389,19 +377,19 @@
   },
   {
     "name": "query: works on nested relationships",
-    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"users_tasks\":[{\"tasks\":{\"?column?\":1}},{\"tasks\":{\"?column?\":1}},{\"tasks\":{\"?column?\":1}},{\"tasks\":{\"?column?\":1}}]},{\"id\":2,\"name\":\"Michael Scott\",\"users_tasks\":[{\"tas... not [{\"id\":1,\"name\":\"Angela Martin\"},{\"id\":2,\"name\":\"Michael Scott\"},{\"id\":3,\"name\":\"Dwight Schrute\"}]"
+    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"users_tasks\":[{\"tasks\":{\"id\":1,\"name\":\"Design w7\",\"project_id\":1}},{\"tasks\":{\"id\":2,\"name\":\"Code w7\",\"project_id\":1}},{\"tasks\":{\"id\":3,\"name\":\"Design w10\",\"project_id\"... not [{\"id\":1,\"name\":\"Angela Martin\"},{\"id\":2,\"name\":\"Michael Scott\"},{\"id\":3,\"name\":\"Dwight Schrute\"}]"
   },
   {
     "name": "query: works on nested relationships (2)",
-    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"users_tasks\":[{\"tasks\":{\"?column?\":1}}]}] not [{\"id\":1,\"name\":\"Angela Martin\"}]"
+    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"users_tasks\":[{\"tasks\":{\"id\":3,\"name\":\"Design w10\",\"project_id\":2}}]}] not [{\"id\":1,\"name\":\"Angela Martin\"}]"
   },
   {
     "name": "query: works on nested relationships (3)",
-    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"tasks\":[{\"projects\":{\"?column?\":1}},{\"projects\":{\"?column?\":1}},{\"projects\":{\"?column?\":1}},{\"projects\":{\"?column?\":1}}]},{\"id\":2,\"name\":\"Michael Scott\",\"tasks\":[{\"pro... not [{\"id\":1,\"name\":\"Angela Martin\"},{\"id\":2,\"name\":\"Michael Scott\"},{\"id\":3,\"name\":\"Dwight Schrute\"}]"
+    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"tasks\":[{\"projects\":{\"client_id\":1,\"id\":1,\"name\":\"Windows 7\"}},{\"projects\":{\"client_id\":1,\"id\":1,\"name\":\"Windows 7\"}},{\"projects\":{\"client_id\":1,\"id\":2,\"name\":\"Windows... not [{\"id\":1,\"name\":\"Angela Martin\"},{\"id\":2,\"name\":\"Michael Scott\"},{\"id\":3,\"name\":\"Dwight Schrute\"}]"
   },
   {
     "name": "query: works on nested relationships (4)",
-    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"tasks\":[{\"name\":\"Design w10\",\"projects\":{\"?column?\":1}}]}] not [{\"id\":1,\"name\":\"Angela Martin\",\"tasks\":[{\"name\":\"Design w10\"}]}]"
+    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"tasks\":[{\"name\":\"Design w10\",\"projects\":{\"client_id\":1,\"id\":2,\"name\":\"Windows 10\"}}]}] not [{\"id\":1,\"name\":\"Angela Martin\",\"tasks\":[{\"name\":\"Design w10\"}]}]"
   },
   {
     "name": "query: gives all columns",
@@ -1072,91 +1060,15 @@
     "why": "status 400 not 416"
   },
   {
-    "name": "related: works on a many-to-one relationship",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on a many-to-one relationship (2)",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "related: works on a many-to-one relationship (3)",
     "why": "status 400 not 200"
   },
   {
-    "name": "related: works on a one-to-one relationship and jsonb column",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on a one-to-one relationship and jsonb column (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on an embedded resource",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on an embedded resource (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on an embedded resource (3)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: fails when is not a to-one relationship",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"unexpected characters after the order list at offset 8\"} not {\"code\":\"PGRST118\",\"details\":\"'clients' and 'projects' do not form a many-to-one or one-to-one relationship\",\"hint\":null,\"message\":\"A related order on 'projects' is not possible\"}"
-  },
-  {
-    "name": "related: fails when is not a to-one relationship (2)",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"unexpected characters after the order list at offset 4\"} not {\"code\":\"PGRST118\",\"details\":\"'clients' and 'pros' do not form a many-to-one or one-to-one relationship\",\"hint\":null,\"message\":\"A related order on 'pros' is not possible\"}"
-  },
-  {
     "name": "related: fails when is not a to-one relationship (3)",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"unexpected characters after the order list at offset 19\"} not {\"code\":\"PGRST118\",\"details\":\"'designers' and 'computed_videogames' do not form a many-to-one or one-to-one relationship\",\"hint\":null,\"message\":\"A related order on 'computed_videogames' is not possibl..."
-  },
-  {
-    "name": "related: fails when the resource is not embedded",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"unexpected characters after the order list at offset 8\"} not {\"code\":\"PGRST108\",\"details\":null,\"hint\":\"Verify that 'clientsx' is included in the 'select' query parameter.\",\"message\":\"'clientsx' is not an embedded resource in this request\"}"
-  },
-  {
-    "name": "related: works on a many-to-one relationship (4)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on a many-to-one relationship (5)",
-    "why": "status 400 not 200"
+    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'designers' and 'computed_videogames' in the schema cache\",\"hint\":null,\"message\":\"Could not find a relationship between 'd... not {\"code\":\"PGRST118\",\"details\":\"'designers' and 'computed_videogames' do not form a many-to-one or one-to-one relationship\",\"hint\":null,\"message\":\"A related order on 'computed_videogames' is not possibl..."
   },
   {
     "name": "related: works on a many-to-one relationship (6)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on a one-to-many relationship",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on a one-to-many relationship (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on a one-to-many relationship (3)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on a many-to-many relationship",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on a many-to-many relationship (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works on nested embeds",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: can do an or across embeds",
     "why": "status 400 not 200"
   },
   {
@@ -1165,26 +1077,6 @@
   },
   {
     "name": "related: doesn't interfere filtering on column names used for disambiguation",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: embeds verifying that the entire target table row is not null",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: embeds verifying that the entire target table row is not null (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works with count=exact",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works with count=exact (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: works with count=exact (3)",
     "why": "status 400 not 200"
   },
   {
@@ -1754,10 +1646,6 @@
   {
     "name": "spread: should work return the same as empty embeddings",
     "why": "status 400 not 200"
-  },
-  {
-    "name": "spread: should work return the same as empty embeddings (2)",
-    "why": "body [{\"?column?\":1,\"name\":\"grandchild entity 1\",\"parent_name\":\"child entity 1\"},{\"?column?\":1,\"name\":\"grandchild entity 2\",\"parent_name\":\"child entity 1\"},{\"?column?\":1,\"name\":\"grandchild entity 3\",\"paren... not [{\"name\":\"grandchild entity 1\",\"parent_name\":\"child entity 1\"},{\"name\":\"grandchild entity 2\",\"parent_name\":\"child entity 1\"},{\"name\":\"grandchild entity 3\",\"parent_name\":\"child entity 2\"},{\"name\":\"(gra..."
   },
   {
     "name": "spread: should work return the same as empty embeddings (3)",
