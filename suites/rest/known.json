@@ -8,10 +8,6 @@
     "why": "an upsert that updated answers 201, upstream answers 200, tamnd/zou#125"
   },
   {
-    "name": "a function called without an argument it needs",
-    "why": "upstream's hint about which function it looked for is missing, tamnd/zou#125"
-  },
-  {
     "name": "a column nobody has, in the select",
     "why": "the message names the plan's alias, z0, rather than the table, tamnd/zou#125"
   },
