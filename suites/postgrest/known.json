@@ -1,27 +1,11 @@
 [
   {
-    "name": "query: matches not_null using is operator",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: not.is.not_null is equivalent to is.null",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: matches with null and not_null values in upper or mixed case (2)",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "query: fails if 'is' used and there's no null or trilean value",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"is wants null, true, false, or unknown, not (nil) at offset 6\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"i\\\" expecting isVal: (null, not_null, true, false, unknown)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (is.nil)\\\" (line 1, column 5)\"}"
+    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"is wants null, not_null, true, false, or unknown, not (nil) at offset 6\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"i\\\" expecting isVal: (null, not_null, true, false, unknown)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (is.nil)\\\" (line 1, column 5)\"}"
   },
   {
     "name": "query: fails if 'is' used and there's no null or trilean value (2)",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"is wants null, true, false, or unknown, not (ok) at offset 5\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"o\\\" expecting isVal: (null, not_null, true, false, unknown)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (is.ok)\\\" (line 1, column 4)\"}"
-  },
-  {
-    "name": "query: can be used with or query param",
-    "why": "status 400 not 200"
+    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"is wants null, not_null, true, false, or unknown, not (ok) at offset 5\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"o\\\" expecting isVal: (null, not_null, true, false, unknown)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (is.ok)\\\" (line 1, column 4)\"}"
   },
   {
     "name": "query: works when the column type is a tsvector domain",
@@ -148,54 +132,6 @@
     "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"unknown operator (0) at offset 0\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"0\\\" expecting \\\"not\\\" or operator (eq, gt, ...)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (0)\\\" (line 1, column 1)\"}"
   },
   {
-    "name": "query: accepts single double quotes as values",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works for integer",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works for text",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works for bool",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works for bytea",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works for char",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works for date",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works for real",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works for time",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: returns all results for not.in when no value is present",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: returns an empty result ignoring spaces",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: only returns an empty result set if the in value is empty",
-    "why": "body {\"code\":\"22P02\",\"details\":null,\"hint\":null,\"message\":\"invalid input syntax for type integer: \\\" \\\"\"} not {\"code\":\"22P02\",\"details\":null,\"hint\":null,\"message\":\"invalid input syntax for type integer: \\\"\\\"\"}"
-  },
-  {
     "name": "query: works on nested relationships",
     "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"users_tasks\":[{\"tasks\":{\"id\":1,\"name\":\"Design w7\",\"project_id\":1}},{\"tasks\":{\"id\":2,\"name\":\"Code w7\",\"project_id\":1}},{\"tasks\":{\"id\":3,\"name\":\"Design w10\",\"project_id\"... not [{\"id\":1,\"name\":\"Angela Martin\"},{\"id\":2,\"name\":\"Michael Scott\"},{\"id\":3,\"name\":\"Dwight Schrute\"}]"
   },
@@ -228,14 +164,6 @@
     "why": "content-type \"application/json\" not \"application/json; charset=utf-8\""
   },
   {
-    "name": "andor: can handle eq and neq",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "andor: can handle fts on tsvector columns (2)",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "andor: can handle fts on text and json columns",
     "why": "status 404 not 200"
   },
@@ -244,48 +172,8 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "andor: can handle isdistinct",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "andor: can handle cs and cd",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "andor: eq, cs, like can be negated",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "andor: isdistinct can be negated",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "andor: allows whitespace",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "andor: cannot have zero conditions",
     "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"expected a field name at offset 1\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\")\\\" expecting field name (* or [a..z0..9_$]), negation operator (not) or logic operator (and, or)\",\"hint\":null,\"message\":\"\\\"failed to parse logic tree (())\\\"..."
-  },
-  {
-    "name": "andor: can have three conditions",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "andor: can have three conditions (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "andor: can have four conditions combining and/or",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "andor: can have four conditions combining and/or (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "andor: can query columns that begin with and/or reserved words",
-    "why": "status 400 not 200"
   },
   {
     "name": "delete: fails deleting the row when return=representation and selecting all the columns",
@@ -450,10 +338,6 @@
   {
     "name": "json: obtains an array item (2)",
     "why": "status 404 not 200"
-  },
-  {
-    "name": "json: can be filtered with and/or",
-    "why": "status 400 not 200"
   },
   {
     "name": "json: can filter when the key's name has non reserved special characters",
