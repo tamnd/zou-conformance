@@ -300,106 +300,6 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "computed: can define a many-to-one relationship with SETOF and ROWS 1 and embed",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: can define a many-to-one relationship without SETOF and embed",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: can define a one-to-many relationship and embed",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: works with !inner and count=exact",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: works with !inner and count=exact (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: works with !inner and count=exact (3)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: works with rpc",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: works with rpc (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: works with mutations",
-    "why": "status 400 not 201"
-  },
-  {
-    "name": "computed: works with mutations (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: works with mutations (3)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: applies data representations to response (4)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: works with self joins",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: can override many-to-one and one-to-many relationships",
-    "why": "content-range \"0-3/*\" not \"*/*\""
-  },
-  {
-    "name": "computed: can override many-to-one and one-to-many relationships (2)",
-    "why": "content-range \"0-1/*\" not \"*/*\""
-  },
-  {
-    "name": "computed: can override one-to-one relationships(would give disambiguation errors otherwise)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: can override one-to-one relationships(would give disambiguation errors otherwise) (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: creates queries with the right aliasing",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: creates queries with the right aliasing (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: creates queries with the right aliasing when following a normal embed",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: creates queries with the right aliasing when following a normal embed (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: tables",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: tables (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: rpc",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "computed: rpc (2)",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "delete: fails deleting the row when return=representation and selecting all the columns",
     "why": "status 403 not 401"
   },
@@ -670,18 +570,6 @@
   {
     "name": "range: fails if limit is negative",
     "why": "status 400 not 416"
-  },
-  {
-    "name": "related: works on a many-to-one relationship (3)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: fails when is not a to-one relationship (3)",
-    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'designers' and 'computed_videogames' in the schema 'test', but no matches were found.\",\"hint\":null,\"message\":\"Could not f... not {\"code\":\"PGRST118\",\"details\":\"'designers' and 'computed_videogames' do not form a many-to-one or one-to-one relationship\",\"hint\":null,\"message\":\"A related order on 'computed_videogames' is not possibl..."
-  },
-  {
-    "name": "related: works on a many-to-one relationship (6)",
-    "why": "status 400 not 200"
   },
   {
     "name": "rpc: using the Range header (2)",
@@ -1054,10 +942,6 @@
   {
     "name": "rpc: returns error for missing DETAIL option in the RAISE statement",
     "why": "status 400 not 500"
-  },
-  {
-    "name": "spread: works on a many-to-one relationship (3)",
-    "why": "status 400 not 200"
   },
   {
     "name": "spread: should return a single null element array, not an empty one, when the row exists but the value happens to be null (2)",
