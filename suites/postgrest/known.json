@@ -136,18 +136,6 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "query: can request many to many relationships between partitioned tables ignoring the intermediate table partitions",
-    "why": "status 300 not 200"
-  },
-  {
-    "name": "query: cannot request partitions as children from a partitioned table",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z1.id does not exist\"} not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'car_models' and 'car_model_sales_202101' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'car..."
-  },
-  {
-    "name": "query: cannot request a partition as parent from a partitioned table",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z1.id does not exist\"} not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'car_model_sales' and 'car_models_default' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'ca..."
-  },
-  {
     "name": "query: ordering embeded entities with alias",
     "why": "status 400 not 200"
   },
@@ -650,14 +638,6 @@
   {
     "name": "rpc: should fail with 300 Multiple Choices without explicit type casts",
     "why": "body {\"code\":\"PGRST203\",\"details\":null,\"hint\":null,\"message\":\"Could not choose the best candidate function between: test.overloaded_same_args(arg => integer), test.overloaded_same_args(arg => xml), test.ov... not {\"code\":\"PGRST203\",\"details\":null,\"hint\":\"Try renaming the parameters or the function itself in the database so function overloading can be resolved\",\"message\":\"Could not choose the best candidate fun..."
-  },
-  {
-    "name": "rpc: cannot embed if the related table is not in the exposed schema",
-    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema 'test', but no matches were found.\",\"hint\":null,\"message\":\"Could not find a r... not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'articleStars' ..."
-  },
-  {
-    "name": "rpc: cannot embed if the related table is not in the exposed schema (2)",
-    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema 'test', but no matches were found.\",\"hint\":null,\"message\":\"Could not find a r... not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'articleStars' ..."
   },
   {
     "name": "rpc: can embed if the related tables are in a hidden schema but exposed as views",
