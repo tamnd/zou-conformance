@@ -192,34 +192,6 @@
     "why": "content-type \"application/json; charset=utf-8\" not \"text/csv; charset=utf-8\""
   },
   {
-    "name": "rpc: should fail with 404 and hint the closest proc on unknown proc name",
-    "why": "body {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.sayhell without parameters, but no matches were found in the schema cache.\",\"hint\":null,\"message\":\"Could not find the function test.sayhell... not {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.sayhell without parameters, but no matches were found in the schema cache.\",\"hint\":\"Perhaps you meant to call the function test.sayhello\",\"..."
-  },
-  {
-    "name": "rpc: should fail with 404 on unknown proc args (2)",
-    "why": "body {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.sayhello without parameters, but no matches were found in the schema cache.\",\"hint\":null,\"message\":\"Could not find the function test.sayhel... not {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.sayhello with parameter any_arg, but no matches were found in the schema cache.\",\"hint\":null,\"message\":\"Could not find the function test.sa..."
-  },
-  {
-    "name": "rpc: should fail with 404 and hint the closest args on unknown proc args",
-    "why": "body {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.sayhello without parameters, but no matches were found in the schema cache.\",\"hint\":null,\"message\":\"Could not find the function test.sayhel... not {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.sayhello with parameter nam, but no matches were found in the schema cache.\",\"hint\":\"Perhaps you meant to call the function test.sayhello(n..."
-  },
-  {
-    "name": "rpc: should not ignore unknown args and fail with 404",
-    "why": "status 200 not 404"
-  },
-  {
-    "name": "rpc: should fail with 404 for overloaded functions with unknown args",
-    "why": "status 200 not 404"
-  },
-  {
-    "name": "rpc: should fail with 404 for overloaded functions with unknown args (2)",
-    "why": "status 200 not 404"
-  },
-  {
-    "name": "rpc: should fail with 300 Multiple Choices without explicit type casts",
-    "why": "body {\"code\":\"PGRST203\",\"details\":null,\"hint\":null,\"message\":\"Could not choose the best candidate function between: test.overloaded_same_args(arg => integer), test.overloaded_same_args(arg => xml), test.ov... not {\"code\":\"PGRST203\",\"details\":null,\"hint\":\"Try renaming the parameters or the function itself in the database so function overloading can be resolved\",\"message\":\"Could not choose the best candidate fun..."
-  },
-  {
     "name": "rpc: cannot return composite type in hidden schema",
     "why": "status 403 not 401"
   },
@@ -244,14 +216,6 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "rpc: returns last value for repeated params without VARIADIC",
-    "why": "body \"Hello, ignored\" not \"Hello, world\""
-  },
-  {
-    "name": "rpc: returns last value for repeated non-variadic params in function with other VARIADIC arguments",
-    "why": "body \"Hello, ignored\" not \"Hello, world\""
-  },
-  {
     "name": "rpc: overloaded_html_form(int, int)",
     "why": "status 400 not 200"
   },
@@ -274,18 +238,6 @@
   {
     "name": "rpc: gets the http path",
     "why": "body \"/rest/v1/rpc/get_guc_value\" not \"/rpc/get_guc_value\""
-  },
-  {
-    "name": "rpc: should filter a proc that has arg name = filter name",
-    "why": "content-range \"0-3/*\" not \"0-1/*\""
-  },
-  {
-    "name": "rpc: should work with filters that have the not operator",
-    "why": "content-range \"0-3/*\" not \"0-1/*\""
-  },
-  {
-    "name": "rpc: should work with filters that have the not operator (2)",
-    "why": "content-range \"0-3/*\" not \"0-1/*\""
   },
   {
     "name": "rpc: fails when setting headers with wrong json structure",
@@ -328,32 +280,12 @@
     "why": "status 404 not 200"
   },
   {
-    "name": "rpc: will err when no function with single unnamed json parameter exists and application/json is specified",
-    "why": "body {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.unnamed_int_param with parameters x, y or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.\",\"hint... not {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.unnamed_int_param with parameters x, y or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.\",\"hint..."
-  },
-  {
-    "name": "rpc: will err when no function with single unnamed text parameter exists and text/plain is specified",
-    "why": "body {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.unnamed_int_param without parameters or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.\",\"hint\":... not {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.unnamed_int_param with a single unnamed text parameter, but no matches were found in the schema cache.\",\"hint\":null,\"message\":\"Could not fi..."
-  },
-  {
-    "name": "rpc: will err when no function with single unnamed text parameter exists and text/xml is specified",
-    "why": "body {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.unnamed_int_param without parameters or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.\",\"hint\":... not {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.unnamed_int_param with a single unnamed xml parameter, but no matches were found in the schema cache.\",\"hint\":null,\"message\":\"Could not fin..."
-  },
-  {
-    "name": "rpc: will err when no function with single unnamed bytea parameter exists and application/octet-stream is specified",
-    "why": "body {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.unnamed_int_param without parameters or with a single unnamed json/jsonb parameter, but no matches were found in the schema cache.\",\"hint\":... not {\"code\":\"PGRST202\",\"details\":\"Searched for the function test.unnamed_int_param with a single unnamed bytea parameter, but no matches were found in the schema cache.\",\"hint\":null,\"message\":\"Could not f..."
-  },
-  {
     "name": "rpc: should be able to fallback to the single unnamed parameter function when other overloaded functions are not found (2)",
     "why": "content-type \"application/json; charset=utf-8\" not \"text/plain; charset=utf-8\""
   },
   {
     "name": "rpc: should fail to fallback to any single unnamed parameter function when using an unsupported Content-Type header",
     "why": "status 400 not 404"
-  },
-  {
-    "name": "rpc: should fail with multiple choices when two fallback functions with single unnamed json and jsonb parameters exist",
-    "why": "status 200 not 300"
   },
   {
     "name": "rpc: should fail on /rpc/unnamed_xml_param when posting invalid xml",
