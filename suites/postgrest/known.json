@@ -148,30 +148,6 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "query: works when using column as target",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when using column as target (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when using column as target (3)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when using column as target (4)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when using column as hint",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when using column as hint (3)",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "query: overloaded computed column on rpc",
     "why": "status 400 not 200"
   },
@@ -577,11 +553,11 @@
   },
   {
     "name": "embed: errs when there are o2m and m2m cardinalities to the target table",
-    "why": "body {\"code\":\"PGRST201\",\"details\":\"big_projects!main_project, big_projects!jobs\",\"hint\":\"Try changing 'big_projects' to one of the following: big_projects!main_project, big_projects!jobs. Find the desired ... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"many-to-one\",\"embedding\":\"sites with big_projects\",\"relationship\":\"main_project using sites(main_project_id) and big_projects(big_project_id)\"},{\"cardinal..."
+    "why": "body {\"code\":\"PGRST201\",\"details\":\"big_projects!main_project, big_projects!jobs\",\"hint\":\"Try changing 'big_projects' to one of the following: 'big_projects!main_project', 'big_projects!jobs'. Find the desi... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"many-to-one\",\"embedding\":\"sites with big_projects\",\"relationship\":\"main_project using sites(main_project_id) and big_projects(big_project_id)\"},{\"cardinal..."
   },
   {
     "name": "embed: errs on an ambiguous embed that has a circular reference",
-    "why": "body {\"code\":\"PGRST201\",\"details\":\"departments!agents_department_id_fkey, departments!departments_head_id_fkey\",\"hint\":\"Try changing 'departments' to one of the following: departments!agents_department_id_... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"one-to-many\",\"embedding\":\"agents with departments\",\"relationship\":\"departments_head_id_fkey using agents(id) and departments(head_id)\"},{\"cardinality\":\"ma..."
+    "why": "body {\"code\":\"PGRST201\",\"details\":\"departments!agents_department_id_fkey, departments!departments_head_id_fkey\",\"hint\":\"Try changing 'departments' to one of the following: 'departments!agents_department_id... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"one-to-many\",\"embedding\":\"agents with departments\",\"relationship\":\"departments_head_id_fkey using agents(id) and departments(head_id)\"},{\"cardinality\":\"ma..."
   },
   {
     "name": "embed: errs when there are more than two fks on a junction table but it can be disambiguated with spread embeds",
@@ -589,38 +565,18 @@
   },
   {
     "name": "embed: errs on an ambiguous embed that has two one-to-one relationships",
-    "why": "body {\"code\":\"PGRST201\",\"details\":\"second!first_second_id_1_fkey, second!first_second_id_2_fkey\",\"hint\":\"Try changing 'second' to one of the following: second!first_second_id_1_fkey, second!first_second_id... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"one-to-one\",\"embedding\":\"first with second\",\"relationship\":\"first_second_id_1_fkey using first(second_id_1) and second(id)\"},{\"cardinality\":\"one-to-one\",\"..."
+    "why": "body {\"code\":\"PGRST201\",\"details\":\"second!first_second_id_1_fkey, second!first_second_id_2_fkey\",\"hint\":\"Try changing 'second' to one of the following: 'second!first_second_id_1_fkey', 'second!first_second... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"one-to-one\",\"embedding\":\"first with second\",\"relationship\":\"first_second_id_1_fkey using first(second_id_1) and second(id)\"},{\"cardinality\":\"one-to-one\",\"..."
   },
   {
     "name": "embed: errs with multiple references to the same composite key columns in a view",
     "why": "status 400 not 300"
   },
   {
-    "name": "embed: can embed by FK name",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can embed by FK name and select the FK column at the same time",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "embed: can embed parent with view!fk and grandparent by using fk",
     "why": "status 400 not 200"
   },
   {
-    "name": "embed: can embed by using a composite FK name",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "embed: embeds by using two fks pointing to the same table",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: fails if the fk is not known",
-    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'message' and 'person' in the schema cache\",\"hint\":null,\"message\":\"Could not find a relationship between 'message' and 'pe... not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'message' and 'person' using the hint 'space' in the schema 'test', but no matches were found.\",\"hint\":null,\"message\":\"Cou..."
-  },
-  {
-    "name": "embed: can request a parent with fk",
     "why": "status 400 not 200"
   },
   {
@@ -632,31 +588,11 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "embed: can disambiguate with the fk in case of an o2m and m2m relationship to the same table",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can embed by column",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can embed by column and select the column at the same time, if aliased",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "embed: can embed parent by using view!column and grandparent by using the column",
     "why": "status 400 not 200"
   },
   {
-    "name": "embed: will embed using a column that has uppercase chars",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "embed: embeds by using two columns pointing to the same table",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: can disambiguate with the column in case of an o2m and m2m relationship to the same table",
     "why": "status 400 not 200"
   },
   {
@@ -684,16 +620,8 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "embed: embeds parents recursively",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "embed: embeds children recursively",
-    "why": "status 300 not 200"
-  },
-  {
-    "name": "embed: embeds parent and then embeds children",
-    "why": "status 400 not 200"
+    "why": "body [{\" children\":[{\"children\":[{\"id\":\"4\",\"name\":\"Grandkid One\"}],\"id\":\"2\",\"name\":\"Kid One\"},{\"children\":[{\"id\":\"5\",\"name\":\"Grandkid Two\"}],\"id\":\"3\",\"name\":\"Kid Two\"}],\"id\":\"1\",\"name\":\"Parental Unit\"}] not [{\"children\":[{\"children\":[{\"id\":\"4\",\"name\":\"Grandkid One\"}],\"id\":\"2\",\"name\":\"Kid One\"},{\"children\":[{\"id\":\"5\",\"name\":\"Grandkid Two\"}],\"id\":\"3\",\"name\":\"Kid Two\"}],\"id\":\"1\",\"name\":\"Parental Unit\"}]"
   },
   {
     "name": "embed: embeds parent and then embeds children on a view",
@@ -708,26 +636,6 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "embed: embeds parents",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: embeds children",
-    "why": "status 300 not 200"
-  },
-  {
-    "name": "embed: embeds children (2)",
-    "why": "status 300 not 200"
-  },
-  {
-    "name": "embed: embeds other relations(manager) besides the self reference",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: embeds other relations(manager) besides the self reference (2)",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "embed: works with no ambiguity when there's an exposed view of the junction",
     "why": "status 400 not 200"
   },
@@ -736,31 +644,7 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "embed: doesn't work if the junction is only internal",
-    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'end_1' and 'end_2' in the schema cache\",\"hint\":null,\"message\":\"Could not find a relationship between 'end_1' and 'end_2' ... not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'end_1' and 'end_2' in the schema 'test', but no matches were found.\",\"hint\":null,\"message\":\"Could not find a relationship..."
-  },
-  {
-    "name": "embed: shouldn't try to embed if the private junction has an exposed homonym",
-    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'schauspieler' and 'filme' in the schema cache\",\"hint\":null,\"message\":\"Could not find a relationship between 'schauspieler... not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'schauspieler' and 'filme' in the schema 'test', but no matches were found.\",\"hint\":null,\"message\":\"Could not find a relat..."
-  },
-  {
-    "name": "embed: works with self reference both ways(m2o and o2m)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: works with self reference both ways(m2o and o2m) (2)",
-    "why": "status 300 not 200"
-  },
-  {
     "name": "embed: has to be explicit for a view embedding (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: resolves when there's a table and view that point to the same col",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: resolves when there's a table and view that point to the same fk (composite pk)",
     "why": "status 400 not 200"
   },
   {
@@ -798,10 +682,6 @@
   {
     "name": "embed: works with rpc (2)",
     "why": "content-range \"0-1/*\" not \"0-1/2\""
-  },
-  {
-    "name": "embed: works when using hints (2)",
-    "why": "status 400 not 200"
   },
   {
     "name": "embed: works alongside another embedding",
@@ -866,10 +746,6 @@
   {
     "name": "insert: fails for too few",
     "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"All lines must have same number of fields\"}"
-  },
-  {
-    "name": "insert: embeds parent after insert",
-    "why": "status 400 not 201"
   },
   {
     "name": "insert: succeeds inserting if correct select is applied",
@@ -1065,18 +941,10 @@
   },
   {
     "name": "related: fails when is not a to-one relationship (3)",
-    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'designers' and 'computed_videogames' in the schema cache\",\"hint\":null,\"message\":\"Could not find a relationship between 'd... not {\"code\":\"PGRST118\",\"details\":\"'designers' and 'computed_videogames' do not form a many-to-one or one-to-one relationship\",\"hint\":null,\"message\":\"A related order on 'computed_videogames' is not possibl..."
+    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'designers' and 'computed_videogames' in the schema 'test', but no matches were found.\",\"hint\":null,\"message\":\"Could not f... not {\"code\":\"PGRST118\",\"details\":\"'designers' and 'computed_videogames' do not form a many-to-one or one-to-one relationship\",\"hint\":null,\"message\":\"A related order on 'computed_videogames' is not possibl..."
   },
   {
     "name": "related: works on a many-to-one relationship (6)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: doesn't interfere filtering when embedding using the column name",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "related: doesn't interfere filtering on column names used for disambiguation",
     "why": "status 400 not 200"
   },
   {
@@ -1181,11 +1049,11 @@
   },
   {
     "name": "rpc: cannot embed if the related table is not in the exposed schema",
-    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema cache\",\"hint\":null,\"message\":\"Could not find a relationship between 'articles... not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'articleStars' ..."
+    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema 'test', but no matches were found.\",\"hint\":null,\"message\":\"Could not find a r... not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'articleStars' ..."
   },
   {
     "name": "rpc: cannot embed if the related table is not in the exposed schema (2)",
-    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema cache\",\"hint\":null,\"message\":\"Could not find a relationship between 'articles... not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'articleStars' ..."
+    "why": "body {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema 'test', but no matches were found.\",\"hint\":null,\"message\":\"Could not find a r... not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'articles' and 'article_stars' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'articleStars' ..."
   },
   {
     "name": "rpc: can embed if the related tables are in a hidden schema but exposed as views",
@@ -1656,34 +1524,6 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "update: without filters",
-    "why": "status 300 not 200"
-  },
-  {
-    "name": "update: with filters",
-    "why": "status 300 not 200"
-  },
-  {
-    "name": "update: without filters (2)",
-    "why": "status 300 not 200"
-  },
-  {
-    "name": "update: with filters (2)",
-    "why": "status 300 not 200"
-  },
-  {
-    "name": "update: without filters (3)",
-    "why": "status 300 not 200"
-  },
-  {
-    "name": "update: with filters (3)",
-    "why": "status 300 not 200"
-  },
-  {
-    "name": "update: works with request method PATCH and embedded resource",
-    "why": "status 300 not 200"
-  },
-  {
     "name": "upsert: UPDATEs rows on pk conflict",
     "why": "status 201 not 200"
   },
@@ -1694,10 +1534,6 @@
   {
     "name": "upsert: succeeds and ignores the Prefer: resolution header(no Preference-Applied present) if the table has no PK",
     "why": "status 400 not 201"
-  },
-  {
-    "name": "upsert: works with request method PUT and embedded resource",
-    "why": "status 300 not 200"
   },
   {
     "name": "upsert: works with batch upserts and embedded resource",
