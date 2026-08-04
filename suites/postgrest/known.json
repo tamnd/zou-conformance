@@ -16,102 +16,6 @@
     "why": "content-type \"application/json\" not \"application/json; charset=utf-8\""
   },
   {
-    "name": "query: finds matches with to_tsquery (3)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can use lexeme boolean operators(&=%26, |=%7C, !) in to_tsquery (5)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can use lexeme boolean operators(&=%26, |=%7C, !) in to_tsquery (7)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can use lexeme boolean operators(&=%26, |=%7C, !) in to_tsquery (9)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: finds matches with plainto_tsquery (3)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: finds matches with websearch_to_tsquery (3)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can use boolean operators(and, or, -) in websearch_to_tsquery (5)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can use boolean operators(and, or, -) in websearch_to_tsquery (7)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can use boolean operators(and, or, -) in websearch_to_tsquery (9)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: finds matches with different dictionaries and uses them as configuration for to_tsvector() (2)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: finds matches with different dictionaries and uses them as configuration for to_tsvector() (3)",
-    "why": "content-range \"*/*\" not \"0-0/*\""
-  },
-  {
-    "name": "query: finds matches with different dictionaries and uses them as configuration for to_tsvector() (4)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: finds matches with different dictionaries and uses them as configuration for to_tsvector() (5)",
-    "why": "content-range \"*/*\" not \"0-0/*\""
-  },
-  {
-    "name": "query: finds matches with different dictionaries and uses them as configuration for to_tsvector() (6)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can be negated with not operator (7)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can be negated with not operator (9)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can be negated with not operator (11)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can be negated with not operator (13)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: finds matches (3)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: finds matches with different dictionaries and uses them as configuration for to_tsvector() (7)",
-    "why": "content-range \"*/*\" not \"0-0/*\""
-  },
-  {
-    "name": "query: finds matches with different dictionaries and uses them as configuration for to_tsvector() (8)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can be negated with not operator (15)",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "query: can be used with or query param (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: can be used with or query param (3)",
-    "why": "status 404 not 200"
-  },
-  {
     "name": "query: cannot access a computed column that is outside of the config schema",
     "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z0.always_false does not exist\"} not {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column items.always_false does not exist\"}"
   },
@@ -162,14 +66,6 @@
   {
     "name": "query: return http status 404",
     "why": "content-type \"application/json\" not \"application/json; charset=utf-8\""
-  },
-  {
-    "name": "andor: can handle fts on text and json columns",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "andor: can handle fts on text and json columns (2)",
-    "why": "status 400 not 200"
   },
   {
     "name": "andor: cannot have zero conditions",
