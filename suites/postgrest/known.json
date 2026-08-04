@@ -132,22 +132,6 @@
     "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z0.always_false does not exist\"} not {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column items.always_false does not exist\"}"
   },
   {
-    "name": "query: requesting parents and children",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: requesting parents and children while renaming them",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: requesting parents and filtering parent columns",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: requesting children with composite key",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "query: overloaded computed column on rpc",
     "why": "status 400 not 200"
   },
@@ -164,27 +148,7 @@
     "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z1.id does not exist\"} not {\"code\":\"PGRST200\",\"details\":\"Searched for a foreign key relationship between 'car_model_sales' and 'car_models_default' in the schema 'test', but no matches were found.\",\"hint\":\"Perhaps you meant 'ca..."
   },
   {
-    "name": "query: works when requesting parents and children on views",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: works when requesting parents and children on views with renamed keys",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: ordering embeded entities",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "query: ordering embeded entities with alias",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: ordering embeded entities, two levels",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: ordering embeded parents does not break things",
     "why": "status 400 not 200"
   },
   {
@@ -462,22 +426,6 @@
   {
     "name": "embed: errs with multiple references to the same composite key columns in a view",
     "why": "body {\"code\":\"PGRST201\",\"details\":\"i2459_composite_v1!i2459_composite_t2_t1_a_t1_b_fkey, i2459_composite_v1!i2459_composite_t2_t1_a_t1_b_fkey, i2459_composite_v1!i2459_composite_t2_t1_a_t1_b_fkey, i2459_co... not {\"code\":\"PGRST201\",\"details\":[{\"cardinality\":\"many-to-one\",\"embedding\":\"i2459_composite_v2 with i2459_composite_v1\",\"relationship\":\"i2459_composite_t2_t1_a_t1_b_fkey using i2459_composite_v2(t1_a1, t1..."
-  },
-  {
-    "name": "embed: embeds by using two fks pointing to the same table",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: embeds by using two columns pointing to the same table",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: embeds by using a column and a fk pointing to the same table",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "embed: embeds children recursively",
-    "why": "body [{\" children\":[{\"children\":[{\"id\":\"4\",\"name\":\"Grandkid One\"}],\"id\":\"2\",\"name\":\"Kid One\"},{\"children\":[{\"id\":\"5\",\"name\":\"Grandkid Two\"}],\"id\":\"3\",\"name\":\"Kid Two\"}],\"id\":\"1\",\"name\":\"Parental Unit\"}] not [{\"children\":[{\"children\":[{\"id\":\"4\",\"name\":\"Grandkid One\"}],\"id\":\"2\",\"name\":\"Kid One\"},{\"children\":[{\"id\":\"5\",\"name\":\"Grandkid Two\"}],\"id\":\"3\",\"name\":\"Kid Two\"}],\"id\":\"1\",\"name\":\"Parental Unit\"}]"
   },
   {
     "name": "embed: works with rpc (2)",
