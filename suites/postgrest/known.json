@@ -1,9 +1,5 @@
 [
   {
-    "name": "query: overloaded computed column on rpc",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "delete: succeeds deleting the row when return=representation and selecting only the privileged columns",
     "why": "status 403 not 200"
   },
@@ -18,9 +14,5 @@
   {
     "name": "insert: succeeds inserting if correct select is applied",
     "why": "status 403 not 201"
-  },
-  {
-    "name": "update: makes no updates and returns 200 with return=rep and with ?select= for overloaded computed columns",
-    "why": "status 400 not 200"
   }
 ]
