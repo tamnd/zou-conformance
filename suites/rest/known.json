@@ -2,9 +2,5 @@
   {
     "name": "an operator nobody has",
     "why": "the message is ours rather than upstream's parse error, tamnd/zou#125"
-  },
-  {
-    "name": "a row put in over the one that is there",
-    "why": "an upsert that updated answers 201, upstream answers 200, tamnd/zou#125"
   }
 ]

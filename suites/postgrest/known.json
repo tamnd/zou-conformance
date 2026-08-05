@@ -56,14 +56,6 @@
     "why": "status 200 not 400"
   },
   {
-    "name": "range: succeeds if offset is negative as a no-op",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "range: fails if limit is negative",
-    "why": "status 400 not 416"
-  },
-  {
     "name": "rpc: gives a parse filter error if GET style proc args are specified",
     "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 2\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"J\\\" expecting \\\"not\\\" or operator (eq, gt, ...)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (John)\\\" (line 1, column 1)\"}"
   },
@@ -94,21 +86,5 @@
   {
     "name": "update: makes no updates and returns 200 with return=rep and with ?select= for overloaded computed columns",
     "why": "status 400 not 200"
-  },
-  {
-    "name": "upsert: UPDATEs rows on pk conflict",
-    "why": "status 201 not 200"
-  },
-  {
-    "name": "upsert: succeeds when the payload has no elements",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "upsert: succeeds and ignores the Prefer: resolution header(no Preference-Applied present) if the table has no PK",
-    "why": "status 400 not 201"
-  },
-  {
-    "name": "upsert: works with batch upserts and embedded resource",
-    "why": "status 201 not 200"
   }
 ]
