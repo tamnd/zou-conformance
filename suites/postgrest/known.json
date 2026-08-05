@@ -8,18 +8,6 @@
     "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"is wants null, not_null, true, false, or unknown, not (ok) at offset 5\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"o\\\" expecting isVal: (null, not_null, true, false, unknown)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (is.ok)\\\" (line 1, column 4)\"}"
   },
   {
-    "name": "query: works when the column type is a tsvector domain",
-    "why": "content-type \"application/json\" not \"application/json; charset=utf-8\""
-  },
-  {
-    "name": "query: works when the column type is a recursive tsvector domain",
-    "why": "content-type \"application/json\" not \"application/json; charset=utf-8\""
-  },
-  {
-    "name": "query: cannot access a computed column that is outside of the config schema",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z0.always_false does not exist\"} not {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column items.always_false does not exist\"}"
-  },
-  {
     "name": "query: overloaded computed column on rpc",
     "why": "status 400 not 200"
   },
@@ -60,20 +48,8 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "query: fails in some reasonable way when selecting fields that don't exist",
-    "why": "body {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column z0.banana does not exist\"} not {\"code\":\"42703\",\"details\":null,\"hint\":null,\"message\":\"column datarep_todos.banana does not exist\"}"
-  },
-  {
-    "name": "query: return http status 404",
-    "why": "content-type \"application/json\" not \"application/json; charset=utf-8\""
-  },
-  {
     "name": "andor: cannot have zero conditions",
     "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"expected a field name at offset 1\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\")\\\" expecting field name (* or [a..z0..9_$]), negation operator (not) or logic operator (and, or)\",\"hint\":null,\"message\":\"\\\"failed to parse logic tree (())\\\"..."
-  },
-  {
-    "name": "delete: fails deleting the row when return=representation and selecting all the columns",
-    "why": "status 403 not 401"
   },
   {
     "name": "delete: succeeds deleting the row when return=representation and selecting only the privileged columns",
@@ -112,14 +88,6 @@
     "why": "status 403 not 201"
   },
   {
-    "name": "insert: fails inserting if more columns are selected",
-    "why": "status 403 not 401"
-  },
-  {
-    "name": "insert: fails inserting if select is not specified",
-    "why": "status 403 not 401"
-  },
-  {
     "name": "insert: returns a location header with pks from both tables",
     "why": "location absent not \"/with_multiple_pks?pk1=eq.1&pk2=eq.2\""
   },
@@ -154,10 +122,6 @@
   {
     "name": "range: fails if limit is negative",
     "why": "status 400 not 416"
-  },
-  {
-    "name": "rpc: cannot return composite type in hidden schema",
-    "why": "status 403 not 401"
   },
   {
     "name": "rpc: gives a parse filter error if GET style proc args are specified",
@@ -224,22 +188,6 @@
     "why": "body {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"cannot extract elements from a scalar\"} not {\"code\":\"22026\",\"details\":null,\"hint\":null,\"message\":\"bit string length 6 does not match type bit(5)\"}"
   },
   {
-    "name": "rpc: gets message and details from raise sqlstate PGRST",
-    "why": "status 400 not 332"
-  },
-  {
-    "name": "rpc: returns error for invalid JSON in the MESSAGE option of the RAISE statement",
-    "why": "status 400 not 500"
-  },
-  {
-    "name": "rpc: returns error for invalid JSON in the DETAIL option of the RAISE statement",
-    "why": "status 400 not 500"
-  },
-  {
-    "name": "rpc: returns error for missing DETAIL option in the RAISE statement",
-    "why": "status 400 not 500"
-  },
-  {
     "name": "spread: should return a single null element array, not an empty one, when the row exists but the value happens to be null (2)",
     "why": "status 400 not 200"
   },
@@ -262,17 +210,5 @@
   {
     "name": "upsert: works with batch upserts and embedded resource",
     "why": "status 201 not 200"
-  },
-  {
-    "name": "error: works with ApiRequest error",
-    "why": "content-type \"application/json\" not \"application/json; charset=utf-8\""
-  },
-  {
-    "name": "error: works with Jwt error",
-    "why": "status 403 not 401"
-  },
-  {
-    "name": "error: works with sqlstate PGRST custom error",
-    "why": "status 400 not 332"
   }
 ]
