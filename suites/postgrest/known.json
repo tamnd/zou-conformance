@@ -76,38 +76,6 @@
     "why": "status 404 not 200"
   },
   {
-    "name": "rpc: fails when setting headers with wrong json structure",
-    "why": "status 204 not 500"
-  },
-  {
-    "name": "rpc: fails when setting headers with wrong json structure (2)",
-    "why": "status 204 not 500"
-  },
-  {
-    "name": "rpc: fails when setting headers with wrong json structure (3)",
-    "why": "status 204 not 500"
-  },
-  {
-    "name": "rpc: fails when setting headers with wrong json structure (4)",
-    "why": "status 204 not 500"
-  },
-  {
-    "name": "rpc: can override the Location header on a trigger",
-    "why": "location absent not \"/stuff?id=eq.2&overriden=true\""
-  },
-  {
-    "name": "rpc: can override the status on RPC",
-    "why": "status 200 not 403"
-  },
-  {
-    "name": "rpc: can override the status through trigger",
-    "why": "status 204 not 205"
-  },
-  {
-    "name": "rpc: fails when setting invalid status guc",
-    "why": "status 200 not 500"
-  },
-  {
     "name": "rpc: modifies the param type from character to character varying",
     "why": "body [{\"char_\":\"a\",\"char_arr\":[\"a\",\"a\"]}] not [{\"char_\":\"abcdefg\",\"char_arr\":[\"abc\",\"abcdefg\"]}]"
   },
