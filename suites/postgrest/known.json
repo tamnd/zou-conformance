@@ -8,28 +8,16 @@
     "why": "status 403 not 200"
   },
   {
-    "name": "insert: disallows array elements that are not json objects",
-    "why": "body {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"argument of json_populate_recordset must be an array of objects\"} not {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"argument of json_to_recordset must be an array of objects\"}"
-  },
-  {
     "name": "insert: inserts json that has duplicate keys",
-    "why": "numbers written as 2,3 not 1,2,3"
+    "why": "the same rows, written as 2,3 not 1,2,3: the body reaches postgres with its duplicate key now, and the response drops it again, because zou builds a response with jsonb_agg where upstream builds it with json_agg"
   },
   {
     "name": "insert: inserts json that has duplicate keys (2)",
-    "why": "numbers written as 2,3 not 1,2,3"
+    "why": "the same rows, written as 2,3 not 1,2,3: the body reaches postgres with its duplicate key now, and the response drops it again, because zou builds a response with jsonb_agg where upstream builds it with json_agg"
   },
   {
     "name": "insert: succeeds inserting if correct select is applied",
     "why": "status 403 not 201"
-  },
-  {
-    "name": "rpc: ignores json keys not included in ?columns",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "rpc: only takes the first object in case of array of objects payload",
-    "why": "status 404 not 200"
   },
   {
     "name": "rpc: modifies the param type from character to character varying",
