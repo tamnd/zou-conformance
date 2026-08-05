@@ -1,35 +1,11 @@
 [
   {
-    "name": "query: fails if 'is' used and there's no null or trilean value",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"is wants null, not_null, true, false, or unknown, not (nil) at offset 6\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"i\\\" expecting isVal: (null, not_null, true, false, unknown)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (is.nil)\\\" (line 1, column 5)\"}"
-  },
-  {
-    "name": "query: fails if 'is' used and there's no null or trilean value (2)",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"is wants null, not_null, true, false, or unknown, not (ok) at offset 5\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"o\\\" expecting isVal: (null, not_null, true, false, unknown)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (is.ok)\\\" (line 1, column 4)\"}"
-  },
-  {
     "name": "query: overloaded computed column on rpc",
     "why": "status 400 not 200"
   },
   {
-    "name": "query: gives meaningful error message on bad syntax",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"unknown order modifier (nullslasttt) at offset 7\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected 't' expecting \\\",\\\" or end of input\",\"hint\":null,\"message\":\"\\\"failed to parse order (id.asc.nullslasttt)\\\" (line 1, column 17)\"}"
-  },
-  {
-    "name": "query: fails if an operator is not given",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"unknown operator (0) at offset 0\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"0\\\" expecting \\\"not\\\" or operator (eq, gt, ...)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (0)\\\" (line 1, column 1)\"}"
-  },
-  {
-    "name": "andor: cannot have zero conditions",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"expected a field name at offset 1\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\")\\\" expecting field name (* or [a..z0..9_$]), negation operator (not) or logic operator (and, or)\",\"hint\":null,\"message\":\"\\\"failed to parse logic tree (())\\\"..."
-  },
-  {
     "name": "delete: succeeds deleting the row when return=representation and selecting only the privileged columns",
     "why": "status 403 not 200"
-  },
-  {
-    "name": "insert: disallows blank ?columns",
-    "why": "body {\"code\":\"23502\",\"details\":null,\"hint\":null,\"message\":\"null value in column \\\"id\\\" of relation \\\"articles\\\" violates not-null constraint\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected end of input expecting field name (* or [a..z0..9_$])\",\"hint\":null,\"message\":\"\\\"failed to parse columns parameter ()\\\" (line 1, column 1)\"}"
   },
   {
     "name": "insert: disallows array elements that are not json objects",
@@ -46,18 +22,6 @@
   {
     "name": "insert: succeeds inserting if correct select is applied",
     "why": "status 403 not 201"
-  },
-  {
-    "name": "json: fails when there is a reserved special character in the key's name",
-    "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"expected a json path key at offset 6\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"(\\\" expecting \\\"-\\\", digit or any non reserved character different from: .,>()\",\"hint\":null,\"message\":\"\\\"failed to parse select parameter (data->(!@)\\\" (line..."
-  },
-  {
-    "name": "json: gives a meaningful error on bad syntax",
-    "why": "status 200 not 400"
-  },
-  {
-    "name": "rpc: gives a parse filter error if GET style proc args are specified",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"key must be a string at line 1 column 2\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"J\\\" expecting \\\"not\\\" or operator (eq, gt, ...)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (John)\\\" (line 1, column 1)\"}"
   },
   {
     "name": "rpc: ignores json keys not included in ?columns",
