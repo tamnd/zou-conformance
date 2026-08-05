@@ -12,40 +12,12 @@
     "why": "status 400 not 200"
   },
   {
-    "name": "query: ordering embeded entities with alias",
-    "why": "status 400 not 200"
-  },
-  {
     "name": "query: gives meaningful error message on bad syntax",
     "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"unknown order modifier (nullslasttt) at offset 7\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected 't' expecting \\\",\\\" or end of input\",\"hint\":null,\"message\":\"\\\"failed to parse order (id.asc.nullslasttt)\\\" (line 1, column 17)\"}"
   },
   {
     "name": "query: fails if an operator is not given",
     "why": "body {\"code\":\"PGRST100\",\"details\":null,\"hint\":null,\"message\":\"unknown operator (0) at offset 0\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected \\\"0\\\" expecting \\\"not\\\" or operator (eq, gt, ...)\",\"hint\":null,\"message\":\"\\\"failed to parse filter (0)\\\" (line 1, column 1)\"}"
-  },
-  {
-    "name": "query: works on nested relationships",
-    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"users_tasks\":[{\"tasks\":{\"id\":1,\"name\":\"Design w7\",\"project_id\":1}},{\"tasks\":{\"id\":2,\"name\":\"Code w7\",\"project_id\":1}},{\"tasks\":{\"id\":3,\"name\":\"Design w10\",\"project_id\"... not [{\"id\":1,\"name\":\"Angela Martin\"},{\"id\":2,\"name\":\"Michael Scott\"},{\"id\":3,\"name\":\"Dwight Schrute\"}]"
-  },
-  {
-    "name": "query: works on nested relationships (2)",
-    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"users_tasks\":[{\"tasks\":{\"id\":3,\"name\":\"Design w10\",\"project_id\":2}}]}] not [{\"id\":1,\"name\":\"Angela Martin\"}]"
-  },
-  {
-    "name": "query: works on nested relationships (3)",
-    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"tasks\":[{\"projects\":{\"client_id\":1,\"id\":1,\"name\":\"Windows 7\"}},{\"projects\":{\"client_id\":1,\"id\":1,\"name\":\"Windows 7\"}},{\"projects\":{\"client_id\":1,\"id\":2,\"name\":\"Windows... not [{\"id\":1,\"name\":\"Angela Martin\"},{\"id\":2,\"name\":\"Michael Scott\"},{\"id\":3,\"name\":\"Dwight Schrute\"}]"
-  },
-  {
-    "name": "query: works on nested relationships (4)",
-    "why": "body [{\"id\":1,\"name\":\"Angela Martin\",\"tasks\":[{\"name\":\"Design w10\",\"projects\":{\"client_id\":1,\"id\":2,\"name\":\"Windows 10\"}}]}] not [{\"id\":1,\"name\":\"Angela Martin\",\"tasks\":[{\"name\":\"Design w10\"}]}]"
-  },
-  {
-    "name": "query: gives all columns",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "query: gives all columns (2)",
-    "why": "status 400 not 200"
   },
   {
     "name": "andor: cannot have zero conditions",
@@ -186,10 +158,6 @@
   {
     "name": "rpc: modifies the param type from bit to bit varying (2)",
     "why": "body {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"cannot extract elements from a scalar\"} not {\"code\":\"22026\",\"details\":null,\"hint\":null,\"message\":\"bit string length 6 does not match type bit(5)\"}"
-  },
-  {
-    "name": "spread: should return a single null element array, not an empty one, when the row exists but the value happens to be null (2)",
-    "why": "status 400 not 200"
   },
   {
     "name": "update: makes no updates and returns 200 with return=rep and with ?select= for overloaded computed columns",
