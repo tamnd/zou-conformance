@@ -20,22 +20,6 @@
     "why": "status 403 not 201"
   },
   {
-    "name": "rpc: modifies the param type from character to character varying",
-    "why": "body [{\"char_\":\"a\",\"char_arr\":[\"a\",\"a\"]}] not [{\"char_\":\"abcdefg\",\"char_arr\":[\"abc\",\"abcdefg\"]}]"
-  },
-  {
-    "name": "rpc: modifies the param type from character to character varying (2)",
-    "why": "body {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"cannot extract elements from a scalar\"} not {\"code\":\"22001\",\"details\":null,\"hint\":null,\"message\":\"value too long for type character(5)\"}"
-  },
-  {
-    "name": "rpc: modifies the param type from bit to bit varying",
-    "why": "body [{\"bit_\":\"1\",\"bit_arr\":[\"1\",\"1\"]}] not [{\"bit_\":\"101010\",\"bit_arr\":[\"101\",\"101010\"]}]"
-  },
-  {
-    "name": "rpc: modifies the param type from bit to bit varying (2)",
-    "why": "body {\"code\":\"22023\",\"details\":null,\"hint\":null,\"message\":\"cannot extract elements from a scalar\"} not {\"code\":\"22026\",\"details\":null,\"hint\":null,\"message\":\"bit string length 6 does not match type bit(5)\"}"
-  },
-  {
     "name": "update: makes no updates and returns 200 with return=rep and with ?select= for overloaded computed columns",
     "why": "status 400 not 200"
   }
