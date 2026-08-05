@@ -88,10 +88,6 @@
     "why": "location \"/rest/v1/car_models?name=eq.Enzo&year=eq.2021\" not \"/car_models?name=eq.Enzo&year=eq.2021\""
   },
   {
-    "name": "insert: accepts disparate json types (2)",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"} not {\"code\":\"23502\",\"details\":\"Failing row contains (null, null, null, null, null, null, null).\",\"hint\":null,\"message\":\"null value in column \\\"integer\\\" of relation \\\"menagerie\\\" violates not-null constra..."
-  },
-  {
     "name": "insert: succeeds with 201 and location header (2)",
     "why": "location \"/rest/v1/auto_incrementing_pk?id=eq.2\" not \"/auto_incrementing_pk?id=eq.2\""
   },
@@ -110,26 +106,6 @@
   {
     "name": "insert: inserts json that has duplicate keys (2)",
     "why": "numbers written as 2,3 not 1,2,3"
-  },
-  {
-    "name": "insert: succeeds with multipart response",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"parse error (not enough input) at \\\"\\\"\"}"
-  },
-  {
-    "name": "insert: returns full details of inserted record",
-    "why": "status 400 not 201"
-  },
-  {
-    "name": "insert: can post nulls (2)",
-    "why": "status 400 not 201"
-  },
-  {
-    "name": "insert: only returns the requested column header with its associated data",
-    "why": "status 400 not 201"
-  },
-  {
-    "name": "insert: fails for too few",
-    "why": "body {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"Empty or invalid json\"} not {\"code\":\"PGRST102\",\"details\":null,\"hint\":null,\"message\":\"All lines must have same number of fields\"}"
   },
   {
     "name": "insert: succeeds inserting if correct select is applied",
@@ -180,48 +156,8 @@
     "why": "status 400 not 416"
   },
   {
-    "name": "rpc: returns CSV",
-    "why": "content-type \"application/json; charset=utf-8\" not \"text/csv; charset=utf-8\""
-  },
-  {
-    "name": "rpc: returns CSV (2)",
-    "why": "content-type \"application/json; charset=utf-8\" not \"text/csv; charset=utf-8\""
-  },
-  {
-    "name": "rpc: returns CSV (3)",
-    "why": "content-type \"application/json; charset=utf-8\" not \"text/csv; charset=utf-8\""
-  },
-  {
     "name": "rpc: cannot return composite type in hidden schema",
     "why": "status 403 not 401"
-  },
-  {
-    "name": "rpc: accepts a variety of arguments from an html form",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: rejects unknown content type even if payload is good",
-    "why": "status 200 not 406"
-  },
-  {
-    "name": "rpc: rejects unknown content type even if payload is good (2)",
-    "why": "status 200 not 406"
-  },
-  {
-    "name": "rpc: n=1 (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: n>1 (2)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: overloaded_html_form(int, int)",
-    "why": "status 400 not 200"
-  },
-  {
-    "name": "rpc: overloaded_html_form(text, text, text)",
-    "why": "status 400 not 200"
   },
   {
     "name": "rpc: gives a parse filter error if GET style proc args are specified",
@@ -270,26 +206,6 @@
   {
     "name": "rpc: fails when setting invalid status guc",
     "why": "status 200 not 500"
-  },
-  {
-    "name": "rpc: can insert text directly",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "rpc: can insert xml directly",
-    "why": "status 404 not 200"
-  },
-  {
-    "name": "rpc: should be able to fallback to the single unnamed parameter function when other overloaded functions are not found (2)",
-    "why": "content-type \"application/json; charset=utf-8\" not \"text/plain; charset=utf-8\""
-  },
-  {
-    "name": "rpc: should fail to fallback to any single unnamed parameter function when using an unsupported Content-Type header",
-    "why": "status 400 not 404"
-  },
-  {
-    "name": "rpc: should fail on /rpc/unnamed_xml_param when posting invalid xml",
-    "why": "status 404 not 200"
   },
   {
     "name": "rpc: modifies the param type from character to character varying",
@@ -358,17 +274,5 @@
   {
     "name": "error: works with sqlstate PGRST custom error",
     "why": "status 400 not 332"
-  },
-  {
-    "name": "plan: doesn't work if db-plan-enabled=false(the default)",
-    "why": "body {\"code\":\"PGRST107\",\"details\":null,\"hint\":null,\"message\":\"None of these media types are available: application/vnd.pgrst.plan\"} not {\"code\":\"PGRST107\",\"details\":null,\"hint\":null,\"message\":\"None of these media types are available: application/vnd.pgrst.plan+text; for=\\\"application/json\\\"\"}"
-  },
-  {
-    "name": "plan: doesn't work if db-plan-enabled=false(the default) (2)",
-    "why": "status 200 not 406"
-  },
-  {
-    "name": "plan: doesn't work if db-plan-enabled=false(the default) (3)",
-    "why": "body {\"code\":\"PGRST107\",\"details\":null,\"hint\":null,\"message\":\"None of these media types are available: application/vnd.pgrst.plan\"} not {\"code\":\"PGRST107\",\"details\":null,\"hint\":null,\"message\":\"None of these media types are available: application/vnd.pgrst.plan+text; for=\\\"application/json\\\"\"}"
   }
 ]
