@@ -28,18 +28,6 @@
     "why": "status 403 not 200"
   },
   {
-    "name": "insert: should not throw and return location header when selecting without PK (2)",
-    "why": "location \"/rest/v1/projects?id=eq.11\" not \"/projects?id=eq.11\""
-  },
-  {
-    "name": "insert: should not throw and return location header for partitioned tables when selecting without PK",
-    "why": "location \"/rest/v1/car_models?name=eq.Enzo&year=eq.2021\" not \"/car_models?name=eq.Enzo&year=eq.2021\""
-  },
-  {
-    "name": "insert: succeeds with 201 and location header (2)",
-    "why": "location \"/rest/v1/auto_incrementing_pk?id=eq.2\" not \"/auto_incrementing_pk?id=eq.2\""
-  },
-  {
     "name": "insert: disallows blank ?columns",
     "why": "body {\"code\":\"23502\",\"details\":null,\"hint\":null,\"message\":\"null value in column \\\"id\\\" of relation \\\"articles\\\" violates not-null constraint\"} not {\"code\":\"PGRST100\",\"details\":\"unexpected end of input expecting field name (* or [a..z0..9_$])\",\"hint\":null,\"message\":\"\\\"failed to parse columns parameter ()\\\" (line 1, column 1)\"}"
   },
@@ -58,26 +46,6 @@
   {
     "name": "insert: succeeds inserting if correct select is applied",
     "why": "status 403 not 201"
-  },
-  {
-    "name": "insert: returns a location header with pks from both tables",
-    "why": "location absent not \"/with_multiple_pks?pk1=eq.1&pk2=eq.2\""
-  },
-  {
-    "name": "insert: returns a location header with a composite PK col",
-    "why": "location absent not \"/compound_pk_view?k1=eq.1&k2=eq.test\""
-  },
-  {
-    "name": "insert: should not throw and return location header when a PK is null",
-    "why": "location absent not \"/test_null_pk_competitors_sponsors?id=eq.1&sponsor_id=is.null\""
-  },
-  {
-    "name": "insert: parses values in POST body",
-    "why": "location \"/rest/v1/datarep_todos?id=eq.5\" not \"/datarep_todos?id=eq.5\""
-  },
-  {
-    "name": "insert: parses values in POST body (2)",
-    "why": "location absent not \"/datarep_todos_computed?id=eq.5\""
   },
   {
     "name": "json: fails when there is a reserved special character in the key's name",
@@ -106,10 +74,6 @@
   {
     "name": "rpc: only takes the first object in case of array of objects payload",
     "why": "status 404 not 200"
-  },
-  {
-    "name": "rpc: gets the http path",
-    "why": "body \"/rest/v1/rpc/get_guc_value\" not \"/rpc/get_guc_value\""
   },
   {
     "name": "rpc: fails when setting headers with wrong json structure",
