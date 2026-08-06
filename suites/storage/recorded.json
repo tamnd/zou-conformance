@@ -1,0 +1,344 @@
+{
+  "suite": "storage",
+  "recorded_from": "supabase start",
+  "answers": [
+    {
+      "name": "every bucket, to a key that can see them all",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "allowed_mime_types": null,
+          "created_at": "2024-01-02T03:04:05.000Z",
+          "file_size_limit": null,
+          "id": "photos",
+          "name": "photos",
+          "owner": "",
+          "public": false,
+          "type": "STANDARD",
+          "updated_at": "2024-01-02T03:04:05.000Z"
+        },
+        {
+          "allowed_mime_types": null,
+          "created_at": "2024-02-03T04:05:06.000Z",
+          "file_size_limit": null,
+          "id": "notes",
+          "name": "notes",
+          "owner": "",
+          "public": true,
+          "type": "STANDARD",
+          "updated_at": "2024-02-03T04:05:06.000Z"
+        }
+      ],
+      "raw": "[{\"id\":\"photos\",\"name\":\"photos\",\"owner\":\"\",\"public\":false,\"type\":\"STANDARD\",\"file_size_limit\":null,\"allowed_mime_types\":null,\"created_at\":\"2024-01-02T03:04:05.000Z\",\"updated_at\":\"2024-01-02T03:04:05.000Z\"},{\"id\":\"notes\",\"name\":\"notes\",\"owner\":\"\",\"public\":true,\"type\":\"STANDARD\",\"file_size_limit\":null,\"allowed_mime_types\":null,\"created_at\":\"2024-02-03T04:05:06.000Z\",\"updated_at\":\"2024-02-03T04:05:06.000Z\"}]"
+    },
+    {
+      "name": "one bucket by its id",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "2024-01-02T03:04:05.000Z",
+        "file_size_limit": null,
+        "id": "photos",
+        "name": "photos",
+        "owner": "",
+        "public": false,
+        "updated_at": "2024-01-02T03:04:05.000Z"
+      },
+      "raw": "{\"id\":\"photos\",\"name\":\"photos\",\"owner\":\"\",\"public\":false,\"file_size_limit\":null,\"allowed_mime_types\":null,\"created_at\":\"2024-01-02T03:04:05.000Z\",\"updated_at\":\"2024-01-02T03:04:05.000Z\"}"
+    },
+    {
+      "name": "the public one, so the flag is read rather than assumed",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "2024-02-03T04:05:06.000Z",
+        "file_size_limit": null,
+        "id": "notes",
+        "name": "notes",
+        "owner": "",
+        "public": true,
+        "updated_at": "2024-02-03T04:05:06.000Z"
+      },
+      "raw": "{\"id\":\"notes\",\"name\":\"notes\",\"owner\":\"\",\"public\":true,\"file_size_limit\":null,\"allowed_mime_types\":null,\"created_at\":\"2024-02-03T04:05:06.000Z\",\"updated_at\":\"2024-02-03T04:05:06.000Z\"}"
+    },
+    {
+      "name": "a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    },
+    {
+      "name": "the bucket list an anon key sees",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": []
+    },
+    {
+      "name": "a bucket an anon key asks for by id",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    },
+    {
+      "name": "the bucket list with no key at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "a bearer that is not a token",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "making a bucket",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "name": "papers"
+      }
+    },
+    {
+      "name": "making a public bucket with a size limit and a mime list",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "name": "avatars"
+      }
+    },
+    {
+      "name": "making a bucket that is already there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "BucketAlreadyExists",
+        "error": "Duplicate",
+        "message": "The resource already exists",
+        "statusCode": "409"
+      },
+      "raw": "{\"statusCode\":\"409\",\"error\":\"Duplicate\",\"message\":\"The resource already exists\",\"code\":\"BucketAlreadyExists\"}"
+    },
+    {
+      "name": "making a bucket with no id",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "name": "nameless"
+      }
+    },
+    {
+      "name": "making a bucket out of something that is not json",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "FastifyError",
+        "message": "Body is not valid JSON but content-type is set to 'application/json'",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"FastifyError\",\"message\":\"Body is not valid JSON but content-type is set to 'application/json'\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "making a bucket with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "new row violates row-level security policy",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"new row violates row-level security policy\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "turning a private bucket public",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "putting a size limit on a bucket",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "updating a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    },
+    {
+      "name": "updating a bucket with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    },
+    {
+      "name": "emptying a bucket that has something in it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Empty bucket has been queued. Completion may take up to an hour."
+      }
+    },
+    {
+      "name": "emptying a bucket that is already empty",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Empty bucket has been queued. Completion may take up to an hour."
+      }
+    },
+    {
+      "name": "emptying a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    },
+    {
+      "name": "deleting a bucket with nothing in it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully deleted"
+      }
+    },
+    {
+      "name": "deleting a bucket that still has something in it",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "ResourceNotEmpty",
+        "error": "ResourceNotEmpty",
+        "message": "The bucket you tried to delete is not empty",
+        "statusCode": "409"
+      },
+      "raw": "{\"statusCode\":\"409\",\"error\":\"ResourceNotEmpty\",\"message\":\"The bucket you tried to delete is not empty\",\"code\":\"ResourceNotEmpty\"}"
+    },
+    {
+      "name": "deleting a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    },
+    {
+      "name": "deleting a bucket with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    }
+  ]
+}
