@@ -72,13 +72,15 @@ A known case that starts passing also fails the run. The list is meant to shrink
 
 ## Where zou stands
 
-The `rest` suite is 82 cases and zou passes 71 of them, 86%, with 11 known differences.
+The numbers move, so the file that has them is [docs/scoreboard.md](https://github.com/tamnd/zou/blob/main/docs/scoreboard.md), which CI regenerates on every merge out of what the run measured. Where it stood when this paragraph was written:
 
-The `auth` suite is 77 cases and zou passes 71 of them, 92%, with 6 known differences.
+| suite | cases | zou passes | known |
+| --- | ---: | ---: | ---: |
+| rest | 82 | 82, 100% | 0 |
+| postgrest | 1217 | 1215, 99% | 2 |
+| auth | 77 | 71, 92% | 6 |
 
 The supabase-js suite runs 16 of its 34 tests and zou passes all 16. The other 18 are Realtime and Storage, which zou does not serve yet.
-
-The `postgrest` suite is 1233 cases and zou passes 589 of them, 47%, with 644 known differences. That number is meant to be uncomfortable. It asks everything upstream asks itself, including the parts of PostgREST nobody using Supabase has ever typed, and the gap is a small number of missing features rather than 644 separate bugs. It is broken down in [tamnd/zou#118](https://github.com/tamnd/zou/issues/118).
 
 ## Provenance
 
