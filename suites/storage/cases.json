@@ -2,12 +2,15 @@
   "suite": "storage",
   "note": [
     "The paths are the ones a Supabase project answers on. The reference here is not a binary anybody can download: storage-api ships as an image, so the recording is taken from the one supabase start brings up, at the version in versions.json.",
-    "Buckets only. The object surface needs a case to be able to carry bytes and a target to have somewhere to put them, and neither is true yet.",
+    "Buckets and the byte path of the object surface. List, move, copy, signed urls, resumable uploads and the S3 protocol are not asked yet.",
     "The fixture pins what it wrote, so a reading case is compared byte for byte. A case that makes a bucket cannot pin what the server is about to write, so those name their timestamps in volatile and the rest of the answer is still compared whole.",
     "Every case that changes a row says so, and the rows go back before it runs. The reading cases are written before the writing ones inside each feature for the same reason: a read after a write would be asked about whatever the write left.",
-    "A case with no key at all is asking the gateway rather than the storage server, which matters because zou is both and the reference is neither: the image runs behind kong in a local project, and kong is what answers a request with no apikey."
+    "A case with no key at all is asking the gateway rather than the storage server, which matters because zou is both and the reference is neither: the image runs behind kong in a local project, and kong is what answers a request with no apikey.",
+    "The object cases upload something and then read it, which the fixture cannot do for them: a fixture writes rows and an object is bytes in a store no sql statement can reach. So the reads after an upload are asked against what that upload left, and the writes that follow it say chained, which is the flag that keeps the rows from going back underneath them."
   ],
-  "schemas": ["public"],
+  "schemas": [
+    "public"
+  ],
   "cases": [
     {
       "name": "every bucket, to a key that can see them all",
@@ -58,7 +61,9 @@
       "feature": "bucket.list",
       "path": "/storage/v1/bucket",
       "key": "anon",
-      "headers": { "authorization": "Bearer not-a-token" }
+      "headers": {
+        "authorization": "Bearer not-a-token"
+      }
     },
     {
       "name": "making a bucket",
@@ -66,7 +71,9 @@
       "method": "POST",
       "path": "/storage/v1/bucket",
       "key": "service",
-      "headers": { "content-type": "application/json" },
+      "headers": {
+        "content-type": "application/json"
+      },
       "body": "{\"id\":\"papers\",\"name\":\"papers\"}",
       "writes": true
     },
@@ -76,7 +83,9 @@
       "method": "POST",
       "path": "/storage/v1/bucket",
       "key": "service",
-      "headers": { "content-type": "application/json" },
+      "headers": {
+        "content-type": "application/json"
+      },
       "body": "{\"id\":\"avatars\",\"name\":\"avatars\",\"public\":true,\"file_size_limit\":1048576,\"allowed_mime_types\":[\"image/png\",\"image/jpeg\"]}",
       "writes": true
     },
@@ -86,7 +95,9 @@
       "method": "POST",
       "path": "/storage/v1/bucket",
       "key": "service",
-      "headers": { "content-type": "application/json" },
+      "headers": {
+        "content-type": "application/json"
+      },
       "body": "{\"id\":\"photos\",\"name\":\"photos\"}",
       "writes": true
     },
@@ -96,7 +107,9 @@
       "method": "POST",
       "path": "/storage/v1/bucket",
       "key": "service",
-      "headers": { "content-type": "application/json" },
+      "headers": {
+        "content-type": "application/json"
+      },
       "body": "{\"name\":\"nameless\"}",
       "writes": true
     },
@@ -106,7 +119,9 @@
       "method": "POST",
       "path": "/storage/v1/bucket",
       "key": "service",
-      "headers": { "content-type": "application/json" },
+      "headers": {
+        "content-type": "application/json"
+      },
       "body": "{",
       "writes": true
     },
@@ -116,7 +131,9 @@
       "method": "POST",
       "path": "/storage/v1/bucket",
       "key": "anon",
-      "headers": { "content-type": "application/json" },
+      "headers": {
+        "content-type": "application/json"
+      },
       "body": "{\"id\":\"uninvited\",\"name\":\"uninvited\"}",
       "writes": true
     },
@@ -126,7 +143,9 @@
       "method": "PUT",
       "path": "/storage/v1/bucket/photos",
       "key": "service",
-      "headers": { "content-type": "application/json" },
+      "headers": {
+        "content-type": "application/json"
+      },
       "body": "{\"public\":true}",
       "writes": true
     },
@@ -136,7 +155,9 @@
       "method": "PUT",
       "path": "/storage/v1/bucket/notes",
       "key": "service",
-      "headers": { "content-type": "application/json" },
+      "headers": {
+        "content-type": "application/json"
+      },
       "body": "{\"public\":false,\"file_size_limit\":2048,\"allowed_mime_types\":[\"text/plain\"]}",
       "writes": true
     },
@@ -146,7 +167,9 @@
       "method": "PUT",
       "path": "/storage/v1/bucket/nowhere",
       "key": "service",
-      "headers": { "content-type": "application/json" },
+      "headers": {
+        "content-type": "application/json"
+      },
       "body": "{\"public\":true}",
       "writes": true
     },
@@ -156,7 +179,9 @@
       "method": "PUT",
       "path": "/storage/v1/bucket/photos",
       "key": "anon",
-      "headers": { "content-type": "application/json" },
+      "headers": {
+        "content-type": "application/json"
+      },
       "body": "{\"public\":true}",
       "writes": true
     },
@@ -215,6 +240,306 @@
       "method": "DELETE",
       "path": "/storage/v1/bucket/notes",
       "key": "anon",
+      "writes": true
+    },
+    {
+      "name": "a small text file into a bucket",
+      "feature": "object.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/hello.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "hello world",
+      "note": "the whole chain below hangs off this one, which is why it is first and why the ones under it say chained",
+      "writes": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "the file that was just uploaded",
+      "feature": "object.download",
+      "path": "/storage/v1/object/notes/hello.txt",
+      "key": "service"
+    },
+    {
+      "name": "the same file over the route that names the audience",
+      "feature": "object.download",
+      "path": "/storage/v1/object/authenticated/notes/hello.txt",
+      "key": "service"
+    },
+    {
+      "name": "the same file from a public bucket with no key at all",
+      "feature": "object.download",
+      "path": "/storage/v1/object/public/notes/hello.txt",
+      "key": "none"
+    },
+    {
+      "name": "the first four bytes of it",
+      "feature": "object.download",
+      "path": "/storage/v1/object/public/notes/hello.txt",
+      "key": "none",
+      "headers": {
+        "range": "bytes=0-3"
+      },
+      "note": "a range request is the one download detail a client library depends on and nobody reads the spec for"
+    },
+    {
+      "name": "the head of it",
+      "feature": "object.download",
+      "method": "HEAD",
+      "path": "/storage/v1/object/notes/hello.txt",
+      "key": "service"
+    },
+    {
+      "name": "what is known about it",
+      "feature": "object.info",
+      "path": "/storage/v1/object/info/notes/hello.txt",
+      "key": "service",
+      "volatile": [
+        "/Id",
+        "/Key",
+        "/id",
+        "/key",
+        "/name",
+        "/created_at",
+        "/updated_at",
+        "/last_accessed_at",
+        "/metadata/eTag",
+        "/metadata/lastModified"
+      ]
+    },
+    {
+      "name": "the same, over the public route",
+      "feature": "object.info",
+      "path": "/storage/v1/object/info/public/notes/hello.txt",
+      "key": "none",
+      "volatile": [
+        "/Id",
+        "/Key",
+        "/id",
+        "/key",
+        "/name",
+        "/created_at",
+        "/updated_at",
+        "/last_accessed_at",
+        "/metadata/eTag",
+        "/metadata/lastModified"
+      ]
+    },
+    {
+      "name": "an object that is not there",
+      "feature": "object.download",
+      "path": "/storage/v1/object/notes/missing.txt",
+      "key": "service"
+    },
+    {
+      "name": "a private bucket over the public route",
+      "feature": "object.download",
+      "path": "/storage/v1/object/public/photos/nothing.txt",
+      "key": "none",
+      "note": "photos is not public, so this is refused before anything is looked for"
+    },
+    {
+      "name": "a private bucket with an anon key",
+      "feature": "object.download",
+      "path": "/storage/v1/object/photos/holiday/beach.txt",
+      "key": "anon",
+      "note": "no policy on storage.objects in a project that has changed nothing, so the row is not visible and the bytes are never reached"
+    },
+    {
+      "name": "a download with no key at all",
+      "feature": "object.download",
+      "path": "/storage/v1/object/notes/hello.txt",
+      "key": "none"
+    },
+    {
+      "name": "the same path uploaded again",
+      "feature": "object.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/hello.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "hello again",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "the same path uploaded again, asking to replace it",
+      "feature": "object.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/hello.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain",
+        "x-upsert": "true"
+      },
+      "body": "hello again",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "the replacement, read back",
+      "feature": "object.download",
+      "path": "/storage/v1/object/notes/hello.txt",
+      "key": "service"
+    },
+    {
+      "name": "a put over the same path",
+      "feature": "object.upload",
+      "method": "PUT",
+      "path": "/storage/v1/object/notes/hello.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "hello a third time",
+      "note": "put is the update, so it wants the object to be there rather than not to be",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "a multipart form, the way a browser sends one",
+      "feature": "object.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/form.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "multipart/form-data; boundary=zouconformanceboundary"
+      },
+      "body": "--zouconformanceboundary\r\nContent-Disposition: form-data; name=\"cacheControl\"\r\n\r\n3600\r\n--zouconformanceboundary\r\nContent-Disposition: form-data; name=\"\"; filename=\"form.txt\"\r\nContent-Type: text/plain\r\n\r\nsent as a form\r\n--zouconformanceboundary--\r\n",
+      "writes": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "what the form upload left",
+      "feature": "object.download",
+      "path": "/storage/v1/object/notes/form.txt",
+      "key": "service"
+    },
+    {
+      "name": "a file into a bucket that is not there",
+      "feature": "object.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/nowhere/hello.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "hello world",
+      "writes": true
+    },
+    {
+      "name": "a file uploaded with an anon key",
+      "feature": "object.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/anon.txt",
+      "key": "anon",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "hello world",
+      "writes": true
+    },
+    {
+      "name": "a file uploaded with no key at all",
+      "feature": "object.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/none.txt",
+      "key": "none",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "hello world",
+      "writes": true
+    },
+    {
+      "name": "a put where nothing is there yet",
+      "feature": "object.upload",
+      "method": "PUT",
+      "path": "/storage/v1/object/notes/never.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "hello world",
+      "writes": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "removing the object the fixture wrote",
+      "feature": "object.remove",
+      "method": "DELETE",
+      "path": "/storage/v1/object/photos/holiday/beach.txt",
+      "key": "service",
+      "note": "the row is in the fixture and the bytes are in no store, which is exactly the shape of an object whose upload half failed",
+      "writes": true
+    },
+    {
+      "name": "removing one that is not there",
+      "feature": "object.remove",
+      "method": "DELETE",
+      "path": "/storage/v1/object/photos/nothing.txt",
+      "key": "service",
+      "writes": true
+    },
+    {
+      "name": "removing several by name",
+      "feature": "object.remove",
+      "method": "DELETE",
+      "path": "/storage/v1/object/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefixes\":[\"holiday/beach.txt\",\"nothing.txt\"]}",
+      "writes": true,
+      "volatile": [
+        "/0/id",
+        "/0/created_at",
+        "/0/updated_at",
+        "/0/last_accessed_at",
+        "/0/version",
+        "/0/owner",
+        "/0/owner_id",
+        "/0/bucket_id",
+        "/0/metadata",
+        "/0/user_metadata",
+        "/0/level",
+        "/0/path_tokens"
+      ]
+    },
+    {
+      "name": "removing with an anon key",
+      "feature": "object.remove",
+      "method": "DELETE",
+      "path": "/storage/v1/object/photos/holiday/beach.txt",
+      "key": "anon",
+      "writes": true
+    },
+    {
+      "name": "removing from a bucket that is not there",
+      "feature": "object.remove",
+      "method": "DELETE",
+      "path": "/storage/v1/object/nowhere/holiday/beach.txt",
+      "key": "service",
       "writes": true
     }
   ]
