@@ -1,1 +1,6 @@
 js/node_modules/
+demo/node_modules/
+demo/app/node_modules/
+demo/app/dist/
+demo/test-results/
+demo/playwright-report/

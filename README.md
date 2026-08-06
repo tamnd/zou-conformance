@@ -14,6 +14,7 @@ suites/rest/           82 questions about the surface a supabase project uses
 suites/postgrest/      1233 questions, derived from PostgREST's own spec files
 suites/auth/           77 questions about the endpoints a sign in flow uses
 js/                    supabase-js's own integration tests, run against zou
+demo/                  one of Supabase's example apps, unedited, in a browser
 ```
 
 A suite is a directory:
@@ -27,6 +28,8 @@ known.json      the cases zou answers differently, and why
 ```
 
 `js/` is not a suite in that shape and is described in [js/README.md](js/README.md). It is upstream's own test file, run against zou with the url and the keys made pluggable, and it is the one place here where the assertions are somebody else's rather than a recording, because upstream wrote them about upstream's own client.
+
+`demo/` is not a suite either, and is described in [demo/README.md](demo/README.md). It is one of Supabase's example apps with nothing changed in it, driven through a real browser: sign up, sign in, a row level security policy holding between two accounts, and a Github login. A suite passing says every answer matched a recording. An app working says the answers were enough to build something on, and the second does not follow from the first.
 
 The `rest` suite is hand written, about the endpoints and the headers a Supabase project actually uses. The `postgrest` suite is not written at all: `zou-conformance derive` reads a PostgREST checkout at the pinned version, walks the spec files its default test application runs, and turns every request it finds into a case. Only the request comes across. The `shouldRespondWith` next to it is read past on purpose, because an assertion copied from upstream only proves that somebody copied it.
 
