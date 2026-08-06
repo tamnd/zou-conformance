@@ -1214,6 +1214,360 @@
         "statusCode": "403"
       },
       "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "an object to move, uploaded first because a move needs bytes",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/movable.txt"
+      }
+    },
+    {
+      "name": "moving it to another name in the same bucket",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully moved"
+      }
+    },
+    {
+      "name": "reading it where it was moved to",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "move me"
+    },
+    {
+      "name": "reading it where it used to be",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "moving it on to a bucket of its own",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully moved"
+      }
+    },
+    {
+      "name": "moving it on to a name something else already has",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "ResourceAlreadyExists",
+        "error": "Duplicate",
+        "message": "The resource already exists",
+        "statusCode": "409"
+      },
+      "raw": "{\"statusCode\":\"409\",\"error\":\"Duplicate\",\"message\":\"The resource already exists\",\"code\":\"ResourceAlreadyExists\"}"
+    },
+    {
+      "name": "moving something that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "moving out of a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a move with a body that names no destination",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body must have required property 'destinationKey'",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body must have required property 'destinationKey'\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "a move with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a move with no key at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "an object to copy, uploaded first for the same reason",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/copyable.txt"
+      }
+    },
+    {
+      "name": "copying it to another name in the same bucket",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/copies/copyable.txt",
+        "bucket_id": "notes",
+        "created_at": "<timestamp>",
+        "id": "<uuid>",
+        "last_accessed_at": "<timestamp>",
+        "metadata": {
+          "cacheControl": "no-cache",
+          "contentLength": 7,
+          "eTag": "\"56fe0b1409a5662d70cfedc4555d4771\"",
+          "httpStatusCode": 200,
+          "lastModified": "<timestamp>",
+          "mimetype": "text/plain",
+          "size": 7
+        },
+        "name": "copies/copyable.txt",
+        "owner": "",
+        "owner_id": "",
+        "updated_at": "<timestamp>",
+        "user_metadata": {},
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "reading the copy",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "copy me"
+    },
+    {
+      "name": "reading the one it was copied from",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "copy me"
+    },
+    {
+      "name": "copying it over the copy",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "KeyAlreadyExists",
+        "error": "Duplicate",
+        "message": "The resource already exists",
+        "statusCode": "409"
+      },
+      "raw": "{\"statusCode\":\"409\",\"error\":\"Duplicate\",\"message\":\"The resource already exists\",\"code\":\"KeyAlreadyExists\"}"
+    },
+    {
+      "name": "copying it over the copy, asking to replace it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/copies/copyable.txt",
+        "bucket_id": "notes",
+        "created_at": "<timestamp>",
+        "id": "<uuid>",
+        "last_accessed_at": "<timestamp>",
+        "metadata": {
+          "cacheControl": "no-cache",
+          "contentLength": 7,
+          "eTag": "\"56fe0b1409a5662d70cfedc4555d4771\"",
+          "httpStatusCode": 200,
+          "lastModified": "<timestamp>",
+          "mimetype": "text/plain",
+          "size": 7
+        },
+        "name": "copies/copyable.txt",
+        "owner": "",
+        "owner_id": "",
+        "updated_at": "<timestamp>",
+        "user_metadata": {},
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "copying it into another bucket",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "photos/copies/copyable.txt",
+        "bucket_id": "photos",
+        "created_at": "<timestamp>",
+        "id": "<uuid>",
+        "last_accessed_at": "<timestamp>",
+        "metadata": {
+          "cacheControl": "no-cache",
+          "contentLength": 7,
+          "eTag": "\"56fe0b1409a5662d70cfedc4555d4771\"",
+          "httpStatusCode": 200,
+          "lastModified": "<timestamp>",
+          "mimetype": "text/plain",
+          "size": 7
+        },
+        "name": "copies/copyable.txt",
+        "owner": "",
+        "owner_id": "",
+        "updated_at": "<timestamp>",
+        "user_metadata": {},
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "copying it with metadata of its own",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/copies/described.txt",
+        "bucket_id": "notes",
+        "created_at": "<timestamp>",
+        "id": "<uuid>",
+        "last_accessed_at": "<timestamp>",
+        "metadata": {
+          "cacheControl": "max-age=60",
+          "contentLength": 7,
+          "eTag": "\"56fe0b1409a5662d70cfedc4555d4771\"",
+          "httpStatusCode": 200,
+          "lastModified": "<timestamp>",
+          "mimetype": "text/markdown",
+          "size": 7
+        },
+        "name": "copies/described.txt",
+        "owner": "",
+        "owner_id": "",
+        "updated_at": "<timestamp>",
+        "user_metadata": null,
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "copying something that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "copying out of a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a copy with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a copy with no key at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
     }
   ]
 }
