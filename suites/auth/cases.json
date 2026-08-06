@@ -1,0 +1,790 @@
+{
+  "suite": "auth",
+  "note": [
+    "The paths are the ones a Supabase project answers on. A bare GoTrue is asked with --reference-strip /auth/v1.",
+    "The reference is GoTrue 2.194.0 with mailer autoconfirm on, signup enabled, no external providers configured and no smtp, which is what 'supabase start' gives a project that has changed nothing.",
+    "It is also run with GOTRUE_RATE_LIMIT_EMAIL_SENT raised out of the way. A rate limit is a configured number and a clock, not a compatibility surface: recorded at the default of 30 an hour, the first case that asks for a mail would answer and the next would answer 429, and which was which would depend on how long the run before it took.",
+    "Every case that changes a row says so, and the rows go back before it runs. The reading cases are written before the writing ones inside each feature for the same reason: a read after a write would be asked about whatever the write left.",
+    "The values that cannot be the same twice are named in 'volatile' and compared as the shape they had. Everything else is compared byte for byte, and most of an auth answer is everything else.",
+    "Nothing here signs in and then uses the answer. A case is one request, so the token for the seeded person is minted by the harness from the same secret both servers are configured with, and 'key': 'user' sends it.",
+    "A case about a missing or malformed token still names a key, so that the apikey goes out and the answer is about the token rather than about the gateway. The case's own authorization header replaces the key's, and an empty one is not a header a bearer can be read out of, which is the same thing to both servers as sending none.",
+    "The reference is a bare GoTrue with nothing in front of it, so it has no apikey gate at all and ignores the header. zou is the gateway as well as the server, which is why the distinction has to be made here rather than left to whatever is listening."
+  ],
+  "schemas": ["public"],
+  "user": {
+    "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+    "email": "person@zou.test",
+    "session_id": "a3f5c108-2b64-4e97-83d1-6c0a9e7b2d45"
+  },
+  "cases": [
+    {
+      "name": "the server says what it is",
+      "feature": "health",
+      "path": "/auth/v1/health",
+      "key": "anon",
+      "note": "the version string is the reference's own, so this is one of the few places where matching means saying somebody else's name"
+    },
+    {
+      "name": "what a sign in screen reads before it draws itself",
+      "feature": "settings",
+      "path": "/auth/v1/settings",
+      "key": "anon"
+    },
+    {
+      "name": "the signing keys, which there are none of while the secret is symmetric",
+      "feature": "jwks",
+      "path": "/auth/v1/.well-known/jwks.json",
+      "key": "none"
+    },
+
+    {
+      "name": "the person a token names",
+      "feature": "user",
+      "path": "/auth/v1/user",
+      "key": "user"
+    },
+    {
+      "name": "no token at all",
+      "feature": "user",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {"authorization": ""}
+    },
+    {
+      "name": "a token that is not a token",
+      "feature": "user",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {"authorization": "Bearer not-a-token"}
+    },
+    {
+      "name": "a token signed with somebody else's secret",
+      "feature": "user",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {"authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMGEyYzdkNC05YjMxLTRlNTgtOGM3Ni0yYTVkMWUzZjRiNjAiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjQxMDI0NDQ4MDB9.p3Pi3g1Sf1c4jhkyMcbfV8mNTMoLGqLPXm2sgQXVXQE"}
+    },
+    {
+      "name": "a bearer word with nothing after it",
+      "feature": "user",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {"authorization": "Bearer"}
+    },
+    {
+      "name": "a scheme that is not bearer",
+      "feature": "user",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {"authorization": "Basic cGVyc29uOnB3"}
+    },
+    {
+      "name": "an expired token",
+      "feature": "user",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {"authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMGEyYzdkNC05YjMxLTRlNTgtOGM3Ni0yYTVkMWUzZjRiNjAiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJzZXNzaW9uX2lkIjoiYTNmNWMxMDgtMmI2NC00ZTk3LTgzZDEtNmMwYTllN2IyZDQ1IiwiaWF0IjoxNzAwMDAwMDAwLCJleHAiOjE3MDAwMDM2MDB9.RQEP0O8kZ6-Vh4vG9AZ3IWq8w0hpS7CvHNczLLOnMFo"}
+    },
+
+    {
+      "name": "a password sign in",
+      "feature": "token.password",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=password",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"password\":\"conformance-password\"}",
+      "writes": true,
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/last_sign_in_at",
+        "/user/updated_at"
+      ]
+    },
+    {
+      "name": "the wrong password",
+      "feature": "token.password",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=password",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"password\":\"not-the-password\"}",
+      "writes": true
+    },
+    {
+      "name": "an email nobody has",
+      "feature": "token.password",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=password",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"nobody@zou.test\",\"password\":\"conformance-password\"}",
+      "note": "the same words as the wrong password, on purpose: telling the two apart tells a stranger which addresses have accounts"
+    },
+    {
+      "name": "an email with different letter case",
+      "feature": "token.password",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=password",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"Person@Zou.Test\",\"password\":\"conformance-password\"}",
+      "writes": true,
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/last_sign_in_at",
+        "/user/updated_at"
+      ]
+    },
+    {
+      "name": "no password at all",
+      "feature": "token.password",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=password",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\"}"
+    },
+    {
+      "name": "a grant nobody supports",
+      "feature": "token.password",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=banana",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{}"
+    },
+    {
+      "name": "no grant named at all",
+      "feature": "token.password",
+      "method": "POST",
+      "path": "/auth/v1/token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{}"
+    },
+    {
+      "name": "a sign in whose body is not json",
+      "feature": "token.password",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=password",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "not json"
+    },
+
+    {
+      "name": "spending a refresh token",
+      "feature": "token.refresh",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform01\"}",
+      "writes": true,
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/updated_at"
+      ]
+    },
+    {
+      "name": "a refresh token that was already spent",
+      "feature": "token.refresh",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform02\"}",
+      "writes": true
+    },
+    {
+      "name": "a refresh token nobody issued",
+      "feature": "token.refresh",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"never-issued\"}",
+      "writes": true
+    },
+    {
+      "name": "no refresh token in the body",
+      "feature": "token.refresh",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{}"
+    },
+
+    {
+      "name": "a new account",
+      "feature": "signup",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"new@zou.test\",\"password\":\"conformance-password\"}",
+      "writes": true,
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/id",
+        "/user/created_at",
+        "/user/updated_at",
+        "/user/last_sign_in_at",
+        "/user/email_confirmed_at",
+        "/user/confirmed_at",
+        "/user/user_metadata/sub",
+        "/user/identities/*/identity_id",
+        "/user/identities/*/id",
+        "/user/identities/*/user_id",
+        "/user/identities/*/created_at",
+        "/user/identities/*/updated_at",
+        "/user/identities/*/last_sign_in_at",
+        "/user/identities/*/identity_data/sub"
+      ]
+    },
+    {
+      "name": "a new account with metadata of its own",
+      "feature": "signup",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"new@zou.test\",\"password\":\"conformance-password\",\"data\":{\"nickname\":\"anne\"}}",
+      "writes": true,
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/id",
+        "/user/created_at",
+        "/user/updated_at",
+        "/user/last_sign_in_at",
+        "/user/email_confirmed_at",
+        "/user/confirmed_at",
+        "/user/user_metadata/sub",
+        "/user/identities/*/identity_id",
+        "/user/identities/*/id",
+        "/user/identities/*/user_id",
+        "/user/identities/*/created_at",
+        "/user/identities/*/updated_at",
+        "/user/identities/*/last_sign_in_at",
+        "/user/identities/*/identity_data/sub"
+      ]
+    },
+    {
+      "name": "an email somebody already has",
+      "feature": "signup",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"password\":\"conformance-password\"}",
+      "writes": true
+    },
+    {
+      "name": "an email that is not one",
+      "feature": "signup",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"not-an-email\",\"password\":\"conformance-password\"}",
+      "writes": true
+    },
+    {
+      "name": "a password under the minimum",
+      "feature": "signup",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"short@zou.test\",\"password\":\"abc\"}",
+      "note": "the reasons list rides along in weak_password, which is the part a client shows"
+    },
+    {
+      "name": "a password over the bcrypt limit",
+      "feature": "signup",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"long@zou.test\",\"password\":\"0123456789012345678901234567890123456789012345678901234567890123456789012345\"}"
+    },
+    {
+      "name": "neither an email nor a phone",
+      "feature": "signup",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{}",
+      "note": "a signup with no identifier is read as an anonymous one, which is off unless a project turns it on"
+    },
+    {
+      "name": "a signup whose body is not json",
+      "feature": "signup",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "not json"
+    },
+    {
+      "name": "an empty body",
+      "feature": "signup",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"}
+    },
+
+    {
+      "name": "changing the metadata on an account",
+      "feature": "user.update",
+      "method": "PUT",
+      "path": "/auth/v1/user",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"data\":{\"nickname\":\"anne\"}}",
+      "writes": true,
+      "volatile": ["/updated_at"]
+    },
+    {
+      "name": "changing the password",
+      "feature": "user.update",
+      "method": "PUT",
+      "path": "/auth/v1/user",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"password\":\"a-different-password\"}",
+      "writes": true,
+      "volatile": ["/updated_at"]
+    },
+    {
+      "name": "changing the password to a weak one",
+      "feature": "user.update",
+      "method": "PUT",
+      "path": "/auth/v1/user",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"password\":\"abc\"}",
+      "writes": true
+    },
+    {
+      "name": "changing nothing",
+      "feature": "user.update",
+      "method": "PUT",
+      "path": "/auth/v1/user",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{}",
+      "writes": true,
+      "volatile": ["/updated_at"]
+    },
+    {
+      "name": "changing an account without a token",
+      "feature": "user.update",
+      "method": "PUT",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {"authorization": "", "content-type": "application/json"},
+      "body": "{\"data\":{\"nickname\":\"anne\"}}",
+      "writes": true
+    },
+
+    {
+      "name": "ending a session",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/logout",
+      "key": "user",
+      "writes": true
+    },
+    {
+      "name": "ending every session the person has",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/logout?scope=global",
+      "key": "user",
+      "writes": true
+    },
+    {
+      "name": "ending the others and keeping this one",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/logout?scope=others",
+      "key": "user",
+      "writes": true
+    },
+    {
+      "name": "ending a session without a token",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/logout",
+      "key": "anon",
+      "headers": {"authorization": ""},
+      "writes": true
+    },
+
+    {
+      "name": "asking for a password reset",
+      "feature": "recover",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\"}",
+      "writes": true
+    },
+    {
+      "name": "asking for a password reset for nobody",
+      "feature": "recover",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"nobody@zou.test\"}",
+      "writes": true,
+      "note": "the same empty answer as a real address, so that asking is not a way to find out who has an account"
+    },
+    {
+      "name": "asking for a password reset with no email",
+      "feature": "recover",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{}",
+      "writes": true
+    },
+    {
+      "name": "asking for a magic link",
+      "feature": "magiclink",
+      "method": "POST",
+      "path": "/auth/v1/magiclink",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\"}",
+      "writes": true
+    },
+    {
+      "name": "asking for a one time password by email",
+      "feature": "otp",
+      "method": "POST",
+      "path": "/auth/v1/otp",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\"}",
+      "writes": true
+    },
+    {
+      "name": "asking for a one time password for somebody who has no account",
+      "feature": "otp",
+      "method": "POST",
+      "path": "/auth/v1/otp",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"nobody@zou.test\",\"create_user\":false}",
+      "writes": true
+    },
+    {
+      "name": "asking for a one time password with neither an email nor a phone",
+      "feature": "otp",
+      "method": "POST",
+      "path": "/auth/v1/otp",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{}",
+      "writes": true
+    },
+    {
+      "name": "asking for the signup mail again",
+      "feature": "resend",
+      "method": "POST",
+      "path": "/auth/v1/resend",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"type\":\"signup\"}",
+      "writes": true
+    },
+    {
+      "name": "asking for a kind of mail that does not exist",
+      "feature": "resend",
+      "method": "POST",
+      "path": "/auth/v1/resend",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"type\":\"banana\"}",
+      "writes": true
+    },
+    {
+      "name": "proving it is still you before a sensitive change",
+      "feature": "reauthenticate",
+      "method": "POST",
+      "path": "/auth/v1/reauthenticate",
+      "key": "user",
+      "writes": true
+    },
+    {
+      "name": "proving it is still you without a token",
+      "feature": "reauthenticate",
+      "method": "POST",
+      "path": "/auth/v1/reauthenticate",
+      "key": "anon",
+      "headers": {"authorization": ""},
+      "writes": true
+    },
+
+    {
+      "name": "a confirmation link that has expired",
+      "feature": "verify",
+      "path": "/auth/v1/verify?token=nope&type=signup",
+      "key": "none",
+      "note": "a navigation rather than a fetch, so the answer is a redirect carrying the error in the fragment and the body is a link"
+    },
+    {
+      "name": "a confirmation link with no type",
+      "feature": "verify",
+      "path": "/auth/v1/verify?token=nope",
+      "key": "none"
+    },
+    {
+      "name": "verifying a code that is not one",
+      "feature": "verify",
+      "method": "POST",
+      "path": "/auth/v1/verify",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"type\":\"signup\",\"token\":\"000000\",\"email\":\"person@zou.test\"}"
+    },
+    {
+      "name": "verifying with a type nobody has",
+      "feature": "verify",
+      "method": "POST",
+      "path": "/auth/v1/verify",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"type\":\"banana\",\"token\":\"000000\",\"email\":\"person@zou.test\"}"
+    },
+
+    {
+      "name": "a provider nobody turned on",
+      "feature": "authorize",
+      "path": "/auth/v1/authorize?provider=google",
+      "key": "none"
+    },
+    {
+      "name": "no provider named at all",
+      "feature": "authorize",
+      "path": "/auth/v1/authorize",
+      "key": "none"
+    },
+    {
+      "name": "a provider that does not exist",
+      "feature": "authorize",
+      "path": "/auth/v1/authorize?provider=banana",
+      "key": "none"
+    },
+
+    {
+      "name": "the second factors on an account, of which there are none",
+      "feature": "mfa",
+      "path": "/auth/v1/factors",
+      "key": "user",
+      "note": "GET on /factors is not a route upstream has, so both ends answer about the method rather than about the factors"
+    },
+    {
+      "name": "enrolling a second factor without a token",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors",
+      "key": "anon",
+      "headers": {"authorization": "", "content-type": "application/json"},
+      "body": "{\"factor_type\":\"totp\"}"
+    },
+    {
+      "name": "a factor id that is not a uuid",
+      "feature": "mfa",
+      "method": "DELETE",
+      "path": "/auth/v1/factors/not-a-uuid",
+      "key": "user",
+      "writes": true
+    },
+    {
+      "name": "a factor nobody enrolled",
+      "feature": "mfa",
+      "method": "DELETE",
+      "path": "/auth/v1/factors/8f1c0d2e-4a6b-4c8d-9e0f-1a2b3c4d5e6f",
+      "key": "user",
+      "writes": true
+    },
+
+    {
+      "name": "listing accounts without the service role",
+      "feature": "admin",
+      "path": "/auth/v1/admin/users",
+      "key": "anon"
+    },
+    {
+      "name": "listing accounts as the person themselves",
+      "feature": "admin",
+      "path": "/auth/v1/admin/users",
+      "key": "user"
+    },
+    {
+      "name": "listing accounts",
+      "feature": "admin",
+      "path": "/auth/v1/admin/users",
+      "key": "service"
+    },
+    {
+      "name": "one account by id",
+      "feature": "admin",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+      "key": "service"
+    },
+    {
+      "name": "an id nobody has",
+      "feature": "admin",
+      "path": "/auth/v1/admin/users/00000000-0000-4000-8000-000000000000",
+      "key": "service"
+    },
+    {
+      "name": "an id that is not a uuid",
+      "feature": "admin",
+      "path": "/auth/v1/admin/users/not-a-uuid",
+      "key": "service"
+    },
+    {
+      "name": "making an account",
+      "feature": "admin",
+      "method": "POST",
+      "path": "/auth/v1/admin/users",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"made@zou.test\",\"password\":\"conformance-password\",\"email_confirm\":true}",
+      "writes": true,
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/updated_at",
+        "/email_confirmed_at",
+        "/confirmed_at",
+        "/identities/*/identity_id",
+        "/identities/*/id",
+        "/identities/*/user_id",
+        "/identities/*/created_at",
+        "/identities/*/updated_at",
+        "/identities/*/last_sign_in_at",
+        "/identities/*/identity_data/sub"
+      ]
+    },
+    {
+      "name": "changing an account",
+      "feature": "admin",
+      "method": "PUT",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"user_metadata\":{\"nickname\":\"anne\"}}",
+      "writes": true,
+      "volatile": ["/updated_at"]
+    },
+    {
+      "name": "banning an account",
+      "feature": "admin",
+      "method": "PUT",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"ban_duration\":\"24h\"}",
+      "writes": true,
+      "volatile": ["/updated_at", "/banned_until"]
+    },
+    {
+      "name": "deleting an account",
+      "feature": "admin",
+      "method": "DELETE",
+      "path": "/auth/v1/admin/users/b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51",
+      "key": "service",
+      "writes": true
+    },
+    {
+      "name": "a link somebody can click to confirm an account",
+      "feature": "admin",
+      "method": "POST",
+      "path": "/auth/v1/admin/generate_link",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"type\":\"magiclink\",\"email\":\"person@zou.test\"}",
+      "writes": true,
+      "volatile": [
+        "/action_link",
+        "/hashed_token",
+        "/email_otp",
+        "/updated_at",
+        "/recovery_sent_at",
+        "/confirmation_sent_at",
+        "/email_change_sent_at"
+      ]
+    },
+    {
+      "name": "a link for a kind of mail that does not exist",
+      "feature": "admin",
+      "method": "POST",
+      "path": "/auth/v1/admin/generate_link",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"type\":\"banana\",\"email\":\"person@zou.test\"}",
+      "writes": true
+    },
+    {
+      "name": "inviting somebody",
+      "feature": "admin",
+      "method": "POST",
+      "path": "/auth/v1/invite",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"invited@zou.test\"}",
+      "writes": true,
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/updated_at",
+        "/invited_at",
+        "/confirmation_sent_at",
+        "/identities"
+      ]
+    },
+    {
+      "name": "inviting somebody who already has an account",
+      "feature": "admin",
+      "method": "POST",
+      "path": "/auth/v1/invite",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\"}",
+      "writes": true
+    },
+    {
+      "name": "inviting somebody without the service role",
+      "feature": "admin",
+      "method": "POST",
+      "path": "/auth/v1/invite",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"invited@zou.test\"}",
+      "writes": true
+    }
+  ]
+}

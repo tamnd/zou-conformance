@@ -12,6 +12,7 @@ The harness that reads these files lives in the zou repository, in `conformance/
 versions.json          what compatibility is measured against
 suites/rest/           82 questions about the surface a supabase project uses
 suites/postgrest/      1233 questions, derived from PostgREST's own spec files
+suites/auth/           77 questions about the endpoints a sign in flow uses
 js/                    supabase-js's own integration tests, run against zou
 ```
 
@@ -28,6 +29,8 @@ known.json      the cases zou answers differently, and why
 `js/` is not a suite in that shape and is described in [js/README.md](js/README.md). It is upstream's own test file, run against zou with the url and the keys made pluggable, and it is the one place here where the assertions are somebody else's rather than a recording, because upstream wrote them about upstream's own client.
 
 The `rest` suite is hand written, about the endpoints and the headers a Supabase project actually uses. The `postgrest` suite is not written at all: `zou-conformance derive` reads a PostgREST checkout at the pinned version, walks the spec files its default test application runs, and turns every request it finds into a case. Only the request comes across. The `shouldRespondWith` next to it is read past on purpose, because an assertion copied from upstream only proves that somebody copied it.
+
+The `auth` suite is hand written too, and it is the one where most of the answer cannot be the same twice. A token, a session id, an issued-at, a row's created_at: every one of them is different on the second run, and comparing them byte for byte would fail every case for a reason that is not a difference. Each case names the values that move, by json pointer, and a named value is compared as the shape it had rather than as what it said. Everything else is still compared byte for byte, and most of an auth answer is everything else.
 
 ## Using it
 
@@ -57,6 +60,8 @@ cargo run -p zou-conformance -- record --suite postgrest \
 
 The diff in `recorded.json` is the review. It is upstream's answer written down, and if it is surprising then the case found something.
 
+A bare GoTrue answers on `/` where a project answers on `/auth/v1`, so the auth suite is recorded with `--reference-strip /auth/v1` and the paths stay the ones a client actually types. It is recorded against the configuration `supabase start` gives a project that has changed nothing, with one exception: `GOTRUE_RATE_LIMIT_EMAIL_SENT` is raised out of the way. A rate limit is a configured number and a clock rather than a compatibility surface, and at the default of 30 an hour which case got the 429 would depend on how long the run before it took.
+
 Bumping a version in `versions.json` means re-recording every suite it covers, and the re-recording is the point: the diff is upstream changing its mind, and it should be read rather than merged.
 
 ## Known differences
@@ -68,6 +73,8 @@ A known case that starts passing also fails the run. The list is meant to shrink
 ## Where zou stands
 
 The `rest` suite is 82 cases and zou passes 71 of them, 86%, with 11 known differences.
+
+The `auth` suite is 77 cases and zou passes 71 of them, 92%, with 6 known differences.
 
 The supabase-js suite runs 16 of its 34 tests and zou passes all 16. The other 18 are Realtime and Storage, which zou does not serve yet.
 

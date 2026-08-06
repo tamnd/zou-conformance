@@ -1,0 +1,1561 @@
+{
+  "suite": "auth",
+  "recorded_from": "gotrue",
+  "answers": [
+    {
+      "name": "the server says what it is",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "description": "GoTrue is a user registration and authentication API",
+        "name": "GoTrue",
+        "version": "v2.194.0"
+      },
+      "raw": "{\"version\":\"v2.194.0\",\"name\":\"GoTrue\",\"description\":\"GoTrue is a user registration and authentication API\"}"
+    },
+    {
+      "name": "what a sign in screen reads before it draws itself",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "disable_signup": false,
+        "external": {
+          "anonymous_users": false,
+          "apple": false,
+          "azure": false,
+          "bitbucket": false,
+          "discord": false,
+          "email": true,
+          "facebook": false,
+          "figma": false,
+          "fly": false,
+          "github": false,
+          "gitlab": false,
+          "google": false,
+          "kakao": false,
+          "keycloak": false,
+          "linkedin": false,
+          "linkedin_oidc": false,
+          "notion": false,
+          "phone": false,
+          "slack": false,
+          "slack_oidc": false,
+          "snapchat": false,
+          "spotify": false,
+          "twitch": false,
+          "twitter": false,
+          "workos": false,
+          "zoom": false
+        },
+        "mailer_autoconfirm": true,
+        "passkeys_enabled": false,
+        "phone_autoconfirm": false,
+        "saml_enabled": false,
+        "saml_private_key_next_configured": true,
+        "sms_provider": ""
+      },
+      "raw": "{\"external\":{\"anonymous_users\":false,\"apple\":false,\"azure\":false,\"bitbucket\":false,\"discord\":false,\"facebook\":false,\"snapchat\":false,\"figma\":false,\"fly\":false,\"github\":false,\"gitlab\":false,\"google\":false,\"keycloak\":false,\"kakao\":false,\"linkedin\":false,\"linkedin_oidc\":false,\"notion\":false,\"spotify\":false,\"slack\":false,\"slack_oidc\":false,\"workos\":false,\"twitch\":false,\"twitter\":false,\"email\":true,\"phone\":false,\"zoom\":false},\"disable_signup\":false,\"mailer_autoconfirm\":true,\"phone_autoconfirm\":false,\"sms_provider\":\"\",\"saml_enabled\":false,\"saml_private_key_next_configured\":true,\"passkeys_enabled\":false}"
+    },
+    {
+      "name": "the signing keys, which there are none of while the secret is symmetric",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "keys": []
+      }
+    },
+    {
+      "name": "the person a token names",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "confirmed_at": "2026-01-01T00:00:01Z",
+        "created_at": "2026-01-01T00:00:03Z",
+        "email": "person@zou.test",
+        "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+        "identities": [
+          {
+            "created_at": "2026-01-01T00:00:06Z",
+            "email": "person@zou.test",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identity_data": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            },
+            "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+            "last_sign_in_at": "2026-01-01T00:00:05Z",
+            "provider": "email",
+            "updated_at": "2026-01-01T00:00:07Z",
+            "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "2026-01-01T00:00:02Z",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "2026-01-01T00:00:04Z",
+        "user_metadata": {
+          "email": "person@zou.test",
+          "email_verified": true,
+          "phone_verified": false,
+          "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+        }
+      },
+      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+    },
+    {
+      "name": "no token at all",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "no_authorization",
+        "msg": "This endpoint requires a valid Bearer token"
+      }
+    },
+    {
+      "name": "a token that is not a token",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "bad_jwt",
+        "msg": "invalid JWT: unable to parse or verify signature, token is malformed: token contains an invalid number of segments"
+      }
+    },
+    {
+      "name": "a token signed with somebody else's secret",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "bad_jwt",
+        "msg": "invalid JWT: unable to parse or verify signature, token signature is invalid: signature is invalid"
+      }
+    },
+    {
+      "name": "a bearer word with nothing after it",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "no_authorization",
+        "msg": "This endpoint requires a valid Bearer token"
+      }
+    },
+    {
+      "name": "a scheme that is not bearer",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "no_authorization",
+        "msg": "This endpoint requires a valid Bearer token"
+      }
+    },
+    {
+      "name": "an expired token",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "bad_jwt",
+        "msg": "invalid JWT: unable to parse or verify signature, token signature is invalid: signature is invalid"
+      }
+    },
+    {
+      "name": "a password sign in",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {
+            "provider": "email",
+            "providers": [
+              "email"
+            ]
+          },
+          "aud": "authenticated",
+          "confirmed_at": "2026-01-01T00:00:01Z",
+          "created_at": "2026-01-01T00:00:03Z",
+          "email": "person@zou.test",
+          "email_confirmed_at": "2026-01-01T00:00:01Z",
+          "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+          "identities": [
+            {
+              "created_at": "2026-01-01T00:00:06Z",
+              "email": "person@zou.test",
+              "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+              "identity_data": {
+                "email": "person@zou.test",
+                "email_verified": true,
+                "phone_verified": false,
+                "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+              },
+              "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+              "last_sign_in_at": "2026-01-01T00:00:05Z",
+              "provider": "email",
+              "updated_at": "2026-01-01T00:00:07Z",
+              "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            }
+          ],
+          "is_anonymous": false,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email": "person@zou.test",
+            "email_verified": true,
+            "phone_verified": false,
+            "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        },
+        "weak_password": null
+      }
+    },
+    {
+      "name": "the wrong password",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "invalid_credentials",
+        "msg": "Invalid login credentials"
+      }
+    },
+    {
+      "name": "an email nobody has",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "invalid_credentials",
+        "msg": "Invalid login credentials"
+      }
+    },
+    {
+      "name": "an email with different letter case",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {
+            "provider": "email",
+            "providers": [
+              "email"
+            ]
+          },
+          "aud": "authenticated",
+          "confirmed_at": "2026-01-01T00:00:01Z",
+          "created_at": "2026-01-01T00:00:03Z",
+          "email": "person@zou.test",
+          "email_confirmed_at": "2026-01-01T00:00:01Z",
+          "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+          "identities": [
+            {
+              "created_at": "2026-01-01T00:00:06Z",
+              "email": "person@zou.test",
+              "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+              "identity_data": {
+                "email": "person@zou.test",
+                "email_verified": true,
+                "phone_verified": false,
+                "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+              },
+              "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+              "last_sign_in_at": "2026-01-01T00:00:05Z",
+              "provider": "email",
+              "updated_at": "2026-01-01T00:00:07Z",
+              "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            }
+          ],
+          "is_anonymous": false,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email": "person@zou.test",
+            "email_verified": true,
+            "phone_verified": false,
+            "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        },
+        "weak_password": null
+      }
+    },
+    {
+      "name": "no password at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "invalid_credentials",
+        "msg": "Invalid login credentials"
+      }
+    },
+    {
+      "name": "a grant nobody supports",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "invalid_credentials",
+        "msg": "unsupported_grant_type"
+      }
+    },
+    {
+      "name": "no grant named at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "invalid_credentials",
+        "msg": "unsupported_grant_type"
+      }
+    },
+    {
+      "name": "a sign in whose body is not json",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "bad_json",
+        "msg": "Could not parse request body as JSON: invalid character 'o' in literal null (expecting 'u')"
+      }
+    },
+    {
+      "name": "spending a refresh token",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {
+            "provider": "email",
+            "providers": [
+              "email"
+            ]
+          },
+          "aud": "authenticated",
+          "confirmed_at": "2026-01-01T00:00:01Z",
+          "created_at": "2026-01-01T00:00:03Z",
+          "email": "person@zou.test",
+          "email_confirmed_at": "2026-01-01T00:00:01Z",
+          "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+          "identities": [
+            {
+              "created_at": "2026-01-01T00:00:06Z",
+              "email": "person@zou.test",
+              "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+              "identity_data": {
+                "email": "person@zou.test",
+                "email_verified": true,
+                "phone_verified": false,
+                "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+              },
+              "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+              "last_sign_in_at": "2026-01-01T00:00:05Z",
+              "provider": "email",
+              "updated_at": "2026-01-01T00:00:07Z",
+              "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            }
+          ],
+          "is_anonymous": false,
+          "last_sign_in_at": "2026-01-01T00:00:02Z",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email": "person@zou.test",
+            "email_verified": true,
+            "phone_verified": false,
+            "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        }
+      }
+    },
+    {
+      "name": "a refresh token that was already spent",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "refresh_token_already_used",
+        "msg": "Invalid Refresh Token: Already Used"
+      }
+    },
+    {
+      "name": "a refresh token nobody issued",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Refresh token is not valid"
+      }
+    },
+    {
+      "name": "no refresh token in the body",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Refresh token is not valid"
+      }
+    },
+    {
+      "name": "a new account",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {
+            "provider": "email",
+            "providers": [
+              "email"
+            ]
+          },
+          "aud": "authenticated",
+          "created_at": "<timestamp>",
+          "email": "new@zou.test",
+          "email_confirmed_at": "<timestamp>",
+          "id": "<uuid>",
+          "identities": [
+            {
+              "created_at": "<timestamp>",
+              "email": "new@zou.test",
+              "id": "<uuid>",
+              "identity_data": {
+                "email": "new@zou.test",
+                "email_verified": true,
+                "phone_verified": false,
+                "sub": "<uuid>"
+              },
+              "identity_id": "<uuid>",
+              "last_sign_in_at": "<timestamp>",
+              "provider": "email",
+              "updated_at": "<timestamp>",
+              "user_id": "<uuid>"
+            }
+          ],
+          "is_anonymous": false,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email": "new@zou.test",
+            "email_verified": true,
+            "phone_verified": false,
+            "sub": "<uuid>"
+          }
+        }
+      }
+    },
+    {
+      "name": "a new account with metadata of its own",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {
+            "provider": "email",
+            "providers": [
+              "email"
+            ]
+          },
+          "aud": "authenticated",
+          "created_at": "<timestamp>",
+          "email": "new@zou.test",
+          "email_confirmed_at": "<timestamp>",
+          "id": "<uuid>",
+          "identities": [
+            {
+              "created_at": "<timestamp>",
+              "email": "new@zou.test",
+              "id": "<uuid>",
+              "identity_data": {
+                "email": "new@zou.test",
+                "email_verified": true,
+                "nickname": "anne",
+                "phone_verified": false,
+                "sub": "<uuid>"
+              },
+              "identity_id": "<uuid>",
+              "last_sign_in_at": "<timestamp>",
+              "provider": "email",
+              "updated_at": "<timestamp>",
+              "user_id": "<uuid>"
+            }
+          ],
+          "is_anonymous": false,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email": "new@zou.test",
+            "email_verified": true,
+            "nickname": "anne",
+            "phone_verified": false,
+            "sub": "<uuid>"
+          }
+        }
+      }
+    },
+    {
+      "name": "an email somebody already has",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "user_already_exists",
+        "msg": "User already registered"
+      }
+    },
+    {
+      "name": "an email that is not one",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Unable to validate email address: invalid format"
+      }
+    },
+    {
+      "name": "a password under the minimum",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "weak_password",
+        "msg": "Password should be at least 6 characters.",
+        "weak_password": {
+          "reasons": [
+            "length"
+          ]
+        }
+      }
+    },
+    {
+      "name": "a password over the bcrypt limit",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Password cannot be longer than 72 characters"
+      }
+    },
+    {
+      "name": "neither an email nor a phone",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "anonymous_provider_disabled",
+        "msg": "Anonymous sign-ins are disabled"
+      }
+    },
+    {
+      "name": "a signup whose body is not json",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "bad_json",
+        "msg": "Could not parse request body as JSON: invalid character 'o' in literal null (expecting 'u')"
+      }
+    },
+    {
+      "name": "an empty body",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "bad_json",
+        "msg": "Could not parse request body as JSON: unexpected end of JSON input"
+      }
+    },
+    {
+      "name": "changing the metadata on an account",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "confirmed_at": "2026-01-01T00:00:01Z",
+        "created_at": "2026-01-01T00:00:03Z",
+        "email": "person@zou.test",
+        "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+        "identities": [
+          {
+            "created_at": "2026-01-01T00:00:06Z",
+            "email": "person@zou.test",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identity_data": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            },
+            "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+            "last_sign_in_at": "2026-01-01T00:00:05Z",
+            "provider": "email",
+            "updated_at": "2026-01-01T00:00:07Z",
+            "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "2026-01-01T00:00:02Z",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email": "person@zou.test",
+          "email_verified": true,
+          "nickname": "anne",
+          "phone_verified": false,
+          "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+        }
+      }
+    },
+    {
+      "name": "changing the password",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "confirmed_at": "2026-01-01T00:00:01Z",
+        "created_at": "2026-01-01T00:00:03Z",
+        "email": "person@zou.test",
+        "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+        "identities": [
+          {
+            "created_at": "2026-01-01T00:00:06Z",
+            "email": "person@zou.test",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identity_data": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            },
+            "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+            "last_sign_in_at": "2026-01-01T00:00:05Z",
+            "provider": "email",
+            "updated_at": "2026-01-01T00:00:07Z",
+            "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "2026-01-01T00:00:02Z",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email": "person@zou.test",
+          "email_verified": true,
+          "phone_verified": false,
+          "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+        }
+      }
+    },
+    {
+      "name": "changing the password to a weak one",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "weak_password",
+        "msg": "Password should be at least 6 characters.",
+        "weak_password": {
+          "reasons": [
+            "length"
+          ]
+        }
+      }
+    },
+    {
+      "name": "changing nothing",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "confirmed_at": "2026-01-01T00:00:01Z",
+        "created_at": "2026-01-01T00:00:03Z",
+        "email": "person@zou.test",
+        "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+        "identities": [
+          {
+            "created_at": "2026-01-01T00:00:06Z",
+            "email": "person@zou.test",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identity_data": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            },
+            "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+            "last_sign_in_at": "2026-01-01T00:00:05Z",
+            "provider": "email",
+            "updated_at": "2026-01-01T00:00:07Z",
+            "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "2026-01-01T00:00:02Z",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email": "person@zou.test",
+          "email_verified": true,
+          "phone_verified": false,
+          "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+        }
+      }
+    },
+    {
+      "name": "changing an account without a token",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "no_authorization",
+        "msg": "This endpoint requires a valid Bearer token"
+      }
+    },
+    {
+      "name": "ending a session",
+      "status": 204,
+      "headers": {},
+      "body": null
+    },
+    {
+      "name": "ending every session the person has",
+      "status": 204,
+      "headers": {},
+      "body": null
+    },
+    {
+      "name": "ending the others and keeping this one",
+      "status": 204,
+      "headers": {},
+      "body": null
+    },
+    {
+      "name": "ending a session without a token",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "no_authorization",
+        "msg": "This endpoint requires a valid Bearer token"
+      }
+    },
+    {
+      "name": "asking for a password reset",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {}
+    },
+    {
+      "name": "asking for a password reset for nobody",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {}
+    },
+    {
+      "name": "asking for a password reset with no email",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Password recovery requires an email"
+      }
+    },
+    {
+      "name": "asking for a magic link",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {}
+    },
+    {
+      "name": "asking for a one time password by email",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {}
+    },
+    {
+      "name": "asking for a one time password for somebody who has no account",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "otp_disabled",
+        "msg": "Signups not allowed for otp"
+      }
+    },
+    {
+      "name": "asking for a one time password with neither an email nor a phone",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "One of email or phone must be set"
+      }
+    },
+    {
+      "name": "asking for the signup mail again",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {}
+    },
+    {
+      "name": "asking for a kind of mail that does not exist",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Missing one of these types: signup, email_change, sms, phone_change"
+      }
+    },
+    {
+      "name": "proving it is still you before a sensitive change",
+      "status": 405,
+      "headers": {
+        "allow": "GET"
+      },
+      "body": null
+    },
+    {
+      "name": "proving it is still you without a token",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "no_authorization",
+        "msg": "This endpoint requires a valid Bearer token"
+      }
+    },
+    {
+      "name": "a confirmation link that has expired",
+      "status": 303,
+      "headers": {
+        "content-type": "text/html; charset=utf-8",
+        "location": "http://localhost:3000#error=access_denied&error_code=otp_expired&error_description=Email+link+is+invalid+or+has+expired&sb="
+      },
+      "body": "<a href=\"http://localhost:3000#error=access_denied&amp;error_code=otp_expired&amp;error_description=Email+link+is+invalid+or+has+expired&amp;sb=\">See Other</a>.\n\n"
+    },
+    {
+      "name": "a confirmation link with no type",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Verify requires a verification type"
+      }
+    },
+    {
+      "name": "verifying a code that is not one",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "otp_expired",
+        "msg": "Token has expired or is invalid"
+      }
+    },
+    {
+      "name": "verifying with a type nobody has",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "otp_expired",
+        "msg": "Token has expired or is invalid"
+      }
+    },
+    {
+      "name": "a provider nobody turned on",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Unsupported provider: provider is not enabled"
+      }
+    },
+    {
+      "name": "no provider named at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Unsupported provider: Provider  could not be found"
+      }
+    },
+    {
+      "name": "a provider that does not exist",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Unsupported provider: Provider banana could not be found"
+      }
+    },
+    {
+      "name": "the second factors on an account, of which there are none",
+      "status": 405,
+      "headers": {
+        "allow": "POST"
+      },
+      "body": null
+    },
+    {
+      "name": "enrolling a second factor without a token",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "no_authorization",
+        "msg": "This endpoint requires a valid Bearer token"
+      }
+    },
+    {
+      "name": "a factor id that is not a uuid",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "validation_failed",
+        "msg": "factor_id must be an UUID"
+      }
+    },
+    {
+      "name": "a factor nobody enrolled",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "mfa_factor_not_found",
+        "msg": "Factor not found"
+      }
+    },
+    {
+      "name": "listing accounts without the service role",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "not_admin",
+        "msg": "User not allowed"
+      }
+    },
+    {
+      "name": "listing accounts as the person themselves",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "not_admin",
+        "msg": "User not allowed"
+      }
+    },
+    {
+      "name": "listing accounts",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "aud": "authenticated",
+        "users": [
+          {
+            "app_metadata": {
+              "provider": "email",
+              "providers": [
+                "email"
+              ]
+            },
+            "aud": "authenticated",
+            "confirmed_at": "2026-01-02T00:00:01Z",
+            "created_at": "2026-01-02T00:00:03Z",
+            "email": "other@zou.test",
+            "email_confirmed_at": "2026-01-02T00:00:01Z",
+            "id": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51",
+            "identities": null,
+            "is_anonymous": false,
+            "phone": "",
+            "role": "authenticated",
+            "updated_at": "2026-01-02T00:00:04Z",
+            "user_metadata": {
+              "email": "other@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51"
+            }
+          },
+          {
+            "app_metadata": {
+              "provider": "email",
+              "providers": [
+                "email"
+              ]
+            },
+            "aud": "authenticated",
+            "confirmed_at": "2026-01-01T00:00:01Z",
+            "created_at": "2026-01-01T00:00:03Z",
+            "email": "person@zou.test",
+            "email_confirmed_at": "2026-01-01T00:00:01Z",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identities": null,
+            "is_anonymous": false,
+            "last_sign_in_at": "2026-01-01T00:00:02Z",
+            "phone": "",
+            "role": "authenticated",
+            "updated_at": "2026-01-01T00:00:04Z",
+            "user_metadata": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            }
+          }
+        ]
+      },
+      "raw": "{\"users\":[{\"id\":\"b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"other@zou.test\",\"email_confirmed_at\":\"2026-01-02T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-02T00:00:01Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"other@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51\"},\"identities\":null,\"created_at\":\"2026-01-02T00:00:03Z\",\"updated_at\":\"2026-01-02T00:00:04Z\",\"is_anonymous\":false},{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"identities\":null,\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}],\"aud\":\"authenticated\"}"
+    },
+    {
+      "name": "one account by id",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "confirmed_at": "2026-01-01T00:00:01Z",
+        "created_at": "2026-01-01T00:00:03Z",
+        "email": "person@zou.test",
+        "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+        "identities": [
+          {
+            "created_at": "2026-01-01T00:00:06Z",
+            "email": "person@zou.test",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identity_data": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            },
+            "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+            "last_sign_in_at": "2026-01-01T00:00:05Z",
+            "provider": "email",
+            "updated_at": "2026-01-01T00:00:07Z",
+            "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "2026-01-01T00:00:02Z",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "2026-01-01T00:00:04Z",
+        "user_metadata": {
+          "email": "person@zou.test",
+          "email_verified": true,
+          "phone_verified": false,
+          "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+        }
+      },
+      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+    },
+    {
+      "name": "an id nobody has",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "user_not_found",
+        "msg": "User not found"
+      }
+    },
+    {
+      "name": "an id that is not a uuid",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "validation_failed",
+        "msg": "user_id must be an UUID"
+      }
+    },
+    {
+      "name": "making an account",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "created_at": "<timestamp>",
+        "email": "made@zou.test",
+        "email_confirmed_at": "<timestamp>",
+        "id": "<uuid>",
+        "identities": [
+          {
+            "created_at": "<timestamp>",
+            "email": "made@zou.test",
+            "id": "<uuid>",
+            "identity_data": {
+              "email": "made@zou.test",
+              "email_verified": false,
+              "phone_verified": false,
+              "sub": "<uuid>"
+            },
+            "identity_id": "<uuid>",
+            "last_sign_in_at": "<timestamp>",
+            "provider": "email",
+            "updated_at": "<timestamp>",
+            "user_id": "<uuid>"
+          }
+        ],
+        "is_anonymous": false,
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email_verified": true
+        }
+      }
+    },
+    {
+      "name": "changing an account",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "confirmed_at": "2026-01-01T00:00:01Z",
+        "created_at": "2026-01-01T00:00:03Z",
+        "email": "person@zou.test",
+        "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+        "identities": [
+          {
+            "created_at": "2026-01-01T00:00:06Z",
+            "email": "person@zou.test",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identity_data": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            },
+            "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+            "last_sign_in_at": "2026-01-01T00:00:05Z",
+            "provider": "email",
+            "updated_at": "2026-01-01T00:00:07Z",
+            "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "2026-01-01T00:00:02Z",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email": "person@zou.test",
+          "email_verified": true,
+          "nickname": "anne",
+          "phone_verified": false,
+          "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+        }
+      }
+    },
+    {
+      "name": "banning an account",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "banned_until": "<timestamp>",
+        "confirmed_at": "2026-01-01T00:00:01Z",
+        "created_at": "2026-01-01T00:00:03Z",
+        "email": "person@zou.test",
+        "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+        "identities": [
+          {
+            "created_at": "2026-01-01T00:00:06Z",
+            "email": "person@zou.test",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identity_data": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            },
+            "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+            "last_sign_in_at": "2026-01-01T00:00:05Z",
+            "provider": "email",
+            "updated_at": "2026-01-01T00:00:07Z",
+            "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "2026-01-01T00:00:02Z",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email": "person@zou.test",
+          "email_verified": true,
+          "phone_verified": false,
+          "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+        }
+      }
+    },
+    {
+      "name": "deleting an account",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {}
+    },
+    {
+      "name": "a link somebody can click to confirm an account",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "action_link": "<string>",
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "confirmed_at": "2026-01-01T00:00:01Z",
+        "created_at": "2026-01-01T00:00:03Z",
+        "email": "person@zou.test",
+        "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "email_otp": "<string>",
+        "hashed_token": "<string>",
+        "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+        "identities": [
+          {
+            "created_at": "2026-01-01T00:00:06Z",
+            "email": "person@zou.test",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identity_data": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            },
+            "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+            "last_sign_in_at": "2026-01-01T00:00:05Z",
+            "provider": "email",
+            "updated_at": "2026-01-01T00:00:07Z",
+            "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "2026-01-01T00:00:02Z",
+        "phone": "",
+        "recovery_sent_at": "<timestamp>",
+        "redirect_to": "http://localhost:3000",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email": "person@zou.test",
+          "email_verified": true,
+          "phone_verified": false,
+          "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+        },
+        "verification_type": "magiclink"
+      }
+    },
+    {
+      "name": "a link for a kind of mail that does not exist",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Invalid email action link type requested: banana"
+      }
+    },
+    {
+      "name": "inviting somebody",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "confirmation_sent_at": "<timestamp>",
+        "created_at": "<timestamp>",
+        "email": "invited@zou.test",
+        "id": "<uuid>",
+        "identities": "<array of 1>",
+        "invited_at": "<timestamp>",
+        "is_anonymous": false,
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {}
+      }
+    },
+    {
+      "name": "inviting somebody who already has an account",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "email_exists",
+        "msg": "A user with this email address has already been registered"
+      }
+    },
+    {
+      "name": "inviting somebody without the service role",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "not_admin",
+        "msg": "User not allowed"
+      }
+    }
+  ]
+}
