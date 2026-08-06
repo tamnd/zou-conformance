@@ -1,0 +1,221 @@
+{
+  "suite": "storage",
+  "note": [
+    "The paths are the ones a Supabase project answers on. The reference here is not a binary anybody can download: storage-api ships as an image, so the recording is taken from the one supabase start brings up, at the version in versions.json.",
+    "Buckets only. The object surface needs a case to be able to carry bytes and a target to have somewhere to put them, and neither is true yet.",
+    "The fixture pins what it wrote, so a reading case is compared byte for byte. A case that makes a bucket cannot pin what the server is about to write, so those name their timestamps in volatile and the rest of the answer is still compared whole.",
+    "Every case that changes a row says so, and the rows go back before it runs. The reading cases are written before the writing ones inside each feature for the same reason: a read after a write would be asked about whatever the write left.",
+    "A case with no key at all is asking the gateway rather than the storage server, which matters because zou is both and the reference is neither: the image runs behind kong in a local project, and kong is what answers a request with no apikey."
+  ],
+  "schemas": ["public"],
+  "cases": [
+    {
+      "name": "every bucket, to a key that can see them all",
+      "feature": "bucket.list",
+      "path": "/storage/v1/bucket",
+      "key": "service"
+    },
+    {
+      "name": "one bucket by its id",
+      "feature": "bucket.get",
+      "path": "/storage/v1/bucket/photos",
+      "key": "service"
+    },
+    {
+      "name": "the public one, so the flag is read rather than assumed",
+      "feature": "bucket.get",
+      "path": "/storage/v1/bucket/notes",
+      "key": "service",
+      "note": "two buckets differing in one field is the only way a field that is always false proves anything"
+    },
+    {
+      "name": "a bucket that is not there",
+      "feature": "bucket.get",
+      "path": "/storage/v1/bucket/nowhere",
+      "key": "service"
+    },
+    {
+      "name": "the bucket list an anon key sees",
+      "feature": "bucket.list",
+      "path": "/storage/v1/bucket",
+      "key": "anon",
+      "note": "no policy on storage.buckets in a project that has changed nothing, so what comes back is what row level security leaves"
+    },
+    {
+      "name": "a bucket an anon key asks for by id",
+      "feature": "bucket.get",
+      "path": "/storage/v1/bucket/photos",
+      "key": "anon"
+    },
+    {
+      "name": "the bucket list with no key at all",
+      "feature": "bucket.list",
+      "path": "/storage/v1/bucket",
+      "key": "none"
+    },
+    {
+      "name": "a bearer that is not a token",
+      "feature": "bucket.list",
+      "path": "/storage/v1/bucket",
+      "key": "anon",
+      "headers": { "authorization": "Bearer not-a-token" }
+    },
+    {
+      "name": "making a bucket",
+      "feature": "bucket.create",
+      "method": "POST",
+      "path": "/storage/v1/bucket",
+      "key": "service",
+      "headers": { "content-type": "application/json" },
+      "body": "{\"id\":\"papers\",\"name\":\"papers\"}",
+      "writes": true
+    },
+    {
+      "name": "making a public bucket with a size limit and a mime list",
+      "feature": "bucket.create",
+      "method": "POST",
+      "path": "/storage/v1/bucket",
+      "key": "service",
+      "headers": { "content-type": "application/json" },
+      "body": "{\"id\":\"avatars\",\"name\":\"avatars\",\"public\":true,\"file_size_limit\":1048576,\"allowed_mime_types\":[\"image/png\",\"image/jpeg\"]}",
+      "writes": true
+    },
+    {
+      "name": "making a bucket that is already there",
+      "feature": "bucket.create",
+      "method": "POST",
+      "path": "/storage/v1/bucket",
+      "key": "service",
+      "headers": { "content-type": "application/json" },
+      "body": "{\"id\":\"photos\",\"name\":\"photos\"}",
+      "writes": true
+    },
+    {
+      "name": "making a bucket with no id",
+      "feature": "bucket.create",
+      "method": "POST",
+      "path": "/storage/v1/bucket",
+      "key": "service",
+      "headers": { "content-type": "application/json" },
+      "body": "{\"name\":\"nameless\"}",
+      "writes": true
+    },
+    {
+      "name": "making a bucket out of something that is not json",
+      "feature": "bucket.create",
+      "method": "POST",
+      "path": "/storage/v1/bucket",
+      "key": "service",
+      "headers": { "content-type": "application/json" },
+      "body": "{",
+      "writes": true
+    },
+    {
+      "name": "making a bucket with an anon key",
+      "feature": "bucket.create",
+      "method": "POST",
+      "path": "/storage/v1/bucket",
+      "key": "anon",
+      "headers": { "content-type": "application/json" },
+      "body": "{\"id\":\"uninvited\",\"name\":\"uninvited\"}",
+      "writes": true
+    },
+    {
+      "name": "turning a private bucket public",
+      "feature": "bucket.update",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/photos",
+      "key": "service",
+      "headers": { "content-type": "application/json" },
+      "body": "{\"public\":true}",
+      "writes": true
+    },
+    {
+      "name": "putting a size limit on a bucket",
+      "feature": "bucket.update",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/notes",
+      "key": "service",
+      "headers": { "content-type": "application/json" },
+      "body": "{\"public\":false,\"file_size_limit\":2048,\"allowed_mime_types\":[\"text/plain\"]}",
+      "writes": true
+    },
+    {
+      "name": "updating a bucket that is not there",
+      "feature": "bucket.update",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/nowhere",
+      "key": "service",
+      "headers": { "content-type": "application/json" },
+      "body": "{\"public\":true}",
+      "writes": true
+    },
+    {
+      "name": "updating a bucket with an anon key",
+      "feature": "bucket.update",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/photos",
+      "key": "anon",
+      "headers": { "content-type": "application/json" },
+      "body": "{\"public\":true}",
+      "writes": true
+    },
+    {
+      "name": "emptying a bucket that has something in it",
+      "feature": "bucket.empty",
+      "method": "POST",
+      "path": "/storage/v1/bucket/photos/empty",
+      "key": "service",
+      "writes": true
+    },
+    {
+      "name": "emptying a bucket that is already empty",
+      "feature": "bucket.empty",
+      "method": "POST",
+      "path": "/storage/v1/bucket/notes/empty",
+      "key": "service",
+      "writes": true
+    },
+    {
+      "name": "emptying a bucket that is not there",
+      "feature": "bucket.empty",
+      "method": "POST",
+      "path": "/storage/v1/bucket/nowhere/empty",
+      "key": "service",
+      "writes": true
+    },
+    {
+      "name": "deleting a bucket with nothing in it",
+      "feature": "bucket.delete",
+      "method": "DELETE",
+      "path": "/storage/v1/bucket/notes",
+      "key": "service",
+      "writes": true
+    },
+    {
+      "name": "deleting a bucket that still has something in it",
+      "feature": "bucket.delete",
+      "method": "DELETE",
+      "path": "/storage/v1/bucket/photos",
+      "key": "service",
+      "writes": true,
+      "note": "the row in storage.objects is the whole point of the fixture having one"
+    },
+    {
+      "name": "deleting a bucket that is not there",
+      "feature": "bucket.delete",
+      "method": "DELETE",
+      "path": "/storage/v1/bucket/nowhere",
+      "key": "service",
+      "writes": true
+    },
+    {
+      "name": "deleting a bucket with an anon key",
+      "feature": "bucket.delete",
+      "method": "DELETE",
+      "path": "/storage/v1/bucket/notes",
+      "key": "anon",
+      "writes": true
+    }
+  ]
+}
