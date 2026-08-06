@@ -2,7 +2,7 @@
   "suite": "storage",
   "note": [
     "The paths are the ones a Supabase project answers on. The reference here is not a binary anybody can download: storage-api ships as an image, so the recording is taken from the one supabase start brings up, at the version in versions.json.",
-    "Buckets, the byte path of the object surface, and listing. Move, copy, signed urls, resumable uploads and the S3 protocol are not asked yet.",
+    "Buckets, the byte path of the object surface, listing, and moving and copying one object. Signed urls, resumable uploads and the S3 protocol are not asked yet.",
     "The fixture pins what it wrote, so a reading case is compared byte for byte. A case that makes a bucket cannot pin what the server is about to write, so those name their timestamps in volatile and the rest of the answer is still compared whole.",
     "Every case that changes a row says so, and the rows go back before it runs. The reading cases are written before the writing ones inside each feature for the same reason: a read after a write would be asked about whatever the write left.",
     "A case with no key at all is asking the gateway rather than the storage server, which matters because zou is both and the reference is neither: the image runs behind kong in a local project, and kong is what answers a request with no apikey.",
@@ -729,6 +729,326 @@
         "content-type": "application/json"
       },
       "body": "{\"prefix\":\"\",\"limit\":100}"
+    },
+    {
+      "name": "an object to move, uploaded first because a move needs bytes",
+      "feature": "object.move",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/movable.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "move me",
+      "note": "the fixture writes rows and a move reads the bytes those rows point at, so the chain under this one starts with an upload rather than with the fixture",
+      "writes": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "moving it to another name in the same bucket",
+      "feature": "object.move",
+      "method": "POST",
+      "path": "/storage/v1/object/move",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"notes\", \"sourceKey\": \"movable.txt\", \"destinationKey\": \"moved/movable.txt\"}",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "reading it where it was moved to",
+      "feature": "object.move",
+      "method": "GET",
+      "path": "/storage/v1/object/notes/moved/movable.txt",
+      "key": "service",
+      "note": "the bytes rather than the row, which is the half of a move a table cannot answer"
+    },
+    {
+      "name": "reading it where it used to be",
+      "feature": "object.move",
+      "method": "GET",
+      "path": "/storage/v1/object/notes/movable.txt",
+      "key": "service"
+    },
+    {
+      "name": "moving it on to a bucket of its own",
+      "feature": "object.move",
+      "method": "POST",
+      "path": "/storage/v1/object/move",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"notes\", \"sourceKey\": \"moved/movable.txt\", \"destinationBucket\": \"photos\", \"destinationKey\": \"moved/movable.txt\"}",
+      "note": "destinationBucket is the field that makes a move between buckets a move rather than two",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "moving it on to a name something else already has",
+      "feature": "object.move",
+      "method": "POST",
+      "path": "/storage/v1/object/move",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"photos\", \"sourceKey\": \"moved/movable.txt\", \"destinationKey\": \"apples.txt\"}",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "moving something that is not there",
+      "feature": "object.move",
+      "method": "POST",
+      "path": "/storage/v1/object/move",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"photos\", \"sourceKey\": \"nothing.txt\", \"destinationKey\": \"somewhere.txt\"}",
+      "writes": true
+    },
+    {
+      "name": "moving out of a bucket that is not there",
+      "feature": "object.move",
+      "method": "POST",
+      "path": "/storage/v1/object/move",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"nowhere\", \"sourceKey\": \"apples.txt\", \"destinationKey\": \"pears.txt\"}",
+      "writes": true
+    },
+    {
+      "name": "a move with a body that names no destination",
+      "feature": "object.move",
+      "method": "POST",
+      "path": "/storage/v1/object/move",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"photos\", \"sourceKey\": \"apples.txt\"}",
+      "note": "the reference refuses this against a schema before its handler runs, and what that refusal says is the thing nothing else here asks",
+      "writes": true
+    },
+    {
+      "name": "a move with an anon key",
+      "feature": "object.move",
+      "method": "POST",
+      "path": "/storage/v1/object/move",
+      "key": "anon",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"photos\", \"sourceKey\": \"apples.txt\", \"destinationKey\": \"pears.txt\"}",
+      "writes": true
+    },
+    {
+      "name": "a move with no key at all",
+      "feature": "object.move",
+      "method": "POST",
+      "path": "/storage/v1/object/move",
+      "key": "none",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"photos\", \"sourceKey\": \"apples.txt\", \"destinationKey\": \"pears.txt\"}",
+      "writes": true
+    },
+    {
+      "name": "an object to copy, uploaded first for the same reason",
+      "feature": "object.copy",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/copyable.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "copy me",
+      "writes": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "copying it to another name in the same bucket",
+      "feature": "object.copy",
+      "method": "POST",
+      "path": "/storage/v1/object/copy",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"notes\", \"sourceKey\": \"copyable.txt\", \"destinationKey\": \"copies/copyable.txt\"}",
+      "note": "the answer carries the row it made rather than a sentence, which is the visible difference between copy and move",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id",
+        "/id",
+        "/updated_at",
+        "/created_at",
+        "/last_accessed_at",
+        "/metadata/lastModified",
+        "/version"
+      ]
+    },
+    {
+      "name": "reading the copy",
+      "feature": "object.copy",
+      "method": "GET",
+      "path": "/storage/v1/object/notes/copies/copyable.txt",
+      "key": "service"
+    },
+    {
+      "name": "reading the one it was copied from",
+      "feature": "object.copy",
+      "method": "GET",
+      "path": "/storage/v1/object/notes/copyable.txt",
+      "key": "service",
+      "note": "a copy that took the bytes with it would be a move, so the source is asked for as well"
+    },
+    {
+      "name": "copying it over the copy",
+      "feature": "object.copy",
+      "method": "POST",
+      "path": "/storage/v1/object/copy",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"notes\", \"sourceKey\": \"copyable.txt\", \"destinationKey\": \"copies/copyable.txt\"}",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "copying it over the copy, asking to replace it",
+      "feature": "object.copy",
+      "method": "POST",
+      "path": "/storage/v1/object/copy",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json",
+        "x-upsert": "true"
+      },
+      "body": "{\"bucketId\": \"notes\", \"sourceKey\": \"copyable.txt\", \"destinationKey\": \"copies/copyable.txt\"}",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id",
+        "/id",
+        "/updated_at",
+        "/created_at",
+        "/last_accessed_at",
+        "/metadata/lastModified",
+        "/version"
+      ]
+    },
+    {
+      "name": "copying it into another bucket",
+      "feature": "object.copy",
+      "method": "POST",
+      "path": "/storage/v1/object/copy",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"notes\", \"sourceKey\": \"copyable.txt\", \"destinationBucket\": \"photos\", \"destinationKey\": \"copies/copyable.txt\"}",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id",
+        "/id",
+        "/updated_at",
+        "/created_at",
+        "/last_accessed_at",
+        "/metadata/lastModified",
+        "/version"
+      ]
+    },
+    {
+      "name": "copying it with metadata of its own",
+      "feature": "object.copy",
+      "method": "POST",
+      "path": "/storage/v1/object/copy",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"notes\", \"sourceKey\": \"copyable.txt\", \"destinationKey\": \"copies/described.txt\", \"copyMetadata\": false, \"metadata\": {\"cacheControl\": \"max-age=60\", \"mimetype\": \"text/markdown\"}}",
+      "note": "copyMetadata false is what makes the metadata field mean anything, and the two together are the only way a copy answers something the source did not",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id",
+        "/id",
+        "/updated_at",
+        "/created_at",
+        "/last_accessed_at",
+        "/metadata/lastModified",
+        "/version"
+      ]
+    },
+    {
+      "name": "copying something that is not there",
+      "feature": "object.copy",
+      "method": "POST",
+      "path": "/storage/v1/object/copy",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"photos\", \"sourceKey\": \"nothing.txt\", \"destinationKey\": \"somewhere.txt\"}",
+      "writes": true
+    },
+    {
+      "name": "copying out of a bucket that is not there",
+      "feature": "object.copy",
+      "method": "POST",
+      "path": "/storage/v1/object/copy",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"nowhere\", \"sourceKey\": \"apples.txt\", \"destinationKey\": \"pears.txt\"}",
+      "writes": true
+    },
+    {
+      "name": "a copy with an anon key",
+      "feature": "object.copy",
+      "method": "POST",
+      "path": "/storage/v1/object/copy",
+      "key": "anon",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"photos\", \"sourceKey\": \"apples.txt\", \"destinationKey\": \"pears.txt\"}",
+      "writes": true
+    },
+    {
+      "name": "a copy with no key at all",
+      "feature": "object.copy",
+      "method": "POST",
+      "path": "/storage/v1/object/copy",
+      "key": "none",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"bucketId\": \"photos\", \"sourceKey\": \"apples.txt\", \"destinationKey\": \"pears.txt\"}",
+      "writes": true
     }
   ]
 }
