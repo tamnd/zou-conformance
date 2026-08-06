@@ -339,6 +339,362 @@
         "statusCode": "404"
       },
       "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    },
+    {
+      "name": "a small text file into a bucket",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/hello.txt"
+      }
+    },
+    {
+      "name": "the file that was just uploaded",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "the same file over the route that names the audience",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "the same file from a public bucket with no key at all",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "the first four bytes of it",
+      "status": 206,
+      "headers": {
+        "content-range": "bytes 0-3/11",
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hell"
+    },
+    {
+      "name": "the head of it",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": null
+    },
+    {
+      "name": "what is known about it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "bucket_id": "notes",
+        "cache_control": "no-cache",
+        "content_type": "text/plain",
+        "created_at": "<timestamp>",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\"",
+        "id": "<uuid>",
+        "last_modified": "<timestamp>",
+        "metadata": {},
+        "name": "hello.txt",
+        "size": 11,
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "the same, over the public route",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "bucket_id": "notes",
+        "cache_control": "no-cache",
+        "content_type": "text/plain",
+        "created_at": "<timestamp>",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\"",
+        "id": "<uuid>",
+        "last_modified": "<timestamp>",
+        "metadata": {},
+        "name": "hello.txt",
+        "size": 11,
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "an object that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a private bucket over the public route",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a private bucket with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a download with no key at all",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "a private bucket with no key at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    },
+    {
+      "name": "the head of one that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": null
+    },
+    {
+      "name": "the same path uploaded again",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "KeyAlreadyExists",
+        "error": "Duplicate",
+        "message": "The resource already exists",
+        "statusCode": "409"
+      }
+    },
+    {
+      "name": "the same path uploaded again, asking to replace it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/hello.txt"
+      }
+    },
+    {
+      "name": "the replacement, read back",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello again"
+    },
+    {
+      "name": "a put over the same path",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/hello.txt"
+      }
+    },
+    {
+      "name": "a multipart form, the way a browser sends one",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/form.txt"
+      }
+    },
+    {
+      "name": "what the form upload left",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "sent as a form"
+    },
+    {
+      "name": "a file into a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    },
+    {
+      "name": "a file uploaded with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "new row violates row-level security policy",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"new row violates row-level security policy\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "a file uploaded with no key at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "a put where nothing is there yet",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/never.txt"
+      }
+    },
+    {
+      "name": "removing the object the fixture wrote",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully deleted"
+      }
+    },
+    {
+      "name": "removing one that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "removing several by name",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "bucket_id": "photos",
+          "created_at": "<timestamp>",
+          "id": "<uuid>",
+          "last_accessed_at": "<timestamp>",
+          "metadata": {
+            "mimetype": "text/plain",
+            "size": 11
+          },
+          "name": "holiday/beach.txt",
+          "owner": "",
+          "owner_id": "",
+          "updated_at": "<timestamp>",
+          "user_metadata": null,
+          "version": "<string>"
+        }
+      ]
+    },
+    {
+      "name": "removing with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Access denied",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Access denied\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "removing from a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
     }
   ]
 }
