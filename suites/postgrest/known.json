@@ -1,18 +1,10 @@
 [
   {
-    "name": "delete: succeeds deleting the row when return=representation and selecting only the privileged columns",
-    "why": "status 403 not 200"
-  },
-  {
     "name": "insert: inserts json that has duplicate keys",
     "why": "the same rows, written as 2,3 not 1,2,3: the body reaches postgres with its duplicate key now, and the response drops it again, because zou builds a response with jsonb_agg where upstream builds it with json_agg"
   },
   {
     "name": "insert: inserts json that has duplicate keys (2)",
     "why": "the same rows, written as 2,3 not 1,2,3: the body reaches postgres with its duplicate key now, and the response drops it again, because zou builds a response with jsonb_agg where upstream builds it with json_agg"
-  },
-  {
-    "name": "insert: succeeds inserting if correct select is applied",
-    "why": "status 403 not 201"
   }
 ]
