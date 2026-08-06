@@ -7,6 +7,15 @@
 -- leave out. The two files are kept identical below the header, and a
 -- change to one is a change to both.
 
+-- The storage schema refuses a delete that did not come from the
+-- Storage API. `protect_delete` is a statement trigger on both tables
+-- and it reads a setting, which is the escape hatch storage-api itself
+-- uses when it deletes a row, so a fixture uses the same one rather
+-- than dropping the trigger and putting it back. A fixture that
+-- disabled the guard would also be a fixture that stopped noticing the
+-- day the guard changed.
+set storage.allow_delete_query = 'true';
+
 -- Emptied rather than upserted. A case that makes a bucket leaves a
 -- row behind, and the next run has to see the database the last one
 -- started with rather than the one it finished with. Objects first,
