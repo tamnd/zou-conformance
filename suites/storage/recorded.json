@@ -2060,6 +2060,121 @@
         "statusCode": "400"
       },
       "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"querystring must have required property 'token'\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "an object to ask about, uploaded first so its etag is known",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/etag.txt"
+      }
+    },
+    {
+      "name": "reading it with the etag it has",
+      "status": 304,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": null
+    },
+    {
+      "name": "reading it with an etag it does not have",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "reading it with a star",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "reading it with a list of etags, one of which is its own",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "reading it with the etag it has and no quotes around it",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "reading it as it was before it existed",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "reading it as it was after it existed",
+      "status": 304,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": null
+    },
+    {
+      "name": "reading it since a moment that is not a moment",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "reading it with an etag that matches and a moment that does not",
+      "status": 304,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": null
+    },
+    {
+      "name": "asking for part of it with the etag it has",
+      "status": 304,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": null
+    },
+    {
+      "name": "the head of it with the etag it has",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": null
+    },
+    {
+      "name": "reading it over the public route with the etag it has",
+      "status": 304,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": null
+    },
+    {
+      "name": "asking for it to be downloaded with the etag it has",
+      "status": 304,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": null
     }
   ]
 }
