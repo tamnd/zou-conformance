@@ -29,6 +29,18 @@
     "image": "supabase/gotrue:v2.194.0",
     "covers": ["auth"]
   },
+  "storage": {
+    "version": "1.67.20",
+    "image": "supabase/storage-api:v1.67.20",
+    "covers": ["storage"],
+    "note": [
+      "No binary line, because there is no binary. storage-api is published as",
+      "an image and nothing else, so the only way to ask it anything is to bring",
+      "up the stack, which is what the record workflow in tamnd/zou does. That is",
+      "also why the storage suite is checked against its recording in CI and never",
+      "diffed against a live reference the way the other three are."
+    ]
+  },
   "postgres_meta": {
     "version": "0.96.6",
     "image": "supabase/postgres-meta:v0.96.6",
