@@ -1568,6 +1568,498 @@
         "statusCode": "403"
       },
       "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "a url for an object that is there",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "signedURL": "/object/sign/photos/apples.txt?token=<jwt>"
+      }
+    },
+    {
+      "name": "a url for one under a folder",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "signedURL": "/object/sign/photos/holiday/beach.txt?token=<jwt>"
+      }
+    },
+    {
+      "name": "a url for an object that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a url out of a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a url with no lifetime asked for",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body must have required property 'expiresIn'",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body must have required property 'expiresIn'\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "a url asked to last no time at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body/expiresIn must be >= 1",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body/expiresIn must be >= 1\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "a url asked to last part of a second",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body/expiresIn must be integer",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body/expiresIn must be integer\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "a url asked to last longer than a clock can say",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidParameter",
+        "error": "InvalidParameter",
+        "message": "Invalid Parameter expiresIn",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"InvalidParameter\",\"message\":\"Invalid Parameter expiresIn\",\"code\":\"InvalidParameter\"}"
+    },
+    {
+      "name": "a url with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a url with no key at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "urls for a list of paths",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "error": null,
+          "path": "apples.txt",
+          "signedURL": "/object/sign/photos/apples.txt?token=<jwt>"
+        },
+        {
+          "error": "Either the object does not exist or you do not have access to it",
+          "path": "nothing.txt",
+          "signedURL": null
+        },
+        {
+          "error": null,
+          "path": "holiday/beach.txt",
+          "signedURL": "/object/sign/photos/holiday/beach.txt?token=<jwt>"
+        }
+      ]
+    },
+    {
+      "name": "urls for the same path twice",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "error": null,
+          "path": "apples.txt",
+          "signedURL": "/object/sign/photos/apples.txt?token=<jwt>"
+        },
+        {
+          "error": null,
+          "path": "apples.txt",
+          "signedURL": "/object/sign/photos/apples.txt?token=<jwt>"
+        }
+      ]
+    },
+    {
+      "name": "urls for no paths at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body/paths must NOT have fewer than 1 items",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body/paths must NOT have fewer than 1 items\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "urls with no paths field",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body must have required property 'paths'",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body must have required property 'paths'\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "urls with a path that is not a name",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "error": null,
+          "path": "apples.txt",
+          "signedURL": "/object/sign/photos/apples.txt?token=<jwt>"
+        },
+        {
+          "error": "Either the object does not exist or you do not have access to it",
+          "path": "7",
+          "signedURL": null
+        }
+      ]
+    },
+    {
+      "name": "urls with a lifetime that is refused and no paths at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body must have required property 'paths'",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body must have required property 'paths'\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "urls out of a bucket that is not there",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "error": "Either the object does not exist or you do not have access to it",
+          "path": "apples.txt",
+          "signedURL": null
+        }
+      ]
+    },
+    {
+      "name": "urls with an anon key",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "error": "Either the object does not exist or you do not have access to it",
+          "path": "apples.txt",
+          "signedURL": null
+        }
+      ]
+    },
+    {
+      "name": "spending a url signed for the object it names",
+      "status": 500,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InternalError",
+        "error": "Internal",
+        "message": "Internal Server Error",
+        "statusCode": "500"
+      },
+      "raw": "{\"statusCode\":\"500\",\"error\":\"Internal\",\"message\":\"Internal Server Error\",\"code\":\"InternalError\"}"
+    },
+    {
+      "name": "spending a url signed for something else",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidSignature",
+        "error": "InvalidSignature",
+        "message": "Invalid signature",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"InvalidSignature\",\"message\":\"Invalid signature\",\"code\":\"InvalidSignature\"}"
+    },
+    {
+      "name": "spending a url that has expired",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidJWT",
+        "error": "InvalidJWT",
+        "message": "\"exp\" claim timestamp check failed",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"InvalidJWT\",\"message\":\"\\\"exp\\\" claim timestamp check failed\",\"code\":\"InvalidJWT\"}"
+    },
+    {
+      "name": "spending a url signed by somebody else",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidJWT",
+        "error": "InvalidJWT",
+        "message": "signature verification failed",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"InvalidJWT\",\"message\":\"signature verification failed\",\"code\":\"InvalidJWT\"}"
+    },
+    {
+      "name": "spending a url whose token is not a token",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidJWT",
+        "error": "InvalidJWT",
+        "message": "Invalid Compact JWS",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"InvalidJWT\",\"message\":\"Invalid Compact JWS\",\"code\":\"InvalidJWT\"}"
+    },
+    {
+      "name": "spending a url with no token on it",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "querystring must have required property 'token'",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"querystring must have required property 'token'\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "spending a url signed for writing",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidSignature",
+        "error": "InvalidSignature",
+        "message": "Token is not scoped for download",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"InvalidSignature\",\"message\":\"Token is not scoped for download\",\"code\":\"InvalidSignature\"}"
+    },
+    {
+      "name": "a url to upload something with",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "token": "<jwt>",
+        "url": "/object/upload/sign/notes/signed.txt?token=<jwt>"
+      }
+    },
+    {
+      "name": "a url to upload over something already there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "KeyAlreadyExists",
+        "error": "Duplicate",
+        "message": "The resource already exists",
+        "statusCode": "409"
+      },
+      "raw": "{\"statusCode\":\"409\",\"error\":\"Duplicate\",\"message\":\"The resource already exists\",\"code\":\"KeyAlreadyExists\"}"
+    },
+    {
+      "name": "a url to upload over something already there, asking to replace it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "token": "<jwt>",
+        "url": "/object/upload/sign/photos/apples.txt?token=<jwt>"
+      }
+    },
+    {
+      "name": "a url to upload into a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "InvalidRequest",
+        "message": "The related resource does not exist",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"InvalidRequest\",\"message\":\"The related resource does not exist\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "a url to upload with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "new row violates row-level security policy",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"new row violates row-level security policy\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "a url to upload with no key at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "spending an upload url",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Key": "notes/signed.txt"
+      }
+    },
+    {
+      "name": "spending it again",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "KeyAlreadyExists",
+        "error": "Duplicate",
+        "message": "The resource already exists",
+        "statusCode": "409"
+      },
+      "raw": "{\"statusCode\":\"409\",\"error\":\"Duplicate\",\"message\":\"The resource already exists\",\"code\":\"KeyAlreadyExists\"}"
+    },
+    {
+      "name": "spending an upload url signed for reading",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidSignature",
+        "error": "InvalidSignature",
+        "message": "Token is not scoped for upload",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"InvalidSignature\",\"message\":\"Token is not scoped for upload\",\"code\":\"InvalidSignature\"}"
+    },
+    {
+      "name": "spending an upload url with no token on it",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "querystring must have required property 'token'",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"querystring must have required property 'token'\",\"code\":\"InvalidRequest\"}"
     }
   ]
 }
