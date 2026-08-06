@@ -660,6 +660,75 @@
       },
       "body": "{\"prefix\":\"\",\"limit\":100}",
       "note": "the one that reads the prefixes table rather than scanning names, and the reason this suite asks it at all is that nothing here knows whether the pinned version has it"
+    },
+    {
+      "name": "the second listing route, told to fold folders in",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list-v2/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100,\"with_delimiter\":true}",
+      "note": "a delimiter is what turns a name with a slash in it into a folder, and the two halves of the answer come back under different keys"
+    },
+    {
+      "name": "the second listing route, one row at a time",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list-v2/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":1}",
+      "note": "the only case that makes it say hasNext, which is the whole reason this route exists"
+    },
+    {
+      "name": "the second listing route, carrying on from the cursor",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list-v2/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100,\"cursor\":\"bDphcHBsZXMudHh0\"}",
+      "note": "the cursor the case above answers with, sent back, which is the other half of a page"
+    },
+    {
+      "name": "the second listing route, sorted by when the rows were made",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list-v2/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100,\"sortBy\":{\"column\":\"created_at\",\"order\":\"desc\"}}"
+    },
+    {
+      "name": "the second listing route, inside a folder",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list-v2/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"holiday/\",\"limit\":100,\"with_delimiter\":true}"
+    },
+    {
+      "name": "the second listing route with no key at all",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list-v2/photos",
+      "key": "none",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100}"
     }
   ]
 }
