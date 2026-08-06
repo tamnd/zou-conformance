@@ -299,16 +299,10 @@
       "path": "/storage/v1/object/info/notes/hello.txt",
       "key": "service",
       "volatile": [
-        "/Id",
-        "/Key",
         "/id",
-        "/key",
-        "/name",
         "/created_at",
-        "/updated_at",
-        "/last_accessed_at",
-        "/metadata/eTag",
-        "/metadata/lastModified"
+        "/last_modified",
+        "/version"
       ]
     },
     {
@@ -317,16 +311,10 @@
       "path": "/storage/v1/object/info/public/notes/hello.txt",
       "key": "none",
       "volatile": [
-        "/Id",
-        "/Key",
         "/id",
-        "/key",
-        "/name",
         "/created_at",
-        "/updated_at",
-        "/last_accessed_at",
-        "/metadata/eTag",
-        "/metadata/lastModified"
+        "/last_modified",
+        "/version"
       ]
     },
     {
@@ -354,6 +342,21 @@
       "feature": "object.download",
       "path": "/storage/v1/object/notes/hello.txt",
       "key": "none"
+    },
+    {
+      "name": "a private bucket with no key at all",
+      "feature": "object.download",
+      "path": "/storage/v1/object/photos/holiday/beach.txt",
+      "key": "none",
+      "note": "the pair of the public one above: the same route, the same absence of a token, and a bucket that is not public"
+    },
+    {
+      "name": "the head of one that is not there",
+      "feature": "object.download",
+      "method": "HEAD",
+      "path": "/storage/v1/object/notes/missing.txt",
+      "key": "service",
+      "note": "a head has no body to carry the refusal in, so the status is the whole answer"
     },
     {
       "name": "the same path uploaded again",
@@ -516,14 +519,7 @@
         "/0/created_at",
         "/0/updated_at",
         "/0/last_accessed_at",
-        "/0/version",
-        "/0/owner",
-        "/0/owner_id",
-        "/0/bucket_id",
-        "/0/metadata",
-        "/0/user_metadata",
-        "/0/level",
-        "/0/path_tokens"
+        "/0/version"
       ]
     },
     {
