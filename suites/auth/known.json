@@ -8,18 +8,6 @@
     "why": "saml_private_key_next_configured. Upstream answers true with SAML off and no key of any kind configured, which reads as an inverted flag, and zou answers false. Nothing in the clients reads it while saml_enabled is false."
   },
   {
-    "name": "a sign in whose body is not json",
-    "why": "The message stops where upstream's carries Go's parser detail after it, invalid character 'o' in literal null (expecting 'u'). The status, the error code and the sentence in front of the detail are the same."
-  },
-  {
-    "name": "a signup whose body is not json",
-    "why": "The same missing parser detail as the sign in above."
-  },
-  {
-    "name": "an empty body",
-    "why": "The same again, where upstream's detail is unexpected end of JSON input."
-  },
-  {
     "name": "listing accounts",
     "why": "zou fills the identity list in and upstream answers identities null here, because its ORM does not load the association on the listing query. A client reading identities off a listed account gets them from zou and has to fetch each account again from upstream, and nothing can be branching on a null that the single account fetch never returns."
   }

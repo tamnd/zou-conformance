@@ -78,7 +78,7 @@ The numbers move, so the file that has them is [docs/scoreboard.md](https://gith
 | --- | ---: | ---: | ---: |
 | rest | 82 | 82, 100% | 0 |
 | postgrest | 1217 | 1217, 100% | 0 |
-| auth | 77 | 71, 92% | 6 |
+| auth | 77 | 74, 96% | 3 |
 
 The supabase-js suite runs 16 of its 34 tests and zou passes all 16. The other 18 are Realtime and Storage, which zou does not serve yet.
 
