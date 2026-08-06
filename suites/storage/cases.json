@@ -616,7 +616,7 @@
       "body": "{\"prefix\":\"nowhere\",\"limit\":100,\"offset\":0,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}"
     },
     {
-      "name": "a bucket that is not there",
+      "name": "a listing of a bucket that is not there",
       "feature": "object.list",
       "method": "POST",
       "path": "/storage/v1/object/list/nowhere",
@@ -627,7 +627,7 @@
       "body": "{\"prefix\":\"\",\"limit\":100,\"offset\":0,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}"
     },
     {
-      "name": "a private bucket with an anon key",
+      "name": "a listing of a private bucket with an anon key",
       "feature": "object.list",
       "method": "POST",
       "path": "/storage/v1/object/list/photos",
