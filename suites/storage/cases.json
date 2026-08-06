@@ -2,7 +2,7 @@
   "suite": "storage",
   "note": [
     "The paths are the ones a Supabase project answers on. The reference here is not a binary anybody can download: storage-api ships as an image, so the recording is taken from the one supabase start brings up, at the version in versions.json.",
-    "Buckets and the byte path of the object surface. List, move, copy, signed urls, resumable uploads and the S3 protocol are not asked yet.",
+    "Buckets, the byte path of the object surface, and listing. Move, copy, signed urls, resumable uploads and the S3 protocol are not asked yet.",
     "The fixture pins what it wrote, so a reading case is compared byte for byte. A case that makes a bucket cannot pin what the server is about to write, so those name their timestamps in volatile and the rest of the answer is still compared whole.",
     "Every case that changes a row says so, and the rows go back before it runs. The reading cases are written before the writing ones inside each feature for the same reason: a read after a write would be asked about whatever the write left.",
     "A case with no key at all is asking the gateway rather than the storage server, which matters because zou is both and the reference is neither: the image runs behind kong in a local project, and kong is what answers a request with no apikey.",
@@ -516,9 +516,6 @@
       "writes": true,
       "volatile": [
         "/0/id",
-        "/0/created_at",
-        "/0/updated_at",
-        "/0/last_accessed_at",
         "/0/version"
       ]
     },
@@ -537,6 +534,132 @@
       "path": "/storage/v1/object/nowhere/holiday/beach.txt",
       "key": "service",
       "writes": true
+    },
+    {
+      "name": "everything a bucket holds",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100,\"offset\":0,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}",
+      "note": "the body a client library sends when it is asked for a listing and told nothing else"
+    },
+    {
+      "name": "what is under a folder",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"holiday\",\"limit\":100,\"offset\":0,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}",
+      "note": "a folder is not a row anywhere, it is the part of a name before a slash, so this is the question that says what one is"
+    },
+    {
+      "name": "the same list the other way up",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100,\"offset\":0,\"sortBy\":{\"column\":\"name\",\"order\":\"desc\"}}"
+    },
+    {
+      "name": "a listing sorted by when the rows were made",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100,\"offset\":0,\"sortBy\":{\"column\":\"created_at\",\"order\":\"asc\"}}",
+      "note": "the fixture writes the timestamps in a different order from the names, so a sort that was ignored would look like a sort that worked"
+    },
+    {
+      "name": "one row at a time, starting at the second",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":1,\"offset\":1,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}"
+    },
+    {
+      "name": "a search for part of a name",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100,\"offset\":0,\"search\":\"zeb\",\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}"
+    },
+    {
+      "name": "a prefix nothing is under",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"nowhere\",\"limit\":100,\"offset\":0,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}"
+    },
+    {
+      "name": "a bucket that is not there",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list/nowhere",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100,\"offset\":0,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}"
+    },
+    {
+      "name": "a private bucket with an anon key",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list/photos",
+      "key": "anon",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100,\"offset\":0,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}",
+      "note": "no policy lets an anon key see these rows, and what a listing does about that is a different question from what a download does"
+    },
+    {
+      "name": "a listing with no key at all",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list/photos",
+      "key": "none",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100,\"offset\":0,\"sortBy\":{\"column\":\"name\",\"order\":\"asc\"}}"
+    },
+    {
+      "name": "the second listing route",
+      "feature": "object.list",
+      "method": "POST",
+      "path": "/storage/v1/object/list-v2/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\",\"limit\":100}",
+      "note": "the one that reads the prefixes table rather than scanning names, and the reason this suite asks it at all is that nothing here knows whether the pinned version has it"
     }
   ]
 }
