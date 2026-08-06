@@ -1,10 +1,1 @@
-[
-  {
-    "name": "insert: inserts json that has duplicate keys",
-    "why": "the same rows, written as 2,3 not 1,2,3: the body reaches postgres with its duplicate key now, and the response drops it again, because zou builds a response with jsonb_agg where upstream builds it with json_agg"
-  },
-  {
-    "name": "insert: inserts json that has duplicate keys (2)",
-    "why": "the same rows, written as 2,3 not 1,2,3: the body reaches postgres with its duplicate key now, and the response drops it again, because zou builds a response with jsonb_agg where upstream builds it with json_agg"
-  }
-]
+[]
