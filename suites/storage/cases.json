@@ -2,11 +2,12 @@
   "suite": "storage",
   "note": [
     "The paths are the ones a Supabase project answers on. The reference here is not a binary anybody can download: storage-api ships as an image, so the recording is taken from the one supabase start brings up, at the version in versions.json.",
-    "Buckets, the byte path of the object surface, listing, and moving and copying one object. Signed urls, resumable uploads and the S3 protocol are not asked yet.",
+    "Buckets, the byte path of the object surface, listing, moving and copying one object, and signed urls. Resumable uploads, image transforms and the S3 protocol are not asked yet.",
     "The fixture pins what it wrote, so a reading case is compared byte for byte. A case that makes a bucket cannot pin what the server is about to write, so those name their timestamps in volatile and the rest of the answer is still compared whole.",
     "Every case that changes a row says so, and the rows go back before it runs. The reading cases are written before the writing ones inside each feature for the same reason: a read after a write would be asked about whatever the write left.",
     "A case with no key at all is asking the gateway rather than the storage server, which matters because zou is both and the reference is neither: the image runs behind kong in a local project, and kong is what answers a request with no apikey.",
-    "The object cases upload something and then read it, which the fixture cannot do for them: a fixture writes rows and an object is bytes in a store no sql statement can reach. So the reads after an upload are asked against what that upload left, and the writes that follow it say chained, which is the flag that keeps the rows from going back underneath them."
+    "The object cases upload something and then read it, which the fixture cannot do for them: a fixture writes rows and an object is bytes in a store no sql statement can reach. So the reads after an upload are asked against what that upload left, and the writes that follow it say chained, which is the flag that keeps the rows from going back underneath them.",
+    "A signed url cannot be carried out of one answer into the next: a case is one request and the harness has nowhere to hold a value from the answer to the case before it. So the cases that sign one name the url volatile, which keeps the path it points at and names only the token, and the cases that spend one carry a token written into the case, signed with the same project secret both targets are given and lasting until 2100. What is left over is whether a url this server signed a moment ago really works, and that is asked in zou's own tests instead."
   ],
   "schemas": [
     "public"
@@ -1048,6 +1049,382 @@
         "content-type": "application/json"
       },
       "body": "{\"bucketId\": \"photos\", \"sourceKey\": \"apples.txt\", \"destinationKey\": \"pears.txt\"}",
+      "writes": true
+    },
+    {
+      "name": "a url for an object that is there",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos/apples.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600}",
+      "note": "the url is the answer and the token in it was signed a moment ago, so the token is named and the path it points at is still compared",
+      "volatile": [
+        "/signedURL"
+      ]
+    },
+    {
+      "name": "a url for one under a folder",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos/holiday/beach.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 60}",
+      "note": "a name with a slash in it is still one name, and the whole of it has to come back in the url",
+      "volatile": [
+        "/signedURL"
+      ]
+    },
+    {
+      "name": "a url for an object that is not there",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos/nothing.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600}"
+    },
+    {
+      "name": "a url out of a bucket that is not there",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/nowhere/apples.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600}",
+      "note": "nothing asks about the bucket, so what answers is the object lookup finding no row"
+    },
+    {
+      "name": "a url with no lifetime asked for",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos/apples.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{}"
+    },
+    {
+      "name": "a url asked to last no time at all",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos/apples.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 0}"
+    },
+    {
+      "name": "a url asked to last part of a second",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos/apples.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 1.5}"
+    },
+    {
+      "name": "a url asked to last longer than a clock can say",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos/apples.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 9007199254740}",
+      "note": "the ceiling is the last second a millisecond counter kept in a double can name, and it is checked by the signer rather than by the schema"
+    },
+    {
+      "name": "a url with an anon key",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos/apples.txt",
+      "key": "anon",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600}",
+      "note": "photos is private and nothing has written a policy, so there is no row to sign a url for"
+    },
+    {
+      "name": "a url with no key at all",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos/apples.txt",
+      "key": "none",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600}"
+    },
+    {
+      "name": "urls for a list of paths",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600, \"paths\": [\"apples.txt\", \"nothing.txt\", \"holiday/beach.txt\"]}",
+      "note": "one that is there, one that is not, and one under a folder, so the order of the answers is checked as well as their shape",
+      "volatile": [
+        "/0/signedURL",
+        "/2/signedURL"
+      ]
+    },
+    {
+      "name": "urls for the same path twice",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600, \"paths\": [\"apples.txt\", \"apples.txt\"]}",
+      "note": "the lookup is one query for the whole list, so a path asked twice is a question about whether the answers are one per path or one per row",
+      "volatile": [
+        "/0/signedURL",
+        "/1/signedURL"
+      ]
+    },
+    {
+      "name": "urls for no paths at all",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600, \"paths\": []}"
+    },
+    {
+      "name": "urls with no paths field",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600}"
+    },
+    {
+      "name": "urls with a path that is not a name",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600, \"paths\": [\"apples.txt\", 7]}",
+      "volatile": [
+        "/0/signedURL"
+      ]
+    },
+    {
+      "name": "urls with a lifetime that is refused and no paths at all",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 9007199254740}",
+      "note": "both are wrong, and which one is answered says whether the schema or the signer had its say first"
+    },
+    {
+      "name": "urls out of a bucket that is not there",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/nowhere",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600, \"paths\": [\"apples.txt\"]}"
+    },
+    {
+      "name": "urls with an anon key",
+      "feature": "object.sign",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/photos",
+      "key": "anon",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600, \"paths\": [\"apples.txt\"]}"
+    },
+    {
+      "name": "spending a url signed for the object it names",
+      "feature": "object.sign",
+      "path": "/storage/v1/object/sign/photos/apples.txt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaG90b3MvYXBwbGVzLnR4dCIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6NDEwMjQ0NDgwMH0.JvSnhKhvOqNqIllW4nA8V-0EezyPkiL7QNroPRs5ibQ",
+      "key": "none",
+      "note": "the token is written into the case rather than taken from the signing above, because a case cannot read a value out of the answer to another one. It is signed with the project secret both targets are given, it names the object in the path, and it lasts until 2100"
+    },
+    {
+      "name": "spending a url signed for something else",
+      "feature": "object.sign",
+      "path": "/storage/v1/object/sign/photos/apples.txt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaG90b3MvemVicmEudHh0Iiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTcwMDAwMDAwMCwiZXhwIjo0MTAyNDQ0ODAwfQ.qnPtOGJR7E7aFdvXl72pkZLDaUj_jDvdA5erDcOqi3A",
+      "key": "none",
+      "note": "the same bucket and a name that is in the token rather than in the path, which is the whole of what stops one signed url being a signed url for everything"
+    },
+    {
+      "name": "spending a url that has expired",
+      "feature": "object.sign",
+      "path": "/storage/v1/object/sign/photos/apples.txt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaG90b3MvYXBwbGVzLnR4dCIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6MTcwMDAwMDA2MH0.38vO3p9ZDAVZTvbeZo7Yu6e6NQc_hf07MLjKlb_X2AA",
+      "key": "none"
+    },
+    {
+      "name": "spending a url signed by somebody else",
+      "feature": "object.sign",
+      "path": "/storage/v1/object/sign/photos/apples.txt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaG90b3MvYXBwbGVzLnR4dCIsInNjb3BlIjoiZG93bmxvYWQiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6NDEwMjQ0NDgwMH0.4Mh1_aoubGIoy6vbxZpwKQdrM_uY9Nd7sae-13WKz6Y",
+      "key": "none",
+      "note": "every claim is right and the signature is not, and the signature is what is looked at first"
+    },
+    {
+      "name": "spending a url whose token is not a token",
+      "feature": "object.sign",
+      "path": "/storage/v1/object/sign/photos/apples.txt?token=not-a-token",
+      "key": "none"
+    },
+    {
+      "name": "spending a url with no token on it",
+      "feature": "object.sign",
+      "path": "/storage/v1/object/sign/photos/apples.txt",
+      "key": "none"
+    },
+    {
+      "name": "spending a url signed for writing",
+      "feature": "object.sign",
+      "path": "/storage/v1/object/sign/photos/apples.txt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJwaG90b3MvYXBwbGVzLnR4dCIsInNjb3BlIjoidXBsb2FkIiwidXBzZXJ0IjpmYWxzZSwiaWF0IjoxNzAwMDAwMDAwLCJleHAiOjQxMDI0NDQ4MDB9.sQzdDQuzti1QiAfgVOUWJMi3yTI9eyd9a2XgMoa7A8c",
+      "key": "none",
+      "note": "the scope claim is what keeps a url handed to a browser from also being a way in"
+    },
+    {
+      "name": "a url to upload something with",
+      "feature": "object.sign.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/upload/sign/notes/signed.txt",
+      "key": "service",
+      "note": "nobody asks how long this one lasts, and the answer carries the url and the token out of it separately",
+      "volatile": [
+        "/url",
+        "/token"
+      ]
+    },
+    {
+      "name": "a url to upload over something already there",
+      "feature": "object.sign.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/upload/sign/photos/apples.txt",
+      "key": "service",
+      "note": "whether the caller could do the upload is asked by doing it and rolling it back, so a name already taken is refused here rather than when the url is spent"
+    },
+    {
+      "name": "a url to upload over something already there, asking to replace it",
+      "feature": "object.sign.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/upload/sign/photos/apples.txt",
+      "key": "service",
+      "headers": {
+        "x-upsert": "true"
+      },
+      "volatile": [
+        "/url",
+        "/token"
+      ]
+    },
+    {
+      "name": "a url to upload into a bucket that is not there",
+      "feature": "object.sign.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/upload/sign/nowhere/signed.txt",
+      "key": "service"
+    },
+    {
+      "name": "a url to upload with an anon key",
+      "feature": "object.sign.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/upload/sign/notes/signed.txt",
+      "key": "anon"
+    },
+    {
+      "name": "a url to upload with no key at all",
+      "feature": "object.sign.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/upload/sign/notes/signed.txt",
+      "key": "none"
+    },
+    {
+      "name": "spending an upload url",
+      "feature": "object.sign.upload",
+      "method": "PUT",
+      "path": "/storage/v1/object/upload/sign/notes/signed.txt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJub3Rlcy9zaWduZWQudHh0IiwidXBzZXJ0IjpmYWxzZSwic2NvcGUiOiJ1cGxvYWQiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6NDEwMjQ0NDgwMH0.1R6qjJWotxMbJ1k7KiaMHdVEBdAcKmwj1qK7Kck7wsM",
+      "key": "none",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "signed and sent",
+      "note": "a fixed token again, and the one case here that really writes: the bytes arrive with no key on the request at all, because the token is the whole of the permission",
+      "writes": true
+    },
+    {
+      "name": "spending it again",
+      "feature": "object.sign.upload",
+      "method": "PUT",
+      "path": "/storage/v1/object/upload/sign/notes/signed.txt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJub3Rlcy9zaWduZWQudHh0IiwidXBzZXJ0IjpmYWxzZSwic2NvcGUiOiJ1cGxvYWQiLCJpYXQiOjE3MDAwMDAwMDAsImV4cCI6NDEwMjQ0NDgwMH0.1R6qjJWotxMbJ1k7KiaMHdVEBdAcKmwj1qK7Kck7wsM",
+      "key": "none",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "signed and sent again",
+      "note": "the url said nothing about replacing, so the second one collides with what the first left",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "spending an upload url signed for reading",
+      "feature": "object.sign.upload",
+      "method": "PUT",
+      "path": "/storage/v1/object/upload/sign/notes/signed.txt?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1cmwiOiJub3Rlcy9zaWduZWQudHh0Iiwic2NvcGUiOiJkb3dubG9hZCIsImlhdCI6MTcwMDAwMDAwMCwiZXhwIjo0MTAyNDQ0ODAwfQ.lFmFcTUhzCJvAQL6V4DdxtHNPSNXqA-hQzMFLK6XZnI",
+      "key": "none",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "signed and sent",
+      "note": "the other half of the scope check, so neither direction is the loose one",
+      "writes": true
+    },
+    {
+      "name": "spending an upload url with no token on it",
+      "feature": "object.sign.upload",
+      "method": "PUT",
+      "path": "/storage/v1/object/upload/sign/notes/signed.txt",
+      "key": "none",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "signed and sent",
       "writes": true
     }
   ]
