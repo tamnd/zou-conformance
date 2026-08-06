@@ -652,9 +652,9 @@
       "body": [
         {
           "bucket_id": "photos",
-          "created_at": "<timestamp>",
+          "created_at": "2024-03-04T05:06:07.000Z",
           "id": "<uuid>",
-          "last_accessed_at": "<timestamp>",
+          "last_accessed_at": "2024-03-04T05:06:07.000Z",
           "metadata": {
             "mimetype": "text/plain",
             "size": 11
@@ -662,7 +662,7 @@
           "name": "holiday/beach.txt",
           "owner": "",
           "owner_id": "",
-          "updated_at": "<timestamp>",
+          "updated_at": "2024-03-04T05:06:07.000Z",
           "user_metadata": null,
           "version": "<string>"
         }
@@ -695,6 +695,525 @@
         "statusCode": "404"
       },
       "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "everything a bucket holds",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "created_at": "2024-03-06T07:08:09.000Z",
+          "id": "4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b",
+          "last_accessed_at": "2024-03-06T07:08:09.000Z",
+          "metadata": {
+            "mimetype": "text/plain",
+            "size": 33
+          },
+          "name": "apples.txt",
+          "updated_at": "2024-03-06T07:08:09.000Z"
+        },
+        {
+          "created_at": null,
+          "id": null,
+          "last_accessed_at": null,
+          "metadata": null,
+          "name": "holiday",
+          "updated_at": null
+        },
+        {
+          "created_at": "2024-03-07T08:09:10.000Z",
+          "id": "5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c",
+          "last_accessed_at": "2024-03-07T08:09:10.000Z",
+          "metadata": {
+            "mimetype": "text/plain",
+            "size": 44
+          },
+          "name": "zebra.txt",
+          "updated_at": "2024-03-07T08:09:10.000Z"
+        }
+      ],
+      "raw": "[{\"name\":\"apples.txt\",\"id\":\"4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b\",\"updated_at\":\"2024-03-06T07:08:09.000Z\",\"created_at\":\"2024-03-06T07:08:09.000Z\",\"last_accessed_at\":\"2024-03-06T07:08:09.000Z\",\"metadata\":{\"size\":33,\"mimetype\":\"text/plain\"}},{\"name\":\"holiday\",\"id\":null,\"updated_at\":null,\"created_at\":null,\"last_accessed_at\":null,\"metadata\":null},{\"name\":\"zebra.txt\",\"id\":\"5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c\",\"updated_at\":\"2024-03-07T08:09:10.000Z\",\"created_at\":\"2024-03-07T08:09:10.000Z\",\"last_accessed_at\":\"2024-03-07T08:09:10.000Z\",\"metadata\":{\"size\":44,\"mimetype\":\"text/plain\"}}]"
+    },
+    {
+      "name": "what is under a folder",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "created_at": "2024-03-04T05:06:07.000Z",
+          "id": "2c0d1e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f",
+          "last_accessed_at": "2024-03-04T05:06:07.000Z",
+          "metadata": {
+            "mimetype": "text/plain",
+            "size": 11
+          },
+          "name": "beach.txt",
+          "updated_at": "2024-03-04T05:06:07.000Z"
+        },
+        {
+          "created_at": "2024-03-05T06:07:08.000Z",
+          "id": "3d1e2f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a",
+          "last_accessed_at": "2024-03-05T06:07:08.000Z",
+          "metadata": {
+            "mimetype": "text/plain",
+            "size": 22
+          },
+          "name": "mountain.txt",
+          "updated_at": "2024-03-05T06:07:08.000Z"
+        }
+      ],
+      "raw": "[{\"name\":\"beach.txt\",\"id\":\"2c0d1e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f\",\"updated_at\":\"2024-03-04T05:06:07.000Z\",\"created_at\":\"2024-03-04T05:06:07.000Z\",\"last_accessed_at\":\"2024-03-04T05:06:07.000Z\",\"metadata\":{\"size\":11,\"mimetype\":\"text/plain\"}},{\"name\":\"mountain.txt\",\"id\":\"3d1e2f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a\",\"updated_at\":\"2024-03-05T06:07:08.000Z\",\"created_at\":\"2024-03-05T06:07:08.000Z\",\"last_accessed_at\":\"2024-03-05T06:07:08.000Z\",\"metadata\":{\"size\":22,\"mimetype\":\"text/plain\"}}]"
+    },
+    {
+      "name": "the same list the other way up",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "created_at": "2024-03-07T08:09:10.000Z",
+          "id": "5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c",
+          "last_accessed_at": "2024-03-07T08:09:10.000Z",
+          "metadata": {
+            "mimetype": "text/plain",
+            "size": 44
+          },
+          "name": "zebra.txt",
+          "updated_at": "2024-03-07T08:09:10.000Z"
+        },
+        {
+          "created_at": null,
+          "id": null,
+          "last_accessed_at": null,
+          "metadata": null,
+          "name": "holiday",
+          "updated_at": null
+        },
+        {
+          "created_at": "2024-03-06T07:08:09.000Z",
+          "id": "4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b",
+          "last_accessed_at": "2024-03-06T07:08:09.000Z",
+          "metadata": {
+            "mimetype": "text/plain",
+            "size": 33
+          },
+          "name": "apples.txt",
+          "updated_at": "2024-03-06T07:08:09.000Z"
+        }
+      ],
+      "raw": "[{\"name\":\"zebra.txt\",\"id\":\"5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c\",\"updated_at\":\"2024-03-07T08:09:10.000Z\",\"created_at\":\"2024-03-07T08:09:10.000Z\",\"last_accessed_at\":\"2024-03-07T08:09:10.000Z\",\"metadata\":{\"size\":44,\"mimetype\":\"text/plain\"}},{\"name\":\"holiday\",\"id\":null,\"updated_at\":null,\"created_at\":null,\"last_accessed_at\":null,\"metadata\":null},{\"name\":\"apples.txt\",\"id\":\"4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b\",\"updated_at\":\"2024-03-06T07:08:09.000Z\",\"created_at\":\"2024-03-06T07:08:09.000Z\",\"last_accessed_at\":\"2024-03-06T07:08:09.000Z\",\"metadata\":{\"size\":33,\"mimetype\":\"text/plain\"}}]"
+    },
+    {
+      "name": "a listing sorted by when the rows were made",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "created_at": null,
+          "id": null,
+          "last_accessed_at": null,
+          "metadata": null,
+          "name": "holiday",
+          "updated_at": null
+        },
+        {
+          "created_at": "2024-03-06T07:08:09.000Z",
+          "id": "4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b",
+          "last_accessed_at": "2024-03-06T07:08:09.000Z",
+          "metadata": {
+            "mimetype": "text/plain",
+            "size": 33
+          },
+          "name": "apples.txt",
+          "updated_at": "2024-03-06T07:08:09.000Z"
+        },
+        {
+          "created_at": "2024-03-07T08:09:10.000Z",
+          "id": "5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c",
+          "last_accessed_at": "2024-03-07T08:09:10.000Z",
+          "metadata": {
+            "mimetype": "text/plain",
+            "size": 44
+          },
+          "name": "zebra.txt",
+          "updated_at": "2024-03-07T08:09:10.000Z"
+        }
+      ],
+      "raw": "[{\"name\":\"holiday\",\"id\":null,\"updated_at\":null,\"created_at\":null,\"last_accessed_at\":null,\"metadata\":null},{\"name\":\"apples.txt\",\"id\":\"4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b\",\"updated_at\":\"2024-03-06T07:08:09.000Z\",\"created_at\":\"2024-03-06T07:08:09.000Z\",\"last_accessed_at\":\"2024-03-06T07:08:09.000Z\",\"metadata\":{\"size\":33,\"mimetype\":\"text/plain\"}},{\"name\":\"zebra.txt\",\"id\":\"5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c\",\"updated_at\":\"2024-03-07T08:09:10.000Z\",\"created_at\":\"2024-03-07T08:09:10.000Z\",\"last_accessed_at\":\"2024-03-07T08:09:10.000Z\",\"metadata\":{\"size\":44,\"mimetype\":\"text/plain\"}}]"
+    },
+    {
+      "name": "one row at a time, starting at the second",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "created_at": null,
+          "id": null,
+          "last_accessed_at": null,
+          "metadata": null,
+          "name": "holiday",
+          "updated_at": null
+        }
+      ],
+      "raw": "[{\"name\":\"holiday\",\"id\":null,\"updated_at\":null,\"created_at\":null,\"last_accessed_at\":null,\"metadata\":null}]"
+    },
+    {
+      "name": "a search for part of a name",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "created_at": "2024-03-07T08:09:10.000Z",
+          "id": "5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c",
+          "last_accessed_at": "2024-03-07T08:09:10.000Z",
+          "metadata": {
+            "mimetype": "text/plain",
+            "size": 44
+          },
+          "name": "zebra.txt",
+          "updated_at": "2024-03-07T08:09:10.000Z"
+        }
+      ],
+      "raw": "[{\"name\":\"zebra.txt\",\"id\":\"5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c\",\"updated_at\":\"2024-03-07T08:09:10.000Z\",\"created_at\":\"2024-03-07T08:09:10.000Z\",\"last_accessed_at\":\"2024-03-07T08:09:10.000Z\",\"metadata\":{\"size\":44,\"mimetype\":\"text/plain\"}}]"
+    },
+    {
+      "name": "a prefix nothing is under",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": []
+    },
+    {
+      "name": "a listing of a bucket that is not there",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": []
+    },
+    {
+      "name": "a listing of a private bucket with an anon key",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": []
+    },
+    {
+      "name": "a listing with no key at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "the second listing route",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "folders": [],
+        "hasNext": false,
+        "objects": [
+          {
+            "created_at": "2024-03-06T07:08:09.000Z",
+            "id": "4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b",
+            "last_accessed_at": "2024-03-06T07:08:09.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 33
+            },
+            "name": "apples.txt",
+            "updated_at": "2024-03-06T07:08:09.000Z"
+          },
+          {
+            "created_at": "2024-03-04T05:06:07.000Z",
+            "id": "2c0d1e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f",
+            "last_accessed_at": "2024-03-04T05:06:07.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 11
+            },
+            "name": "holiday/beach.txt",
+            "updated_at": "2024-03-04T05:06:07.000Z"
+          },
+          {
+            "created_at": "2024-03-05T06:07:08.000Z",
+            "id": "3d1e2f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a",
+            "last_accessed_at": "2024-03-05T06:07:08.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 22
+            },
+            "name": "holiday/mountain.txt",
+            "updated_at": "2024-03-05T06:07:08.000Z"
+          },
+          {
+            "created_at": "2024-03-07T08:09:10.000Z",
+            "id": "5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c",
+            "last_accessed_at": "2024-03-07T08:09:10.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 44
+            },
+            "name": "zebra.txt",
+            "updated_at": "2024-03-07T08:09:10.000Z"
+          }
+        ]
+      },
+      "raw": "{\"hasNext\":false,\"folders\":[],\"objects\":[{\"id\":\"4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b\",\"name\":\"apples.txt\",\"metadata\":{\"size\":33,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-06T07:08:09.000Z\",\"created_at\":\"2024-03-06T07:08:09.000Z\",\"last_accessed_at\":\"2024-03-06T07:08:09.000Z\"},{\"id\":\"2c0d1e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f\",\"name\":\"holiday/beach.txt\",\"metadata\":{\"size\":11,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-04T05:06:07.000Z\",\"created_at\":\"2024-03-04T05:06:07.000Z\",\"last_accessed_at\":\"2024-03-04T05:06:07.000Z\"},{\"id\":\"3d1e2f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a\",\"name\":\"holiday/mountain.txt\",\"metadata\":{\"size\":22,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-05T06:07:08.000Z\",\"created_at\":\"2024-03-05T06:07:08.000Z\",\"last_accessed_at\":\"2024-03-05T06:07:08.000Z\"},{\"id\":\"5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c\",\"name\":\"zebra.txt\",\"metadata\":{\"size\":44,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-07T08:09:10.000Z\",\"created_at\":\"2024-03-07T08:09:10.000Z\",\"last_accessed_at\":\"2024-03-07T08:09:10.000Z\"}]}"
+    },
+    {
+      "name": "the second listing route, told to fold folders in",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "folders": [
+          {
+            "created_at": null,
+            "id": null,
+            "key": "holiday",
+            "last_accessed_at": null,
+            "metadata": null,
+            "name": "holiday/",
+            "updated_at": null
+          }
+        ],
+        "hasNext": false,
+        "objects": [
+          {
+            "created_at": "2024-03-06T07:08:09.000Z",
+            "id": "4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b",
+            "key": "apples.txt",
+            "last_accessed_at": "2024-03-06T07:08:09.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 33
+            },
+            "name": "apples.txt",
+            "updated_at": "2024-03-06T07:08:09.000Z"
+          },
+          {
+            "created_at": "2024-03-07T08:09:10.000Z",
+            "id": "5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c",
+            "key": "zebra.txt",
+            "last_accessed_at": "2024-03-07T08:09:10.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 44
+            },
+            "name": "zebra.txt",
+            "updated_at": "2024-03-07T08:09:10.000Z"
+          }
+        ]
+      },
+      "raw": "{\"hasNext\":false,\"folders\":[{\"key\":\"holiday\",\"name\":\"holiday/\",\"id\":null,\"updated_at\":null,\"created_at\":null,\"last_accessed_at\":null,\"metadata\":null}],\"objects\":[{\"key\":\"apples.txt\",\"name\":\"apples.txt\",\"id\":\"4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b\",\"updated_at\":\"2024-03-06T07:08:09.000Z\",\"created_at\":\"2024-03-06T07:08:09.000Z\",\"last_accessed_at\":\"2024-03-06T07:08:09.000Z\",\"metadata\":{\"size\":33,\"mimetype\":\"text/plain\"}},{\"key\":\"zebra.txt\",\"name\":\"zebra.txt\",\"id\":\"5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c\",\"updated_at\":\"2024-03-07T08:09:10.000Z\",\"created_at\":\"2024-03-07T08:09:10.000Z\",\"last_accessed_at\":\"2024-03-07T08:09:10.000Z\",\"metadata\":{\"size\":44,\"mimetype\":\"text/plain\"}}]}"
+    },
+    {
+      "name": "the second listing route, one row at a time",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "folders": [],
+        "hasNext": true,
+        "nextCursor": "bDphcHBsZXMudHh0",
+        "nextCursorKey": "apples.txt",
+        "objects": [
+          {
+            "created_at": "2024-03-06T07:08:09.000Z",
+            "id": "4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b",
+            "last_accessed_at": "2024-03-06T07:08:09.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 33
+            },
+            "name": "apples.txt",
+            "updated_at": "2024-03-06T07:08:09.000Z"
+          }
+        ]
+      },
+      "raw": "{\"hasNext\":true,\"nextCursor\":\"bDphcHBsZXMudHh0\",\"nextCursorKey\":\"apples.txt\",\"folders\":[],\"objects\":[{\"id\":\"4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b\",\"name\":\"apples.txt\",\"metadata\":{\"size\":33,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-06T07:08:09.000Z\",\"created_at\":\"2024-03-06T07:08:09.000Z\",\"last_accessed_at\":\"2024-03-06T07:08:09.000Z\"}]}"
+    },
+    {
+      "name": "the second listing route, carrying on from the cursor",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "folders": [],
+        "hasNext": false,
+        "objects": [
+          {
+            "created_at": "2024-03-04T05:06:07.000Z",
+            "id": "2c0d1e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f",
+            "last_accessed_at": "2024-03-04T05:06:07.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 11
+            },
+            "name": "holiday/beach.txt",
+            "updated_at": "2024-03-04T05:06:07.000Z"
+          },
+          {
+            "created_at": "2024-03-05T06:07:08.000Z",
+            "id": "3d1e2f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a",
+            "last_accessed_at": "2024-03-05T06:07:08.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 22
+            },
+            "name": "holiday/mountain.txt",
+            "updated_at": "2024-03-05T06:07:08.000Z"
+          },
+          {
+            "created_at": "2024-03-07T08:09:10.000Z",
+            "id": "5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c",
+            "last_accessed_at": "2024-03-07T08:09:10.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 44
+            },
+            "name": "zebra.txt",
+            "updated_at": "2024-03-07T08:09:10.000Z"
+          }
+        ]
+      },
+      "raw": "{\"hasNext\":false,\"folders\":[],\"objects\":[{\"id\":\"2c0d1e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f\",\"name\":\"holiday/beach.txt\",\"metadata\":{\"size\":11,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-04T05:06:07.000Z\",\"created_at\":\"2024-03-04T05:06:07.000Z\",\"last_accessed_at\":\"2024-03-04T05:06:07.000Z\"},{\"id\":\"3d1e2f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a\",\"name\":\"holiday/mountain.txt\",\"metadata\":{\"size\":22,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-05T06:07:08.000Z\",\"created_at\":\"2024-03-05T06:07:08.000Z\",\"last_accessed_at\":\"2024-03-05T06:07:08.000Z\"},{\"id\":\"5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c\",\"name\":\"zebra.txt\",\"metadata\":{\"size\":44,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-07T08:09:10.000Z\",\"created_at\":\"2024-03-07T08:09:10.000Z\",\"last_accessed_at\":\"2024-03-07T08:09:10.000Z\"}]}"
+    },
+    {
+      "name": "the second listing route, sorted by when the rows were made",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "folders": [],
+        "hasNext": false,
+        "objects": [
+          {
+            "created_at": "2024-03-07T08:09:10.000Z",
+            "id": "5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c",
+            "last_accessed_at": "2024-03-07T08:09:10.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 44
+            },
+            "name": "zebra.txt",
+            "updated_at": "2024-03-07T08:09:10.000Z"
+          },
+          {
+            "created_at": "2024-03-06T07:08:09.000Z",
+            "id": "4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b",
+            "last_accessed_at": "2024-03-06T07:08:09.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 33
+            },
+            "name": "apples.txt",
+            "updated_at": "2024-03-06T07:08:09.000Z"
+          },
+          {
+            "created_at": "2024-03-05T06:07:08.000Z",
+            "id": "3d1e2f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a",
+            "last_accessed_at": "2024-03-05T06:07:08.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 22
+            },
+            "name": "holiday/mountain.txt",
+            "updated_at": "2024-03-05T06:07:08.000Z"
+          },
+          {
+            "created_at": "2024-03-04T05:06:07.000Z",
+            "id": "2c0d1e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f",
+            "last_accessed_at": "2024-03-04T05:06:07.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 11
+            },
+            "name": "holiday/beach.txt",
+            "updated_at": "2024-03-04T05:06:07.000Z"
+          }
+        ]
+      },
+      "raw": "{\"hasNext\":false,\"folders\":[],\"objects\":[{\"id\":\"5f3a4b7c-8d9e-4f0a-9b2c-3d4e5f6a7b8c\",\"name\":\"zebra.txt\",\"metadata\":{\"size\":44,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-07T08:09:10.000Z\",\"created_at\":\"2024-03-07T08:09:10.000Z\",\"last_accessed_at\":\"2024-03-07T08:09:10.000Z\"},{\"id\":\"4e2f3a6b-7c8d-4e9f-8a1b-2c3d4e5f6a7b\",\"name\":\"apples.txt\",\"metadata\":{\"size\":33,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-06T07:08:09.000Z\",\"created_at\":\"2024-03-06T07:08:09.000Z\",\"last_accessed_at\":\"2024-03-06T07:08:09.000Z\"},{\"id\":\"3d1e2f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a\",\"name\":\"holiday/mountain.txt\",\"metadata\":{\"size\":22,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-05T06:07:08.000Z\",\"created_at\":\"2024-03-05T06:07:08.000Z\",\"last_accessed_at\":\"2024-03-05T06:07:08.000Z\"},{\"id\":\"2c0d1e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f\",\"name\":\"holiday/beach.txt\",\"metadata\":{\"size\":11,\"mimetype\":\"text/plain\"},\"updated_at\":\"2024-03-04T05:06:07.000Z\",\"created_at\":\"2024-03-04T05:06:07.000Z\",\"last_accessed_at\":\"2024-03-04T05:06:07.000Z\"}]}"
+    },
+    {
+      "name": "the second listing route, inside a folder",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "folders": [],
+        "hasNext": false,
+        "objects": [
+          {
+            "created_at": "2024-03-04T05:06:07.000Z",
+            "id": "2c0d1e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f",
+            "key": "beach.txt",
+            "last_accessed_at": "2024-03-04T05:06:07.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 11
+            },
+            "name": "holiday/beach.txt",
+            "updated_at": "2024-03-04T05:06:07.000Z"
+          },
+          {
+            "created_at": "2024-03-05T06:07:08.000Z",
+            "id": "3d1e2f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a",
+            "key": "mountain.txt",
+            "last_accessed_at": "2024-03-05T06:07:08.000Z",
+            "metadata": {
+              "mimetype": "text/plain",
+              "size": 22
+            },
+            "name": "holiday/mountain.txt",
+            "updated_at": "2024-03-05T06:07:08.000Z"
+          }
+        ]
+      },
+      "raw": "{\"hasNext\":false,\"folders\":[],\"objects\":[{\"key\":\"beach.txt\",\"name\":\"holiday/beach.txt\",\"id\":\"2c0d1e4f-5a6b-4c7d-8e9f-0a1b2c3d4e5f\",\"updated_at\":\"2024-03-04T05:06:07.000Z\",\"created_at\":\"2024-03-04T05:06:07.000Z\",\"last_accessed_at\":\"2024-03-04T05:06:07.000Z\",\"metadata\":{\"size\":11,\"mimetype\":\"text/plain\"}},{\"key\":\"mountain.txt\",\"name\":\"holiday/mountain.txt\",\"id\":\"3d1e2f5a-6b7c-4d8e-9f0a-1b2c3d4e5f6a\",\"updated_at\":\"2024-03-05T06:07:08.000Z\",\"created_at\":\"2024-03-05T06:07:08.000Z\",\"last_accessed_at\":\"2024-03-05T06:07:08.000Z\",\"metadata\":{\"size\":22,\"mimetype\":\"text/plain\"}}]}"
+    },
+    {
+      "name": "the second listing route with no key at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
     }
   ]
 }
