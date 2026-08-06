@@ -2,12 +2,13 @@
   "suite": "storage",
   "note": [
     "The paths are the ones a Supabase project answers on. The reference here is not a binary anybody can download: storage-api ships as an image, so the recording is taken from the one supabase start brings up, at the version in versions.json.",
-    "Buckets, the byte path of the object surface, listing, moving and copying one object, and signed urls. Resumable uploads, image transforms and the S3 protocol are not asked yet.",
+    "Buckets, the byte path of the object surface, listing, moving and copying one object, signed urls, and the two headers a client sends to ask whether it already has the bytes. Resumable uploads, image transforms and the S3 protocol are not asked yet.",
     "The fixture pins what it wrote, so a reading case is compared byte for byte. A case that makes a bucket cannot pin what the server is about to write, so those name their timestamps in volatile and the rest of the answer is still compared whole.",
     "Every case that changes a row says so, and the rows go back before it runs. The reading cases are written before the writing ones inside each feature for the same reason: a read after a write would be asked about whatever the write left.",
     "A case with no key at all is asking the gateway rather than the storage server, which matters because zou is both and the reference is neither: the image runs behind kong in a local project, and kong is what answers a request with no apikey.",
     "The object cases upload something and then read it, which the fixture cannot do for them: a fixture writes rows and an object is bytes in a store no sql statement can reach. So the reads after an upload are asked against what that upload left, and the writes that follow it say chained, which is the flag that keeps the rows from going back underneath them.",
-    "A signed url cannot be carried out of one answer into the next: a case is one request and the harness has nowhere to hold a value from the answer to the case before it. So the cases that sign one name the url volatile, which keeps the path it points at and names only the token, and the cases that spend one carry a token written into the case, signed with the same project secret both targets are given and lasting until 2100. What is left over is whether a url this server signed a moment ago really works, and that is asked in zou's own tests instead."
+    "A signed url cannot be carried out of one answer into the next: a case is one request and the harness has nowhere to hold a value from the answer to the case before it. So the cases that sign one name the url volatile, which keeps the path it points at and names only the token, and the cases that spend one carry a token written into the case, signed with the same project secret both targets are given and lasting until 2100. What is left over is whether a url this server signed a moment ago really works, and that is asked in zou's own tests instead.",
+    "The conditional cases name an etag out loud. They can, because the etag of an object is the md5 of its bytes in quotes on both targets, so eleven fixed bytes uploaded by the case above them have an etag that is the same on every run and on every machine. A case that had to read the etag out of the answer before it could not be written at all: one case is one request, and the harness has nowhere to hold a value from the answer to the case before it."
   ],
   "schemas": [
     "public"
@@ -1426,6 +1427,160 @@
       },
       "body": "signed and sent",
       "writes": true
+    },
+    {
+      "name": "an object to ask about, uploaded first so its etag is known",
+      "feature": "object.conditional",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "hello world",
+      "note": "the etag is the md5 of these eleven bytes in quotes, which is what makes the cases below able to name it",
+      "writes": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "reading it with the etag it has",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-none-match": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
+      },
+      "chained": true
+    },
+    {
+      "name": "reading it with an etag it does not have",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-none-match": "\"0\""
+      },
+      "chained": true
+    },
+    {
+      "name": "reading it with a star",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-none-match": "*"
+      },
+      "note": "a star means any representation at all, and whether this server reads it that way or compares it as a string is the whole question",
+      "chained": true
+    },
+    {
+      "name": "reading it with a list of etags, one of which is its own",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-none-match": "\"0\", \"5eb63bbbe01eeed093cb22bb8f5acdc3\""
+      },
+      "note": "the header is a list and an exact string comparison would miss the one that matches",
+      "chained": true
+    },
+    {
+      "name": "reading it with the etag it has and no quotes around it",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-none-match": "5eb63bbbe01eeed093cb22bb8f5acdc3"
+      },
+      "chained": true
+    },
+    {
+      "name": "reading it as it was before it existed",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-modified-since": "Wed, 01 Jan 2020 00:00:00 GMT"
+      },
+      "chained": true
+    },
+    {
+      "name": "reading it as it was after it existed",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-modified-since": "Fri, 01 Jan 2100 00:00:00 GMT"
+      },
+      "chained": true
+    },
+    {
+      "name": "reading it since a moment that is not a moment",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-modified-since": "some time last week"
+      },
+      "chained": true
+    },
+    {
+      "name": "reading it with an etag that matches and a moment that does not",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-none-match": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\"",
+        "if-modified-since": "Wed, 01 Jan 2020 00:00:00 GMT"
+      },
+      "note": "the two disagree, so this asks which of them is read first",
+      "chained": true
+    },
+    {
+      "name": "asking for part of it with the etag it has",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-none-match": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\"",
+        "range": "bytes=0-3"
+      },
+      "note": "a range and a condition that is already met, which is a partial answer and a not modified one at the same time",
+      "chained": true
+    },
+    {
+      "name": "the head of it with the etag it has",
+      "feature": "object.conditional",
+      "method": "HEAD",
+      "path": "/storage/v1/object/notes/etag.txt",
+      "key": "service",
+      "headers": {
+        "if-none-match": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
+      },
+      "chained": true
+    },
+    {
+      "name": "reading it over the public route with the etag it has",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/public/notes/etag.txt",
+      "key": "none",
+      "headers": {
+        "if-none-match": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
+      },
+      "chained": true
+    },
+    {
+      "name": "asking for it to be downloaded with the etag it has",
+      "feature": "object.conditional",
+      "path": "/storage/v1/object/notes/etag.txt?download=named.txt",
+      "key": "service",
+      "headers": {
+        "if-none-match": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
+      },
+      "note": "whether an answer with no body still says what to call the file it is not sending",
+      "chained": true
     }
   ]
 }
