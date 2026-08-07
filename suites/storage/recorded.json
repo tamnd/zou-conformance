@@ -3570,6 +3570,135 @@
         "size": 34,
         "version": "<uuid>"
       }
+    },
+    {
+      "name": "a file put for a copy to be made of",
+      "status": 200,
+      "headers": {
+        "etag": "\"3e4ca5e9d7a9fa74ba1ef8f5b1143de0\""
+      },
+      "body": null
+    },
+    {
+      "name": "one object copied to another key",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyObjectResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>\"3e4ca5e9d7a9fa74ba1ef8f5b1143de0\"</ETag><LastModified><timestamp></LastModified></CopyObjectResult>"
+    },
+    {
+      "name": "the copy, read back",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"3e4ca5e9d7a9fa74ba1ef8f5b1143de0\""
+      },
+      "body": "the bytes that get copied"
+    },
+    {
+      "name": "the source and the copy in a listing",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>notes</Name><Prefix/><Contents><Key>duplicate.txt</Key><LastModified><timestamp></LastModified><ETag>\"3e4ca5e9d7a9fa74ba1ef8f5b1143de0\"</ETag><Size>25</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>original.txt</Key><LastModified><timestamp></LastModified><ETag>\"3e4ca5e9d7a9fa74ba1ef8f5b1143de0\"</ETag><Size>25</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><KeyCount>2</KeyCount></ListBucketResult>"
+    },
+    {
+      "name": "a copy into another bucket",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyObjectResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>\"3e4ca5e9d7a9fa74ba1ef8f5b1143de0\"</ETag><LastModified><timestamp></LastModified></CopyObjectResult>"
+    },
+    {
+      "name": "a copy source written without its leading slash",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyObjectResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>\"3e4ca5e9d7a9fa74ba1ef8f5b1143de0\"</ETag><LastModified><timestamp></LastModified></CopyObjectResult>"
+    },
+    {
+      "name": "a copy onto the key it came from",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyObjectResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>\"3e4ca5e9d7a9fa74ba1ef8f5b1143de0\"</ETag><LastModified><timestamp></LastModified></CopyObjectResult>"
+    },
+    {
+      "name": "a copy from a key that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/nowhere.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "a copy from a bucket that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/nowhere.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "a copy into a bucket that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>nowhere/copy.txt</Resource><Code>InvalidRequest</Code><Message>The related resource does not exist</Message></Error>"
+    },
+    {
+      "name": "two keys deleted in one request",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><DeleteResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Deleted><Key>original.txt</Key></Deleted><Deleted><Key>duplicate.txt</Key></Deleted></DeleteResult>"
+    },
+    {
+      "name": "what is left after them",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>notes</Name><Prefix/><Contents><Key>again.txt</Key><LastModified><timestamp></LastModified><ETag>\"3e4ca5e9d7a9fa74ba1ef8f5b1143de0\"</ETag><Size>25</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><KeyCount>1</KeyCount></ListBucketResult>"
+    },
+    {
+      "name": "deleting keys nothing is under",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><DeleteResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Deleted><Key>never-was.txt</Key></Deleted></DeleteResult>"
+    },
+    {
+      "name": "deleting keys quietly",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><DeleteResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Deleted><Key>apples.txt</Key></Deleted></DeleteResult>"
+    },
+    {
+      "name": "deleting nothing at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>photos</Resource><Code>InvalidRequest</Code><Message>Body, Delete must be object</Message></Error>"
+    },
+    {
+      "name": "deleting from a bucket that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>nowhere</Resource><Code>NoSuchBucket</Code><Message>Bucket not found</Message></Error>"
     }
   ]
 }
