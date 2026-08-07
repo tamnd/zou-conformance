@@ -3968,6 +3968,613 @@
       "writes": true,
       "chained": true,
       "note": "a piece answers its etag with no quotes on it and an object answers one with quotes, so a client that puts them back is a client that read the wrong half of the protocol and a common enough one to be worth asking about"
+    },
+    {
+      "name": "a file put for pieces to be copied out of",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/whole.txt",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "the bytes a copied piece comes out of, long enough to take a range",
+      "writes": true,
+      "note": "A part copied out of an object needs an object with bytes really behind it, and the fixture's rows point at bytes nobody ever wrote. So the chain starts by putting one.",
+      "key": "s3"
+    },
+    {
+      "name": "an upload begun for pieces that come from elsewhere",
+      "feature": "s3.partcopy",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/assembled.txt?uploads",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "upload": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a whole object copied in as a piece",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/assembled.txt?partNumber=1&uploadId={upload}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "wholeTag": "element:ETag"
+      },
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "UploadPartCopy, which is the same put a piece is sent with and is told apart from it only by this header. The answer is a document rather than the etag header a sent piece answers, and whether the etag inside it is quoted is the whole question of whether a client can hand it straight back to the completion.",
+      "key": "s3"
+    },
+    {
+      "name": "a range of an object copied in as a piece",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/assembled.txt?partNumber=2&uploadId={upload}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=0-8"
+      },
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "rangeTag": "element:ETag"
+      },
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "the reason this request exists at all: a client that wants a part of an object rather than all of it, without the bytes going through the client",
+      "key": "s3"
+    },
+    {
+      "name": "the pieces an upload of copies has",
+      "feature": "s3.partcopy",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/assembled.txt?uploadId={upload}",
+      "chained": true,
+      "volatile": [
+        "element:UploadId",
+        "element:LastModified"
+      ],
+      "note": "what size a copied piece records, which is the thing nothing else in the chain says",
+      "key": "s3"
+    },
+    {
+      "name": "an upload of copied pieces put together",
+      "feature": "s3.partcopy",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/assembled.txt?uploadId={upload}",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>{wholeTag}</ETag></Part><Part><PartNumber>2</PartNumber><ETag>{rangeTag}</ETag></Part></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true,
+      "note": "the etags are handed back exactly as the copies answered them, which is what a client that does not know to trim anything would send",
+      "key": "s3"
+    },
+    {
+      "name": "the object copied pieces made",
+      "feature": "s3.partcopy",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/assembled.txt",
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "the object copied pieces made, in a listing",
+      "feature": "s3.partcopy",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes?list-type=2",
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a file put for a piece to be copied out of, next to one that is sent",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/whole.txt",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "the bytes a copied piece comes out of, long enough to take a range",
+      "writes": true,
+      "key": "s3"
+    },
+    {
+      "name": "an upload begun for a piece of each kind",
+      "feature": "s3.partcopy",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/mixed.txt?uploads",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "mixed": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a piece sent as bytes into an upload that will also copy one",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/mixed.txt?partNumber=1&uploadId={mixed}",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a piece the client carried itself, and then ",
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "sentTag": "header:etag"
+      },
+      "key": "s3"
+    },
+    {
+      "name": "a piece copied into an upload that already has a sent one",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/mixed.txt?partNumber=2&uploadId={mixed}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=0-25"
+      },
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "copiedTag": "element:ETag"
+      },
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "whether the two kinds of piece are the same kind of row once they are written, which the listing and the completion both answer",
+      "key": "s3"
+    },
+    {
+      "name": "the pieces of an upload that has one of each kind",
+      "feature": "s3.partcopy",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/mixed.txt?uploadId={mixed}",
+      "chained": true,
+      "volatile": [
+        "element:UploadId",
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "an upload of one sent piece and one copied piece put together",
+      "feature": "s3.partcopy",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/mixed.txt?uploadId={mixed}",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>{sentTag}</ETag></Part><Part><PartNumber>2</PartNumber><ETag>{copiedTag}</ETag></Part></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true,
+      "note": "one etag came off a header bare and the other came out of a document, and the completion compares both as strings",
+      "key": "s3"
+    },
+    {
+      "name": "the object a sent piece and a copied piece made",
+      "feature": "s3.partcopy",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/mixed.txt",
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "a file put for the copies that get refused",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/whole.txt",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "the bytes a copied piece comes out of, long enough to take a range",
+      "writes": true,
+      "key": "s3"
+    },
+    {
+      "name": "a file with a space in its name, to be copied out of",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/a%20file.txt",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a name with a space in it",
+      "writes": true,
+      "chained": true,
+      "note": "a source is named in a header rather than in a path, and a header is not a url, so whether the name in it is encoded is a question with two defensible answers",
+      "key": "s3"
+    },
+    {
+      "name": "an upload begun for the copies that get refused",
+      "feature": "s3.partcopy",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/refused.txt?uploads",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "refused": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copy source written without its leading slash",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=3&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "notes/whole.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "both spellings are in the wild, and CopyObject on this surface takes both, so the question is whether this request was written by the same hand",
+      "key": "s3"
+    },
+    {
+      "name": "a copy source with a space in the name, encoded",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=4&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/a%20file.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copy source with a space in the name, left as a space",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=5&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/a file.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copy source naming a version",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=6&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt?versionId=1"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "S3 spells a version this way and this surface has no versions, so the question is whether the query string is ignored or taken as part of the name",
+      "key": "s3"
+    },
+    {
+      "name": "a copy source in a bucket that is not there",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=7&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/nowhere/whole.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "a copy source that is not there",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=8&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/never-was.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "a copy source that is the object the upload is making",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=9&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/refused.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "note": "the key is not an object until the upload finishes, so this is a source that is not there under a name the request already carries",
+      "key": "s3"
+    },
+    {
+      "name": "a copied range that runs off the end",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=10&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=40-999"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "a read of an object clamps a range that runs off the end rather than refusing it, and whether a copy does the same is not the same question",
+      "key": "s3"
+    },
+    {
+      "name": "a copied range that starts past the end",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=11&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=999-1099"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copied range with no end on it",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=12&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=50-"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copied range that ends before it starts",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=13&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=20-10"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copied range spelled without its unit",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=14&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "0-9"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copy carrying a body as well as a source",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=15&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "chained": true,
+      "body": "bytes the client sent as well as naming a source",
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "two statements of what the piece is, and only one of them can be it",
+      "key": "s3"
+    },
+    {
+      "name": "a copied piece numbered nothing",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=0&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "a copied piece numbered past the last one",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=10001&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "a copy into an upload that is not there",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=1&uploadId=6e125931-0000-0000-0000-000000000000",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "a copy into an upload begun for another key",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/elsewhere.txt?partNumber=1&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "note": "a sent piece answers 500 here, which is upstream throwing over a signature it stored, and a copied piece goes through the same check or does not",
+      "key": "s3"
+    },
+    {
+      "name": "a copy refused by a condition on the source",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/refused.txt?partNumber=16&uploadId={refused}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-if-match": "\"00000000000000000000000000000000\""
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "S3 takes four conditional headers on a copy source, and a surface that ignores them copies where the client asked it not to",
+      "key": "s3"
+    },
+    {
+      "name": "the pieces an upload has after everything that was refused",
+      "feature": "s3.partcopy",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/refused.txt?uploadId={refused}",
+      "chained": true,
+      "volatile": [
+        "element:UploadId",
+        "element:LastModified"
+      ],
+      "note": "which of the requests above wrote a piece, which is the only way to tell a refusal from a refusal that wrote something first",
+      "key": "s3"
+    },
+    {
+      "name": "a file put in a private bucket to be copied out of",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/photos/private.txt",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "bytes that start out in a bucket nobody can read",
+      "writes": true,
+      "key": "s3"
+    },
+    {
+      "name": "an upload begun in a public bucket for a piece from a private one",
+      "feature": "s3.partcopy",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/borrowed.txt?uploads",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "borrowed": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a piece copied out of another bucket",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/borrowed.txt?partNumber=1&uploadId={borrowed}",
+      "headers": {
+        "x-amz-copy-source": "/photos/private.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "borrowedTag": "element:ETag"
+      },
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "the source names its own bucket, so a piece can come from anywhere the key can reach, and a public object made out of a private one is the thing that has to be deliberate",
+      "key": "s3"
+    },
+    {
+      "name": "an upload put together out of another bucket's bytes",
+      "feature": "s3.partcopy",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/borrowed.txt?uploadId={borrowed}",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>{borrowedTag}</ETag></Part></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "the object another bucket's bytes made",
+      "feature": "s3.partcopy",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/borrowed.txt",
+      "chained": true,
+      "key": "s3"
     }
   ]
 }
