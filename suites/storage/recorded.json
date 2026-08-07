@@ -3114,6 +3114,146 @@
         "tus-resumable": "1.0.0"
       },
       "body": "The file for this url was not found\n"
+    },
+    {
+      "name": "the s3 endpoint asked with nothing at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>InvalidSignature</Code><Message>Unsupported authorization type</Message></Error>"
+    },
+    {
+      "name": "the s3 endpoint asked with a supabase key rather than a signature",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>InvalidSignature</Code><Message>Unsupported authorization type</Message></Error>"
+    },
+    {
+      "name": "a signature signed with a secret that is not the project's",
+      "status": 403,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>SignatureDoesNotMatch</Code><Message>The request signature we calculated does not match the signature you provided. Check your key and signing method.</Message></Error>"
+    },
+    {
+      "name": "a signature naming an access key nobody has",
+      "status": 403,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>AccessDenied</Code><Message>Invalid Access Key</Message></Error>"
+    },
+    {
+      "name": "an authorization header that is not a signature at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>InvalidSignature</Code><Message>Unsupported authorization type</Message></Error>"
+    },
+    {
+      "name": "a signature correctly computed for a day long past",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListAllMyBucketsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Buckets><Bucket><Name>photos</Name><CreationDate>2024-01-02T03:04:05.000Z</CreationDate></Bucket><Bucket><Name>notes</Name><CreationDate>2024-02-03T04:05:06.000Z</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>"
+    },
+    {
+      "name": "a signature computed in a region the project is not in",
+      "status": 403,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>SignatureDoesNotMatch</Code><Message>The request signature we calculated does not match the signature you provided. Check your key and signing method.</Message></Error>"
+    },
+    {
+      "name": "a body hash that is not the body's hash",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListAllMyBucketsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Buckets><Bucket><Name>photos</Name><CreationDate>2024-01-02T03:04:05.000Z</CreationDate></Bucket><Bucket><Name>notes</Name><CreationDate>2024-02-03T04:05:06.000Z</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>"
+    },
+    {
+      "name": "every bucket the pair can see",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListAllMyBucketsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Buckets><Bucket><Name>photos</Name><CreationDate>2024-01-02T03:04:05.000Z</CreationDate></Bucket><Bucket><Name>notes</Name><CreationDate>2024-02-03T04:05:06.000Z</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>"
+    },
+    {
+      "name": "every bucket, asked with the trailing slash a client sends",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListAllMyBucketsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Buckets><Bucket><Name>photos</Name><CreationDate>2024-01-02T03:04:05.000Z</CreationDate></Bucket><Bucket><Name>notes</Name><CreationDate>2024-02-03T04:05:06.000Z</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>"
+    },
+    {
+      "name": "a bucket that is there",
+      "status": 200,
+      "headers": {},
+      "body": null
+    },
+    {
+      "name": "a bucket that is not there, headed with a signature",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": null
+    },
+    {
+      "name": "making a bucket with a signature",
+      "status": 200,
+      "headers": {
+        "location": "/made-by-a-signature"
+      },
+      "body": null
+    },
+    {
+      "name": "every bucket, after one was made",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListAllMyBucketsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Buckets><Bucket><Name>photos</Name><CreationDate><timestamp></CreationDate></Bucket><Bucket><Name>notes</Name><CreationDate><timestamp></CreationDate></Bucket><Bucket><Name>made-by-a-signature</Name><CreationDate><timestamp></CreationDate></Bucket></Buckets></ListAllMyBucketsResult>"
+    },
+    {
+      "name": "making a bucket with a signature when it is already there",
+      "status": 409,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>photos</Resource><Code>BucketAlreadyExists</Code><Message>The resource already exists</Message></Error>"
+    },
+    {
+      "name": "deleting an empty bucket with a signature",
+      "status": 204,
+      "headers": {},
+      "body": null
+    },
+    {
+      "name": "deleting a bucket with objects in it",
+      "status": 409,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>photos</Resource><Code>ResourceNotEmpty</Code><Message>The bucket you tried to delete is not empty</Message></Error>"
+    },
+    {
+      "name": "deleting a bucket with a signature when it is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>nothing</Resource><Code>NoSuchBucket</Code><Message>Bucket not found</Message></Error>"
     }
   ]
 }
