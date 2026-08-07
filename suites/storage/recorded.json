@@ -2461,6 +2461,74 @@
       }
     },
     {
+      "name": "an image that is not a jpeg uploaded to transform",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/cat.png"
+      }
+    },
+    {
+      "name": "a png with nothing said about the format",
+      "status": 200,
+      "headers": {
+        "content-type": "image/png",
+        "etag": "\"df17863ccfd928a41b1bfeb36718c866\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "png",
+            "height": 103,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "a png asked for by something that takes webp",
+      "status": 200,
+      "headers": {
+        "content-type": "image/webp",
+        "etag": "\"df17863ccfd928a41b1bfeb36718c866\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "webp",
+            "height": 103,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "a png asked for in the format it was uploaded in",
+      "status": 200,
+      "headers": {
+        "content-type": "image/png",
+        "etag": "\"df17863ccfd928a41b1bfeb36718c866\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "png",
+            "height": 103,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
       "name": "the same transform asked for twice",
       "status": 200,
       "headers": {
@@ -2689,6 +2757,34 @@
           "sha256": "f703386aa4e220cbdc75b9f27a77a51cabed98c2e9c40606d1b09e8587e9a79e"
         }
       }
+    },
+    {
+      "name": "a format nothing here can write",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "querystring/format must be equal to one of the allowed values",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"querystring/format must be equal to one of the allowed values\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "a width below zero",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "querystring/width must be >= 0",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"querystring/width must be >= 0\",\"code\":\"InvalidRequest\"}"
     },
     {
       "name": "a transform of an object that is not there",
