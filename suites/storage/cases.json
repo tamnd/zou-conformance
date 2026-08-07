@@ -2676,6 +2676,135 @@
       "headers": {
         "tus-resumable": "1.0.0"
       }
+    },
+    {
+      "name": "the s3 endpoint asked with nothing at all",
+      "feature": "s3.auth",
+      "method": "GET",
+      "path": "/storage/v1/s3",
+      "key": "none",
+      "note": "Whether a request with no credentials of any kind is refused by the gateway in front or by the surface itself, which is the same question the bucket routes answered differently from the rest of the api."
+    },
+    {
+      "name": "the s3 endpoint asked with a supabase key rather than a signature",
+      "feature": "s3.auth",
+      "method": "GET",
+      "path": "/storage/v1/s3",
+      "key": "service",
+      "note": "The service key opens every other route on this surface and this one is not every other route. A signature is the credential here, and a token that works everywhere else has to be refused rather than accepted as a second way in."
+    },
+    {
+      "name": "a signature signed with a secret that is not the project's",
+      "feature": "s3.auth",
+      "method": "GET",
+      "path": "/storage/v1/s3",
+      "key": "s3.wrong-secret",
+      "note": "Correct in every other way: the same access key id, today's date, the right scope, the right signed headers. Only the four nested hmacs were started from the wrong string."
+    },
+    {
+      "name": "a signature naming an access key nobody has",
+      "feature": "s3.auth",
+      "method": "GET",
+      "path": "/storage/v1/s3",
+      "key": "s3.wrong-key",
+      "note": "The other half of the pair. An id that is not in the project is a lookup that finds nothing, which is a different failure from a signature that does not match and is worth knowing whether the answer says so."
+    },
+    {
+      "name": "an authorization header that is not a signature at all",
+      "feature": "s3.auth",
+      "method": "GET",
+      "path": "/storage/v1/s3",
+      "key": "none",
+      "headers": {
+        "authorization": "Bearer not-a-signature"
+      }
+    },
+    {
+      "name": "a signature from a day long past",
+      "feature": "s3.auth",
+      "method": "GET",
+      "path": "/storage/v1/s3",
+      "key": "none",
+      "headers": {
+        "authorization": "AWS4-HMAC-SHA256 Credential=625729a08b95bf1b7ff351a663f3a23c/20240101/us-east-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=0000000000000000000000000000000000000000000000000000000000000000",
+        "x-amz-date": "20240101T000000Z",
+        "x-amz-content-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "note": "Written out rather than signed, because a case about a stale date cannot have today's date in it. Both the scope and the header say the same long past day, so whichever of the two a server reads, it reads the same one."
+    },
+    {
+      "name": "every bucket the pair can see",
+      "feature": "s3.bucket",
+      "method": "GET",
+      "path": "/storage/v1/s3",
+      "key": "s3",
+      "note": "ListBuckets, which is the smallest signed request there is: no bucket, no query, an empty body. The answer is xml rather than json, which is the first thing on this surface that is."
+    },
+    {
+      "name": "every bucket, asked with the trailing slash a client sends",
+      "feature": "s3.bucket",
+      "method": "GET",
+      "path": "/storage/v1/s3/",
+      "key": "s3",
+      "note": "An s3 client asks the endpoint root as a path of exactly one slash, and the signature covers the path, so the two spellings are two different signed requests rather than one request written twice."
+    },
+    {
+      "name": "a bucket that is there",
+      "feature": "s3.bucket",
+      "method": "HEAD",
+      "path": "/storage/v1/s3/photos",
+      "key": "s3",
+      "note": "HeadBucket, which answers nothing at all and says everything in the status."
+    },
+    {
+      "name": "a bucket that is not there",
+      "feature": "s3.bucket",
+      "method": "HEAD",
+      "path": "/storage/v1/s3/nothing",
+      "key": "s3"
+    },
+    {
+      "name": "making a bucket",
+      "feature": "s3.bucket",
+      "method": "PUT",
+      "path": "/storage/v1/s3/made-by-a-signature",
+      "key": "s3",
+      "writes": true,
+      "note": "CreateBucket. The name is in the path and the body is empty, which is the shape a client sends when it asks for no location constraint."
+    },
+    {
+      "name": "making a bucket that is already there",
+      "feature": "s3.bucket",
+      "method": "PUT",
+      "path": "/storage/v1/s3/photos",
+      "key": "s3",
+      "writes": true
+    },
+    {
+      "name": "deleting a bucket with nothing in it",
+      "feature": "s3.bucket",
+      "method": "DELETE",
+      "path": "/storage/v1/s3/notes",
+      "key": "s3",
+      "writes": true,
+      "note": "notes is the empty one in the fixture, so this is the delete that is allowed to work."
+    },
+    {
+      "name": "deleting a bucket with objects in it",
+      "feature": "s3.bucket",
+      "method": "DELETE",
+      "path": "/storage/v1/s3/photos",
+      "key": "s3",
+      "writes": true,
+      "note": "The other half. Four rows are in photos and s3 refuses to delete a bucket that is not empty, which is the same rule the storage api has and possibly not the same sentence."
+    },
+    {
+      "name": "deleting a bucket that is not there",
+      "feature": "s3.bucket",
+      "method": "DELETE",
+      "path": "/storage/v1/s3/nothing",
+      "key": "s3",
+      "writes": true
     }
   ]
 }
