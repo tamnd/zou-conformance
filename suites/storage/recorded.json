@@ -4559,6 +4559,518 @@
         "content-type": "application/xml; charset=utf-8"
       },
       "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListPartsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>edges.txt</Key><UploadId><uuid></UploadId><MaxParts>1000</MaxParts><IsTruncated>false</IsTruncated><Part><PartNumber>1</PartNumber><LastModified><timestamp></LastModified><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag></Part><Part><PartNumber>1</PartNumber><LastModified><timestamp></LastModified><ETag>5e2479ea4b44d6efec7228e02e91f1bf</ETag></Part><Part><PartNumber>2</PartNumber><LastModified><timestamp></LastModified><ETag>e1671797c52e15f763380b45e841ec32</ETag></Part><Part><PartNumber>7</PartNumber><LastModified><timestamp></LastModified><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag></Part></ListPartsResult>"
+    },
+    {
+      "name": "making a bucket whose size limit is written the way a person writes it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "name": "spelled"
+      }
+    },
+    {
+      "name": "reading back what twenty megabytes came to",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 20000000,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "the same size shouted",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "what the bucket holds after the same size shouted",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 20000000,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a size with a space between the number and the unit",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body/file_size_limit must be integer, body/file_size_limit must pass \"finite\" keyword validation, body/file_size_limit must match pattern \"^[0-9]+(?:\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\", body/file_size_limit must match a schema in anyOf",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body/file_size_limit must be integer, body/file_size_limit must pass \\\"finite\\\" keyword validation, body/file_size_limit must match pattern \\\"^[0-9]+(?:\\\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\\\", body/file_size_limit must match a schema in anyOf\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "what the bucket holds after a size with a space between the number and the unit",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 20000000,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a size in the binary unit",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body/file_size_limit must be integer, body/file_size_limit must pass \"finite\" keyword validation, body/file_size_limit must match pattern \"^[0-9]+(?:\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\", body/file_size_limit must match a schema in anyOf",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body/file_size_limit must be integer, body/file_size_limit must pass \\\"finite\\\" keyword validation, body/file_size_limit must match pattern \\\"^[0-9]+(?:\\\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\\\", body/file_size_limit must match a schema in anyOf\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "what the bucket holds after a size in the binary unit",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 20000000,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a size in kilobytes",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "what the bucket holds after a size in kilobytes",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 1000,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "half a megabyte",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "what the bucket holds after half a megabyte",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 500000,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a size in bytes with the unit said out loud",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "what the bucket holds after a size in bytes with the unit said out loud",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 1000,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a number written as a string with no unit at all",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "what the bucket holds after a number written as a string with no unit at all",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 1024,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a unit nobody has",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body/file_size_limit must be integer, body/file_size_limit must pass \"finite\" keyword validation, body/file_size_limit must match pattern \"^[0-9]+(?:\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\", body/file_size_limit must match a schema in anyOf",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body/file_size_limit must be integer, body/file_size_limit must pass \\\"finite\\\" keyword validation, body/file_size_limit must match pattern \\\"^[0-9]+(?:\\\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\\\", body/file_size_limit must match a schema in anyOf\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "what the bucket holds after a unit nobody has",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 1024,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a size that is not a size",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body/file_size_limit must be integer, body/file_size_limit must pass \"finite\" keyword validation, body/file_size_limit must match pattern \"^[0-9]+(?:\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\", body/file_size_limit must match a schema in anyOf",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body/file_size_limit must be integer, body/file_size_limit must pass \\\"finite\\\" keyword validation, body/file_size_limit must match pattern \\\"^[0-9]+(?:\\\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\\\", body/file_size_limit must match a schema in anyOf\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "what the bucket holds after a size that is not a size",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 1024,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "an empty string where a size goes",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "what the bucket holds after an empty string where a size goes",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": null,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a size below nothing",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body/file_size_limit must be integer, body/file_size_limit must pass \"finite\" keyword validation, body/file_size_limit must match pattern \"^[0-9]+(?:\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\", body/file_size_limit must match a schema in anyOf",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body/file_size_limit must be integer, body/file_size_limit must pass \\\"finite\\\" keyword validation, body/file_size_limit must match pattern \\\"^[0-9]+(?:\\\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\\\", body/file_size_limit must match a schema in anyOf\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "what the bucket holds after a size below nothing",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": null,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a size of zero",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "what the bucket holds after a size of zero",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 0,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a size given as a yes",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "what the bucket holds after a size given as a yes",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 1,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a size given as a fraction of a byte",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body/file_size_limit must be integer, body/file_size_limit must match pattern \"^[0-9]+(?:\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\", body/file_size_limit must match a schema in anyOf",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body/file_size_limit must be integer, body/file_size_limit must match pattern \\\"^[0-9]+(?:\\\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\\\", body/file_size_limit must match a schema in anyOf\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "what the bucket holds after a size given as a fraction of a byte",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 1,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a terabyte written in words",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body/file_size_limit must be integer, body/file_size_limit must pass \"finite\" keyword validation, body/file_size_limit must match pattern \"^[0-9]+(?:\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\", body/file_size_limit must match a schema in anyOf",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body/file_size_limit must be integer, body/file_size_limit must pass \\\"finite\\\" keyword validation, body/file_size_limit must match pattern \\\"^[0-9]+(?:\\\\.[0-9]+)?(?:[gG][bB]|[mM][bB]|[kK][bB]|[bB])$\\\", body/file_size_limit must match a schema in anyOf\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "what the bucket holds after a terabyte written in words",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 1,
+        "id": "spelled",
+        "name": "spelled",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "making a bucket that takes twenty bytes, said in words",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "name": "spelledsmall"
+      }
+    },
+    {
+      "name": "the twenty bytes as the column holds them",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": null,
+        "created_at": "<timestamp>",
+        "file_size_limit": 20,
+        "id": "spelledsmall",
+        "name": "spelledsmall",
+        "owner": "",
+        "public": false,
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "a file that fits under a limit that was written in words",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "spelledsmall/fits.txt"
+      }
+    },
+    {
+      "name": "a file over a limit that was written in words",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "EntityTooLarge",
+        "error": "Payload too large",
+        "message": "The object exceeded the maximum allowed size",
+        "statusCode": "413"
+      },
+      "raw": "{\"statusCode\":\"413\",\"error\":\"Payload too large\",\"message\":\"The object exceeded the maximum allowed size\",\"code\":\"EntityTooLarge\"}"
     }
   ]
 }
