@@ -3124,6 +3124,212 @@
         "/last_modified",
         "/version"
       ]
+    },
+    {
+      "name": "a file put for a copy to be made of",
+      "feature": "s3.copy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/original.txt",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "the bytes that get copied",
+      "writes": true,
+      "note": "A copy needs a source with bytes really behind it, and the fixture's rows point at bytes nobody ever wrote. So the chain starts by putting one."
+    },
+    {
+      "name": "one object copied to another key",
+      "feature": "s3.copy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/duplicate.txt",
+      "key": "s3",
+      "headers": {
+        "x-amz-copy-source": "/notes/original.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "CopyObject, which is a put with a header naming where the bytes are instead of a body carrying them. The answer is a document rather than the empty body an ordinary put answers, which is the one place this protocol says the same verb twice and means two things."
+    },
+    {
+      "name": "the copy, read back",
+      "feature": "s3.copy",
+      "path": "/storage/v1/s3/notes/duplicate.txt",
+      "key": "s3",
+      "note": "Whether the bytes really followed the row, and what type and etag the copy carries. A copy that made a row and no bytes would answer 500 here, which is what a row the fixture inserted answers."
+    },
+    {
+      "name": "the source and the copy in a listing",
+      "feature": "s3.copy",
+      "path": "/storage/v1/s3/notes?list-type=2",
+      "key": "s3",
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "Both rows at once, which says whether a copy is a row of its own with its own size and etag."
+    },
+    {
+      "name": "a copy into another bucket",
+      "feature": "s3.copy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/photos/from-notes.txt",
+      "key": "s3",
+      "headers": {
+        "x-amz-copy-source": "/notes/original.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "The source names its own bucket, so a copy across two of them is the same request with a different path. Into a private bucket from a public one, which nothing about a signed request cares about and is worth having written down."
+    },
+    {
+      "name": "a copy source written without its leading slash",
+      "feature": "s3.copy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/again.txt",
+      "key": "s3",
+      "headers": {
+        "x-amz-copy-source": "notes/original.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "Both spellings are in the wild. Amazon's own documentation writes the slash and several clients do not, so whether the endpoint takes both is a thing a client's choice of library depends on."
+    },
+    {
+      "name": "a copy onto the key it came from",
+      "feature": "s3.copy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/original.txt",
+      "key": "s3",
+      "headers": {
+        "x-amz-copy-source": "/notes/original.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "S3 refuses this unless the request changes something about the object, because a copy onto itself is how metadata is rewritten. Whether this endpoint has that rule at all is the question."
+    },
+    {
+      "name": "a copy from a key that is not there",
+      "feature": "s3.copy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/nowhere.txt",
+      "key": "s3",
+      "headers": {
+        "x-amz-copy-source": "/notes/never-was.txt"
+      },
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "a copy from a bucket that is not there",
+      "feature": "s3.copy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/nowhere.txt",
+      "key": "s3",
+      "headers": {
+        "x-amz-copy-source": "/nowhere/original.txt"
+      },
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "a copy into a bucket that is not there",
+      "feature": "s3.copy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/nowhere/copy.txt",
+      "key": "s3",
+      "headers": {
+        "x-amz-copy-source": "/notes/original.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "note": "The other half of the pair above. Which of the two buckets a refusal names is the thing to know, since both are in one request and only one of them is in the path."
+    },
+    {
+      "name": "two keys deleted in one request",
+      "feature": "s3.delete-many",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes?delete",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<Delete><Object><Key>original.txt</Key></Object><Object><Key>duplicate.txt</Key></Object></Delete>",
+      "writes": true,
+      "chained": true,
+      "note": "DeleteObjects, which is the only request on this surface whose body is xml the server has to read rather than write. Amazon's own client sends a content-md5 with it and this one does not, so whether that is checked is part of the answer."
+    },
+    {
+      "name": "what is left after them",
+      "feature": "s3.delete-many",
+      "path": "/storage/v1/s3/notes?list-type=2",
+      "key": "s3",
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "The two that were named are gone and the one the copy above made is not, which is what says the keys were read out of the body rather than the bucket emptied."
+    },
+    {
+      "name": "deleting keys nothing is under",
+      "feature": "s3.delete-many",
+      "method": "POST",
+      "path": "/storage/v1/s3/photos?delete",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<Delete><Object><Key>never-was.txt</Key></Object></Delete>",
+      "writes": true,
+      "note": "One key at a time this is a 204, since S3 says the state the caller asked for is the state afterwards. Whether a delete of many says the same about each of them is a separate question, because this one has room in its answer to say something else."
+    },
+    {
+      "name": "deleting keys quietly",
+      "feature": "s3.delete-many",
+      "method": "POST",
+      "path": "/storage/v1/s3/photos?delete",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<Delete><Quiet>true</Quiet><Object><Key>apples.txt</Key></Object></Delete>",
+      "writes": true,
+      "note": "Quiet mode, which asks the server to say nothing about the ones that worked. A client deleting a thousand keys sends it, so an answer that ignores it is an answer a thousand times bigger than the client asked for."
+    },
+    {
+      "name": "deleting nothing at all",
+      "feature": "s3.delete-many",
+      "method": "POST",
+      "path": "/storage/v1/s3/photos?delete",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<Delete></Delete>",
+      "writes": true,
+      "note": "A body with no keys in it, which is what a client that filtered its list down to nothing sends."
+    },
+    {
+      "name": "deleting from a bucket that is not there",
+      "feature": "s3.delete-many",
+      "method": "POST",
+      "path": "/storage/v1/s3/nowhere?delete",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<Delete><Object><Key>anything.txt</Key></Object></Delete>",
+      "writes": true
     }
   ]
 }
