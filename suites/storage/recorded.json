@@ -2175,6 +2175,271 @@
         "content-type": "text/plain; charset=UTF-8"
       },
       "body": null
+    },
+    {
+      "name": "making a bucket that takes only small text",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "name": "limited"
+      }
+    },
+    {
+      "name": "reading the limits back, so the uploads below are judged against something known",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "allowed_mime_types": [
+          "text/plain"
+        ],
+        "created_at": "2026-08-07T01:04:04.139Z",
+        "file_size_limit": 20,
+        "id": "limited",
+        "name": "limited",
+        "owner": "",
+        "public": false,
+        "updated_at": "2026-08-07T01:04:04.139Z"
+      },
+      "raw": "{\"id\":\"limited\",\"name\":\"limited\",\"owner\":\"\",\"public\":false,\"file_size_limit\":20,\"allowed_mime_types\":[\"text/plain\"],\"created_at\":\"2026-08-07T01:04:04.139Z\",\"updated_at\":\"2026-08-07T01:04:04.139Z\"}"
+    },
+    {
+      "name": "a file that fits and is the type it takes",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "limited/fits.txt"
+      }
+    },
+    {
+      "name": "a file over the size limit",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "EntityTooLarge",
+        "error": "Payload too large",
+        "message": "The object exceeded the maximum allowed size",
+        "statusCode": "413"
+      },
+      "raw": "{\"statusCode\":\"413\",\"error\":\"Payload too large\",\"message\":\"The object exceeded the maximum allowed size\",\"code\":\"EntityTooLarge\"}"
+    },
+    {
+      "name": "a file of a type the bucket does not take",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidMimeType",
+        "error": "invalid_mime_type",
+        "message": "mime type application/json is not supported",
+        "statusCode": "415"
+      },
+      "raw": "{\"statusCode\":\"415\",\"error\":\"invalid_mime_type\",\"message\":\"mime type application/json is not supported\",\"code\":\"InvalidMimeType\"}"
+    },
+    {
+      "name": "a file with no content type at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidMimeType",
+        "error": "invalid_mime_type",
+        "message": "mime type application/octet-stream is not supported",
+        "statusCode": "415"
+      },
+      "raw": "{\"statusCode\":\"415\",\"error\":\"invalid_mime_type\",\"message\":\"mime type application/octet-stream is not supported\",\"code\":\"InvalidMimeType\"}"
+    },
+    {
+      "name": "a multipart form over the size limit",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "EntityTooLarge",
+        "error": "Payload too large",
+        "message": "The object exceeded the maximum allowed size",
+        "statusCode": "413"
+      },
+      "raw": "{\"statusCode\":\"413\",\"error\":\"Payload too large\",\"message\":\"The object exceeded the maximum allowed size\",\"code\":\"EntityTooLarge\"}"
+    },
+    {
+      "name": "a multipart form whose part is a type the bucket does not take",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidMimeType",
+        "error": "invalid_mime_type",
+        "message": "mime type application/json is not supported",
+        "statusCode": "415"
+      },
+      "raw": "{\"statusCode\":\"415\",\"error\":\"invalid_mime_type\",\"message\":\"mime type application/json is not supported\",\"code\":\"InvalidMimeType\"}"
+    },
+    {
+      "name": "a put over the size limit",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "EntityTooLarge",
+        "error": "Payload too large",
+        "message": "The object exceeded the maximum allowed size",
+        "statusCode": "413"
+      },
+      "raw": "{\"statusCode\":\"413\",\"error\":\"Payload too large\",\"message\":\"The object exceeded the maximum allowed size\",\"code\":\"EntityTooLarge\"}"
+    },
+    {
+      "name": "widening the bucket to take more and to take a family of types",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "the file that was too big, into the bucket that now takes it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "limited/nowfits.txt"
+      }
+    },
+    {
+      "name": "a type that matches the family rather than the name",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "limited/rows.csv"
+      }
+    },
+    {
+      "name": "making a bucket whose limit is above the one the server has",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "EntityTooLarge",
+        "error": "Payload too large",
+        "message": "The object exceeded the maximum allowed size",
+        "statusCode": "413"
+      },
+      "raw": "{\"statusCode\":\"413\",\"error\":\"Payload too large\",\"message\":\"The object exceeded the maximum allowed size\",\"code\":\"EntityTooLarge\"}"
+    },
+    {
+      "name": "making a bucket with no name",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "body must have required property 'name'",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"body must have required property 'name'\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "narrowing the bucket back to where it was",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "message": "Successfully updated"
+      }
+    },
+    {
+      "name": "a multipart form longer than the limit with a file inside it that is not",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "limited/small.txt"
+      }
+    },
+    {
+      "name": "a file that is both over the limit and of a type it does not take",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidMimeType",
+        "error": "invalid_mime_type",
+        "message": "mime type application/json is not supported",
+        "statusCode": "415"
+      },
+      "raw": "{\"statusCode\":\"415\",\"error\":\"invalid_mime_type\",\"message\":\"mime type application/json is not supported\",\"code\":\"InvalidMimeType\"}"
+    },
+    {
+      "name": "a file with no content type at all, into a bucket that takes anything",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/untyped.bin"
+      }
+    },
+    {
+      "name": "what was written down for it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "bucket_id": "notes",
+        "cache_control": "no-cache",
+        "content_type": "application/octet-stream",
+        "created_at": "<timestamp>",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\"",
+        "id": "<uuid>",
+        "last_modified": "<timestamp>",
+        "metadata": {},
+        "name": "untyped.bin",
+        "size": 11,
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "widening a bucket past the limit the server has",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "EntityTooLarge",
+        "error": "Payload too large",
+        "message": "The object exceeded the maximum allowed size",
+        "statusCode": "413"
+      },
+      "raw": "{\"statusCode\":\"413\",\"error\":\"Payload too large\",\"message\":\"The object exceeded the maximum allowed size\",\"code\":\"EntityTooLarge\"}"
     }
   ]
 }
