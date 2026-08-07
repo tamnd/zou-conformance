@@ -1886,6 +1886,28 @@
       ]
     },
     {
+      "name": "a very large height",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?height=9000",
+      "key": "service",
+      "note": "whether the ceiling a width is quietly held to is the same one a height is",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
+      ]
+    },
+    {
+      "name": "a quality and no size at all",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?quality=50",
+      "key": "service",
+      "note": "whether the resizing type is said when neither side was asked about",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
+      ]
+    },
+    {
       "name": "a height of zero",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?height=0",
