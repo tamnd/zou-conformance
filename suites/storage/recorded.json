@@ -2203,6 +2203,589 @@
       "body": null
     },
     {
+      "name": "an image uploaded to transform",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/cat.jpg"
+      }
+    },
+    {
+      "name": "the image read back byte for byte",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": 29526,
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 350
+          },
+          "sha256": "b6cf5cd7d5a3117198e9ba6c8efdd94fe040835d88d2f7a5a759c43906a1d95d"
+        }
+      }
+    },
+    {
+      "name": "resized to fit inside a box",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 59,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "resized to fill a box by cropping",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 100,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "resized to fill a box by stretching",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 100,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "a width with no height",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "a height with no width",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 100,
+            "width": 350
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "a width larger than the image",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 350
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "asked for at a lower quality",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "asked for in the format it was uploaded in",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "no transform asked for at all",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 350
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "asked for by something that does not take webp",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "asked for by something that takes webp",
+      "status": 200,
+      "headers": {
+        "content-type": "image/webp",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "webp",
+            "height": 206,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "asked for as it was uploaded by something that takes webp",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "the same transform asked for twice",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 100,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "a transform with a cache nonce on it",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "over the public route with no key at all",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 100,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "a head of a transform",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    {
+      "name": "a url signed for a transform",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "signedURL": "/render/image/sign/notes/cat.jpg?token=<jwt>"
+      }
+    },
+    {
+      "name": "spending a url signed for a transform",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 100,
+            "width": 100
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "a width of zero",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": 12152,
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 350
+          },
+          "sha256": "c14aa9d1cfb1c4f74c17034fde354c0d692cba8c859c2799511265e44cacfb19"
+        }
+      }
+    },
+    {
+      "name": "a very large width",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": 12152,
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 350
+          },
+          "sha256": "c14aa9d1cfb1c4f74c17034fde354c0d692cba8c859c2799511265e44cacfb19"
+        }
+      }
+    },
+    {
+      "name": "a height of zero",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": 12152,
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 350
+          },
+          "sha256": "c14aa9d1cfb1c4f74c17034fde354c0d692cba8c859c2799511265e44cacfb19"
+        }
+      }
+    },
+    {
+      "name": "a width that is not a number",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "querystring/width must be integer",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"querystring/width must be integer\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "a quality under the floor",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "querystring/quality must be >= 20",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"querystring/quality must be >= 20\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "a quality over the ceiling",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "querystring/quality must be <= 100",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"querystring/quality must be <= 100\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "a resize mode that is not one of the three",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "Error",
+        "message": "querystring/resize must be equal to one of the allowed values",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"Error\",\"message\":\"querystring/resize must be equal to one of the allowed values\",\"code\":\"InvalidRequest\"}"
+    },
+    {
+      "name": "a format that is not origin",
+      "status": 200,
+      "headers": {
+        "content-type": "image/avif",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+      },
+      "body": {
+        "binary": {
+          "bytes": 3286,
+          "image": {
+            "format": "avif"
+          },
+          "sha256": "f703386aa4e220cbdc75b9f27a77a51cabed98c2e9c40606d1b09e8587e9a79e"
+        }
+      }
+    },
+    {
+      "name": "a transform of an object that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a transform out of a bucket that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a transform of a private bucket over the public render route",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
+    },
+    {
+      "name": "a transform of a private bucket with an anon key",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a transform with no key at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\",\"code\":\"AccessDenied\"}"
+    },
+    {
+      "name": "a text file next to the image",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/plain.txt"
+      }
+    },
+    {
+      "name": "something that is not an image",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "InvalidRequest",
+        "error": "InvalidRequest",
+        "message": "The source image is invalid or unsupported for rendering",
+        "statusCode": "400"
+      },
+      "raw": "{\"statusCode\":\"400\",\"error\":\"InvalidRequest\",\"message\":\"The source image is invalid or unsupported for rendering\",\"code\":\"InvalidRequest\"}"
+    },
+    {
       "name": "making a bucket that takes only small text",
       "status": 200,
       "headers": {
