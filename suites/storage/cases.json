@@ -1584,6 +1584,331 @@
       "chained": true
     },
     {
+      "name": "an image uploaded to transform",
+      "feature": "object.render",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/cat.jpg",
+      "key": "service",
+      "headers": {
+        "content-type": "image/jpeg"
+      },
+      "file": "fixtures/sadcat.jpg",
+      "note": "the block below hangs off this one, and it is the first case in this suite whose body is a file rather than a line in this one",
+      "writes": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "the image read back byte for byte",
+      "feature": "object.render",
+      "path": "/storage/v1/object/notes/cat.jpg",
+      "key": "service",
+      "note": "not a transform at all, and the only case here whose bytes are compared as bytes: a download hands back what was uploaded, so the digest of the answer is the digest of the file"
+    },
+    {
+      "name": "resized to fit inside a box",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=contain",
+      "key": "service",
+      "note": "the original is 350 by 206, so a box of 100 the whole image has to fit inside is filled in one direction only",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "resized to fill a box by cropping",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=cover",
+      "key": "service",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "resized to fill a box by stretching",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=fill",
+      "key": "service",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "a width with no height",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100",
+      "key": "service",
+      "note": "one side named and the other left to the aspect ratio, which is what most callers ask for",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "a height with no width",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?height=100",
+      "key": "service",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "a width larger than the image",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=700",
+      "key": "service",
+      "note": "whether asking for more than there is enlarges the image or hands back the size it already had",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "asked for at a lower quality",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&quality=20",
+      "key": "service",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "asked for in the format it was uploaded in",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&format=origin",
+      "key": "service",
+      "note": "origin is the one format this surface takes, and it means do not turn it into a webp",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "no transform asked for at all",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg",
+      "key": "service",
+      "note": "the render route with an empty query, which transforms nothing and still goes through the transformer",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "asked for by something that does not take webp",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100",
+      "key": "service",
+      "headers": {
+        "accept": "image/jpeg"
+      },
+      "note": "the format is negotiated as well as asked for, so a client that says what it takes may be a different answer from one that says nothing",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "the same transform asked for twice",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=cover",
+      "key": "service",
+      "note": "the second time is the cached one, and a cache that answers something else is the whole reason this case is here",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "a transform with a cache nonce on it",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&cacheNonce=zou",
+      "key": "service",
+      "note": "the nonce is how a client asks past the cache, and what matters here is that a query the transformer does not read is not a refusal",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "over the public route with no key at all",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/public/notes/cat.jpg?width=100&height=100&resize=cover",
+      "key": "none",
+      "note": "notes is public, so this is the url getPublicUrl builds and a browser asks it with nothing on it",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "a head of a transform",
+      "feature": "object.render",
+      "method": "HEAD",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100",
+      "key": "service",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "a url signed for a transform",
+      "feature": "object.render",
+      "method": "POST",
+      "path": "/storage/v1/object/sign/notes/cat.jpg",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"expiresIn\": 3600, \"transform\": {\"width\": 100, \"height\": 100, \"resize\": \"cover\"}}",
+      "note": "the transform is signed into the token rather than left in the url, so what comes back points at the render route rather than at the object one",
+      "holds": {
+        "signed": "body:/signedURL"
+      },
+      "volatile": [
+        "/signedURL"
+      ]
+    },
+    {
+      "name": "spending a url signed for a transform",
+      "feature": "object.render",
+      "path": "/storage/v1{signed}",
+      "key": "none",
+      "note": "the token was minted by the case above and cannot be minted from here, which is what the hold is for",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256",
+        "header:etag"
+      ]
+    },
+    {
+      "name": "a width of zero",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=0",
+      "key": "service"
+    },
+    {
+      "name": "a very large width",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=2501",
+      "key": "service",
+      "note": "whether there is a ceiling on a side, and what is said when it is passed"
+    },
+    {
+      "name": "a height of zero",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?height=0",
+      "key": "service"
+    },
+    {
+      "name": "a width that is not a number",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=wide",
+      "key": "service"
+    },
+    {
+      "name": "a quality under the floor",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&quality=1",
+      "key": "service",
+      "note": "twenty is the lowest quality the client library documents"
+    },
+    {
+      "name": "a quality over the ceiling",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&quality=101",
+      "key": "service"
+    },
+    {
+      "name": "a resize mode that is not one of the three",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=squash",
+      "key": "service"
+    },
+    {
+      "name": "a format that is not origin",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&format=avif",
+      "key": "service"
+    },
+    {
+      "name": "a transform of an object that is not there",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/nothing.jpg?width=100",
+      "key": "service"
+    },
+    {
+      "name": "a transform out of a bucket that is not there",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/nowhere/cat.jpg?width=100",
+      "key": "service"
+    },
+    {
+      "name": "a transform of a private bucket over the public render route",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/public/photos/holiday/beach.txt?width=100",
+      "key": "none",
+      "note": "the pair of the download case that asks the same thing, since the refusal is about the bucket rather than about the transformer"
+    },
+    {
+      "name": "a transform of a private bucket with an anon key",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/photos/holiday/beach.txt?width=100",
+      "key": "anon"
+    },
+    {
+      "name": "a transform with no key at all",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100",
+      "key": "none"
+    },
+    {
+      "name": "a text file next to the image",
+      "feature": "object.render",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/plain.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "hello world",
+      "note": "uploaded here rather than taken from another chain, since what the case under it asks is what happens when the bytes are not an image",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "something that is not an image",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/plain.txt?width=100",
+      "key": "service",
+      "note": "the row is there and the bytes are there and they are eleven bytes of text, so this is the transformer refusing rather than the table"
+    },
+    {
       "name": "making a bucket that takes only small text",
       "feature": "bucket.limits",
       "method": "POST",

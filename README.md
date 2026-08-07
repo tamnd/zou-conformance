@@ -27,6 +27,7 @@ reset.sql       the rows on their own, applied before every case that writes
 cases.json      the questions
 recorded.json   what the reference answered, per case
 known.json      the cases zou answers differently, and why
+fixtures/       what a case sends when its body is bytes rather than a line
 ```
 
 `js/` and `js-storage/` are not suites in that shape and are described in [js/README.md](js/README.md) and [js-storage/README.md](js-storage/README.md). They are upstream's own test files run against zou, and they are the two places here where the assertions are somebody else's rather than a recording, because upstream wrote them about upstream's own clients.
@@ -90,7 +91,7 @@ The supabase-js suite runs 17 of its 34 tests and zou passes all 17. The other 1
 
 ## Provenance
 
-`js/` and `js-storage/` are derived from [supabase-js](https://github.com/supabase/supabase-js), which is MIT licensed, and each keeps upstream's licence next to it in `UPSTREAM-LICENSE`.
+`js/` and `js-storage/` are derived from [supabase-js](https://github.com/supabase/supabase-js), which is MIT licensed, and each keeps upstream's licence next to it in `UPSTREAM-LICENSE`. `suites/storage/fixtures/sadcat.jpg` is the same file as `js-storage/test/fixtures/upload/sadcat.jpg` and comes from there: the image transform cases need a real image to transform, and transforming the one upstream's own tests use is one fewer thing to explain.
 
 `suites/postgrest` is derived from the test fixtures and spec files of [PostgREST](https://github.com/PostgREST/postgrest), which is MIT licensed. Upstream's licence is kept next to the files it covers, in `suites/postgrest/UPSTREAM-LICENSE`. The fixtures are upstream's with four differences, each noted at the top of `setup.sql`: the psql includes and variables are gone because the file is applied over a connection, the rows that arrived over `copy ... from stdin` are inserts, PostGIS is stripped a whole statement at a time, and two statements are swept up so the file can be applied twice to the same database.
 
