@@ -3330,6 +3330,371 @@
       },
       "body": "<Delete><Object><Key>anything.txt</Key></Object></Delete>",
       "writes": true
+    },
+    {
+      "name": "an upload begun in pieces",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/big.txt?uploads",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "holds": {
+        "upload": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ],
+      "note": "the first request of a multipart upload, which writes nothing but hands back the id every request after it carries"
+    },
+    {
+      "name": "the first piece sent",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/big.txt?partNumber=1&uploadId={upload}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a file sent in two pieces, and this is the first of them",
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "firstTag": "header:etag"
+      },
+      "note": "the etag it answers with is the one the client has to name when it puts the upload together, so it is held"
+    },
+    {
+      "name": "the second piece sent",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/big.txt?partNumber=2&uploadId={upload}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": " and this is the second of them",
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "secondTag": "header:etag"
+      }
+    },
+    {
+      "name": "the pieces an upload has so far",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/big.txt?uploadId={upload}",
+      "key": "s3",
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "a client that lost its place lists the pieces the server already has before sending the rest"
+    },
+    {
+      "name": "what a bucket has in pieces",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes?uploads",
+      "key": "s3",
+      "chained": true,
+      "volatile": [
+        "element:UploadId",
+        "element:Initiated"
+      ],
+      "note": "the uploads a bucket has begun and not finished, which is how a client cleans up after itself"
+    },
+    {
+      "name": "the object an unfinished upload is making",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/big.txt",
+      "key": "s3",
+      "chained": true,
+      "note": "nothing is readable at the key until the upload is put together"
+    },
+    {
+      "name": "an upload put together",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/big.txt?uploadId={upload}",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>{firstTag}</ETag></Part><Part><PartNumber>2</PartNumber><ETag>{secondTag}</ETag></Part></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:Location"
+      ],
+      "note": "Location holds the host it was asked on, which is not the same host twice"
+    },
+    {
+      "name": "the object two pieces made",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/big.txt",
+      "key": "s3",
+      "chained": true
+    },
+    {
+      "name": "the object two pieces made, in a listing",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes?list-type=2",
+      "key": "s3",
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ]
+    },
+    {
+      "name": "the pieces of an upload that was put together",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/big.txt?uploadId={upload}",
+      "key": "s3",
+      "chained": true,
+      "note": "the id is spent once the object exists"
+    },
+    {
+      "name": "putting an upload together twice",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/big.txt?uploadId={upload}",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>{firstTag}</ETag></Part><Part><PartNumber>2</PartNumber><ETag>{secondTag}</ETag></Part></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true,
+      "note": "a client that did not see the first answer sends the same request again"
+    },
+    {
+      "name": "an upload begun and then dropped",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/abandoned.txt?uploads",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "holds": {
+        "dropped": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ]
+    },
+    {
+      "name": "a piece sent to an upload before it is dropped",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/abandoned.txt?partNumber=1&uploadId={dropped}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a file sent in two pieces, and this is the first of them",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "an upload dropped",
+      "feature": "s3.multipart",
+      "method": "DELETE",
+      "path": "/storage/v1/s3/notes/abandoned.txt?uploadId={dropped}",
+      "key": "s3",
+      "writes": true,
+      "chained": true,
+      "note": "the client gave up, and the pieces it sent are not the object's and not anybody's"
+    },
+    {
+      "name": "the pieces of an upload that was dropped",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/abandoned.txt?uploadId={dropped}",
+      "key": "s3",
+      "chained": true
+    },
+    {
+      "name": "what a bucket has in pieces after one was dropped",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes?uploads",
+      "key": "s3",
+      "chained": true,
+      "volatile": [
+        "element:UploadId",
+        "element:Initiated"
+      ]
+    },
+    {
+      "name": "the object a dropped upload was making",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/abandoned.txt",
+      "key": "s3",
+      "chained": true
+    },
+    {
+      "name": "an upload begun to be put together wrongly",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/wrong.txt?uploads",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "holds": {
+        "botched": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ]
+    },
+    {
+      "name": "a piece sent to it",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/wrong.txt?partNumber=1&uploadId={botched}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a file sent in two pieces, and this is the first of them",
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "botchedTag": "header:etag"
+      }
+    },
+    {
+      "name": "a piece numbered zero",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/wrong.txt?partNumber=0&uploadId={botched}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": " and this is the second of them",
+      "writes": true,
+      "chained": true,
+      "note": "pieces are numbered from one, so a zero is a client that counted from the wrong end"
+    },
+    {
+      "name": "a piece numbered above ten thousand",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/wrong.txt?partNumber=10001&uploadId={botched}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": " and this is the second of them",
+      "writes": true,
+      "chained": true,
+      "note": "ten thousand is the most pieces an upload is allowed"
+    },
+    {
+      "name": "putting an upload together with no pieces named",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/wrong.txt?uploadId={botched}",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "putting an upload together with an etag that is not the piece's",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/wrong.txt?uploadId={botched}",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>\"d41d8cd98f00b204e9800998ecf8427e\"</ETag></Part></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true,
+      "note": "the etag is what tells the server the piece it has is the piece the client thinks it sent"
+    },
+    {
+      "name": "putting an upload together naming a piece that was never sent",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/wrong.txt?uploadId={botched}",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload><Part><PartNumber>7</PartNumber><ETag>{botchedTag}</ETag></Part></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "a piece sent to an upload nobody started",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/big.txt?partNumber=1&uploadId=00000000-0000-0000-0000-000000000000",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a file sent in two pieces, and this is the first of them",
+      "writes": true
+    },
+    {
+      "name": "an upload begun in a bucket that is not there",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/nowhere/big.txt?uploads",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true
+    },
+    {
+      "name": "the pieces of an upload nobody started",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/big.txt?uploadId=00000000-0000-0000-0000-000000000000",
+      "key": "s3"
+    },
+    {
+      "name": "dropping an upload nobody started",
+      "feature": "s3.multipart",
+      "method": "DELETE",
+      "path": "/storage/v1/s3/notes/big.txt?uploadId=00000000-0000-0000-0000-000000000000",
+      "key": "s3",
+      "writes": true
+    },
+    {
+      "name": "what a bucket that is not there has in pieces",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/nowhere?uploads",
+      "key": "s3"
+    },
+    {
+      "name": "what a bucket with nothing in pieces has",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/photos?uploads",
+      "key": "s3"
     }
   ]
 }
