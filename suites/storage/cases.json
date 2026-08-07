@@ -1845,6 +1845,200 @@
       "body": "{\"id\":\"limited\",\"file_size_limit\":1099511627776}",
       "note": "the create refuses a terabyte and this asks whether the update refuses it too, which is the door a bucket made small could otherwise be widened through",
       "chained": true
+    },
+    {
+      "name": "what the resumable endpoint says it can do",
+      "feature": "object.tus",
+      "method": "OPTIONS",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "note": "the capabilities are the whole answer here, tus-version and tus-extension and tus-max-size, and a client reads them before it sends anything"
+    },
+    {
+      "name": "a resumable upload that does not say which tus it speaks",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "the version header is required on every request the protocol defines except options, and this asks what is said when it is missing"
+    },
+    {
+      "name": "a resumable upload naming a tus nobody speaks",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "0.2.2",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "0.2.2 is a real version of the protocol and not the one that is served, so the refusal should name the versions that are"
+    },
+    {
+      "name": "a resumable upload that says nothing about how long it is",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "a creation carries a length or says the length is deferred, and this carries neither"
+    },
+    {
+      "name": "a resumable upload with no metadata on it",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11"
+      },
+      "note": "the bucket and the name of the object are metadata rather than path, so an upload with no metadata does not say where it goes"
+    },
+    {
+      "name": "a resumable upload that names no object",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM="
+      },
+      "note": "half the metadata, to see which half is complained about first"
+    },
+    {
+      "name": "a resumable upload into a bucket that is not there",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm9wZQ==,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "whether the bucket is looked up when the upload is created or when the bytes arrive"
+    },
+    {
+      "name": "a resumable upload with no key on it",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "none",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "the gate in front of the resumable routes, which is the same gate as everywhere else or is not"
+    },
+    {
+      "name": "a resumable upload under the anon key",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "anon",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "a key that carries a role with no policy behind it, which is a refusal from the database rather than from the gate"
+    },
+    {
+      "name": "a resumable upload longer than the server takes",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "1099511627776",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "a terabyte declared up front, which the endpoint can refuse before a byte of it arrives because the length is a header"
+    },
+    {
+      "name": "a resumable upload of a small text file",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "the creation itself, which answers with the url the bytes are sent to and no body at all",
+      "writes": true
+    },
+    {
+      "name": "what a resumable upload that is not there says to a head",
+      "feature": "object.tus",
+      "method": "HEAD",
+      "path": "/storage/v1/upload/resumable/nope",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0"
+      },
+      "note": "a client that lost its place asks for the offset first, and an upload that has been finished or was never made has to say so"
+    },
+    {
+      "name": "bytes sent to a resumable upload that is not there",
+      "feature": "object.tus",
+      "method": "PATCH",
+      "path": "/storage/v1/upload/resumable/nope",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "0",
+        "content-type": "application/offset+octet-stream"
+      },
+      "body": "hello world",
+      "note": "the same question the head asks, on the route that carries the bytes"
+    },
+    {
+      "name": "bytes sent to a resumable upload under the wrong content type",
+      "feature": "object.tus",
+      "method": "PATCH",
+      "path": "/storage/v1/upload/resumable/nope",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "0",
+        "content-type": "text/plain"
+      },
+      "body": "hello world",
+      "note": "the protocol fixes the content type of a patch, and this says whether that is read before the upload is looked up or after"
+    },
+    {
+      "name": "ending a resumable upload that is not there",
+      "feature": "object.tus",
+      "method": "DELETE",
+      "path": "/storage/v1/upload/resumable/nope",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0"
+      },
+      "note": "termination is one of the extensions the options answer lists, so it is served or the list is wrong"
+    },
+    {
+      "name": "a get on the resumable endpoint",
+      "feature": "object.tus",
+      "method": "GET",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "note": "the protocol defines no get here and what is said instead is worth knowing, since it is the difference between a route that is missing and a method that is"
     }
   ]
 }
