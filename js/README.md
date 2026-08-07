@@ -34,17 +34,19 @@ Nothing has to be passed for that: the defaults in the file are the CLI's own ur
 
 ## What runs
 
-16 of the 34 tests. The client constructs, the PostgREST block, the RLS block, the Authentication block and the timeout configuration block, and all 16 pass against zou today.
+17 of the 34 tests. The client constructs, the PostgREST block, the RLS block, the Authentication block, the Storage block and the timeout configuration block, and all 17 pass against zou today.
 
-The 18 that are skipped are the Realtime blocks, the Storage block and the custom JWT realtime test. zou serves neither Realtime nor Storage on this url yet, [tamnd/zou#3](https://github.com/tamnd/zou/issues/3) and [tamnd/zou#4](https://github.com/tamnd/zou/issues/4), and a suite that fails on a feature nobody has written measures nothing. They are skipped by an environment flag rather than deleted, so the day the feature lands the test runs exactly as upstream wrote it:
+The Storage block is the newest of them and it is the one that proves something the recorded storage suite cannot: it uploads, lists and removes through storage-js with the anon key, so the policy on `storage.objects` is doing the deciding rather than a service role going around it.
+
+The 17 that are skipped are the Realtime blocks and the custom JWT realtime test. zou serves no Realtime on this url yet, [tamnd/zou#4](https://github.com/tamnd/zou/issues/4), and a suite that fails on a feature nobody has written measures nothing. They are skipped by an environment flag rather than deleted, so the day it lands the tests run exactly as upstream wrote them:
 
 ```
-ZOU_REALTIME=1 ZOU_STORAGE=1 npm test
+ZOU_REALTIME=1 npm test
 ```
 
 ## The fixture
 
-`setup.sql` is upstream's migration and seed in one file, since there is no CLI here to apply them separately. Five todos, RLS on, anon reads and writes everything, authenticated sees only its own rows. The two changes are noted at the top of the file, both so it can be applied twice to the same database.
+`setup.sql` is upstream's migrations and seed in one file, since there is no CLI here to apply them separately. Five todos, RLS on, anon reads and writes everything, authenticated sees only its own rows, and the bucket the Storage block uploads into with the policy that lets an anon key do it. The two changes are noted at the top of the file, both so it can be applied twice to the same database.
 
 ## Provenance
 

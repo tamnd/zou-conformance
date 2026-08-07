@@ -64,3 +64,29 @@ values
     ('Pay bills', true);
 
 notify pgrst, 'reload schema';
+
+-- The bucket the Storage block uploads into, and the policy that lets
+-- it, both from upstream's third migration:
+--
+--   packages/core/supabase-js/supabase/migrations/20250424000000_storage_anon_policy.sql
+--
+-- Copied whole, comments and all. The policy is deliberately wide open
+-- on one bucket and it is what makes the block a test of the client
+-- rather than of a key: the anon key uploads, lists and deletes with
+-- no service role anywhere in it.
+
+-- Create test bucket for storage tests
+insert into storage.buckets (id, name, public)
+values ('test-bucket', 'test-bucket', false)
+on conflict (id) do nothing;
+
+-- Allow CRUD access to test-bucket so integration tests can exercise the
+-- storage SDK with the publishable key (no service-role bypass needed).
+-- RLS is enabled on storage.objects by default; FOR ALL with no role clause
+-- defaults to PUBLIC and matches whichever role the storage server uses.
+
+drop policy if exists "test-bucket public access" on storage.objects;
+create policy "test-bucket public access"
+on storage.objects
+for all
+using (bucket_id = 'test-bucket');
