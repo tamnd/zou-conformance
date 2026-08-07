@@ -3697,6 +3697,277 @@
       "method": "GET",
       "path": "/storage/v1/s3/photos?uploads",
       "key": "s3"
+    },
+    {
+      "name": "an upload begun out of order",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/jumbled.txt?uploads",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "holds": {
+        "jumbled": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ],
+      "note": "a client sending pieces at once has no say in which of them arrives first, so nothing about an upload can depend on the order they do"
+    },
+    {
+      "name": "the piece that goes second, sent first",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/jumbled.txt?partNumber=2&uploadId={jumbled}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": " and this is the second of them",
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "secondSent": "header:etag"
+      }
+    },
+    {
+      "name": "the piece that goes first, sent second",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/jumbled.txt?partNumber=1&uploadId={jumbled}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a file sent in two pieces, and this is the first of them",
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "firstSent": "header:etag"
+      }
+    },
+    {
+      "name": "the pieces of an upload that arrived out of order",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/jumbled.txt?uploadId={jumbled}",
+      "key": "s3",
+      "chained": true,
+      "volatile": [
+        "element:UploadId",
+        "element:LastModified"
+      ],
+      "note": "whether the listing is in the order the pieces arrived or the order they go in"
+    },
+    {
+      "name": "an upload put together out of order",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/jumbled.txt?uploadId={jumbled}",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload><Part><PartNumber>2</PartNumber><ETag>{secondSent}</ETag></Part><Part><PartNumber>1</PartNumber><ETag>{firstSent}</ETag></Part></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true,
+      "note": "the body names the second piece first, which is the other thing that could decide how the object is put together"
+    },
+    {
+      "name": "the object pieces that arrived out of order made",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/jumbled.txt",
+      "key": "s3",
+      "chained": true,
+      "note": "whichever order it is in, this is the one that says so"
+    },
+    {
+      "name": "an upload begun with a piece to be sent twice",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/twice.txt?uploads",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "holds": {
+        "twice": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ]
+    },
+    {
+      "name": "a piece sent under a number",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/twice.txt?partNumber=1&uploadId={twice}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a file sent in two pieces, and this is the first of them",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "a piece sent again under a number that already has one",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/twice.txt?partNumber=1&uploadId={twice}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": " and this is the second of them",
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "sentAgain": "header:etag"
+      },
+      "note": "a client that retried a piece it never saw the answer to, which is the ordinary reason a piece is sent twice"
+    },
+    {
+      "name": "the pieces after one number was sent twice",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/twice.txt?uploadId={twice}",
+      "key": "s3",
+      "chained": true,
+      "volatile": [
+        "element:UploadId",
+        "element:LastModified"
+      ],
+      "note": "one row or two, which is the difference between an upload that remembers the piece and one that remembers both sends of it"
+    },
+    {
+      "name": "an upload put together after a piece was sent twice",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/twice.txt?uploadId={twice}",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>{sentAgain}</ETag></Part></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "the object a piece sent twice made",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/twice.txt",
+      "key": "s3",
+      "chained": true,
+      "note": "which of the two sends the object is made of"
+    },
+    {
+      "name": "an upload begun for one key",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/mine.txt?uploads",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "holds": {
+        "mine": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ]
+    },
+    {
+      "name": "a piece sent to it under another key",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/yours.txt?partNumber=1&uploadId={mine}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a file sent in two pieces, and this is the first of them",
+      "writes": true,
+      "chained": true,
+      "note": "the id says which upload and the path says which key, and this is what happens when they disagree"
+    },
+    {
+      "name": "the pieces of an upload asked for under another key",
+      "feature": "s3.multipart",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/yours.txt?uploadId={mine}",
+      "key": "s3",
+      "chained": true,
+      "volatile": [
+        "element:UploadId",
+        "element:LastModified"
+      ]
+    },
+    {
+      "name": "a piece sent with no number at all",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/mine.txt?uploadId={mine}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a file sent in two pieces, and this is the first of them",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "an upload begun to be named in quotes",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/quoted.txt?uploads",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "holds": {
+        "quoted": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ]
+    },
+    {
+      "name": "a piece sent to be named in quotes",
+      "feature": "s3.multipart",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/quoted.txt?partNumber=1&uploadId={quoted}",
+      "key": "s3",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "a file sent in two pieces, and this is the first of them",
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "quotedTag": "header:etag"
+      }
+    },
+    {
+      "name": "putting an upload together with the etag in quotes",
+      "feature": "s3.multipart",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/quoted.txt?uploadId={quoted}",
+      "key": "s3",
+      "headers": {
+        "content-type": "application/xml"
+      },
+      "body": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>\"{quotedTag}\"</ETag></Part></CompleteMultipartUpload>",
+      "writes": true,
+      "chained": true,
+      "note": "a piece answers its etag with no quotes on it and an object answers one with quotes, so a client that puts them back is a client that read the wrong half of the protocol and a common enough one to be worth asking about"
     }
   ]
 }
