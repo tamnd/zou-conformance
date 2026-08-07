@@ -2237,7 +2237,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "height:100,width:100,resizing_type:fit"
       },
       "body": {
         "binary": {
@@ -2256,7 +2257,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "height:100,width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2275,7 +2277,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "height:100,width:100,resizing_type:force"
       },
       "body": {
         "binary": {
@@ -2294,7 +2297,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2313,7 +2317,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "height:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2332,7 +2337,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:700,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2351,7 +2357,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:100,resizing_type:fill,quality:20"
       },
       "body": {
         "binary": {
@@ -2370,7 +2377,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2408,7 +2416,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2427,7 +2436,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/webp",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2446,7 +2456,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2476,7 +2487,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/png",
-        "etag": "\"df17863ccfd928a41b1bfeb36718c866\""
+        "etag": "\"df17863ccfd928a41b1bfeb36718c866\"",
+        "x-transformations": "width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2495,7 +2507,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/webp",
-        "etag": "\"df17863ccfd928a41b1bfeb36718c866\""
+        "etag": "\"df17863ccfd928a41b1bfeb36718c866\"",
+        "x-transformations": "width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2514,7 +2527,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/png",
-        "etag": "\"df17863ccfd928a41b1bfeb36718c866\""
+        "etag": "\"df17863ccfd928a41b1bfeb36718c866\"",
+        "x-transformations": "width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2533,7 +2547,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "height:100,width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2552,7 +2567,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2571,7 +2587,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "height:100,width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2590,7 +2607,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2614,7 +2632,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "height:100,width:100,resizing_type:fill"
       },
       "body": {
         "binary": {
@@ -2652,7 +2671,48 @@
       "status": 200,
       "headers": {
         "content-type": "image/jpeg",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:2000,resizing_type:fill"
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 350
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "a very large height",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "height:2000,resizing_type:fill"
+      },
+      "body": {
+        "binary": {
+          "bytes": "<number>",
+          "image": {
+            "format": "jpeg",
+            "height": 206,
+            "width": 350
+          },
+          "sha256": "<string>"
+        }
+      }
+    },
+    {
+      "name": "a quality and no size at all",
+      "status": 200,
+      "headers": {
+        "content-type": "image/jpeg",
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "quality:50"
       },
       "body": {
         "binary": {
@@ -2746,7 +2806,8 @@
       "status": 200,
       "headers": {
         "content-type": "image/avif",
-        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\""
+        "etag": "\"740f5c4bb4f6f2f73c1a301fa455c747\"",
+        "x-transformations": "width:100,resizing_type:fill,format:avif"
       },
       "body": {
         "binary": {
