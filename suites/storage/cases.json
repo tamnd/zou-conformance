@@ -1614,8 +1614,7 @@
       "note": "the original is 350 by 206, so a box of 100 the whole image has to fit inside is filled in one direction only",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1625,8 +1624,7 @@
       "key": "service",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1636,8 +1634,7 @@
       "key": "service",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1648,8 +1645,7 @@
       "note": "one side named and the other left to the aspect ratio, which is what most callers ask for",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1659,8 +1655,7 @@
       "key": "service",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1671,8 +1666,7 @@
       "note": "whether asking for more than there is enlarges the image or hands back the size it already had",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1682,8 +1676,7 @@
       "key": "service",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1694,8 +1687,7 @@
       "note": "origin is the one format this surface takes, and it means do not turn it into a webp",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1706,8 +1698,7 @@
       "note": "the render route with an empty query, which transforms nothing and still goes through the transformer",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1721,8 +1712,35 @@
       "note": "the format is negotiated as well as asked for, so a client that says what it takes may be a different answer from one that says nothing",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
+      ]
+    },
+    {
+      "name": "asked for by something that takes webp",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100",
+      "key": "service",
+      "headers": {
+        "accept": "image/webp,image/apng,image/*,*/*;q=0.8"
+      },
+      "note": "the header every browser sends, so this is the answer most of the traffic on this route gets",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
+      ]
+    },
+    {
+      "name": "asked for as it was uploaded by something that takes webp",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&format=origin",
+      "key": "service",
+      "headers": {
+        "accept": "image/webp,image/apng,image/*,*/*;q=0.8"
+      },
+      "note": "which of the two wins when the query and the header disagree",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
       ]
     },
     {
@@ -1733,8 +1751,7 @@
       "note": "the second time is the cached one, and a cache that answers something else is the whole reason this case is here",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1745,8 +1762,7 @@
       "note": "the nonce is how a client asks past the cache, and what matters here is that a query the transformer does not read is not a refusal",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1757,8 +1773,7 @@
       "note": "notes is public, so this is the url getPublicUrl builds and a browser asks it with nothing on it",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
@@ -1767,11 +1782,7 @@
       "method": "HEAD",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100",
       "key": "service",
-      "volatile": [
-        "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
-      ]
+      "note": "nothing here is volatile, because a head that carries no bytes is the same answer whichever server sent it, and whether it carries any is the question"
     },
     {
       "name": "a url signed for a transform",
@@ -1799,8 +1810,7 @@
       "note": "the token was minted by the case above and cannot be minted from here, which is what the hold is for",
       "volatile": [
         "/binary/bytes",
-        "/binary/sha256",
-        "header:etag"
+        "/binary/sha256"
       ]
     },
     {
