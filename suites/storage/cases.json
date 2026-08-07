@@ -2368,6 +2368,314 @@
         "/last_modified",
         "/version"
       ]
+    },
+    {
+      "name": "a resumable upload that has not been finished",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1lLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "the start of the only chain in this suite that follows a url the server chose, which is what the eight cases under it are asked against",
+      "writes": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "where a resumable upload has got to before anything was sent",
+      "feature": "object.tus",
+      "method": "HEAD",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0"
+      },
+      "note": "the first thing a client that lost its place asks, and the answer is an offset and nothing else",
+      "chained": true
+    },
+    {
+      "name": "the first five bytes of a resumable upload",
+      "feature": "object.tus",
+      "method": "PATCH",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "0",
+        "content-type": "application/offset+octet-stream"
+      },
+      "body": "hello",
+      "chained": true
+    },
+    {
+      "name": "where a resumable upload has got to after five bytes",
+      "feature": "object.tus",
+      "method": "HEAD",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0"
+      },
+      "chained": true
+    },
+    {
+      "name": "the same five bytes of a resumable upload again",
+      "feature": "object.tus",
+      "method": "PATCH",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "0",
+        "content-type": "application/offset+octet-stream"
+      },
+      "body": "hello",
+      "note": "a client that retried a request that had in fact arrived, which the protocol says is refused rather than applied twice",
+      "chained": true
+    },
+    {
+      "name": "bytes sent to a resumable upload past where it has got to",
+      "feature": "object.tus",
+      "method": "PATCH",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "9",
+        "content-type": "application/offset+octet-stream"
+      },
+      "body": "xx",
+      "note": "the other way an offset can be wrong, which would leave a hole in the object if it were taken",
+      "chained": true
+    },
+    {
+      "name": "the rest of the bytes of a resumable upload",
+      "feature": "object.tus",
+      "method": "PATCH",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "5",
+        "content-type": "application/offset+octet-stream"
+      },
+      "body": " world",
+      "note": "the offset reaches the length it declared, which is what finishes an upload",
+      "chained": true
+    },
+    {
+      "name": "the object a resumed upload left behind",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/notes/resume.txt",
+      "key": "service",
+      "note": "the two halves really were joined, in the order they were sent",
+      "chained": true
+    },
+    {
+      "name": "where a resumable upload that has finished has got to",
+      "feature": "object.tus",
+      "method": "HEAD",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0"
+      },
+      "note": "an upload that finished is an object now, and the url that carried it either still answers or has gone",
+      "chained": true
+    },
+    {
+      "name": "bytes sent to a resumable upload that has finished",
+      "feature": "object.tus",
+      "method": "PATCH",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "11",
+        "content-type": "application/offset+octet-stream"
+      },
+      "body": "x",
+      "chained": true
+    },
+    {
+      "name": "a resumable upload that is going to be given up on",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName ZHJvcHBlZC50eHQ=,contentType dGV4dC9wbGFpbg=="
+      },
+      "writes": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "giving up on a resumable upload",
+      "feature": "object.tus",
+      "method": "DELETE",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0"
+      },
+      "note": "termination is listed in the options answer, so a client that changed its mind can say so rather than leaving a row behind forever",
+      "chained": true
+    },
+    {
+      "name": "where a resumable upload that was given up on has got to",
+      "feature": "object.tus",
+      "method": "HEAD",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0"
+      },
+      "chained": true
+    },
+    {
+      "name": "the object a resumable upload that was given up on did not leave",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/notes/dropped.txt",
+      "key": "service",
+      "chained": true
+    },
+    {
+      "name": "a resumable upload of five bytes that is going to be sent eleven",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "5",
+        "upload-metadata": "bucketName bm90ZXM=,objectName dG9vbWFueS50eHQ=,contentType dGV4dC9wbGFpbg=="
+      },
+      "writes": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "more bytes than a resumable upload said it had",
+      "feature": "object.tus",
+      "method": "PATCH",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "0",
+        "content-type": "application/offset+octet-stream"
+      },
+      "body": "hello world",
+      "note": "the length is a promise made when the upload was created and this breaks it, which is the one refusal that cannot be worked out from the headers alone",
+      "chained": true
+    },
+    {
+      "name": "a resumable upload that says how long it is later",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-defer-length": "1",
+        "upload-metadata": "bucketName bm90ZXM=,objectName ZGVmZXJyZWQudHh0,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "creation-defer-length is listed in the options answer, and it is how a client uploads something it is still making",
+      "writes": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "the bytes and the length of a deferred resumable upload at once",
+      "feature": "object.tus",
+      "method": "PATCH",
+      "path": "{location}",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "0",
+        "upload-length": "11",
+        "content-type": "application/offset+octet-stream"
+      },
+      "body": "hello world",
+      "chained": true
+    },
+    {
+      "name": "the object a deferred resumable upload left behind",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/notes/deferred.txt",
+      "key": "service",
+      "chained": true
+    },
+    {
+      "name": "a resumable upload that says nothing at all",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0"
+      },
+      "note": "no length and no metadata, which is the only way to find out which of the two is complained about first"
+    },
+    {
+      "name": "a resumable upload of a terabyte into a bucket that is not there",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "1099511627776",
+        "upload-metadata": "bucketName bm9wZQ==,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "both wrong at once, which says whether the bucket is looked up before the length is read"
+    },
+    {
+      "name": "where an upload id nobody made has got to",
+      "feature": "object.tus",
+      "method": "HEAD",
+      "path": "/storage/v1/upload/resumable/bm90ZXMvbm90aGluZy50eHQvMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAw",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0"
+      },
+      "note": "an id of the shape the server hands out, naming an upload that was never created, which is a different thing from an id that is not one at all"
+    },
+    {
+      "name": "bytes sent to an upload id nobody made",
+      "feature": "object.tus",
+      "method": "PATCH",
+      "path": "/storage/v1/upload/resumable/bm90ZXMvbm90aGluZy50eHQvMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAw",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "0",
+        "content-type": "application/offset+octet-stream"
+      },
+      "body": "hello world",
+      "chained": false
+    },
+    {
+      "name": "ending an upload id nobody made",
+      "feature": "object.tus",
+      "method": "DELETE",
+      "path": "/storage/v1/upload/resumable/bm90ZXMvbm90aGluZy50eHQvMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAw",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0"
+      }
     }
   ]
 }
