@@ -4817,6 +4817,432 @@
         "element:LastModified"
       ],
       "key": "s3"
+    },
+    {
+      "name": "making a bucket whose size limit is written the way a person writes it",
+      "feature": "bucket.limits",
+      "method": "POST",
+      "path": "/storage/v1/bucket",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"id\":\"spelled\",\"name\":\"spelled\",\"file_size_limit\":\"20mb\"}",
+      "note": "the client sends this string when somebody passes fileSizeLimit: '20mb', so it is what a bucket made through storage-js carries",
+      "writes": true
+    },
+    {
+      "name": "reading back what twenty megabytes came to",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ],
+      "note": "a thousand or a thousand and twenty four to the power of two, and the answer is a number in a column rather than the string that was sent"
+    },
+    {
+      "name": "the same size shouted",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"20MB\"}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after the same size shouted",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a size with a space between the number and the unit",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"20 mb\"}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a size with a space between the number and the unit",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a size in the binary unit",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"20mib\"}",
+      "note": "mib and mb are different numbers, and whether this endpoint knows the difference is the question",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a size in the binary unit",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a size in kilobytes",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"1kb\"}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a size in kilobytes",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "half a megabyte",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"0.5mb\"}",
+      "note": "a fraction, which has to land on a whole number of bytes somewhere",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after half a megabyte",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a size in bytes with the unit said out loud",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"1000b\"}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a size in bytes with the unit said out loud",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a number written as a string with no unit at all",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"1024\"}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a number written as a string with no unit at all",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a unit nobody has",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"20 bananas\"}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a unit nobody has",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a size that is not a size",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"abc\"}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a size that is not a size",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "an empty string where a size goes",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"\"}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after an empty string where a size goes",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a size below nothing",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"-1mb\"}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a size below nothing",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a size of zero",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"0\"}",
+      "note": "zero and null are different answers and a column that holds both has to be told which",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a size of zero",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a size given as a yes",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":true}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a size given as a yes",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a size given as a fraction of a byte",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":1024.5}",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a size given as a fraction of a byte",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a terabyte written in words",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"file_size_limit\":\"1tb\"}",
+      "note": "the number version of this is refused for being over the server's own limit, and this asks whether the words get that far",
+      "chained": true
+    },
+    {
+      "name": "what the bucket holds after a terabyte written in words",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelled",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "making a bucket that takes twenty bytes, said in words",
+      "feature": "bucket.limits",
+      "method": "POST",
+      "path": "/storage/v1/bucket",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"id\":\"spelledsmall\",\"name\":\"spelledsmall\",\"file_size_limit\":\"20b\"}",
+      "note": "so an upload can be asked against a limit that arrived as a string, which is the only proof that the string was read rather than stored",
+      "writes": true
+    },
+    {
+      "name": "the twenty bytes as the column holds them",
+      "feature": "bucket.limits",
+      "path": "/storage/v1/bucket/spelledsmall",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "a file that fits under a limit that was written in words",
+      "feature": "object.limits",
+      "method": "POST",
+      "path": "/storage/v1/object/spelledsmall/fits.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "hello world",
+      "chained": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "a file over a limit that was written in words",
+      "feature": "object.limits",
+      "method": "POST",
+      "path": "/storage/v1/object/spelledsmall/toobig.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "note": "forty bytes against twenty, and the refusal says the limit back in whatever units it thinks in",
+      "chained": true
     }
   ]
 }
