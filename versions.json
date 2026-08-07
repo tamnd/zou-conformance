@@ -51,6 +51,16 @@
     "package": "@supabase/supabase-js",
     "covers": ["js"]
   },
+  "storage_js": {
+    "version": "2.111.0",
+    "package": "@supabase/storage-js",
+    "covers": ["js-storage"],
+    "note": [
+      "The same version as supabase-js because it is the same release.",
+      "storage-js lives at packages/core/storage-js in github.com/supabase/supabase-js",
+      "and goes out with it, so there is nothing here to bump on its own."
+    ]
+  },
   "supabase_cli": {
     "version": "2.111.0",
     "package": "supabase",

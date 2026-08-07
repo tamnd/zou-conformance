@@ -11,9 +11,11 @@ The harness that reads these files lives in the zou repository, in `conformance/
 ```
 versions.json          what compatibility is measured against
 suites/rest/           82 questions about the surface a supabase project uses
-suites/postgrest/      1233 questions, derived from PostgREST's own spec files
+suites/postgrest/      1217 questions, derived from PostgREST's own spec files
 suites/auth/           77 questions about the endpoints a sign in flow uses
+suites/storage/        435 questions about buckets, objects and the S3 protocol
 js/                    supabase-js's own integration tests, run against zou
+js-storage/            storage-js's own integration tests, run against zou
 demo/                  one of Supabase's example apps, unedited, in a browser
 ```
 
@@ -27,7 +29,7 @@ recorded.json   what the reference answered, per case
 known.json      the cases zou answers differently, and why
 ```
 
-`js/` is not a suite in that shape and is described in [js/README.md](js/README.md). It is upstream's own test file, run against zou with the url and the keys made pluggable, and it is the one place here where the assertions are somebody else's rather than a recording, because upstream wrote them about upstream's own client.
+`js/` and `js-storage/` are not suites in that shape and are described in [js/README.md](js/README.md) and [js-storage/README.md](js-storage/README.md). They are upstream's own test files run against zou, and they are the two places here where the assertions are somebody else's rather than a recording, because upstream wrote them about upstream's own clients.
 
 `demo/` is not a suite either, and is described in [demo/README.md](demo/README.md). It is one of Supabase's example apps with nothing changed in it, driven through a real browser: sign up, sign in, a row level security policy holding between two accounts, and a Github login. A suite passing says every answer matched a recording. An app working says the answers were enough to build something on, and the second does not follow from the first.
 
@@ -82,12 +84,13 @@ The numbers move, so the file that has them is [docs/scoreboard.md](https://gith
 | rest | 82 | 82, 100% | 0 |
 | postgrest | 1217 | 1217, 100% | 0 |
 | auth | 77 | 74, 96% | 3 |
+| storage | 435 | 435, 100% | 0 |
 
-The supabase-js suite runs 16 of its 34 tests and zou passes all 16. The other 18 are Realtime and Storage, which zou does not serve yet.
+The supabase-js suite runs 17 of its 34 tests and zou passes all 17. The other 17 are Realtime, which zou does not serve yet. The storage-js suite runs 130 of its 135 and zou passes all 130, the other five being image transforms.
 
 ## Provenance
 
-`js/` is derived from [supabase-js](https://github.com/supabase/supabase-js), which is MIT licensed, and keeps upstream's licence in `js/UPSTREAM-LICENSE`.
+`js/` and `js-storage/` are derived from [supabase-js](https://github.com/supabase/supabase-js), which is MIT licensed, and each keeps upstream's licence next to it in `UPSTREAM-LICENSE`.
 
 `suites/postgrest` is derived from the test fixtures and spec files of [PostgREST](https://github.com/PostgREST/postgrest), which is MIT licensed. Upstream's licence is kept next to the files it covers, in `suites/postgrest/UPSTREAM-LICENSE`. The fixtures are upstream's with four differences, each noted at the top of `setup.sql`: the psql includes and variables are gone because the file is applied over a connection, the rows that arrived over `copy ... from stdin` are inserts, PostGIS is stripped a whole statement at a time, and two statements are swept up so the file can be applied twice to the same database.
 
