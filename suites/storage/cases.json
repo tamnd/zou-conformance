@@ -1868,20 +1868,32 @@
       "name": "a width of zero",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=0",
-      "key": "service"
+      "key": "service",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
+      ]
     },
     {
       "name": "a very large width",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=2501",
       "key": "service",
-      "note": "whether there is a ceiling on a side, and what is said when it is passed"
+      "note": "whether there is a ceiling on a side, and what is said when it is passed",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
+      ]
     },
     {
       "name": "a height of zero",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?height=0",
-      "key": "service"
+      "key": "service",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
+      ]
     },
     {
       "name": "a width that is not a number",
@@ -1912,7 +1924,11 @@
       "name": "a format that is not origin",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&format=avif",
-      "key": "service"
+      "key": "service",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
+      ]
     },
     {
       "name": "a format nothing here can write",
