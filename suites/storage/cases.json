@@ -2039,6 +2039,270 @@
       "path": "/storage/v1/upload/resumable",
       "key": "service",
       "note": "the protocol defines no get here and what is said instead is worth knowing, since it is the difference between a route that is missing and a method that is"
+    },
+    {
+      "name": "a resumable upload that carries its bytes with it",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "content-type": "application/offset+octet-stream",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "body": "hello world",
+      "note": "creation-with-upload is one of the extensions the options answer lists, and it is the only way a case can finish an upload, since continuing one means sending to a url with an id in it that no case can know in advance",
+      "writes": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "the object a resumable upload left behind",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/notes/resumable.txt",
+      "key": "service",
+      "note": "the bytes really landed, on the ordinary download route, which is the whole point of the protocol",
+      "chained": true
+    },
+    {
+      "name": "what was written down for the object a resumable upload made",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/info/notes/resumable.txt",
+      "key": "service",
+      "note": "the size, the type and the cache control a resumable upload writes, against the same route an ordinary upload is read back on",
+      "chained": true,
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/last_modified",
+        "/version"
+      ]
+    },
+    {
+      "name": "a resumable upload over an object that is already there",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "whether the name is taken is a question that can be answered when the upload is created or when it finishes, and one of those wastes a whole upload",
+      "chained": true
+    },
+    {
+      "name": "a resumable upload over an object that is already there, told to replace it",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "7",
+        "content-type": "application/offset+octet-stream",
+        "x-upsert": "true",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "body": "goodbye",
+      "note": "the same header an ordinary upload uses to say it means to replace, on a route that reads its other options out of metadata",
+      "chained": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "the object after a resumable upload replaced it",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/notes/resumable.txt",
+      "key": "service",
+      "chained": true
+    },
+    {
+      "name": "a resumable upload that carries only some of its bytes",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "content-type": "application/offset+octet-stream",
+        "upload-metadata": "bucketName bm90ZXM=,objectName aGFsZi50eHQ=,contentType dGV4dC9wbGFpbg=="
+      },
+      "body": "hello",
+      "note": "five of the eleven bytes it says it has, which is the state a client resumes from and the offset in the answer is where it would start again",
+      "writes": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "the object a half sent resumable upload has not left behind",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/notes/half.txt",
+      "key": "service",
+      "note": "an upload that is not finished is not an object, and a client listing the bucket should not see one",
+      "chained": true
+    },
+    {
+      "name": "a resumable upload of nothing at all",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "0",
+        "content-type": "application/offset+octet-stream",
+        "upload-metadata": "bucketName bm90ZXM=,objectName ZW1wdHkudHh0,contentType dGV4dC9wbGFpbg=="
+      },
+      "note": "zero is a length like any other and an upload of it is finished the moment it is created",
+      "writes": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "what was written down for an object of no bytes",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/info/notes/empty.txt",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/last_modified",
+        "/version"
+      ]
+    },
+    {
+      "name": "a resumable upload that asks for a cache control",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "content-type": "application/offset+octet-stream",
+        "upload-metadata": "bucketName bm90ZXM=,objectName Y2FjaGVkLnR4dA==,contentType dGV4dC9wbGFpbg==,cacheControl bWF4LWFnZT0zNjAw"
+      },
+      "body": "hello world",
+      "note": "an ordinary upload says this in a header or a form field and a resumable one says it in metadata, so this asks whether it arrives at the same place",
+      "writes": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "the cache control a resumable upload asked for, read back",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/info/notes/cached.txt",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/last_modified",
+        "/version"
+      ]
+    },
+    {
+      "name": "what a download says about a resumable upload that asked for a cache control",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/notes/cached.txt",
+      "key": "service",
+      "note": "cache-control is a header on the way out rather than a field, so the info route alone does not say whether it reached the reader",
+      "chained": true
+    },
+    {
+      "name": "making a bucket for resumable uploads that takes only small text",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/bucket",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"id\":\"tuslimited\",\"name\":\"tuslimited\",\"file_size_limit\":20,\"allowed_mime_types\":[\"text/plain\"]}",
+      "note": "the limits are enforced on the two ordinary upload doors and this is a third one, which either reads them or does not",
+      "writes": true
+    },
+    {
+      "name": "a resumable upload that fits the bucket",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "content-type": "application/offset+octet-stream",
+        "upload-metadata": "bucketName dHVzbGltaXRlZA==,objectName Zml0cy50eHQ=,contentType dGV4dC9wbGFpbg=="
+      },
+      "body": "hello world",
+      "chained": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "a resumable upload longer than the bucket takes",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "40",
+        "content-type": "application/offset+octet-stream",
+        "upload-metadata": "bucketName dHVzbGltaXRlZA==,objectName dG9vYmlnLnR4dA==,contentType dGV4dC9wbGFpbg=="
+      },
+      "body": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "note": "the length is declared in a header, so this can be refused before a byte of the body is read, and whether it is says which of the two limits is being read",
+      "chained": true
+    },
+    {
+      "name": "a resumable upload of a type the bucket does not take",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "7",
+        "content-type": "application/offset+octet-stream",
+        "upload-metadata": "bucketName dHVzbGltaXRlZA==,objectName d3JvbmcuanNvbg==,contentType YXBwbGljYXRpb24vanNvbg=="
+      },
+      "body": "{\"a\":1}",
+      "note": "the type is metadata here rather than the content-type of the request, since the content-type of a patch is fixed by the protocol",
+      "chained": true
+    },
+    {
+      "name": "what the bucket has in it after all that",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/object/list/tuslimited",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"prefix\":\"\"}",
+      "note": "the refusals above left nothing behind or they did not, and a listing is the only thing that says which",
+      "chained": true,
+      "volatile": [
+        "/*/id",
+        "/*/created_at",
+        "/*/updated_at",
+        "/*/last_accessed_at",
+        "/*/metadata/eTag",
+        "/*/metadata/lastModified"
+      ]
     }
   ]
 }
