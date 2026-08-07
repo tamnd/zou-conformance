@@ -2757,14 +2757,14 @@
       "note": "HeadBucket, which answers nothing at all and says everything in the status."
     },
     {
-      "name": "a bucket that is not there",
+      "name": "a bucket that is not there, headed with a signature",
       "feature": "s3.bucket",
       "method": "HEAD",
       "path": "/storage/v1/s3/nothing",
       "key": "s3"
     },
     {
-      "name": "making a bucket",
+      "name": "making a bucket with a signature",
       "feature": "s3.bucket",
       "method": "PUT",
       "path": "/storage/v1/s3/made-by-a-signature",
@@ -2773,7 +2773,7 @@
       "note": "CreateBucket. The name is in the path and the body is empty, which is the shape a client sends when it asks for no location constraint."
     },
     {
-      "name": "making a bucket that is already there",
+      "name": "making a bucket with a signature when it is already there",
       "feature": "s3.bucket",
       "method": "PUT",
       "path": "/storage/v1/s3/photos",
@@ -2781,7 +2781,7 @@
       "writes": true
     },
     {
-      "name": "deleting a bucket with nothing in it",
+      "name": "deleting an empty bucket with a signature",
       "feature": "s3.bucket",
       "method": "DELETE",
       "path": "/storage/v1/s3/notes",
@@ -2799,7 +2799,7 @@
       "note": "The other half. Four rows are in photos and s3 refuses to delete a bucket that is not empty, which is the same rule the storage api has and possibly not the same sentence."
     },
     {
-      "name": "deleting a bucket that is not there",
+      "name": "deleting a bucket with a signature when it is not there",
       "feature": "s3.bucket",
       "method": "DELETE",
       "path": "/storage/v1/s3/nothing",
