@@ -1760,6 +1760,35 @@
       "body": "{\"id\":\"anonymous\"}",
       "note": "the other half of the case above that sends no id, so the refusal names the field that is missing rather than the first field in the schema",
       "chained": true
+    },
+    {
+      "name": "narrowing the bucket back to where it was",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/limited",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"id\":\"limited\",\"file_size_limit\":20,\"allowed_mime_types\":[\"text/plain\"]}",
+      "note": "so the case below it can be asked against a limit the form is over and the file is under",
+      "chained": true
+    },
+    {
+      "name": "a multipart form longer than the limit with a file inside it that is not",
+      "feature": "object.limits",
+      "method": "POST",
+      "path": "/storage/v1/object/limited/small.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "multipart/form-data; boundary=zouconformanceboundary"
+      },
+      "body": "--zouconformanceboundary\r\nContent-Disposition: form-data; name=\"cacheControl\"\r\n\r\n3600\r\n--zouconformanceboundary\r\nContent-Disposition: form-data; name=\"\"; filename=\"small.txt\"\r\nContent-Type: text/plain\r\n\r\nhello world\r\n--zouconformanceboundary--\r\n",
+      "note": "the form is over a hundred bytes and the file in it is eleven, against a bucket that takes twenty, so this is the one that says which length is measured rather than the case above where both are over",
+      "chained": true,
+      "volatile": [
+        "/Id"
+      ]
     }
   ]
 }
