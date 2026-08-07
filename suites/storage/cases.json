@@ -1980,7 +1980,10 @@
         "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1hYmxlLnR4dA==,contentType dGV4dC9wbGFpbg=="
       },
       "note": "the creation itself, which answers with the url the bytes are sent to and no body at all",
-      "writes": true
+      "writes": true,
+      "volatile": [
+        "header:location"
+      ]
     },
     {
       "name": "what a resumable upload that is not there says to a head",
@@ -2302,6 +2305,68 @@
         "/*/last_accessed_at",
         "/*/metadata/eTag",
         "/*/metadata/lastModified"
+      ]
+    },
+    {
+      "name": "an ordinary upload that asks for a cache control",
+      "feature": "object.upload",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/ordinary.txt",
+      "key": "service",
+      "headers": {
+        "content-type": "text/plain",
+        "cache-control": "max-age=3600"
+      },
+      "body": "hello world",
+      "note": "the pair to the resumable one above. Without this the answer there says nothing, since a cache control that is ignored everywhere and a cache control that is ignored on one door look the same",
+      "writes": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "the cache control an ordinary upload asked for, read back",
+      "feature": "object.upload",
+      "path": "/storage/v1/object/info/notes/ordinary.txt",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/last_modified",
+        "/version"
+      ]
+    },
+    {
+      "name": "a resumable upload carrying metadata of its own",
+      "feature": "object.tus",
+      "method": "POST",
+      "path": "/storage/v1/upload/resumable",
+      "key": "service",
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "content-type": "application/offset+octet-stream",
+        "upload-metadata": "bucketName bm90ZXM=,objectName ZGVzY3JpYmVkLnR4dA==,contentType dGV4dC9wbGFpbg==,colour cmVk"
+      },
+      "body": "hello world",
+      "note": "an ordinary upload attaches what a client wants to keep in the x-metadata header, and the resumable one has metadata already, so a key the protocol does not know either lands in that column or is dropped",
+      "writes": true,
+      "volatile": [
+        "header:location"
+      ]
+    },
+    {
+      "name": "the metadata a resumable upload carried, read back",
+      "feature": "object.tus",
+      "path": "/storage/v1/object/info/notes/described.txt",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/last_modified",
+        "/version"
       ]
     }
   ]
