@@ -44,7 +44,7 @@ The runner is jest, where the `js` suite next door uses vitest. The snapshot fil
 
 ## What runs
 
-135 tests across four files, 130 passing and 5 skipped, plus 6 snapshots.
+135 tests across four files, 133 passing and 2 skipped, plus 6 snapshots.
 
 | file | what it asks |
 | --- | ---: |
@@ -53,13 +53,15 @@ The runner is jest, where the `js` suite next door uses vitest. The snapshot fil
 | `storageFileApi.test.ts` | upload, download, list, move, copy, remove, signed urls |
 | `storageFileApiNode.test.ts` | the node stream and buffer paths |
 
-The five skipped are all image transforms. Three are gated behind an environment flag, because `/storage/v1/render/image` is the part of the storage api zou does not serve, [tamnd/zou#3](https://github.com/tamnd/zou/issues/3), and a suite that fails on a feature nobody has written measures nothing. They are skipped rather than deleted, so the day it lands they run exactly as upstream wrote them:
+The two skipped are upstream's own, one for webp negotiation and one for `format: 'origin'`.
+
+Three more were gated behind an environment flag while `/storage/v1/render/image` was the part of the storage api zou did not serve, [tamnd/zou#3](https://github.com/tamnd/zou/issues/3), since a suite that fails on a feature nobody has written measures nothing. They were skipped rather than deleted, and they run now:
 
 ```
 ZOU_IMAGE_TRANSFORMS=1 npm test
 ```
 
-The other two upstream skips itself, one for webp negotiation and one for `format: 'origin'`.
+One of them earned its keep the day it stopped being skipped. It reads `x-transformations`, the header a render carries saying what it was asked to do, and no recorded case had ever compared it: the harness compares a fixed list of headers and that one was not on the list. The recording that followed is where the ceiling on a side, quietly two thousand, came from.
 
 That flag and the comment above it are the entire diff against upstream. No assertion is edited.
 

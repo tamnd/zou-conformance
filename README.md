@@ -13,7 +13,7 @@ versions.json          what compatibility is measured against
 suites/rest/           82 questions about the surface a supabase project uses
 suites/postgrest/      1217 questions, derived from PostgREST's own spec files
 suites/auth/           77 questions about the endpoints a sign in flow uses
-suites/storage/        435 questions about buckets, objects and the S3 protocol
+suites/storage/        478 questions about buckets, objects, transforms and the S3 protocol
 js/                    supabase-js's own integration tests, run against zou
 js-storage/            storage-js's own integration tests, run against zou
 demo/                  one of Supabase's example apps, unedited, in a browser
@@ -85,13 +85,13 @@ The numbers move, so the file that has them is [docs/scoreboard.md](https://gith
 | rest | 82 | 82, 100% | 0 |
 | postgrest | 1217 | 1217, 100% | 0 |
 | auth | 77 | 74, 96% | 3 |
-| storage | 435 | 435, 100% | 0 |
+| storage | 478 | 478, 100% | 0 |
 
-The supabase-js suite runs 17 of its 34 tests and zou passes all 17. The other 17 are Realtime, which zou does not serve yet. The storage-js suite runs 130 of its 135 and zou passes all 130, the other five being image transforms.
+The supabase-js suite runs 17 of its 34 tests and zou passes all 17. The other 17 are Realtime, which zou does not serve yet. The storage-js suite runs 133 of its 135 and zou passes all 133, the other two being skips upstream wrote itself.
 
 ## Provenance
 
-`js/` and `js-storage/` are derived from [supabase-js](https://github.com/supabase/supabase-js), which is MIT licensed, and each keeps upstream's licence next to it in `UPSTREAM-LICENSE`. `suites/storage/fixtures/sadcat.jpg` is the same file as `js-storage/test/fixtures/upload/sadcat.jpg` and comes from there: the image transform cases need a real image to transform, and transforming the one upstream's own tests use is one fewer thing to explain.
+`js/` and `js-storage/` are derived from [supabase-js](https://github.com/supabase/supabase-js), which is MIT licensed, and each keeps upstream's licence next to it in `UPSTREAM-LICENSE`. `suites/storage/fixtures/sadcat.jpg` is the same file as `js-storage/test/fixtures/upload/sadcat.jpg` and comes from there: the image transform cases need a real image to transform, and transforming the one upstream's own tests use is one fewer thing to explain. `suites/storage/fixtures/sadcat.png` is that same cat, resized and saved as a png, and it is here because a jpeg cannot answer the question the format cases are asking: when nothing is said about the format, the answer is a jpeg either way, and only a source that is not a jpeg says whether that is the default or the format it was uploaded in.
 
 `suites/postgrest` is derived from the test fixtures and spec files of [PostgREST](https://github.com/PostgREST/postgrest), which is MIT licensed. Upstream's licence is kept next to the files it covers, in `suites/postgrest/UPSTREAM-LICENSE`. The fixtures are upstream's with four differences, each noted at the top of `setup.sql`: the psql includes and variables are gone because the file is applied over a connection, the rows that arrived over `copy ... from stdin` are inserts, PostGIS is stripped a whole statement at a time, and two statements are swept up so the file can be applied twice to the same database.
 
