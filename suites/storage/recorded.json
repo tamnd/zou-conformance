@@ -3549,6 +3549,27 @@
         "etag": "\"2282aac65b816605af34ac49368afa92\""
       },
       "body": "no content type was sent with this"
+    },
+    {
+      "name": "what a put with a signature wrote down about the file",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "etag": "\"2282aac65b816605af34ac49368afa92\""
+      },
+      "body": {
+        "bucket_id": "notes",
+        "cache_control": "no-cache",
+        "content_type": "application/octet-stream",
+        "created_at": "<timestamp>",
+        "etag": "\"2282aac65b816605af34ac49368afa92\"",
+        "id": "<uuid>",
+        "last_modified": "<timestamp>",
+        "metadata": {},
+        "name": "untyped",
+        "size": 34,
+        "version": "<uuid>"
+      }
     }
   ]
 }
