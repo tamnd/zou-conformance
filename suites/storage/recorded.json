@@ -3699,6 +3699,245 @@
         "content-type": "application/xml; charset=utf-8"
       },
       "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>nowhere</Resource><Code>NoSuchBucket</Code><Message>Bucket not found</Message></Error>"
+    },
+    {
+      "name": "an upload begun in pieces",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><InitiateMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>big.txt</Key><UploadId><uuid></UploadId></InitiateMultipartUploadResult>"
+    },
+    {
+      "name": "the first piece sent",
+      "status": 200,
+      "headers": {
+        "etag": "22dd8875c03ca55009dc90f38648b498"
+      },
+      "body": null
+    },
+    {
+      "name": "the second piece sent",
+      "status": 200,
+      "headers": {
+        "etag": "bcea7a8ff3a2dc822dad6c09bb180c70"
+      },
+      "body": null
+    },
+    {
+      "name": "the pieces an upload has so far",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListPartsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>big.txt</Key><UploadId><uuid></UploadId><MaxParts>1000</MaxParts><IsTruncated>false</IsTruncated><Part><PartNumber>1</PartNumber><LastModified><timestamp></LastModified><ETag>22dd8875c03ca55009dc90f38648b498</ETag></Part><Part><PartNumber>2</PartNumber><LastModified><timestamp></LastModified><ETag>bcea7a8ff3a2dc822dad6c09bb180c70</ETag></Part></ListPartsResult>"
+    },
+    {
+      "name": "what a bucket has in pieces",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListMultipartUploadsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>notes</Name><Prefix/><Upload><Key>big.txt</Key><Initiated><timestamp></Initiated><UploadId><uuid></UploadId><StorageClass>STANDARD</StorageClass></Upload><IsTruncated>false</IsTruncated><MaxUploads>1000</MaxUploads><KeyCount>1</KeyCount></ListMultipartUploadsResult>"
+    },
+    {
+      "name": "the object an unfinished upload is making",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/big.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "an upload put together",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CompleteMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Location>notes/big.txt</Location><Bucket>notes</Bucket><Key>big.txt</Key><ETag>\"3e74d39932c799d914f22bb910f32efd\"</ETag></CompleteMultipartUploadResult>"
+    },
+    {
+      "name": "the object two pieces made",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"3e74d39932c799d914f22bb910f32efd\""
+      },
+      "body": "a file sent in two pieces, and this is the first of them and this is the second of them"
+    },
+    {
+      "name": "the object two pieces made, in a listing",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>notes</Name><Prefix/><Contents><Key>big.txt</Key><LastModified><timestamp></LastModified><ETag>\"3e74d39932c799d914f22bb910f32efd\"</ETag><Size>87</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><KeyCount>1</KeyCount></ListBucketResult>"
+    },
+    {
+      "name": "the pieces of an upload that was put together",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/big.txt</Resource><Code>NoSuchUpload</Code><Message>Upload not found</Message></Error>"
+    },
+    {
+      "name": "putting an upload together twice",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/big.txt</Resource><Code>NoSuchUpload</Code><Message>Upload not found</Message></Error>"
+    },
+    {
+      "name": "an upload begun and then dropped",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><InitiateMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>abandoned.txt</Key><UploadId><uuid></UploadId></InitiateMultipartUploadResult>"
+    },
+    {
+      "name": "a piece sent to an upload before it is dropped",
+      "status": 200,
+      "headers": {
+        "etag": "22dd8875c03ca55009dc90f38648b498"
+      },
+      "body": null
+    },
+    {
+      "name": "an upload dropped",
+      "status": 200,
+      "headers": {},
+      "body": null
+    },
+    {
+      "name": "the pieces of an upload that was dropped",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/abandoned.txt</Resource><Code>NoSuchUpload</Code><Message>Upload not found</Message></Error>"
+    },
+    {
+      "name": "what a bucket has in pieces after one was dropped",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListMultipartUploadsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>notes</Name><Prefix/><IsTruncated>false</IsTruncated><MaxUploads>1000</MaxUploads><KeyCount>0</KeyCount></ListMultipartUploadsResult>"
+    },
+    {
+      "name": "the object a dropped upload was making",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/abandoned.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "an upload begun to be put together wrongly",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><InitiateMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>wrong.txt</Key><UploadId><uuid></UploadId></InitiateMultipartUploadResult>"
+    },
+    {
+      "name": "a piece sent to it",
+      "status": 200,
+      "headers": {
+        "etag": "22dd8875c03ca55009dc90f38648b498"
+      },
+      "body": null
+    },
+    {
+      "name": "a piece numbered zero",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/wrong.txt</Resource><Code>InvalidRequest</Code><Message>Querystring, partNumber must be &gt;= 1</Message></Error>"
+    },
+    {
+      "name": "a piece numbered above ten thousand",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/wrong.txt</Resource><Code>InvalidRequest</Code><Message>Querystring, partNumber must be &lt;= 10000</Message></Error>"
+    },
+    {
+      "name": "putting an upload together with no pieces named",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/wrong.txt</Resource><Code>InvalidRequest</Code><Message>Body, CompleteMultipartUpload must be object</Message></Error>"
+    },
+    {
+      "name": "putting an upload together with an etag that is not the piece's",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/wrong.txt</Resource><Code>InvalidChecksum</Code><Message>Invalid ETag for part 1</Message></Error>"
+    },
+    {
+      "name": "putting an upload together naming a piece that was never sent",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/wrong.txt</Resource><Code>MissingPart</Code><Message>Part 7 is missing for upload id <uuid></Message></Error>"
+    },
+    {
+      "name": "a piece sent to an upload nobody started",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/big.txt</Resource><Code>NoSuchUpload</Code><Message>Upload not found</Message></Error>"
+    },
+    {
+      "name": "an upload begun in a bucket that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>nowhere/big.txt</Resource><Code>NoSuchBucket</Code><Message>Bucket not found</Message></Error>"
+    },
+    {
+      "name": "the pieces of an upload nobody started",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/big.txt</Resource><Code>NoSuchUpload</Code><Message>Upload not found</Message></Error>"
+    },
+    {
+      "name": "dropping an upload nobody started",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/big.txt</Resource><Code>NoSuchUpload</Code><Message>Upload not found</Message></Error>"
+    },
+    {
+      "name": "what a bucket that is not there has in pieces",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>nowhere</Resource><Code>NoSuchBucket</Code><Message>Bucket not found</Message></Error>"
+    },
+    {
+      "name": "what a bucket with nothing in pieces has",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListMultipartUploadsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix/><IsTruncated>false</IsTruncated><MaxUploads>1000</MaxUploads><KeyCount>0</KeyCount></ListMultipartUploadsResult>"
     }
   ]
 }
