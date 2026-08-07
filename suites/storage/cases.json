@@ -2796,7 +2796,8 @@
       "path": "/storage/v1/s3",
       "key": "s3",
       "chained": true,
-      "note": "Where a new bucket lands in the listing, which is the only thing that says what the order is. Two fixture buckets sorted by name and sorted by age come out the same way round, and a third one made just now tells the two apart."
+      "volatile": ["element:CreationDate"],
+      "note": "Where a new bucket lands in the listing, which is the only thing that says what the order is. Two fixture buckets sorted by name and sorted by age come out the same way round, and a third one made just now tells the two apart. The bucket this case is about was made a moment ago, so the days come out named and the names and the order are what is compared."
     },
     {
       "name": "making a bucket with a signature when it is already there",
