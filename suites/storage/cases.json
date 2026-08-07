@@ -2720,17 +2720,34 @@
       }
     },
     {
-      "name": "a signature from a day long past",
+      "name": "a signature correctly computed for a day long past",
       "feature": "s3.auth",
       "method": "GET",
       "path": "/storage/v1/s3",
-      "key": "none",
+      "key": "s3",
       "headers": {
-        "authorization": "AWS4-HMAC-SHA256 Credential=625729a08b95bf1b7ff351a663f3a23c/20240101/us-east-1/s3/aws4_request, SignedHeaders=host;x-amz-content-sha256;x-amz-date, Signature=0000000000000000000000000000000000000000000000000000000000000000",
-        "x-amz-date": "20240101T000000Z",
-        "x-amz-content-sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        "x-amz-date": "20240101T000000Z"
       },
-      "note": "Written out rather than signed, because a case about a stale date cannot have today's date in it. Both the scope and the header say the same long past day, so whichever of the two a server reads, it reads the same one."
+      "note": "Signed properly, so the signature matches what the server recomputes and the only thing wrong with the request is that it was made two years ago. A server with no window on that accepts a signature that lives forever, and one with a window says so in its own words."
+    },
+    {
+      "name": "a signature computed in a region the project is not in",
+      "feature": "s3.auth",
+      "method": "GET",
+      "path": "/storage/v1/s3",
+      "key": "s3.wrong-region",
+      "note": "The region is in the credential scope and in the signing key both, so a server that ignores it still cannot match the signature. Which of the two it complains about is the question."
+    },
+    {
+      "name": "a body hash that is not the body's hash",
+      "feature": "s3.auth",
+      "method": "GET",
+      "path": "/storage/v1/s3",
+      "key": "s3",
+      "headers": {
+        "x-amz-content-sha256": "0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "note": "The header is what goes into the canonical request, so signing it makes the signature agree with a hash of nothing in particular. Only a server that hashes the body itself and compares can tell."
     },
     {
       "name": "every bucket the pair can see",
