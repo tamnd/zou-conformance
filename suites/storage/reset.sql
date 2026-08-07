@@ -16,6 +16,14 @@
 -- day the guard changed.
 set storage.allow_delete_query = 'true';
 
+-- Resumable uploads point at a bucket too, and one that was never
+-- finished points at it for as long as the row is there. Nothing in
+-- this file makes one and the first run of the suite finds none, but a
+-- run after one that reached the resumable cases would be refused by
+-- the foreign key rather than starting from the rows below. The parts
+-- go with their upload on the cascade.
+delete from storage.s3_multipart_uploads;
+
 -- Emptied rather than upserted. A case that makes a bucket leaves a
 -- row behind, and the next run has to see the database the last one
 -- started with rather than the one it finished with. Objects first,
