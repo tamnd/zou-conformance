@@ -1789,6 +1789,47 @@
       "volatile": [
         "/Id"
       ]
+    },
+    {
+      "name": "a file that is both over the limit and of a type it does not take",
+      "feature": "object.limits",
+      "method": "POST",
+      "path": "/storage/v1/object/limited/both.json",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"padding\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}",
+      "note": "two refusals available and one answer, so this says which of the two checks runs first",
+      "chained": true
+    },
+    {
+      "name": "a file with no content type at all, into a bucket that takes anything",
+      "feature": "object.limits",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/untyped.bin",
+      "key": "service",
+      "body": "hello world",
+      "note": "the bucket with a list refuses this one by naming a type nobody sent, so this asks whether that type is also what gets written down",
+      "chained": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "what was written down for it",
+      "feature": "object.limits",
+      "path": "/storage/v1/object/info/notes/untyped.bin",
+      "key": "service",
+      "chained": true,
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/updated_at",
+        "/last_accessed_at",
+        "/version",
+        "/metadata/eTag"
+      ]
     }
   ]
 }
