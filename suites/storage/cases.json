@@ -1830,6 +1830,19 @@
         "/version",
         "/metadata/eTag"
       ]
+    },
+    {
+      "name": "widening a bucket past the limit the server has",
+      "feature": "bucket.limits",
+      "method": "PUT",
+      "path": "/storage/v1/bucket/limited",
+      "key": "service",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": "{\"id\":\"limited\",\"file_size_limit\":1099511627776}",
+      "note": "the create refuses a terabyte and this asks whether the update refuses it too, which is the door a bucket made small could otherwise be widened through",
+      "chained": true
     }
   ]
 }
