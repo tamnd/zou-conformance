@@ -4230,7 +4230,7 @@
       "key": "s3"
     },
     {
-      "name": "a copy source written without its leading slash",
+      "name": "a copied piece whose source is written without its leading slash",
       "feature": "s3.partcopy",
       "method": "PUT",
       "path": "/storage/v1/s3/notes/refused.txt?partNumber=3&uploadId={refused}",
