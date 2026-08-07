@@ -3390,6 +3390,7 @@
       "key": "s3",
       "chained": true,
       "volatile": [
+        "element:UploadId",
         "element:LastModified"
       ],
       "note": "a client that lost its place lists the pieces the server already has before sending the rest"
@@ -3428,9 +3429,6 @@
       "body": "<CompleteMultipartUpload><Part><PartNumber>1</PartNumber><ETag>{firstTag}</ETag></Part><Part><PartNumber>2</PartNumber><ETag>{secondTag}</ETag></Part></CompleteMultipartUpload>",
       "writes": true,
       "chained": true,
-      "volatile": [
-        "element:Location"
-      ],
       "note": "Location holds the host it was asked on, which is not the same host twice"
     },
     {
@@ -3642,7 +3640,11 @@
       },
       "body": "<CompleteMultipartUpload><Part><PartNumber>7</PartNumber><ETag>{botchedTag}</ETag></Part></CompleteMultipartUpload>",
       "writes": true,
-      "chained": true
+      "chained": true,
+      "volatile": [
+        "element:Message"
+      ],
+      "note": "the sentence names the upload id, which is a value the server made up a moment ago, so the id is given up and the words around it are not"
     },
     {
       "name": "a piece sent to an upload nobody started",
