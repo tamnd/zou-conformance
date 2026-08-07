@@ -2439,6 +2439,681 @@
         "statusCode": "413"
       },
       "raw": "{\"statusCode\":\"413\",\"error\":\"Payload too large\",\"message\":\"The object exceeded the maximum allowed size\",\"code\":\"EntityTooLarge\"}"
+    },
+    {
+      "name": "what the resumable endpoint says it can do",
+      "status": 204,
+      "headers": {
+        "tus-extension": "creation,creation-with-upload,creation-defer-length,termination,expiration",
+        "tus-max-size": "52428800000",
+        "tus-resumable": "1.0.0",
+        "tus-version": "1.0.0"
+      },
+      "body": null
+    },
+    {
+      "name": "a resumable upload that does not say which tus it speaks",
+      "status": 412,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Tus-Resumable Required\n"
+    },
+    {
+      "name": "a resumable upload naming a tus nobody speaks",
+      "status": 400,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Invalid tus-resumable\n"
+    },
+    {
+      "name": "a resumable upload that says nothing about how long it is",
+      "status": 400,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Upload-Length or Upload-Defer-Length header required\n"
+    },
+    {
+      "name": "a resumable upload with no metadata on it",
+      "status": 400,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Metadata header is required"
+    },
+    {
+      "name": "a resumable upload that names no object",
+      "status": 400,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Invalid key: "
+    },
+    {
+      "name": "a resumable upload into a bucket that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Bucket not found"
+    },
+    {
+      "name": "a resumable upload with no key on it",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "AccessDenied",
+        "error": "Unauthorized",
+        "message": "Invalid Compact JWS",
+        "statusCode": "403"
+      },
+      "raw": "{\"statusCode\":\"403\",\"code\":\"AccessDenied\",\"error\":\"Unauthorized\",\"message\":\"Invalid Compact JWS\"}"
+    },
+    {
+      "name": "a resumable upload under the anon key",
+      "status": 403,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "new row violates row-level security policy"
+    },
+    {
+      "name": "a resumable upload longer than the server takes",
+      "status": 413,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Maximum size exceeded\n"
+    },
+    {
+      "name": "a resumable upload of a small text file",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0"
+      },
+      "body": null
+    },
+    {
+      "name": "what a resumable upload that is not there says to a head",
+      "status": 400,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": null
+    },
+    {
+      "name": "bytes sent to a resumable upload that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Invalid upload id"
+    },
+    {
+      "name": "bytes sent to a resumable upload under the wrong content type",
+      "status": 400,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Invalid content-type\n"
+    },
+    {
+      "name": "ending a resumable upload that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Invalid upload id"
+    },
+    {
+      "name": "a get on the resumable endpoint",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "error": "Not Found",
+        "message": "Route GET:/upload/resumable not found",
+        "statusCode": 404
+      },
+      "raw": "{\"message\":\"Route GET:/upload/resumable not found\",\"error\":\"Not Found\",\"statusCode\":404}"
+    },
+    {
+      "name": "a resumable upload that carries its bytes with it",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0",
+        "upload-offset": "11"
+      },
+      "body": null
+    },
+    {
+      "name": "the object a resumable upload left behind",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "what was written down for the object a resumable upload made",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "bucket_id": "notes",
+        "cache_control": "no-cache",
+        "content_type": "text/plain",
+        "created_at": "<timestamp>",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\"",
+        "id": "<uuid>",
+        "last_modified": "<timestamp>",
+        "metadata": null,
+        "name": "resumable.txt",
+        "size": 11,
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "a resumable upload over an object that is already there",
+      "status": 409,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "The resource already exists"
+    },
+    {
+      "name": "a resumable upload over an object that is already there, told to replace it",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0",
+        "upload-offset": "7"
+      },
+      "body": null
+    },
+    {
+      "name": "the object after a resumable upload replaced it",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "goodbye"
+    },
+    {
+      "name": "a resumable upload that carries only some of its bytes",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0",
+        "upload-offset": "5"
+      },
+      "body": null
+    },
+    {
+      "name": "the object a half sent resumable upload has not left behind",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a resumable upload of nothing at all",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0",
+        "upload-offset": "0"
+      },
+      "body": null
+    },
+    {
+      "name": "what was written down for an object of no bytes",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "bucket_id": "notes",
+        "cache_control": "no-cache",
+        "content_type": "text/plain",
+        "created_at": "<timestamp>",
+        "etag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+        "id": "<uuid>",
+        "last_modified": "<timestamp>",
+        "metadata": null,
+        "name": "empty.txt",
+        "size": 0,
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "a resumable upload that asks for a cache control",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0",
+        "upload-offset": "11"
+      },
+      "body": null
+    },
+    {
+      "name": "the cache control a resumable upload asked for, read back",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "bucket_id": "notes",
+        "cache_control": "no-cache",
+        "content_type": "text/plain",
+        "created_at": "<timestamp>",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\"",
+        "id": "<uuid>",
+        "last_modified": "<timestamp>",
+        "metadata": null,
+        "name": "cached.txt",
+        "size": 11,
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "what a download says about a resumable upload that asked for a cache control",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "making a bucket for resumable uploads that takes only small text",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "name": "tuslimited"
+      }
+    },
+    {
+      "name": "a resumable upload that fits the bucket",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0",
+        "upload-offset": "11"
+      },
+      "body": null
+    },
+    {
+      "name": "a resumable upload longer than the bucket takes",
+      "status": 413,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Maximum size exceeded\n"
+    },
+    {
+      "name": "a resumable upload of a type the bucket does not take",
+      "status": 415,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "mime type application/json is not supported"
+    },
+    {
+      "name": "what the bucket has in it after all that",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "created_at": "<timestamp>",
+          "id": "<uuid>",
+          "last_accessed_at": "<timestamp>",
+          "metadata": {
+            "cacheControl": "no-cache",
+            "contentLength": 11,
+            "eTag": "<string>",
+            "httpStatusCode": 200,
+            "lastModified": "<timestamp>",
+            "mimetype": "text/plain",
+            "size": 11
+          },
+          "name": "fits.txt",
+          "updated_at": "<timestamp>"
+        }
+      ]
+    },
+    {
+      "name": "an ordinary upload that asks for a cache control",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "Id": "<uuid>",
+        "Key": "notes/ordinary.txt"
+      }
+    },
+    {
+      "name": "the cache control an ordinary upload asked for, read back",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "bucket_id": "notes",
+        "cache_control": "max-age=3600",
+        "content_type": "text/plain",
+        "created_at": "<timestamp>",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\"",
+        "id": "<uuid>",
+        "last_modified": "<timestamp>",
+        "metadata": {},
+        "name": "ordinary.txt",
+        "size": 11,
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "a resumable upload carrying metadata of its own",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0",
+        "upload-offset": "11"
+      },
+      "body": null
+    },
+    {
+      "name": "the metadata a resumable upload carried, read back",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "bucket_id": "notes",
+        "cache_control": "no-cache",
+        "content_type": "text/plain",
+        "created_at": "<timestamp>",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\"",
+        "id": "<uuid>",
+        "last_modified": "<timestamp>",
+        "metadata": null,
+        "name": "described.txt",
+        "size": 11,
+        "version": "<uuid>"
+      }
+    },
+    {
+      "name": "a resumable upload that has not been finished",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0"
+      },
+      "body": null
+    },
+    {
+      "name": "where a resumable upload has got to before anything was sent",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1lLnR4dA==,contentType dGV4dC9wbGFpbg==,cacheControl bm8tY2FjaGU=",
+        "upload-offset": "0"
+      },
+      "body": null
+    },
+    {
+      "name": "the first five bytes of a resumable upload",
+      "status": 204,
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "5"
+      },
+      "body": null
+    },
+    {
+      "name": "where a resumable upload has got to after five bytes",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1lLnR4dA==,contentType dGV4dC9wbGFpbg==,cacheControl bm8tY2FjaGU=",
+        "upload-offset": "5"
+      },
+      "body": null
+    },
+    {
+      "name": "the same five bytes of a resumable upload again",
+      "status": 409,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Upload-Offset conflict\n"
+    },
+    {
+      "name": "bytes sent to a resumable upload past where it has got to",
+      "status": 409,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Upload-Offset conflict\n"
+    },
+    {
+      "name": "the rest of the bytes of a resumable upload",
+      "status": 204,
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "11"
+      },
+      "body": null
+    },
+    {
+      "name": "the object a resumed upload left behind",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "where a resumable upload that has finished has got to",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0",
+        "upload-length": "11",
+        "upload-metadata": "bucketName bm90ZXM=,objectName cmVzdW1lLnR4dA==,contentType dGV4dC9wbGFpbg==,cacheControl bm8tY2FjaGU=",
+        "upload-offset": "11"
+      },
+      "body": null
+    },
+    {
+      "name": "bytes sent to a resumable upload that has finished",
+      "status": 409,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "The resource already exists"
+    },
+    {
+      "name": "a resumable upload that is going to be given up on",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0"
+      },
+      "body": null
+    },
+    {
+      "name": "giving up on a resumable upload",
+      "status": 204,
+      "headers": {
+        "tus-resumable": "1.0.0"
+      },
+      "body": null
+    },
+    {
+      "name": "where a resumable upload that was given up on has got to",
+      "status": 404,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": null
+    },
+    {
+      "name": "the object a resumable upload that was given up on did not leave",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "NoSuchKey",
+        "error": "not_found",
+        "message": "Object not found",
+        "statusCode": "404"
+      },
+      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+    },
+    {
+      "name": "a resumable upload of five bytes that is going to be sent eleven",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0"
+      },
+      "body": null
+    },
+    {
+      "name": "more bytes than a resumable upload said it had",
+      "status": 413,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "upload's size exceeded\n"
+    },
+    {
+      "name": "a resumable upload that says how long it is later",
+      "status": 201,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "location": "/storage/v1/upload/resumable/<string>",
+        "tus-resumable": "1.0.0"
+      },
+      "body": null
+    },
+    {
+      "name": "the bytes and the length of a deferred resumable upload at once",
+      "status": 204,
+      "headers": {
+        "tus-resumable": "1.0.0",
+        "upload-offset": "11"
+      },
+      "body": null
+    },
+    {
+      "name": "the object a deferred resumable upload left behind",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": "hello world"
+    },
+    {
+      "name": "a resumable upload that says nothing at all",
+      "status": 400,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Upload-Length or Upload-Defer-Length header required\n"
+    },
+    {
+      "name": "a resumable upload of a terabyte into a bucket that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "Bucket not found"
+    },
+    {
+      "name": "where an upload id nobody made has got to",
+      "status": 404,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": null
+    },
+    {
+      "name": "bytes sent to an upload id nobody made",
+      "status": 404,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "The file for this url was not found\n"
+    },
+    {
+      "name": "ending an upload id nobody made",
+      "status": 404,
+      "headers": {
+        "content-type": "text/plain;charset=UTF-8",
+        "tus-resumable": "1.0.0"
+      },
+      "body": "The file for this url was not found\n"
     }
   ]
 }
