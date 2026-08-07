@@ -4092,6 +4092,473 @@
         "content-type": "application/xml; charset=utf-8"
       },
       "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/quoted.txt</Resource><Code>InvalidChecksum</Code><Message>Invalid ETag for part 1</Message></Error>"
+    },
+    {
+      "name": "a file put for pieces to be copied out of",
+      "status": 200,
+      "headers": {
+        "etag": "\"82d7c8d6496ec4e1affff34d927d284d\""
+      },
+      "body": null
+    },
+    {
+      "name": "an upload begun for pieces that come from elsewhere",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><InitiateMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>assembled.txt</Key><UploadId><uuid></UploadId></InitiateMultipartUploadResult>"
+    },
+    {
+      "name": "a whole object copied in as a piece",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "a range of an object copied in as a piece",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>ab48e870377e5d9fbe11663949e229b0</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "the pieces an upload of copies has",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListPartsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>assembled.txt</Key><UploadId><uuid></UploadId><MaxParts>1000</MaxParts><IsTruncated>false</IsTruncated><Part><PartNumber>1</PartNumber><LastModified><timestamp></LastModified><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag></Part><Part><PartNumber>2</PartNumber><LastModified><timestamp></LastModified><ETag>ab48e870377e5d9fbe11663949e229b0</ETag></Part></ListPartsResult>"
+    },
+    {
+      "name": "an upload of copied pieces put together",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CompleteMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Location>notes/assembled.txt</Location><Bucket>notes</Bucket><Key>assembled.txt</Key><ETag>\"fc21457c2bb4596b7963fd991c7364cc\"</ETag></CompleteMultipartUploadResult>"
+    },
+    {
+      "name": "the object copied pieces made",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"fc21457c2bb4596b7963fd991c7364cc\""
+      },
+      "body": "the bytes a copied piece comes out of, long enough to take a rangethe bytes"
+    },
+    {
+      "name": "the object copied pieces made, in a listing",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>notes</Name><Prefix/><Contents><Key>assembled.txt</Key><LastModified><timestamp></LastModified><ETag>\"fc21457c2bb4596b7963fd991c7364cc\"</ETag><Size>75</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>whole.txt</Key><LastModified><timestamp></LastModified><ETag>\"82d7c8d6496ec4e1affff34d927d284d\"</ETag><Size>66</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><KeyCount>2</KeyCount></ListBucketResult>"
+    },
+    {
+      "name": "a file put for a piece to be copied out of, next to one that is sent",
+      "status": 200,
+      "headers": {
+        "etag": "\"82d7c8d6496ec4e1affff34d927d284d\""
+      },
+      "body": null
+    },
+    {
+      "name": "an upload begun for a piece of each kind",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><InitiateMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>mixed.txt</Key><UploadId><uuid></UploadId></InitiateMultipartUploadResult>"
+    },
+    {
+      "name": "a piece sent as bytes into an upload that will also copy one",
+      "status": 200,
+      "headers": {
+        "etag": "6d2f6fab27cad7059e643846856581c5"
+      },
+      "body": null
+    },
+    {
+      "name": "a piece copied into an upload that already has a sent one",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>e37f2dfac4edd29893f9dfd57bd82ef9</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "the pieces of an upload that has one of each kind",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListPartsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>mixed.txt</Key><UploadId><uuid></UploadId><MaxParts>1000</MaxParts><IsTruncated>false</IsTruncated><Part><PartNumber>1</PartNumber><LastModified><timestamp></LastModified><ETag>6d2f6fab27cad7059e643846856581c5</ETag></Part><Part><PartNumber>2</PartNumber><LastModified><timestamp></LastModified><ETag>e37f2dfac4edd29893f9dfd57bd82ef9</ETag></Part></ListPartsResult>"
+    },
+    {
+      "name": "an upload of one sent piece and one copied piece put together",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CompleteMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Location>notes/mixed.txt</Location><Bucket>notes</Bucket><Key>mixed.txt</Key><ETag>\"ca362f4515b18cb4f7c2e9047f3c4fee\"</ETag></CompleteMultipartUploadResult>"
+    },
+    {
+      "name": "the object a sent piece and a copied piece made",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"ca362f4515b18cb4f7c2e9047f3c4fee\""
+      },
+      "body": "a piece the client carried itself, and then the bytes a copied piece c"
+    },
+    {
+      "name": "a file put for the copies that get refused",
+      "status": 200,
+      "headers": {
+        "etag": "\"82d7c8d6496ec4e1affff34d927d284d\""
+      },
+      "body": null
+    },
+    {
+      "name": "a file with a space in its name, to be copied out of",
+      "status": 200,
+      "headers": {
+        "etag": "\"52de736eac0914a311c033d8e0c24923\""
+      },
+      "body": null
+    },
+    {
+      "name": "an upload begun for the copies that get refused",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><InitiateMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>refused.txt</Key><UploadId><uuid></UploadId></InitiateMultipartUploadResult>"
+    },
+    {
+      "name": "a copied piece whose source is written without its leading slash",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "a copy source with a space in the name, encoded",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "a copy source with a space in the name, left as a space",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>52de736eac0914a311c033d8e0c24923</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "a copy source naming a version",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "a copy source in a bucket that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "a copy source that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "a copy source that is the object the upload is making",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "a copied range that runs off the end",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>InvalidRange</Code><Message>invalid range provided</Message></Error>"
+    },
+    {
+      "name": "a copied range that starts past the end",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>InvalidRange</Code><Message>invalid range provided</Message></Error>"
+    },
+    {
+      "name": "a copied range with no end on it",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>InvalidRange</Code><Message>invalid range provided</Message></Error>"
+    },
+    {
+      "name": "a copied range that ends before it starts",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>InvalidRange</Code><Message>invalid range provided</Message></Error>"
+    },
+    {
+      "name": "a copied range spelled without its unit",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>InvalidRange</Code><Message>invalid range provided</Message></Error>"
+    },
+    {
+      "name": "a copy carrying a body as well as a source",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "a copied piece numbered nothing",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>InvalidRequest</Code><Message>Querystring, partNumber must be &gt;= 1</Message></Error>"
+    },
+    {
+      "name": "a copied piece numbered past the last one",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>InvalidRequest</Code><Message>Querystring, partNumber must be &lt;= 10000</Message></Error>"
+    },
+    {
+      "name": "a copy into an upload that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/refused.txt</Resource><Code>NoSuchUpload</Code><Message>Upload not found</Message></Error>"
+    },
+    {
+      "name": "a copy into an upload begun for another key",
+      "status": 500,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/elsewhere.txt</Resource><Code>InternalError</Code><Message>Internal Server Error</Message></Error>"
+    },
+    {
+      "name": "a copy refused by a condition on the source",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "the pieces an upload has after everything that was refused",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListPartsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>refused.txt</Key><UploadId><uuid></UploadId><MaxParts>1000</MaxParts><IsTruncated>false</IsTruncated><Part><PartNumber>3</PartNumber><LastModified><timestamp></LastModified><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag></Part><Part><PartNumber>5</PartNumber><LastModified><timestamp></LastModified><ETag>52de736eac0914a311c033d8e0c24923</ETag></Part><Part><PartNumber>15</PartNumber><LastModified><timestamp></LastModified><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag></Part><Part><PartNumber>16</PartNumber><LastModified><timestamp></LastModified><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag></Part></ListPartsResult>"
+    },
+    {
+      "name": "a file put in a private bucket to be copied out of",
+      "status": 200,
+      "headers": {
+        "etag": "\"55908db41cc816346410f7036c3c09ab\""
+      },
+      "body": null
+    },
+    {
+      "name": "an upload begun in a public bucket for a piece from a private one",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><InitiateMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>borrowed.txt</Key><UploadId><uuid></UploadId></InitiateMultipartUploadResult>"
+    },
+    {
+      "name": "a piece copied out of another bucket",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>55908db41cc816346410f7036c3c09ab</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "an upload put together out of another bucket's bytes",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CompleteMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Location>notes/borrowed.txt</Location><Bucket>notes</Bucket><Key>borrowed.txt</Key><ETag>\"55908db41cc816346410f7036c3c09ab\"</ETag></CompleteMultipartUploadResult>"
+    },
+    {
+      "name": "the object another bucket's bytes made",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"55908db41cc816346410f7036c3c09ab\""
+      },
+      "body": "bytes that start out in a bucket nobody can read"
+    },
+    {
+      "name": "a file of a known length for ranges to be taken out of",
+      "status": 200,
+      "headers": {
+        "etag": "\"82d7c8d6496ec4e1affff34d927d284d\""
+      },
+      "body": null
+    },
+    {
+      "name": "an upload begun for the ranges either side of the end",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><InitiateMultipartUploadResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>edges.txt</Key><UploadId><uuid></UploadId></InitiateMultipartUploadResult>"
+    },
+    {
+      "name": "a copied range that ends on the last byte",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "a copied range of the last byte alone",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>e1671797c52e15f763380b45e841ec32</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "a copied range that ends one past the last byte",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/edges.txt</Resource><Code>InvalidRange</Code><Message>invalid range provided</Message></Error>"
+    },
+    {
+      "name": "a copied range that starts one past the last byte",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/edges.txt</Resource><Code>InvalidRange</Code><Message>invalid range provided</Message></Error>"
+    },
+    {
+      "name": "a copied range asked for from the end",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/edges.txt</Resource><Code>InvalidRange</Code><Message>invalid range provided</Message></Error>"
+    },
+    {
+      "name": "two copied ranges in one header",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/edges.txt</Resource><Code>InvalidRange</Code><Message>invalid range provided</Message></Error>"
+    },
+    {
+      "name": "a copied range header with nothing in it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "a bad range out of a source that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/edges.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "a bad range into an upload that is not there",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/edges.txt</Resource><Code>InvalidRange</Code><Message>invalid range provided</Message></Error>"
+    },
+    {
+      "name": "a source that is not there under a number that is not allowed",
+      "status": 400,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/edges.txt</Resource><Code>InvalidRequest</Code><Message>Querystring, partNumber must be &lt;= 10000</Message></Error>"
+    },
+    {
+      "name": "a copy source naming a bucket and no key",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/edges.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "a copy source whose bytes were never written",
+      "status": 500,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/edges.txt</Resource><Code>InternalError</Code><Message>Internal Server Error</Message></Error>"
+    },
+    {
+      "name": "a copied piece under a number that already has one",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><CopyPartResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><ETag>5e2479ea4b44d6efec7228e02e91f1bf</ETag><LastModified><timestamp></LastModified></CopyPartResult>"
+    },
+    {
+      "name": "the pieces an upload has after the ranges either side of the end",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListPartsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Bucket>notes</Bucket><Key>edges.txt</Key><UploadId><uuid></UploadId><MaxParts>1000</MaxParts><IsTruncated>false</IsTruncated><Part><PartNumber>1</PartNumber><LastModified><timestamp></LastModified><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag></Part><Part><PartNumber>1</PartNumber><LastModified><timestamp></LastModified><ETag>5e2479ea4b44d6efec7228e02e91f1bf</ETag></Part><Part><PartNumber>2</PartNumber><LastModified><timestamp></LastModified><ETag>e1671797c52e15f763380b45e841ec32</ETag></Part><Part><PartNumber>7</PartNumber><LastModified><timestamp></LastModified><ETag>82d7c8d6496ec4e1affff34d927d284d</ETag></Part></ListPartsResult>"
     }
   ]
 }
