@@ -1744,6 +1744,57 @@
       ]
     },
     {
+      "name": "an image that is not a jpeg uploaded to transform",
+      "feature": "object.render",
+      "method": "POST",
+      "path": "/storage/v1/object/notes/cat.png",
+      "key": "service",
+      "headers": {
+        "content-type": "image/png"
+      },
+      "file": "fixtures/sadcat.png",
+      "note": "the same cat at half size, saved as a png, because every case above it has a jpeg underneath and a jpeg answer to a jpeg says nothing about which format a transform picks",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/Id"
+      ]
+    },
+    {
+      "name": "a png with nothing said about the format",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.png?width=100",
+      "key": "service",
+      "note": "whether a transform hands back the format it was given or one format for everything",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
+      ]
+    },
+    {
+      "name": "a png asked for by something that takes webp",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.png?width=100",
+      "key": "service",
+      "headers": {
+        "accept": "image/webp,image/apng,image/*,*/*;q=0.8"
+      },
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
+      ]
+    },
+    {
+      "name": "a png asked for in the format it was uploaded in",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.png?width=100&format=origin",
+      "key": "service",
+      "volatile": [
+        "/binary/bytes",
+        "/binary/sha256"
+      ]
+    },
+    {
       "name": "the same transform asked for twice",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=cover",
@@ -1861,6 +1912,19 @@
       "name": "a format that is not origin",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&format=avif",
+      "key": "service"
+    },
+    {
+      "name": "a format nothing here can write",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&format=jxl",
+      "key": "service",
+      "note": "the case above says a format other than origin is taken, and this one says whether the list of them is closed"
+    },
+    {
+      "name": "a width below zero",
+      "feature": "object.render",
+      "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=-1",
       "key": "service"
     },
     {
