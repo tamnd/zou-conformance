@@ -2196,15 +2196,14 @@
         "allowed_mime_types": [
           "text/plain"
         ],
-        "created_at": "2026-08-07T01:04:04.139Z",
+        "created_at": "<timestamp>",
         "file_size_limit": 20,
         "id": "limited",
         "name": "limited",
         "owner": "",
         "public": false,
-        "updated_at": "2026-08-07T01:04:04.139Z"
-      },
-      "raw": "{\"id\":\"limited\",\"name\":\"limited\",\"owner\":\"\",\"public\":false,\"file_size_limit\":20,\"allowed_mime_types\":[\"text/plain\"],\"created_at\":\"2026-08-07T01:04:04.139Z\",\"updated_at\":\"2026-08-07T01:04:04.139Z\"}"
+        "updated_at": "<timestamp>"
+      }
     },
     {
       "name": "a file that fits and is the type it takes",
