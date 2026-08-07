@@ -2739,6 +2739,14 @@
       "note": "The region is in the credential scope and in the signing key both, so a server that ignores it still cannot match the signature. Which of the two it complains about is the question."
     },
     {
+      "name": "a signature computed in the region the project says it is in",
+      "feature": "s3.auth",
+      "method": "GET",
+      "path": "/storage/v1/s3",
+      "key": "s3.project-region",
+      "note": "GetBucketLocation answers a region that is not the one every case above signs in, and both cannot be the region this endpoint verifies against unless one of them is an alias. Signing in the one the project names is what says which."
+    },
+    {
       "name": "a body hash that is not the body's hash",
       "feature": "s3.auth",
       "method": "GET",
@@ -2864,6 +2872,14 @@
       "path": "/storage/v1/s3/photos?list-type=2&delimiter=%2F",
       "key": "s3",
       "note": "The delimiter is what turns a flat list of keys into something with folders in it: everything up to the first slash after the prefix becomes a common prefix, and the rows behind it are counted rather than listed. The two rows at the root stay rows."
+    },
+    {
+      "name": "the folders of a bucket, the older way",
+      "feature": "s3.list",
+      "method": "GET",
+      "path": "/storage/v1/s3/photos?delimiter=%2F",
+      "key": "s3",
+      "note": "The same question under the first version, which writes its fields in a different order and has no key count to put the folders into. Where the folders land in a document that was not designed around them is the thing to know."
     },
     {
       "name": "inside one folder rather than under it",
@@ -3083,6 +3099,14 @@
       "body": "no content type was sent with this",
       "writes": true,
       "note": "What a server assumes when the client said nothing. The json route calls it text/plain;charset=UTF-8, which is a http default rather than a storage one, and an s3 client that sends no type means binary."
+    },
+    {
+      "name": "the type a file put with no content type got",
+      "feature": "s3.object",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/untyped",
+      "key": "s3",
+      "note": "The answer to the case above, which is a header on a read rather than anything the put said. A put answers an etag and nothing else, so the only way to see what type was written down is to ask for the object back."
     }
   ]
 }
