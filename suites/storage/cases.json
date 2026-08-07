@@ -2804,7 +2804,9 @@
       "path": "/storage/v1/s3",
       "key": "s3",
       "chained": true,
-      "volatile": ["element:CreationDate"],
+      "volatile": [
+        "element:CreationDate"
+      ],
       "note": "Where a new bucket lands in the listing, which is the only thing that says what the order is. Two fixture buckets sorted by name and sorted by age come out the same way round, and a third one made just now tells the two apart. The bucket this case is about was made a moment ago, so the days come out named and the names and the order are what is compared."
     },
     {
@@ -2998,7 +3000,9 @@
       "method": "GET",
       "path": "/storage/v1/s3/notes?list-type=2",
       "key": "s3",
-      "volatile": ["element:LastModified"],
+      "volatile": [
+        "element:LastModified"
+      ],
       "note": "The bucket the fixture left empty, with one object in it now, which is the only listing in this suite over a row the server wrote rather than one the fixture inserted. So it is the only one whose etag and size come from bytes that really went somewhere, and the day is named because it is a moment ago."
     },
     {
@@ -3107,6 +3111,19 @@
       "path": "/storage/v1/s3/notes/untyped",
       "key": "s3",
       "note": "The answer to the case above, which is a header on a read rather than anything the put said. A put answers an etag and nothing else, so the only way to see what type was written down is to ask for the object back."
+    },
+    {
+      "name": "what a put with a signature wrote down about the file",
+      "feature": "s3.object",
+      "path": "/storage/v1/object/info/notes/untyped",
+      "key": "service",
+      "note": "The row the case above put, read on the json route, because a put over the s3 protocol answers an etag and the rest of what it decided is only visible from the other side. The cache control nobody sent and the metadata column an upload with no x-amz-meta headers leaves are both here.",
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/last_modified",
+        "/version"
+      ]
     }
   ]
 }
