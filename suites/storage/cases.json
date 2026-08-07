@@ -4575,6 +4575,248 @@
       "path": "/storage/v1/s3/notes/borrowed.txt",
       "chained": true,
       "key": "s3"
+    },
+    {
+      "name": "a file of a known length for ranges to be taken out of",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/whole.txt",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "body": "the bytes a copied piece comes out of, long enough to take a range",
+      "writes": true,
+      "note": "sixty six bytes, so a range can be asked for either side of the end of it",
+      "key": "s3"
+    },
+    {
+      "name": "an upload begun for the ranges either side of the end",
+      "feature": "s3.partcopy",
+      "method": "POST",
+      "path": "/storage/v1/s3/notes/edges.txt?uploads",
+      "headers": {
+        "content-type": "text/plain"
+      },
+      "writes": true,
+      "chained": true,
+      "holds": {
+        "edges": "element:UploadId"
+      },
+      "volatile": [
+        "element:UploadId"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copied range that ends on the last byte",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=1&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=0-65"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "the whole object, spelled as a range, which is the boundary the refusals above are on the other side of",
+      "key": "s3"
+    },
+    {
+      "name": "a copied range of the last byte alone",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=2&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=65-65"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copied range that ends one past the last byte",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=3&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=0-66"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "one byte further than the one above, which is what says whether the rule is about the end or about the length",
+      "key": "s3"
+    },
+    {
+      "name": "a copied range that starts one past the last byte",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=4&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=66-66"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copied range asked for from the end",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=5&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=-5"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "the suffix spelling a range header takes on a download, which this header may or may not be the same parser as",
+      "key": "s3"
+    },
+    {
+      "name": "two copied ranges in one header",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=6&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=0-1,3-4"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a copied range header with nothing in it",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=7&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": ""
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "key": "s3"
+    },
+    {
+      "name": "a bad range out of a source that is not there",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=8&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes/never-was.txt",
+        "x-amz-copy-source-range": "bytes=999-1099"
+      },
+      "writes": true,
+      "chained": true,
+      "note": "two things wrong with one request, and the order the checks run in is what says which one a client is told about",
+      "key": "s3"
+    },
+    {
+      "name": "a bad range into an upload that is not there",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=9&uploadId=6e125931-0000-0000-0000-000000000000",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=999-1099"
+      },
+      "writes": true,
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "a source that is not there under a number that is not allowed",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=10001&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes/never-was.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "a copy source naming a bucket and no key",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=10&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes"
+      },
+      "writes": true,
+      "chained": true,
+      "key": "s3"
+    },
+    {
+      "name": "a copy source whose bytes were never written",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=11&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/photos/apples.txt"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "a row the fixture inserted, pointing at bytes nobody wrote. A copy that reads the bytes cannot answer this and a copy that copies the row can, which is the difference the object copy route already made one way.",
+      "key": "s3"
+    },
+    {
+      "name": "a copied piece under a number that already has one",
+      "feature": "s3.partcopy",
+      "method": "PUT",
+      "path": "/storage/v1/s3/notes/edges.txt?partNumber=1&uploadId={edges}",
+      "headers": {
+        "x-amz-copy-source": "/notes/whole.txt",
+        "x-amz-copy-source-range": "bytes=10-19"
+      },
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "element:LastModified"
+      ],
+      "note": "a sent piece under a number that already has one makes a second row rather than replacing it, and whether a copied one does the same is the same question asked of a different request",
+      "key": "s3"
+    },
+    {
+      "name": "the pieces an upload has after the ranges either side of the end",
+      "feature": "s3.partcopy",
+      "method": "GET",
+      "path": "/storage/v1/s3/notes/edges.txt?uploadId={edges}",
+      "chained": true,
+      "volatile": [
+        "element:UploadId",
+        "element:LastModified"
+      ],
+      "key": "s3"
     }
   ]
 }
