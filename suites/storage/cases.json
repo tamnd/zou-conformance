@@ -1601,7 +1601,11 @@
       "feature": "bucket.limits",
       "path": "/storage/v1/bucket/limited",
       "key": "service",
-      "chained": true
+      "chained": true,
+      "volatile": [
+        "/created_at",
+        "/updated_at"
+      ]
     },
     {
       "name": "a file that fits and is the type it takes",
