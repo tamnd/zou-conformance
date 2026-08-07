@@ -355,7 +355,8 @@
       "name": "the file that was just uploaded",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -363,7 +364,8 @@
       "name": "the same file over the route that names the audience",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -371,7 +373,8 @@
       "name": "the same file from a public bucket with no key at all",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -380,7 +383,8 @@
       "status": 206,
       "headers": {
         "content-range": "bytes 0-3/11",
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hell"
     },
@@ -388,7 +392,8 @@
       "name": "the head of it",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": null
     },
@@ -396,7 +401,8 @@
       "name": "what is known about it",
       "status": 200,
       "headers": {
-        "content-type": "application/json; charset=utf-8"
+        "content-type": "application/json; charset=utf-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": {
         "bucket_id": "notes",
@@ -416,7 +422,8 @@
       "name": "the same, over the public route",
       "status": 200,
       "headers": {
-        "content-type": "application/json; charset=utf-8"
+        "content-type": "application/json; charset=utf-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": {
         "bucket_id": "notes",
@@ -478,7 +485,8 @@
       "name": "a download with no key at all",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -532,7 +540,8 @@
       "name": "the replacement, read back",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"44997f87b891f89472b7f2bbe4e000c3\""
       },
       "body": "hello again"
     },
@@ -562,7 +571,8 @@
       "name": "what the form upload left",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"18d6c69f894f9610927b1357ecc256d0\""
       },
       "body": "sent as a form"
     },
@@ -1240,7 +1250,8 @@
       "name": "reading it where it was moved to",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"8b45edaa5e25465dc9c9fdaee4332823\""
       },
       "body": "move me"
     },
@@ -1397,7 +1408,8 @@
       "name": "reading the copy",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"56fe0b1409a5662d70cfedc4555d4771\""
       },
       "body": "copy me"
     },
@@ -1405,7 +1417,8 @@
       "name": "reading the one it was copied from",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"56fe0b1409a5662d70cfedc4555d4771\""
       },
       "body": "copy me"
     },
@@ -2076,7 +2089,8 @@
       "name": "reading it with the etag it has",
       "status": 304,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": null
     },
@@ -2084,7 +2098,8 @@
       "name": "reading it with an etag it does not have",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -2092,7 +2107,8 @@
       "name": "reading it with a star",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -2100,7 +2116,8 @@
       "name": "reading it with a list of etags, one of which is its own",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -2108,7 +2125,8 @@
       "name": "reading it with the etag it has and no quotes around it",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -2116,7 +2134,8 @@
       "name": "reading it as it was before it existed",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -2124,7 +2143,8 @@
       "name": "reading it as it was after it existed",
       "status": 304,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": null
     },
@@ -2132,7 +2152,8 @@
       "name": "reading it since a moment that is not a moment",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -2140,7 +2161,8 @@
       "name": "reading it with an etag that matches and a moment that does not",
       "status": 304,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": null
     },
@@ -2148,7 +2170,8 @@
       "name": "asking for part of it with the etag it has",
       "status": 304,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": null
     },
@@ -2156,7 +2179,8 @@
       "name": "the head of it with the etag it has",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": null
     },
@@ -2164,7 +2188,8 @@
       "name": "reading it over the public route with the etag it has",
       "status": 304,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": null
     },
@@ -2172,7 +2197,8 @@
       "name": "asking for it to be downloaded with the etag it has",
       "status": 304,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": null
     },
@@ -2410,7 +2436,8 @@
       "name": "what was written down for it",
       "status": 200,
       "headers": {
-        "content-type": "application/json; charset=utf-8"
+        "content-type": "application/json; charset=utf-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": {
         "bucket_id": "notes",
@@ -2611,7 +2638,8 @@
       "name": "the object a resumable upload left behind",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -2619,7 +2647,8 @@
       "name": "what was written down for the object a resumable upload made",
       "status": 200,
       "headers": {
-        "content-type": "application/json; charset=utf-8"
+        "content-type": "application/json; charset=utf-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": {
         "bucket_id": "notes",
@@ -2659,7 +2688,8 @@
       "name": "the object after a resumable upload replaced it",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"69faab6268350295550de7d587bc323d\""
       },
       "body": "goodbye"
     },
@@ -2703,7 +2733,8 @@
       "name": "what was written down for an object of no bytes",
       "status": 200,
       "headers": {
-        "content-type": "application/json; charset=utf-8"
+        "content-type": "application/json; charset=utf-8",
+        "etag": "\"d41d8cd98f00b204e9800998ecf8427e\""
       },
       "body": {
         "bucket_id": "notes",
@@ -2734,7 +2765,8 @@
       "name": "the cache control a resumable upload asked for, read back",
       "status": 200,
       "headers": {
-        "content-type": "application/json; charset=utf-8"
+        "content-type": "application/json; charset=utf-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": {
         "bucket_id": "notes",
@@ -2754,7 +2786,8 @@
       "name": "what a download says about a resumable upload that asked for a cache control",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -2837,7 +2870,8 @@
       "name": "the cache control an ordinary upload asked for, read back",
       "status": 200,
       "headers": {
-        "content-type": "application/json; charset=utf-8"
+        "content-type": "application/json; charset=utf-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": {
         "bucket_id": "notes",
@@ -2868,7 +2902,8 @@
       "name": "the metadata a resumable upload carried, read back",
       "status": 200,
       "headers": {
-        "content-type": "application/json; charset=utf-8"
+        "content-type": "application/json; charset=utf-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": {
         "bucket_id": "notes",
@@ -2958,7 +2993,8 @@
       "name": "the object a resumed upload left behind",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -3066,7 +3102,8 @@
       "name": "the object a deferred resumable upload left behind",
       "status": 200,
       "headers": {
-        "content-type": "text/plain; charset=UTF-8"
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"5eb63bbbe01eeed093cb22bb8f5acdc3\""
       },
       "body": "hello world"
     },
@@ -3172,6 +3209,14 @@
       "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>SignatureDoesNotMatch</Code><Message>The request signature we calculated does not match the signature you provided. Check your key and signing method.</Message></Error>"
     },
     {
+      "name": "a signature computed in the region the project says it is in",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListAllMyBucketsResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Buckets><Bucket><Name>photos</Name><CreationDate>2024-01-02T03:04:05.000Z</CreationDate></Bucket><Bucket><Name>notes</Name><CreationDate>2024-02-03T04:05:06.000Z</CreationDate></Bucket></Buckets></ListAllMyBucketsResult>"
+    },
+    {
       "name": "a body hash that is not the body's hash",
       "status": 200,
       "headers": {
@@ -3254,6 +3299,256 @@
         "content-type": "application/xml; charset=utf-8"
       },
       "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>nothing</Resource><Code>NoSuchBucket</Code><Message>Bucket not found</Message></Error>"
+    },
+    {
+      "name": "every object in a bucket",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix/><MaxKeys>1000</MaxKeys><IsTruncated>false</IsTruncated><Contents><Key>apples.txt</Key><LastModified>2024-03-06T07:08:09.000Z</LastModified><Size>33</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>holiday/beach.txt</Key><LastModified>2024-03-04T05:06:07.000Z</LastModified><Size>11</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>holiday/mountain.txt</Key><LastModified>2024-03-05T06:07:08.000Z</LastModified><Size>22</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>zebra.txt</Key><LastModified>2024-03-07T08:09:10.000Z</LastModified><Size>44</Size><StorageClass>STANDARD</StorageClass></Contents></ListBucketResult>"
+    },
+    {
+      "name": "every object in a bucket, the way a current client asks",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix/><Contents><Key>apples.txt</Key><LastModified>2024-03-06T07:08:09.000Z</LastModified><Size>33</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>holiday/beach.txt</Key><LastModified>2024-03-04T05:06:07.000Z</LastModified><Size>11</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>holiday/mountain.txt</Key><LastModified>2024-03-05T06:07:08.000Z</LastModified><Size>22</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>zebra.txt</Key><LastModified>2024-03-07T08:09:10.000Z</LastModified><Size>44</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><KeyCount>4</KeyCount></ListBucketResult>"
+    },
+    {
+      "name": "the objects under one folder",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix>holiday/</Prefix><Contents><Key>holiday/beach.txt</Key><LastModified>2024-03-04T05:06:07.000Z</LastModified><Size>11</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>holiday/mountain.txt</Key><LastModified>2024-03-05T06:07:08.000Z</LastModified><Size>22</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><KeyCount>2</KeyCount></ListBucketResult>"
+    },
+    {
+      "name": "the folders of a bucket",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix/><Contents><Key>apples.txt</Key><LastModified>2024-03-06T07:08:09.000Z</LastModified><Size>33</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>zebra.txt</Key><LastModified>2024-03-07T08:09:10.000Z</LastModified><Size>44</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><Delimiter>/</Delimiter><KeyCount>3</KeyCount><CommonPrefixes><Prefix>holiday/</Prefix></CommonPrefixes></ListBucketResult>"
+    },
+    {
+      "name": "the folders of a bucket, the older way",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix/><MaxKeys>1000</MaxKeys><IsTruncated>false</IsTruncated><Contents><Key>apples.txt</Key><LastModified>2024-03-06T07:08:09.000Z</LastModified><Size>33</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>zebra.txt</Key><LastModified>2024-03-07T08:09:10.000Z</LastModified><Size>44</Size><StorageClass>STANDARD</StorageClass></Contents><CommonPrefixes><Prefix>holiday/</Prefix></CommonPrefixes></ListBucketResult>"
+    },
+    {
+      "name": "inside one folder rather than under it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix>holiday/</Prefix><Contents><Key>holiday/beach.txt</Key><LastModified>2024-03-04T05:06:07.000Z</LastModified><Size>11</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>holiday/mountain.txt</Key><LastModified>2024-03-05T06:07:08.000Z</LastModified><Size>22</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><Delimiter>/</Delimiter><KeyCount>2</KeyCount></ListBucketResult>"
+    },
+    {
+      "name": "the first two objects",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix/><Contents><Key>apples.txt</Key><LastModified>2024-03-06T07:08:09.000Z</LastModified><Size>33</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>holiday/beach.txt</Key><LastModified>2024-03-04T05:06:07.000Z</LastModified><Size>11</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>true</IsTruncated><MaxKeys>2</MaxKeys><KeyCount>2</KeyCount><NextContinuationToken>bDpob2xpZGF5L2JlYWNoLnR4dA==</NextContinuationToken></ListBucketResult>"
+    },
+    {
+      "name": "the objects after a key",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix/><Contents><Key>holiday/beach.txt</Key><LastModified>2024-03-04T05:06:07.000Z</LastModified><Size>11</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>holiday/mountain.txt</Key><LastModified>2024-03-05T06:07:08.000Z</LastModified><Size>22</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>zebra.txt</Key><LastModified>2024-03-07T08:09:10.000Z</LastModified><Size>44</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><KeyCount>3</KeyCount></ListBucketResult>"
+    },
+    {
+      "name": "the first two objects, the older way",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix/><Marker>holiday/beach.txt</Marker><MaxKeys>2</MaxKeys><IsTruncated>true</IsTruncated><Contents><Key>apples.txt</Key><LastModified>2024-03-06T07:08:09.000Z</LastModified><Size>33</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>holiday/beach.txt</Key><LastModified>2024-03-04T05:06:07.000Z</LastModified><Size>11</Size><StorageClass>STANDARD</StorageClass></Contents></ListBucketResult>"
+    },
+    {
+      "name": "the objects after a marker",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix/><MaxKeys>1000</MaxKeys><IsTruncated>false</IsTruncated><Contents><Key>holiday/beach.txt</Key><LastModified>2024-03-04T05:06:07.000Z</LastModified><Size>11</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>holiday/mountain.txt</Key><LastModified>2024-03-05T06:07:08.000Z</LastModified><Size>22</Size><StorageClass>STANDARD</StorageClass></Contents><Contents><Key>zebra.txt</Key><LastModified>2024-03-07T08:09:10.000Z</LastModified><Size>44</Size><StorageClass>STANDARD</StorageClass></Contents></ListBucketResult>"
+    },
+    {
+      "name": "a prefix nothing is under, asked with a signature",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>photos</Name><Prefix>nothing/</Prefix><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><KeyCount>0</KeyCount></ListBucketResult>"
+    },
+    {
+      "name": "listing a bucket that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>nothing</Resource><Code>NoSuchBucket</Code><Message>Bucket not found</Message></Error>"
+    },
+    {
+      "name": "where a bucket says it is",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><LocationConstraint xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\">local</LocationConstraint>"
+    },
+    {
+      "name": "whether a bucket keeps versions",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><VersioningConfiguration xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Status>Suspended</Status><MfaDelete>Disabled</MfaDelete></VersioningConfiguration>"
+    },
+    {
+      "name": "a file put with a signature",
+      "status": 200,
+      "headers": {
+        "etag": "\"18938941b864ae0b3c78fe65c48efa4f\""
+      },
+      "body": null
+    },
+    {
+      "name": "the file that was just put",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"18938941b864ae0b3c78fe65c48efa4f\""
+      },
+      "body": "hello from a signature"
+    },
+    {
+      "name": "the head of the file that was just put",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"18938941b864ae0b3c78fe65c48efa4f\""
+      },
+      "body": null
+    },
+    {
+      "name": "the first five bytes of it",
+      "status": 206,
+      "headers": {
+        "content-range": "bytes 0-4/22",
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"18938941b864ae0b3c78fe65c48efa4f\""
+      },
+      "body": "hello"
+    },
+    {
+      "name": "what a listing says about the file that was put",
+      "status": 200,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><ListBucketResult xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Name>notes</Name><Prefix/><Contents><Key>from-a-signature.txt</Key><LastModified><timestamp></LastModified><ETag>\"18938941b864ae0b3c78fe65c48efa4f\"</ETag><Size>22</Size><StorageClass>STANDARD</StorageClass></Contents><IsTruncated>false</IsTruncated><MaxKeys>1000</MaxKeys><KeyCount>1</KeyCount></ListBucketResult>"
+    },
+    {
+      "name": "the same path put again",
+      "status": 200,
+      "headers": {
+        "etag": "\"b8d31490e5433b76c6c6e5b954acee53\""
+      },
+      "body": null
+    },
+    {
+      "name": "the replacement, read back with a signature",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8",
+        "etag": "\"b8d31490e5433b76c6c6e5b954acee53\""
+      },
+      "body": "hello from a signature, again"
+    },
+    {
+      "name": "deleting a file with a signature",
+      "status": 204,
+      "headers": {},
+      "body": null
+    },
+    {
+      "name": "the file, after it was deleted",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>notes/from-a-signature.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "deleting a key nothing is under",
+      "status": 204,
+      "headers": {},
+      "body": null
+    },
+    {
+      "name": "a file put into a bucket that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>nowhere/hello.txt</Resource><Code>NoSuchBucket</Code><Message>Bucket not found</Message></Error>"
+    },
+    {
+      "name": "an object that is not there, asked with a signature",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>photos/missing.txt</Resource><Code>NoSuchKey</Code><Message>Object not found</Message></Error>"
+    },
+    {
+      "name": "the head of an object that is not there",
+      "status": 404,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": null
+    },
+    {
+      "name": "a row the fixture wrote with no bytes behind it",
+      "status": 500,
+      "headers": {
+        "content-type": "application/xml; charset=utf-8"
+      },
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource>photos/apples.txt</Resource><Code>InternalError</Code><Message>Internal Server Error</Message></Error>"
+    },
+    {
+      "name": "the head of a row with no bytes behind it",
+      "status": 200,
+      "headers": {
+        "content-type": "text/plain; charset=UTF-8"
+      },
+      "body": null
+    },
+    {
+      "name": "a file put with no content type on it",
+      "status": 200,
+      "headers": {
+        "etag": "\"2282aac65b816605af34ac49368afa92\""
+      },
+      "body": null
+    },
+    {
+      "name": "the type a file put with no content type got",
+      "status": 200,
+      "headers": {
+        "content-type": "application/octet-stream",
+        "etag": "\"2282aac65b816605af34ac49368afa92\""
+      },
+      "body": "no content type was sent with this"
     }
   ]
 }
