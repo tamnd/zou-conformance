@@ -133,11 +133,11 @@ describe('an upload that goes through in one piece', () => {
     const { data } = await supabase.storage.from('tus').list('', { limit: 100 })
     const there = data!.find((o) => o.name === 'typed.json')
     expect(there!.metadata!.mimetype).toBe('application/json')
-    // And cacheControl is dropped on the way, which is the one place a
-    // resumable upload differs from the ordinary one. It is upstream's
-    // behaviour, recorded rather than fixed, so a client that sets it
-    // and reads it back sees no-cache here as it does there.
-    expect(there!.metadata!.cacheControl).toBe('no-cache')
+    // Nothing is asked here about cacheControl, which the upload above
+    // does send, because the reference gives two answers about it: the
+    // row a listing reads says max-age=3600 and the info route says
+    // no-cache for the same object. zou says no-cache in both places,
+    // and which of the two it should say is tamnd/zou#285.
   })
 
   test('into a public bucket, readable by nobody in particular', async () => {

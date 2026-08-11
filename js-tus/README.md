@@ -54,7 +54,7 @@ Both are run in CI on every change to zou, the first as its own job and the seco
 
 The bytes are a pattern that differs at every offset, so a chunk delivered twice or in the wrong order is a mismatch rather than a coincidence.
 
-One assertion is about a difference rather than a promise: `cacheControl` in the upload metadata is dropped, and every object a resumable upload makes is `no-cache`, which is not what the same request through the ordinary upload door does. That is upstream's behaviour, recorded in the storage suite next door, and it is asserted here so that a client which sets it and reads it back sees the same thing from both.
+One thing is deliberately not asked, and running this against the reference is how that was settled. Every upload here sends `cacheControl` in its metadata, and the reference gives two answers about it for the same object: the row a listing reads says `max-age=3600`, and the info route says `no-cache`. They come from different places upstream, the database row and the stored file's own headers, and they disagree. zou keeps one value and says `no-cache` in both places, so this suite says nothing about cache control and leaves the question in [tamnd/zou#285](https://github.com/tamnd/zou/issues/285). The info route's answer is pinned in the recorded storage suite next door either way.
 
 ## The fixture
 
