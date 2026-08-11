@@ -5,3 +5,4 @@ demo/app/node_modules/
 demo/app/dist/
 demo/test-results/
 demo/playwright-report/
+js-tus/node_modules/

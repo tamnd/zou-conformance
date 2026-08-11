@@ -61,6 +61,17 @@
       "and goes out with it, so there is nothing here to bump on its own."
     ]
   },
+  "tus_js_client": {
+    "version": "4.3.1",
+    "package": "tus-js-client",
+    "covers": ["js-tus"],
+    "note": [
+      "The client Supabase's own documentation tells people to use for resumable",
+      "uploads, at the latest 4.x on npm. It has no image and no place in the CLI's",
+      "list, because it runs in whatever is doing the uploading rather than in the",
+      "stack, which is why the suite it covers is the one that drives it."
+    ]
+  },
   "supabase_cli": {
     "version": "2.111.0",
     "package": "supabase",
