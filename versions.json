@@ -49,7 +49,13 @@
   "supabase_js": {
     "version": "2.111.0",
     "package": "@supabase/supabase-js",
-    "covers": ["js"]
+    "covers": ["js", "js-realtime"],
+    "note": [
+      "realtime-js has no line of its own because it has no release of its own.",
+      "It lives at packages/core/realtime-js in github.com/supabase/supabase-js and",
+      "goes out with it, so the version above is the version of the client the",
+      "realtime suite drives."
+    ]
   },
   "storage_js": {
     "version": "2.111.0",

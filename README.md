@@ -17,6 +17,7 @@ suites/storage/        478 questions about buckets, objects, transforms and the 
 js/                    supabase-js's own integration tests, run against zou
 js-storage/            storage-js's own integration tests, run against zou
 js-tus/                tus-js-client driving resumable uploads, read back through supabase-js
+js-realtime/           realtime-js driving presence, read back through supabase-js
 demo/                  one of Supabase's example apps, unedited, in a browser
 ```
 
@@ -34,6 +35,8 @@ fixtures/       what a case sends when its body is bytes rather than a line
 `js/` and `js-storage/` are not suites in that shape and are described in [js/README.md](js/README.md) and [js-storage/README.md](js-storage/README.md). They are upstream's own test files run against zou, and they are the two places here where the assertions are somebody else's rather than a recording, because upstream wrote them about upstream's own clients.
 
 `js-tus/` is a third shape and is described in [js-tus/README.md](js-tus/README.md). The questions and the assertions there are both ours, which nothing else here can say, because resumable uploads are a conversation between a client and a server and neither upstream repository points the one at the other. What keeps it honest is that the same file is run against a real `supabase start` as well as against zou: an assertion the reference does not pass is this repository being wrong.
+
+`js-realtime/` is the same shape and is described in [js-realtime/README.md](js-realtime/README.md). Presence is the other thing nobody upstream points a client at: supabase-js's own suite has broadcast in it and no presence at all. So the questions are ours, asked through the real client because the client is half of the protocol, and run against `supabase start` as well for the same reason the tus suite is.
 
 `demo/` is not a suite either, and is described in [demo/README.md](demo/README.md). It is one of Supabase's example apps with nothing changed in it, driven through a real browser: sign up, sign in, a row level security policy holding between two accounts, and a Github login. A suite passing says every answer matched a recording. An app working says the answers were enough to build something on, and the second does not follow from the first.
 
