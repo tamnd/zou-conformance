@@ -14,15 +14,14 @@
 //   2. the url and the keys come from the environment, defaulting to
 //      what `supabase start` serves, so the same file can be aimed at a
 //      local stack, at a zou, or at a hosted project
-//   3. the Realtime block is gated behind an environment flag, because
-//      zou does not serve Realtime yet, and a suite that fails on a
-//      feature nobody has written is noise rather than a measurement.
-//      The Storage block ran under a flag of its own until zou served
-//      storage, and is upstream's own line again
-//   4. it runs under vitest rather than jest
-//   5. an unused `import { assert } from 'console'` is gone, and the
+//   3. it runs under vitest rather than jest
+//   4. an unused `import { assert } from 'console'` is gone, and the
 //      dashes in upstream's comments are commas, which is this
 //      repository's house style and touches no code
+//
+// The Realtime blocks ran behind an environment flag while zou served
+// no Realtime, the way the Storage block ran behind one of its own
+// before storage was served. Both are upstream's own lines again.
 //
 // Not one assertion is edited. If a test here fails, zou answered
 // differently from the server upstream wrote the test against.
@@ -45,13 +44,6 @@ const JWT_SECRET =
 const PUBLISHABLE_KEY =
   process.env.ZOU_ANON_KEY ??
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6ImFub24iLCJleHAiOjE5ODM4MTI5OTZ9.CRXP1A7WOeoJeXxjNni43kdQwgnWNReilDMblYTn_I0'
-
-// zou has no Realtime on this url yet, tamnd/zou#4. Set the flag when
-// it does, and the block comes back exactly as upstream wrote it. The
-// Storage block below is not gated any more: storage is served,
-// tamnd/zou#3, and the fixture makes the bucket and the policy that
-// upstream's own migration makes.
-const realtime = process.env.ZOU_REALTIME === '1' ? describe : describe.skip
 
 // For Node.js < 22, we need to provide a WebSocket implementation
 // Node.js 22+ has native WebSocket support
@@ -310,7 +302,7 @@ describe('Supabase Integration Tests', () => {
     })
   })
 
-  realtime.each([{ vsn: '1.0.0' }, { vsn: '2.0.0' }])('Realtime with vsn: $vsn', ({ vsn }) => {
+  describe.each([{ vsn: '1.0.0' }, { vsn: '2.0.0' }])('Realtime with vsn: $vsn', ({ vsn }) => {
     const channelName = `channel-${crypto.randomUUID()}`
     let channel: RealtimeChannel
     let email: string
@@ -646,7 +638,7 @@ describe('PostgREST Timeout Configuration', () => {
 })
 
 describe('Custom JWT', () => {
-  realtime('Realtime', () => {
+  describe('Realtime', () => {
     test('will connect with a properly signed jwt token', async () => {
       const jwtToken = sign(
         {

@@ -90,3 +90,29 @@ create policy "test-bucket public access"
 on storage.objects
 for all
 using (bucket_id = 'test-bucket');
+
+-- The policies the Realtime block is written against, from upstream's
+-- second migration:
+--
+--   packages/core/supabase-js/supabase/migrations/20250423000000_realtime_rls_setup.sql
+--
+-- Copied whole, with a drop in front of each so the file can be applied
+-- twice. Every channel that block opens is private and named
+-- channel-<uuid>, so the topic test is upstream deciding that a room
+-- with channel in its name is a room anybody signed in may be in, which
+-- is a fixture rather than a rule about private channels.
+
+drop policy if exists "authenticated can read all messages on topic" on realtime.messages;
+drop policy if exists "authenticated can insert messages on topic" on realtime.messages;
+
+create policy "authenticated can read all messages on topic"
+on "realtime"."messages"
+for select
+to authenticated
+using ( realtime.topic() like '%channel%' );
+
+create policy "authenticated can insert messages on topic"
+on "realtime"."messages"
+for insert
+to authenticated
+with check (realtime.topic() like '%channel%');

@@ -34,19 +34,15 @@ Nothing has to be passed for that: the defaults in the file are the CLI's own ur
 
 ## What runs
 
-17 of the 34 tests. The client constructs, the PostgREST block, the RLS block, the Authentication block, the Storage block and the timeout configuration block, and all 17 pass against zou today.
+All 34, and 33 pass against zou today. The one that does not is skipped by upstream itself: a binary broadcast over the older protocol version, which upstream's own file marks as a 2.0.0 question.
 
-The Storage block is the newest of them and it is the one that proves something the recorded storage suite cannot: it uploads, lists and removes through storage-js with the anon key, so the policy on `storage.objects` is doing the deciding rather than a service role going around it.
+The whole file runs now. The Realtime blocks ran under an environment flag until zou served Realtime, [tamnd/zou#4](https://github.com/tamnd/zou/issues/4), which is what the Storage block did before it, and both are upstream's own lines again. They are the blocks worth pointing at: both protocol versions, a private channel decided by policies on `realtime.messages`, a socket that has to stay up while channels come and go and go down when the last one leaves, and a broadcast posted over http arriving on a socket.
 
-The 17 that are skipped are the Realtime blocks and the custom JWT realtime test. zou serves no Realtime on this url yet, [tamnd/zou#4](https://github.com/tamnd/zou/issues/4), and a suite that fails on a feature nobody has written measures nothing. They are skipped by an environment flag rather than deleted, so the day it lands the tests run exactly as upstream wrote them:
-
-```
-ZOU_REALTIME=1 npm test
-```
+The Storage block proves something the recorded storage suite cannot: it uploads, lists and removes through storage-js with the anon key, so the policy on `storage.objects` is doing the deciding rather than a service role going around it.
 
 ## The fixture
 
-`setup.sql` is upstream's migrations and seed in one file, since there is no CLI here to apply them separately. Five todos, RLS on, anon reads and writes everything, authenticated sees only its own rows, and the bucket the Storage block uploads into with the policy that lets an anon key do it. The two changes are noted at the top of the file, both so it can be applied twice to the same database.
+`setup.sql` is upstream's migrations and seed in one file, since there is no CLI here to apply them separately. Five todos, RLS on, anon reads and writes everything, authenticated sees only its own rows, the bucket the Storage block uploads into with the policy that lets an anon key do it, and the two policies on `realtime.messages` the Realtime block joins private channels against. The changes are noted at the top of the file, all so it can be applied twice to the same database.
 
 ## Provenance
 
