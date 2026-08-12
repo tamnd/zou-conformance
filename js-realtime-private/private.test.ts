@@ -140,12 +140,12 @@ async function posted(path: string, body: unknown, sub = PERSON) {
 /// By hand rather than through `supabase.rpc`, because the token this
 /// suite signs in with goes to the client through `realtime.setAuth`
 /// and that is the socket's token, not the rest client's.
-async function sent(body: Record<string, unknown>) {
+async function sent(which: string, body: Record<string, unknown>) {
   // 404 for a while is the schema cache in front of the database
   // catching up with a function setup.sql created a moment ago, rather
   // than an answer, so it is waited out.
   for (let attempt = 0; ; attempt++) {
-    const answer = await fetch(`${SUPABASE_URL}/rest/v1/rpc/conformance_send`, {
+    const answer = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${which}`, {
       method: 'POST',
       headers: {
         apikey: ANON_KEY,
@@ -257,8 +257,15 @@ describe('private channels', () => {
 
     // The same call a trigger makes, which is the only way to ask this
     // from a suite with no connection to the database.
-    const answer = await sent({ room: LOBBY, name: 'from-sql', body: { x: 7 } })
-    expect(answer.status).toBe(204)
+    // The body comes into the assertion rather than the status alone,
+    // because a 404 from here is a sentence about a schema cache and
+    // reading it is the difference between a fix and a guess.
+    const answer = await sent('conformance_send', {
+      room: LOBBY,
+      name: 'from-sql',
+      body: { x: 7 },
+    })
+    expect([answer.status, await answer.text()]).toEqual([204, ''])
 
     await until('the send from sql', () => heard.length > 0)
     expect(heard[0].payload.x).toBe(7)
@@ -274,14 +281,14 @@ describe('private channels', () => {
     open.on('broadcast', { event: 'sql-split' }, (payload) => outside.push(payload))
     expect(await status(open)).toBe('SUBSCRIBED')
 
-    // Three arguments, so private defaults to true, which is the
-    // signature every trigger in the wild is written against.
-    await sent({ room: LOBBY, name: 'sql-split', body: { x: 1 } })
+    // Three arguments through to realtime.send, so its own default
+    // decides, which is the call a trigger makes.
+    await sent('conformance_send', { room: LOBBY, name: 'sql-split', body: { x: 1 } })
     await until('the private half', () => inside.length > 0)
     await new Promise((resolve) => setTimeout(resolve, 1000))
     expect(outside).toHaveLength(0)
 
-    await sent({ room: LOBBY, name: 'sql-split', body: { x: 2 }, is_private: false })
+    await sent('conformance_send_public', { room: LOBBY, name: 'sql-split', body: { x: 2 } })
     await until('the public half', () => outside.length > 0)
     expect(outside[0].payload.x).toBe(2)
     expect(inside).toHaveLength(1)

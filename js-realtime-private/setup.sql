@@ -71,18 +71,40 @@ with check (
 -- runs as the person the token says it is and the same policies above
 -- decide whether it lands, which is what makes it the same question the
 -- rest of this file is asking.
+-- An earlier shape of this fixture had one function with a default
+-- argument, and create or replace on a different signature leaves the
+-- old one there as an overload, which a schema cache in front of it
+-- reads as an ambiguous call. Dropped by name so a database that has
+-- been set up before means the same thing as a fresh one.
+drop function if exists public.conformance_send(text, text, jsonb, boolean);
+
+-- Two functions rather than one with a default, so that what the
+-- suite calls has the same three arguments every time and nothing here
+-- depends on how a schema cache reads a default. The interesting
+-- default is realtime.send's own, and the first of these is the three
+-- argument call that leans on it, which is the call a trigger makes.
 create or replace function public.conformance_send(
     room text,
     name text,
-    body jsonb,
-    is_private boolean default true
+    body jsonb
 ) returns void
 language sql
 as $$
-    select realtime.send(body, name, room, is_private);
+    select realtime.send(body, name, room);
 $$;
 
-grant execute on function public.conformance_send(text, text, jsonb, boolean) to authenticated;
+create or replace function public.conformance_send_public(
+    room text,
+    name text,
+    body jsonb
+) returns void
+language sql
+as $$
+    select realtime.send(body, name, room, false);
+$$;
+
+grant execute on function public.conformance_send(text, text, jsonb) to authenticated;
+grant execute on function public.conformance_send_public(text, text, jsonb) to authenticated;
 
 -- Best effort, because the function may belong to a role this script is
 -- not. Functions are executable by everybody unless somebody revoked
@@ -95,7 +117,7 @@ exception when others then
 end
 $$;
 
--- The function above is new to whichever PostgREST is in front of this
--- database, and it answers out of a schema cache it built before this
--- script ran. Supabase's stack reloads on this.
+-- The functions above are new to whichever PostgREST is in front of
+-- this database, and it answers out of a schema cache it built before
+-- this script ran. Supabase's stack reloads on this.
 notify pgrst, 'reload schema';
