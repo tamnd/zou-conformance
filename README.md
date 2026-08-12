@@ -18,6 +18,7 @@ js/                    supabase-js's own integration tests, run against zou
 js-storage/            storage-js's own integration tests, run against zou
 js-tus/                tus-js-client driving resumable uploads, read back through supabase-js
 js-realtime/           realtime-js driving presence and http broadcast, read back through supabase-js
+js-realtime-private/   private channels, decided by policies a project writes itself
 demo/                  one of Supabase's example apps, unedited, in a browser
 ```
 
@@ -38,6 +39,8 @@ fixtures/       what a case sends when its body is bytes rather than a line
 
 `js-realtime/` is the same shape and is described in [js-realtime/README.md](js-realtime/README.md). Presence is the other thing nobody upstream points a client at: supabase-js's own suite has broadcast in it and no presence at all. So the questions are ours, asked through the real client because the client is half of the protocol, and run against `supabase start` as well for the same reason the tus suite is.
 The broadcast file in it is there for a smaller reason: supabase-js's own suite sends over a socket and never over http, and the two ways a client sends without one are two different urls.
+
+`js-realtime-private/` is the same shape again and is described in [js-realtime-private/README.md](js-realtime-private/README.md), and it is kept apart from the file next to it because it needs a database while presence and broadcast need none. A private channel is the one part of realtime whose answer is not in the server: it comes out of row level security policies on `realtime.messages` that a project wrote about its own tables, and `setup.sql` there is such a project, applied to both targets unedited.
 
 `demo/` is not a suite either, and is described in [demo/README.md](demo/README.md). It is one of Supabase's example apps with nothing changed in it, driven through a real browser: sign up, sign in, a row level security policy holding between two accounts, and a Github login. A suite passing says every answer matched a recording. An app working says the answers were enough to build something on, and the second does not follow from the first.
 
