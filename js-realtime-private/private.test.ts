@@ -141,15 +141,22 @@ async function posted(path: string, body: unknown, sub = PERSON) {
 /// suite signs in with goes to the client through `realtime.setAuth`
 /// and that is the socket's token, not the rest client's.
 async function sent(body: Record<string, unknown>) {
-  return await fetch(`${SUPABASE_URL}/rest/v1/rpc/conformance_send`, {
-    method: 'POST',
-    headers: {
-      apikey: ANON_KEY,
-      Authorization: `Bearer ${token(PERSON)}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(body),
-  })
+  // 404 for a while is the schema cache in front of the database
+  // catching up with a function setup.sql created a moment ago, rather
+  // than an answer, so it is waited out.
+  for (let attempt = 0; ; attempt++) {
+    const answer = await fetch(`${SUPABASE_URL}/rest/v1/rpc/conformance_send`, {
+      method: 'POST',
+      headers: {
+        apikey: ANON_KEY,
+        Authorization: `Bearer ${token(PERSON)}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+    if (answer.status !== 404 || attempt >= 20) return answer
+    await new Promise((resolve) => setTimeout(resolve, 500))
+  }
 }
 
 describe('private channels', () => {

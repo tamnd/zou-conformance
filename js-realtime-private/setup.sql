@@ -94,3 +94,8 @@ exception when others then
     null;
 end
 $$;
+
+-- The function above is new to whichever PostgREST is in front of this
+-- database, and it answers out of a schema cache it built before this
+-- script ran. Supabase's stack reloads on this.
+notify pgrst, 'reload schema';
