@@ -151,6 +151,10 @@ async function sent(which: string, body: Record<string, unknown>) {
         apikey: ANON_KEY,
         Authorization: `Bearer ${token(PERSON)}`,
         'Content-Type': 'application/json',
+        // Named rather than left to whichever schema the server serves
+        // first, since a target may expose several and setup.sql puts
+        // these in public.
+        'Content-Profile': 'public',
       },
       body: JSON.stringify(body),
     })
