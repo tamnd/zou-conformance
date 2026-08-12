@@ -133,6 +133,25 @@ async function posted(path: string, body: unknown, sub = PERSON) {
   })
 }
 
+/// realtime.send() through the function setup.sql put in front of it,
+/// as the person rather than as the key, which is the whole point: the
+/// send is checked by the same policies as everything else here.
+///
+/// By hand rather than through `supabase.rpc`, because the token this
+/// suite signs in with goes to the client through `realtime.setAuth`
+/// and that is the socket's token, not the rest client's.
+async function sent(body: Record<string, unknown>) {
+  return await fetch(`${SUPABASE_URL}/rest/v1/rpc/conformance_send`, {
+    method: 'POST',
+    headers: {
+      apikey: ANON_KEY,
+      Authorization: `Bearer ${token(PERSON)}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  })
+}
+
 describe('private channels', () => {
   test('a room the read policy allows is joined', async () => {
     const channel = (await client(PERSON)).channel(LOBBY, { config: { private: true } })
@@ -223,6 +242,41 @@ describe('private channels', () => {
     expect((await posted(`/${LOBBY}/events/split`, { x: 2 })).status).toBe(202)
     await until('the public half', () => outside.length > 0)
     expect(outside[0].payload).toEqual({ x: 2 })
+    expect(inside).toHaveLength(1)
+  })
+
+  test('a send from sql reaches the room', async () => {
+    const heard = await listening(LOBBY, 'from-sql')
+
+    // The same call a trigger makes, which is the only way to ask this
+    // from a suite with no connection to the database.
+    const answer = await sent({ room: LOBBY, name: 'from-sql', body: { x: 7 } })
+    expect(answer.status).toBe(204)
+
+    await until('the send from sql', () => heard.length > 0)
+    expect(heard[0].payload.x).toBe(7)
+    // The function puts the id it generated inside the payload, so a
+    // sender and a receiver are talking about one message.
+    expect(typeof heard[0].payload.id).toBe('string')
+  })
+
+  test('a send from sql is private unless it says otherwise', async () => {
+    const inside = await listening(LOBBY, 'sql-split')
+    const outside: any[] = []
+    const open = (await client()).channel(LOBBY)
+    open.on('broadcast', { event: 'sql-split' }, (payload) => outside.push(payload))
+    expect(await status(open)).toBe('SUBSCRIBED')
+
+    // Three arguments, so private defaults to true, which is the
+    // signature every trigger in the wild is written against.
+    await sent({ room: LOBBY, name: 'sql-split', body: { x: 1 } })
+    await until('the private half', () => inside.length > 0)
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    expect(outside).toHaveLength(0)
+
+    await sent({ room: LOBBY, name: 'sql-split', body: { x: 2 }, is_private: false })
+    await until('the public half', () => outside.length > 0)
+    expect(outside[0].payload.x).toBe(2)
     expect(inside).toHaveLength(1)
   })
 

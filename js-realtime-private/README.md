@@ -6,6 +6,8 @@ This is the only part of realtime whose answer is not in the server. A channel w
 
 The person is minted here rather than signed up through GoTrue, because a policy reads claims and nothing else. The client is handed it through `realtime.setAuth`, which is what puts a token in the join payload, and the http questions send the same token in an `Authorization` header, so every path here is asked as the same person.
 
+One question is about the other way into a room. `realtime.send()` is how a project broadcasts from inside the database, from a trigger on its own table or a job, and what a client hears is supposed to be the same as if somebody had pushed it over a socket. There is no connection to the database from inside the suite, so `setup.sql` puts an ordinary function in front of it and the suite calls that: a plain security invoker function, so the send is checked by the same policies as everything else here, and a send that goes through it lands or does not for the same reasons.
+
 One question is about what a private room is not. A private channel and a public channel of the same name are two rooms rather than one, and they have to be: a public channel is joined by name with no policy read, so a room shared between the two would mean anybody could join `lobby` and hear everything the policies were keeping them out of. The suite asks that in both directions, a private send and then a public one, because the interesting failure is the leak and the boring one is a private room hearing traffic it should not.
 
 ## What it does not ask

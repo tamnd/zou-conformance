@@ -60,3 +60,37 @@ with check (
     )
     or realtime.topic() = (auth.uid())::text
 );
+
+-- Sending from sql, which is the other half of how a room is written
+-- to: a trigger or a job calls realtime.send() and whoever is on the
+-- channel hears it, with no client anywhere in the transaction.
+--
+-- There is no connection to the database from inside the suite, so the
+-- way to ask that question through the client is a function the client
+-- can call. This one is a plain security invoker function, so the send
+-- runs as the person the token says it is and the same policies above
+-- decide whether it lands, which is what makes it the same question the
+-- rest of this file is asking.
+create or replace function public.conformance_send(
+    room text,
+    name text,
+    body jsonb,
+    is_private boolean default true
+) returns void
+language sql
+as $$
+    select realtime.send(body, name, room, is_private);
+$$;
+
+grant execute on function public.conformance_send(text, text, jsonb, boolean) to authenticated;
+
+-- Best effort, because the function may belong to a role this script is
+-- not. Functions are executable by everybody unless somebody revoked
+-- it, so the usual outcome is that this changes nothing.
+do $$
+begin
+    execute 'grant execute on function realtime.send(jsonb, text, text, boolean) to authenticated';
+exception when others then
+    null;
+end
+$$;
