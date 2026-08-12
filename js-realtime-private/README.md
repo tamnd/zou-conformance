@@ -4,7 +4,9 @@ A private channel, asked through the client that subscribes to one, against poli
 
 This is the only part of realtime whose answer is not in the server. A channel with `private: true` on it is allowed or refused by ordinary row level security policies on `realtime.messages`, and those policies are sql a project writes about its own tables, reading `realtime.topic()` for the room and `auth.uid()` for the person. `setup.sql` here is what such a project looks like: a membership table, a row per person per room, a flag for whether that membership may send, and two policies that read it. Both targets get it unedited, so a disagreement between them is a disagreement about the server rather than about the fixture.
 
-The person is minted here rather than signed up through GoTrue, because a policy reads claims and nothing else. The client carries it through the `accessToken` option, which is the same token the socket sends in its join and the http endpoints see in an `Authorization` header, so all three paths are asked as the same person.
+The person is minted here rather than signed up through GoTrue, because a policy reads claims and nothing else. The client is handed it through `realtime.setAuth`, which is what puts a token in the join payload, and the http questions send the same token in an `Authorization` header, so every path here is asked as the same person.
+
+One question is about what a private room is not. A private channel and a public channel of the same name are two rooms rather than one, and they have to be: a public channel is joined by name with no policy read, so a room shared between the two would mean anybody could join `lobby` and hear everything the policies were keeping them out of. The suite asks that in both directions, a private send and then a public one, because the interesting failure is the leak and the boring one is a private room hearing traffic it should not.
 
 ## What it does not ask
 

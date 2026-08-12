@@ -202,6 +202,30 @@ describe('private channels', () => {
     expect(heard).toHaveLength(0)
   })
 
+  test('a public channel of the same name is a different room', async () => {
+    // Nobody asked the policies anything to be on this one: a public
+    // channel is joined by name and that is the whole of it. So if it
+    // heard what the private room of that name is saying, every policy
+    // in this file would be decoration.
+    const inside = await listening(LOBBY, 'split')
+    const outside: any[] = []
+    const open = (await client()).channel(LOBBY)
+    open.on('broadcast', { event: 'split' }, (payload) => outside.push(payload))
+    expect(await status(open)).toBe('SUBSCRIBED')
+
+    expect((await posted(`/${LOBBY}/events/split?private=true`, { x: 1 })).status).toBe(202)
+    await until('the private half', () => inside.length > 0)
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    expect(outside).toHaveLength(0)
+
+    // And backwards, which is the same rule: a public send is not
+    // smuggled into the private room either.
+    expect((await posted(`/${LOBBY}/events/split`, { x: 2 })).status).toBe(202)
+    await until('the public half', () => outside.length > 0)
+    expect(outside[0].payload).toEqual({ x: 2 })
+    expect(inside).toHaveLength(1)
+  })
+
   test('a batch sends the rooms the policies allow and says nothing about the rest', async () => {
     const allowed = await listening(LOBBY, 'batched')
     const refused = await listening(LISTEN, 'batched')
