@@ -28,8 +28,8 @@ So every test here waits for that frame before it writes, which is what an appli
 It is not a formality on the reference.
 The first subscriber to a project after Supabase Realtime starts waits about three and a half seconds for it, and every one after that waits for nothing, which is a race a suite run against a stack that has been up for an hour never sees and a suite run in CI sees every time.
 
-What the frame says is not asserted, and that is on purpose.
-A subscription to a table that is not in the publication comes back as the same frame with `status: error` and a message naming the parameters upstream, and as `ok` on zou, which is a difference between the servers rather than a question this file is asking.
+It is also where a subscription that could not be made is said, with `status: error` and a message naming every parameter of the binding, which is what a table nobody added to the publication gets.
+That is asserted whole, wording and all, because it is what somebody reads in their console when a subscription that looks right is silent.
 
 ## The frames
 
