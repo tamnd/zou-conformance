@@ -17,6 +17,20 @@ Every grant in it is spelled out, including the writes to `service_role`, and th
 A new table in `public` on a Supabase project is granted to nobody who arrives through the api: the default privileges there hand the three roles truncate, references, trigger and maintain and none of select, insert, update or delete.
 `bypassrls` on the service role does not help, because it is about policies and a grant is a grant.
 
+## What a join has to wait for
+
+`SUBSCRIBED` is the join reply and it is not the whole answer.
+
+The changes are read off the write ahead log by something that is set up alongside the channel, and until that is running a write goes past with nobody watching, which is a lost change and no error anywhere.
+Both servers say when it is running, in the same frame: a `system` event on the channel reading `Subscribed to PostgreSQL`.
+So every test here waits for that frame before it writes, which is what an application that writes as soon as it has subscribed has to do.
+
+It is not a formality on the reference.
+The first subscriber to a project after Supabase Realtime starts waits about three and a half seconds for it, and every one after that waits for nothing, which is a race a suite run against a stack that has been up for an hour never sees and a suite run in CI sees every time.
+
+What the frame says is not asserted, and that is on purpose.
+A subscription to a table that is not in the publication comes back as the same frame with `status: error` and a message naming the parameters upstream, and as `ok` on zou, which is a difference between the servers rather than a question this file is asking.
+
 ## The frames
 
 The last test is a different kind of question.

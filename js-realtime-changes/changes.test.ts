@@ -127,6 +127,39 @@ async function status(channel: RealtimeChannel): Promise<string> {
   })
 }
 
+/// A join, waited for the way anybody who writes as soon as they have
+/// subscribed has to wait for it.
+///
+/// `SUBSCRIBED` is the join reply and it is not the whole answer. The
+/// changes are read off the write ahead log by something that is set up
+/// alongside the channel, and until that is running a write goes past
+/// with nobody watching, which is a lost change and no error anywhere.
+/// The server says when it is running: a `system` event on the channel
+/// reading `Subscribed to PostgreSQL`. supabase-js does nothing with it
+/// beyond handing it to whoever asked, so asking is what this does.
+///
+/// It matters on a server that has just started, where the first
+/// subscriber to a project is the one that has to wait, and the gap is
+/// seconds rather than nothing.
+///
+/// What the frame says is not asserted here, and that is deliberate.
+/// Supabase Realtime answers a subscription to a table that is not in
+/// the publication with the same frame carrying `status: error` and a
+/// message naming the parameters, where zou says `ok` and then has
+/// nothing to send. That is a difference between the servers rather
+/// than a question this file is asking, and it is written down as an
+/// issue there.
+async function subscribed(channel: RealtimeChannel): Promise<string> {
+  let said = false
+  channel.on('system' as any, {} as any, (payload: any) => {
+    if (payload?.extension === 'postgres_changes') said = true
+  })
+  const state = await status(channel)
+  if (state !== 'SUBSCRIBED') return state
+  await until('the server to say what became of the subscriptions', () => said)
+  return state
+}
+
 async function until(what: string, ready: () => boolean): Promise<void> {
   for (let attempt = 0; attempt < 200; attempt++) {
     if (ready()) return
@@ -165,7 +198,7 @@ async function watching(
   channel.on('postgres_changes', { event: '*', schema: 'public', ...filter } as any, (change) =>
     heard.push(change)
   )
-  expect(await status(channel)).toBe('SUBSCRIBED')
+  expect(await subscribed(channel)).toBe('SUBSCRIBED')
   return heard
 }
 
@@ -336,7 +369,7 @@ describe('postgres changes', () => {
       { event: 'DELETE', schema: 'public', table: WATCHED } as any,
       (change) => deletes.push(change)
     )
-    expect(await status(channel)).toBe('SUBSCRIBED')
+    expect(await subscribed(channel)).toBe('SUBSCRIBED')
 
     await insert(WATCHED, { id: 9, body: 'both', tally: 1 })
     await remove(WATCHED, 9)
@@ -376,7 +409,7 @@ describe('postgres changes', () => {
       { event: '*', schema: 'public', table: GOLDEN_TABLE } as any,
       (change) => heard.push(change)
     )
-    expect(await status(channel)).toBe('SUBSCRIBED')
+    expect(await subscribed(channel)).toBe('SUBSCRIBED')
 
     await insert(GOLDEN_TABLE, { id: 10, body: 'a golden row', tally: 1 })
     await update(GOLDEN_TABLE, 10, { tally: 2 })
