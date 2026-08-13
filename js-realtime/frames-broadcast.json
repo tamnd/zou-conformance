@@ -1,0 +1,47 @@
+{
+  "note": [
+    "The frames Supabase Realtime sent to a channel with self and ack on it, for one broadcast the channel sent itself.",
+    "Written by frames.test.ts with ZOU_RECORD=1 against a real supabase start, and compared by the same file against zou.",
+    "The refs cannot repeat, so a ref is replaced by the fact that there was one.",
+    "A broadcast is a binary frame rather than json, and it is recorded taken apart into the fields the client reads out of it."
+  ],
+  "recorded_from": "supabase start",
+  "frames": [
+    {
+      "frame": "text",
+      "join_ref": "<ref>",
+      "ref": "<ref>",
+      "topic": "realtime:golden-broadcast",
+      "event": "phx_reply",
+      "payload": {
+        "status": "ok",
+        "response": {
+          "postgres_changes": []
+        }
+      }
+    },
+    {
+      "frame": "binary",
+      "kind": 4,
+      "topic": "realtime:golden-broadcast",
+      "event": "cursor",
+      "meta": null,
+      "encoding": 1,
+      "payload": {
+        "x": 12,
+        "y": 40
+      }
+    },
+    {
+      "frame": "text",
+      "join_ref": "<ref>",
+      "ref": "<ref>",
+      "topic": "realtime:golden-broadcast",
+      "event": "phx_reply",
+      "payload": {
+        "status": "ok",
+        "response": {}
+      }
+    }
+  ]
+}

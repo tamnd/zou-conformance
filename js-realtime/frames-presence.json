@@ -1,0 +1,102 @@
+{
+  "note": [
+    "The frames Supabase Realtime sent to one socket in a presence channel: the state it joined to, its own track, somebody else arriving, and that person leaving.",
+    "Written by frames.test.ts with ZOU_RECORD=1 against a real supabase start, and compared by the same file against zou.",
+    "The refs and the presence refs cannot repeat, so both are replaced by the fact that there was one."
+  ],
+  "recorded_from": "supabase start",
+  "frames": [
+    {
+      "frame": "text",
+      "join_ref": "<ref>",
+      "ref": "<ref>",
+      "topic": "realtime:golden-presence",
+      "event": "phx_reply",
+      "payload": {
+        "status": "ok",
+        "response": {
+          "postgres_changes": []
+        }
+      }
+    },
+    {
+      "frame": "text",
+      "join_ref": "<ref>",
+      "ref": null,
+      "topic": "realtime:golden-presence",
+      "event": "presence_state",
+      "payload": {}
+    },
+    {
+      "frame": "text",
+      "join_ref": "<ref>",
+      "ref": "<ref>",
+      "topic": "realtime:golden-presence",
+      "event": "phx_reply",
+      "payload": {
+        "status": "ok",
+        "response": {}
+      }
+    },
+    {
+      "frame": "text",
+      "join_ref": null,
+      "ref": null,
+      "topic": "realtime:golden-presence",
+      "event": "presence_diff",
+      "payload": {
+        "joins": {
+          "alice": {
+            "metas": [
+              {
+                "phx_ref": "<ref>",
+                "at": "noon"
+              }
+            ]
+          }
+        },
+        "leaves": {}
+      }
+    },
+    {
+      "frame": "text",
+      "join_ref": null,
+      "ref": null,
+      "topic": "realtime:golden-presence",
+      "event": "presence_diff",
+      "payload": {
+        "joins": {
+          "bob": {
+            "metas": [
+              {
+                "phx_ref": "<ref>",
+                "at": "later"
+              }
+            ]
+          }
+        },
+        "leaves": {}
+      }
+    },
+    {
+      "frame": "text",
+      "join_ref": null,
+      "ref": null,
+      "topic": "realtime:golden-presence",
+      "event": "presence_diff",
+      "payload": {
+        "joins": {},
+        "leaves": {
+          "bob": {
+            "metas": [
+              {
+                "phx_ref": "<ref>",
+                "at": "later"
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}
