@@ -1,0 +1,153 @@
+{
+  "note": [
+    "The frames Supabase Realtime sent to a channel subscribed to one table, for an insert, an update and a delete of one row.",
+    "Written by changes.test.ts with ZOU_RECORD=1 against a real supabase start, and compared by the same file against zou.",
+    "The refs, the subscription ids and the commit timestamp cannot repeat, so they are replaced: a ref by whether it is the join push it answers, an id by the position it held in the join answer, and the timestamp by the fact that there was one."
+  ],
+  "recorded_from": "supabase start",
+  "frames": [
+    {
+      "join_ref": "<ref>",
+      "ref": "<ref>",
+      "topic": "realtime:golden",
+      "event": "phx_reply",
+      "payload": {
+        "status": "ok",
+        "response": {
+          "postgres_changes": [
+            {
+              "id": "<subscription 0>",
+              "event": "*",
+              "schema": "public",
+              "table": "conformance_golden"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "join_ref": "<ref>",
+      "ref": null,
+      "topic": "realtime:golden",
+      "event": "system",
+      "payload": {
+        "message": "Subscribed to PostgreSQL",
+        "status": "ok",
+        "extension": "postgres_changes",
+        "channel": "golden"
+      }
+    },
+    {
+      "join_ref": null,
+      "ref": null,
+      "topic": "realtime:golden",
+      "event": "postgres_changes",
+      "payload": {
+        "data": {
+          "table": "conformance_golden",
+          "type": "INSERT",
+          "record": {
+            "id": 10,
+            "body": "a golden row",
+            "tally": 1
+          },
+          "columns": [
+            {
+              "name": "id",
+              "type": "int8"
+            },
+            {
+              "name": "body",
+              "type": "text"
+            },
+            {
+              "name": "tally",
+              "type": "int4"
+            }
+          ],
+          "errors": null,
+          "schema": "public",
+          "commit_timestamp": "<timestamp>"
+        },
+        "ids": [
+          "<subscription 0>"
+        ]
+      }
+    },
+    {
+      "join_ref": null,
+      "ref": null,
+      "topic": "realtime:golden",
+      "event": "postgres_changes",
+      "payload": {
+        "data": {
+          "table": "conformance_golden",
+          "type": "UPDATE",
+          "record": {
+            "id": 10,
+            "body": "a golden row",
+            "tally": 2
+          },
+          "columns": [
+            {
+              "name": "id",
+              "type": "int8"
+            },
+            {
+              "name": "body",
+              "type": "text"
+            },
+            {
+              "name": "tally",
+              "type": "int4"
+            }
+          ],
+          "errors": null,
+          "schema": "public",
+          "commit_timestamp": "<timestamp>",
+          "old_record": {
+            "id": 10
+          }
+        },
+        "ids": [
+          "<subscription 0>"
+        ]
+      }
+    },
+    {
+      "join_ref": null,
+      "ref": null,
+      "topic": "realtime:golden",
+      "event": "postgres_changes",
+      "payload": {
+        "data": {
+          "table": "conformance_golden",
+          "type": "DELETE",
+          "columns": [
+            {
+              "name": "id",
+              "type": "int8"
+            },
+            {
+              "name": "body",
+              "type": "text"
+            },
+            {
+              "name": "tally",
+              "type": "int4"
+            }
+          ],
+          "errors": null,
+          "schema": "public",
+          "commit_timestamp": "<timestamp>",
+          "old_record": {
+            "id": 10
+          }
+        },
+        "ids": [
+          "<subscription 0>"
+        ]
+      }
+    }
+  ]
+}

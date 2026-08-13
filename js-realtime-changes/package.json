@@ -1,0 +1,15 @@
+{
+  "name": "zou-conformance-js-realtime-changes",
+  "private": true,
+  "version": "0.0.0",
+  "description": "supabase-js subscribing to a table at zou, and the frames that made it happen",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@supabase/supabase-js": "2.111.0",
+    "vitest": "3.2.4",
+    "ws": "8.18.3"
+  }
+}

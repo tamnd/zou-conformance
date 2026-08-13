@@ -19,6 +19,7 @@ js-storage/            storage-js's own integration tests, run against zou
 js-tus/                tus-js-client driving resumable uploads, read back through supabase-js
 js-realtime/           realtime-js driving presence and http broadcast, read back through supabase-js
 js-realtime-private/   private channels, decided by policies a project writes itself
+js-realtime-changes/   rows written over the api, read off a subscription, and the frames that carried them
 demo/                  one of Supabase's example apps, unedited, in a browser
 ```
 
@@ -41,6 +42,9 @@ fixtures/       what a case sends when its body is bytes rather than a line
 The broadcast file in it is there for a smaller reason: supabase-js's own suite sends over a socket and never over http, and the two ways a client sends without one are two different urls.
 
 `js-realtime-private/` is the same shape again and is described in [js-realtime-private/README.md](js-realtime-private/README.md), and it is kept apart from the file next to it because it needs a database while presence and broadcast need none. A private channel is the one part of realtime whose answer is not in the server: it comes out of row level security policies on `realtime.messages` that a project wrote about its own tables, and `setup.sql` there is such a project, applied to both targets unedited.
+
+`js-realtime-changes/` is described in [js-realtime-changes/README.md](js-realtime-changes/README.md), and it is about rows nobody sent: a table goes into the `supabase_realtime` publication, somebody writes to it over `/rest/v1`, and whoever subscribed is told. Every write goes through the api on purpose, because a suite holding a connection to the database could set a row up in a way no application could.
+The last test in it is the only one here that reads frames rather than what a client handed the application, and it is the reason the file is not three more tests in the directory above: a server can fold correctly into the right object and still be sending frames upstream never sends, and `frames.json` is a recording of what Supabase Realtime sent for the same three writes.
 
 `demo/` is not a suite either, and is described in [demo/README.md](demo/README.md). It is one of Supabase's example apps with nothing changed in it, driven through a real browser: sign up, sign in, a row level security policy holding between two accounts, and a Github login. A suite passing says every answer matched a recording. An app working says the answers were enough to build something on, and the second does not follow from the first.
 
