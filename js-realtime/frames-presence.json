@@ -2,7 +2,8 @@
   "note": [
     "The frames Supabase Realtime sent to one socket in a presence channel: the state it joined to, its own track, somebody else arriving, and that person leaving.",
     "Written by frames.test.ts with ZOU_RECORD=1 against a real supabase start, and compared by the same file against zou.",
-    "The refs and the presence refs cannot repeat, so both are replaced by the fact that there was one."
+    "The refs and the presence refs cannot repeat, so both are replaced by the fact that there was one.",
+    "The reply to a track and the diff that track caused race each other in the server, so a pair of them is compared in one order rather than in the order it arrived."
   ],
   "recorded_from": "supabase start",
   "frames": [

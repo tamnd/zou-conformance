@@ -191,6 +191,24 @@ function derefed(value: any): any {
   return value
 }
 
+/// A track is answered twice and the two answers have no order between
+/// them: the reply to the push, and the diff the track itself caused.
+/// Real Supabase Realtime sends them either way round from one run to
+/// the next, which is a race in the server and not a fact about it, so
+/// an adjacent pair is put into one order rather than recorded as
+/// whichever way it came out on the day.
+function settled(frames: any[]): any[] {
+  const out = [...frames]
+  for (let at = 0; at + 1 < out.length; at += 1) {
+    if (out[at].event === 'presence_diff' && out[at + 1].event === 'phx_reply') {
+      const held = out[at]
+      out[at] = out[at + 1]
+      out[at + 1] = held
+    }
+  }
+  return out
+}
+
 /// Check the recording, or write it, which is the whole of what the two
 /// tests below do with what they gathered.
 function golden(name: string, note: string[], seen: unknown[]) {
@@ -265,7 +283,7 @@ describe('the frames', () => {
     expect(await arriving.untrack()).toBe('ok')
     await until('the leaving', () => Object.keys(watching.presenceState()).length === 1)
 
-    golden('frames-presence.json', PRESENCE_NOTE, normalise(frames))
+    golden('frames-presence.json', PRESENCE_NOTE, settled(normalise(frames)))
   })
 })
 
@@ -280,4 +298,5 @@ const PRESENCE_NOTE = [
   'The frames Supabase Realtime sent to one socket in a presence channel: the state it joined to, its own track, somebody else arriving, and that person leaving.',
   'Written by frames.test.ts with ZOU_RECORD=1 against a real supabase start, and compared by the same file against zou.',
   'The refs and the presence refs cannot repeat, so both are replaced by the fact that there was one.',
+  'The reply to a track and the diff that track caused race each other in the server, so a pair of them is compared in one order rather than in the order it arrived.',
 ]
