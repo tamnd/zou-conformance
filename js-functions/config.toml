@@ -1,0 +1,7 @@
+# The one thing this project says about its functions.
+#
+# Everything else is the layout: a directory per function under
+# functions/, an index.ts in each, _shared beside them. verify_jwt is on
+# unless a block turns it off, which is what this is here to prove.
+[functions.open]
+verify_jwt = false

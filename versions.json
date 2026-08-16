@@ -41,6 +41,17 @@
       "diffed against a live reference the way the other three are."
     ]
   },
+  "edge_runtime": {
+    "version": "1.74.2",
+    "image": "supabase/edge-runtime:v1.74.2",
+    "covers": ["js-functions"],
+    "note": [
+      "What runs a function in the local stack, and what the functions suite is",
+      "diffed against. Nothing is recorded from it: the suite asks both servers",
+      "the same questions in the same CI run and each answer is the other's",
+      "expected one, which is what the tus and realtime suites do as well."
+    ]
+  },
   "postgres_meta": {
     "version": "0.96.6",
     "image": "supabase/postgres-meta:v0.96.6",
