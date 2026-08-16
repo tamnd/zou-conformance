@@ -1,0 +1,613 @@
+{
+  "note": [
+    "What both servers did when the Supabase examples project was served",
+    "by each of them and every function in it was asked the same question.",
+    "",
+    "A function ran when its own code or its own library produced the",
+    "outcome: a refusal from the gateway in front of it, a config error out",
+    "of the library it imports, a throw from the handler. A function did not",
+    "run when the module never finished loading or when it reached for a",
+    "runtime api that is not there. Which of the two happened is read off",
+    "the server log rather than off the status, because both of them are a",
+    "500 from the outside.",
+    "",
+    "The bodies are the first 300 bytes, with tabs and newlines flattened,",
+    "which is how the probe wrote them down.",
+    "",
+    "This is a recording rather than a suite: nothing in CI compares against",
+    "it. It is the denominator for a claim about the corpus, and the reason",
+    "every name that is not shared is not shared."
+  ],
+  "corpus": {
+    "repository": "github.com/supabase/supabase",
+    "path": "examples/edge-functions",
+    "commit": "9be60cab63161100500bdae6dfd45501c5fd8b07"
+  },
+  "measured_on": "2026-08-16",
+  "zou": "the functions-entrypoint-names build, deno engine on, functions serve",
+  "reference": "supabase start, edge-runtime 1.74.2, CLI 2.111.0",
+  "totals": {
+    "asked": 39,
+    "zou_ran": 28,
+    "reference_ran": 34,
+    "both_ran": 25
+  },
+  "functions": [
+    {
+      "name": "auth-hook-react-email-resend",
+      "verdict": "both",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": true,
+        "log": "Error: Missing API key. Pass it to the constructor `new Resend(\"re_123\")`"
+      },
+      "reference": {
+        "status": 500,
+        "body": "{\"code\":\"WORKER_ERROR\",\"message\":\"Function exited due to an error (please check logs)\"}",
+        "ran": true,
+        "log": "event loop error: Error: Missing API key. Pass it to the constructor `new Resend(\"re_123\")`"
+      }
+    },
+    {
+      "name": "background-upload-storage",
+      "verdict": "both",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": true,
+        "log": "Error: Missing credentials. Please pass an `apiKey`, `workloadIdentity`, `adminAPIKey`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable."
+      },
+      "reference": {
+        "status": 500,
+        "body": "{\"code\":\"WORKER_ERROR\",\"message\":\"Function exited due to an error (please check logs)\"}",
+        "ran": true,
+        "log": "event loop error: Error: Missing credentials. Please pass an `apiKey`, `workloadIdentity`, `adminAPIKey`, or set the `OPENAI_API_KEY` or `OPENAI_ADMIN_KEY` environment variable."
+      }
+    },
+    {
+      "name": "browser-with-cors",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "cloudflare-turnstile",
+      "verdict": "both",
+      "zou": {
+        "status": 500,
+        "body": "{\"message\":\"No default publishable key found. Set SUPABASE_PUBLISHABLE_KEY or include a \\\"default\\\" entry in SUPABASE_PUBLISHABLE_KEYS.\",\"code\":\"MISSING_DEFAULT_PUBLISHABLE_KEY\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 400,
+        "body": "{\"error\":\"Missing token!\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "connect-supabase",
+      "verdict": "reference only",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "Top-level await promise never resolved"
+      },
+      "reference": {
+        "status": 405,
+        "body": "",
+        "ran": true
+      }
+    },
+    {
+      "name": "custom-jwt-validation",
+      "verdict": "both",
+      "zou": {
+        "status": 500,
+        "body": "{\"message\":\"No default publishable key found. Set SUPABASE_PUBLISHABLE_KEY or include a \\\"default\\\" entry in SUPABASE_PUBLISHABLE_KEYS.\",\"code\":\"MISSING_DEFAULT_PUBLISHABLE_KEY\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"msg\":\"JOSENotSupported: Unsupported \\\"alg\\\" value for a JSON Web Key Set\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "discord-bot",
+      "verdict": "neither",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "https://cdn.skypack.dev/http-cache-semantics?dts is a Unknown and a function may not import one"
+      },
+      "reference": {
+        "status": 503,
+        "body": "{\"code\":\"BOOT_ERROR\",\"message\":\"Worker failed to boot (please check logs)\"}",
+        "ran": false,
+        "log": "worker boot error: failed to create the graph: Expected a JavaScript or TypeScript module, but identified a Unknown module. Specifier: https://cdn.skypack.dev/http-cache-semantics?dts"
+      }
+    },
+    {
+      "name": "drizzle",
+      "verdict": "reference only",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "Uncaught SyntaxError: The requested module '../utils.mjs' does not provide an export named 'extractUsedTable'"
+      },
+      "reference": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": true,
+        "log": "Error: getaddrinfo ENOTFOUND supabase_db_edge-functions"
+      }
+    },
+    {
+      "name": "elevenlabs-speech-to-text",
+      "verdict": "both",
+      "zou": {
+        "status": 500,
+        "body": "{\"message\":\"No default publishable key found. Set SUPABASE_PUBLISHABLE_KEY or include a \\\"default\\\" entry in SUPABASE_PUBLISHABLE_KEYS.\",\"code\":\"MISSING_DEFAULT_PUBLISHABLE_KEY\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": true,
+        "log": "Error: Empty token!"
+      }
+    },
+    {
+      "name": "elevenlabs-text-to-speech",
+      "verdict": "both",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": true,
+        "log": "Error: Please pass in your ElevenLabs API Key or export ELEVENLABS_API_KEY in your environment."
+      },
+      "reference": {
+        "status": 500,
+        "body": "{\"code\":\"WORKER_ERROR\",\"message\":\"Function exited due to an error (please check logs)\"}",
+        "ran": true,
+        "log": "event loop error: Error: Please pass in your ElevenLabs API Key or export ELEVENLABS_API_KEY in your environment."
+      }
+    },
+    {
+      "name": "file-upload-storage",
+      "verdict": "neither",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "https://esm.sh/supabase-js@2 answered 404 Not Found"
+      },
+      "reference": {
+        "status": 503,
+        "body": "{\"code\":\"BOOT_ERROR\",\"message\":\"Worker failed to boot (please check logs)\"}",
+        "ran": false,
+        "log": "worker boot error: failed to create the graph: Could not find npm package 'supabase-js' matching '2'."
+      }
+    },
+    {
+      "name": "get-tshirt-competition",
+      "verdict": "both",
+      "zou": {
+        "status": 500,
+        "body": "{\"message\":\"No default publishable key found. Set SUPABASE_PUBLISHABLE_KEY or include a \\\"default\\\" entry in SUPABASE_PUBLISHABLE_KEYS.\",\"code\":\"MISSING_DEFAULT_PUBLISHABLE_KEY\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 400,
+        "body": "{\"error\":\"Please provide valid 'email', 'twitter', 'size', and 'answer' params. HINT: https://github.com/supabase/supabase/blob/master/examples/edge-functions/supabase/functions/get-tshirt-competition/index.ts\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "github-action-deploy",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "huggingface-image-captioning",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "image-manipulation",
+      "verdict": "reference only",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "TypeError: a file may only be read through a file url, not https:"
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "kysely-postgres",
+      "verdict": "zou only",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": true,
+        "log": "ConnectionParamsError: No TLS options are allowed when host type is set to \"socket\""
+      },
+      "reference": {
+        "status": 503,
+        "body": "{\"code\":\"BOOT_ERROR\",\"message\":\"Worker failed to boot (please check logs)\"}",
+        "ran": false,
+        "log": "worker boot error: failed to create the graph: Relative import path \"postgres\" not prefixed with / or ./ or ../"
+      }
+    },
+    {
+      "name": "location",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "oak-server",
+      "verdict": "reference only",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "Top-level await promise never resolved"
+      },
+      "reference": {
+        "status": 405,
+        "body": "",
+        "ran": true
+      }
+    },
+    {
+      "name": "og-image-with-storage-cdn",
+      "verdict": "reference only",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "https://esm.sh/@vercel/og@^0 answered 500 Internal Server Error"
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "openai",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "openai-image-generation",
+      "verdict": "zou only",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 503,
+        "body": "{\"code\":\"BOOT_ERROR\",\"message\":\"Worker failed to boot (please check logs)\"}",
+        "ran": false,
+        "log": "worker boot error: failed to create the graph: Module not found \"https://jsr.io/@openai/openai/6.49.0/node_modules/undici-types/index.d.ts\"."
+      }
+    },
+    {
+      "name": "opengraph",
+      "verdict": "zou only",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 503,
+        "body": "{\"code\":\"BOOT_ERROR\",\"message\":\"Worker failed to boot (please check logs)\"}",
+        "ran": false,
+        "log": "worker boot error: failed to create the graph: Module not found \"https://esm.sh/yoga-layout@3.2.1/dist/src/wrapAssembly.ts.d.ts\"."
+      }
+    },
+    {
+      "name": "postgres-on-the-edge",
+      "verdict": "reference only",
+      "zou": {
+        "status": 500,
+        "body": "{\"error\":\"Deno.connect is not a function\"}",
+        "ran": false,
+        "log": "TypeError: Deno.connect is not a function"
+      },
+      "reference": {
+        "status": 500,
+        "body": "{\"error\":\"relation \\\"animals\\\" does not exist\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "puppeteer",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "read-storage",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "restful-tasks",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "select-from-table-with-auth-rls",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "send-email-resend",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "send-email-smtp",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "sentry",
+      "verdict": "both",
+      "zou": {
+        "status": 500,
+        "body": "{\"message\":\"No default publishable key found. Set SUPABASE_PUBLISHABLE_KEY or include a \\\"default\\\" entry in SUPABASE_PUBLISHABLE_KEYS.\",\"code\":\"MISSING_DEFAULT_PUBLISHABLE_KEY\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 200,
+        "body": "You need to send a JSON body with {answer, twitter}!",
+        "ran": true
+      }
+    },
+    {
+      "name": "sentryfied",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "simple-mcp-server",
+      "verdict": "reference only",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "TypeError: t.custom is not a function"
+      },
+      "reference": {
+        "status": 404,
+        "body": "404 Not Found",
+        "ran": true,
+        "log": "serving the request with supabase/functions/mcp/simple-mcp-server, and the function's own hono app answered the 404"
+      }
+    },
+    {
+      "name": "slack-bot-mention",
+      "verdict": "reference only",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "https://esm.sh/@slack/web-api@^7 answered 500 Internal Server Error"
+      },
+      "reference": {
+        "status": 500,
+        "body": "{\"error\":\"Cannot read properties of undefined (reading 'type')\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "streams",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "stripe-webhooks",
+      "verdict": "both",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": true,
+        "log": "Error: Neither apiKey nor config.authenticator provided"
+      },
+      "reference": {
+        "status": 500,
+        "body": "{\"code\":\"WORKER_ERROR\",\"message\":\"Function exited due to an error (please check logs)\"}",
+        "ran": true,
+        "log": "event loop error: Error: Neither apiKey nor config.authenticator provided"
+      }
+    },
+    {
+      "name": "telegram-bot",
+      "verdict": "both",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": true,
+        "log": "Error: Empty token!"
+      },
+      "reference": {
+        "status": 500,
+        "body": "{\"code\":\"WORKER_ERROR\",\"message\":\"Function exited due to an error (please check logs)\"}",
+        "ran": true,
+        "log": "event loop error: Error: Empty token!"
+      }
+    },
+    {
+      "name": "tweet-to-image",
+      "verdict": "reference only",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "https://esm.sh/@vercel/og@^0 answered 500 Internal Server Error"
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "upstash-redis-counter",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    },
+    {
+      "name": "upstash-redis-ratelimit",
+      "verdict": "both",
+      "zou": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      },
+      "reference": {
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
+      }
+    }
+  ]
+}

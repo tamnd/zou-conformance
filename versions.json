@@ -52,6 +52,19 @@
       "expected one, which is what the tus and realtime suites do as well."
     ]
   },
+  "supabase_examples": {
+    "commit": "9be60cab63161100500bdae6dfd45501c5fd8b07",
+    "source": "github.com/supabase/supabase, examples/edge-functions",
+    "read_on": "2026-08-16",
+    "covers": ["examples"],
+    "note": [
+      "The corpus, which is a commit rather than a version because it is not",
+      "released. It is not vendored here either: examples/corpus.sh brings it",
+      "back, and examples/measured.json is what both servers did with it.",
+      "Moving this line means re-running the probe against both servers, and",
+      "the numbers in examples/README.md move with it."
+    ]
+  },
   "postgres_meta": {
     "version": "0.96.6",
     "image": "supabase/postgres-meta:v0.96.6",

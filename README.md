@@ -21,6 +21,7 @@ js-realtime/           realtime-js driving presence and http broadcast, read bac
 js-realtime-private/   private channels, decided by policies a project writes itself
 js-realtime-changes/   rows written over the api, read off a subscription, and the frames that carried them
 js-functions/          a project's edge functions, served by both and asked the same questions
+examples/              the whole Supabase examples project, served by both, function by function
 demo/                  one of Supabase's example apps, unedited, in a browser
 ```
 
@@ -48,6 +49,8 @@ The broadcast file in it is there for a smaller reason: supabase-js's own suite 
 The last test in it is the only one here that reads frames rather than what a client handed the application, and it is the reason the file is not three more tests in the directory above: a server can fold correctly into the right object and still be sending frames upstream never sends, and `frames.json` is a recording of what Supabase Realtime sent for the same three writes.
 
 `js-functions/` is described in [js-functions/README.md](js-functions/README.md), and it is the only directory here that ships code somebody deploys rather than requests somebody sends. The functions in it go into a `supabase/functions` unedited on both sides, and the questions are the three ways a module says what to run, the refusals in front of it, and what the runtime hands a handler. There is nothing upstream to copy, so it is run against `supabase start` for the same reason the tus and presence suites are.
+
+`examples/` is not a suite at all and nothing in CI runs it, which is described in [examples/README.md](examples/README.md). It is the forty two functions in Supabase's own examples project, served by zou and by `supabase start` in turn and each one asked the same question, and what comes out is a count with a reason next to every name that is not shared. There is no pass in it, because most of those functions need a secret nobody here has and half of them fetch what they import off the network at boot. It is here for the denominator: a number about a corpus is only worth something if somebody can rebuild the corpus and get it again.
 
 `demo/` is not a suite either, and is described in [demo/README.md](demo/README.md). It is one of Supabase's example apps with nothing changed in it, driven through a real browser: sign up, sign in, a row level security policy holding between two accounts, and a Github login. A suite passing says every answer matched a recording. An app working says the answers were enough to build something on, and the second does not follow from the first.
 
