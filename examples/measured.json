@@ -16,7 +16,20 @@
     "",
     "This is a recording rather than a suite: nothing in CI compares against",
     "it. It is the denominator for a claim about the corpus, and the reason",
-    "every name that is not shared is not shared."
+    "every name that is not shared is not shared.",
+    "",
+    "wasm-modules is asked of one server and not the other, which is not a",
+    "gap in the probe. Its handler imports a file a wasm build writes and",
+    "the build has not been run, so the file is not there. zou serves the",
+    "other thirty nine and answers 500 for that one. The CLI refuses to",
+    "start the stack at all while the function is in the directory, so the",
+    "way to ask upstream anything else about this project is to take the",
+    "function out of it, which is what the reference copy has done.",
+    "",
+    "Five of zou's answers moved on the day the key maps arrived. Four of",
+    "them are now the reference's answer byte for byte, and the fifth,",
+    "custom-jwt-validation, gets past the client it could not build before",
+    "and reaches a runtime api zou does not have."
   ],
   "corpus": {
     "repository": "github.com/supabase/supabase",
@@ -24,10 +37,10 @@
     "commit": "9be60cab63161100500bdae6dfd45501c5fd8b07"
   },
   "measured_on": "2026-08-16",
-  "zou": "the functions-entrypoint-names build, deno engine on, functions serve",
+  "zou": "the functions-publishable-keys build, deno engine on, functions serve",
   "reference": "supabase start, edge-runtime 1.74.2, CLI 2.111.0",
   "totals": {
-    "asked": 39,
+    "asked": 40,
     "zou_ran": 28,
     "reference_ran": 34,
     "both_ran": 25
@@ -83,8 +96,8 @@
       "name": "cloudflare-turnstile",
       "verdict": "both",
       "zou": {
-        "status": 500,
-        "body": "{\"message\":\"No default publishable key found. Set SUPABASE_PUBLISHABLE_KEY or include a \\\"default\\\" entry in SUPABASE_PUBLISHABLE_KEYS.\",\"code\":\"MISSING_DEFAULT_PUBLISHABLE_KEY\"}",
+        "status": 400,
+        "body": "{\"error\":\"Missing token!\"}",
         "ran": true
       },
       "reference": {
@@ -112,8 +125,8 @@
       "name": "custom-jwt-validation",
       "verdict": "both",
       "zou": {
-        "status": 500,
-        "body": "{\"message\":\"No default publishable key found. Set SUPABASE_PUBLISHABLE_KEY or include a \\\"default\\\" entry in SUPABASE_PUBLISHABLE_KEYS.\",\"code\":\"MISSING_DEFAULT_PUBLISHABLE_KEY\"}",
+        "status": 401,
+        "body": "{\"msg\":\"TypeError: AbortSignal.timeout is not a function\"}",
         "ran": true
       },
       "reference": {
@@ -159,8 +172,9 @@
       "verdict": "both",
       "zou": {
         "status": 500,
-        "body": "{\"message\":\"No default publishable key found. Set SUPABASE_PUBLISHABLE_KEY or include a \\\"default\\\" entry in SUPABASE_PUBLISHABLE_KEYS.\",\"code\":\"MISSING_DEFAULT_PUBLISHABLE_KEY\"}",
-        "ran": true
+        "body": "Internal Server Error",
+        "ran": true,
+        "log": "Error: Empty token!"
       },
       "reference": {
         "status": 500,
@@ -205,8 +219,8 @@
       "name": "get-tshirt-competition",
       "verdict": "both",
       "zou": {
-        "status": 500,
-        "body": "{\"message\":\"No default publishable key found. Set SUPABASE_PUBLISHABLE_KEY or include a \\\"default\\\" entry in SUPABASE_PUBLISHABLE_KEYS.\",\"code\":\"MISSING_DEFAULT_PUBLISHABLE_KEY\"}",
+        "status": 400,
+        "body": "{\"error\":\"Please provide valid 'email', 'twitter', 'size', and 'answer' params. HINT: https://github.com/supabase/supabase/blob/master/examples/edge-functions/supabase/functions/get-tshirt-competition/index.ts\"}",
         "ran": true
       },
       "reference": {
@@ -465,8 +479,8 @@
       "name": "sentry",
       "verdict": "both",
       "zou": {
-        "status": 500,
-        "body": "{\"message\":\"No default publishable key found. Set SUPABASE_PUBLISHABLE_KEY or include a \\\"default\\\" entry in SUPABASE_PUBLISHABLE_KEYS.\",\"code\":\"MISSING_DEFAULT_PUBLISHABLE_KEY\"}",
+        "status": 200,
+        "body": "You need to send a JSON body with {answer, twitter}!",
         "ran": true
       },
       "reference": {
@@ -607,6 +621,22 @@
         "status": 401,
         "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
         "ran": true
+      }
+    },
+    {
+      "name": "wasm-modules",
+      "verdict": "neither",
+      "zou": {
+        "status": 500,
+        "body": "Internal Server Error",
+        "ran": false,
+        "log": "read functions/wasm-modules/add-wasm/pkg/add_wasm.js: No such file or directory (os error 2)"
+      },
+      "reference": {
+        "status": null,
+        "body": null,
+        "ran": false,
+        "log": "failed to read file: open supabase/functions/wasm-modules/add-wasm/pkg/add_wasm.js: no such file or directory"
       }
     }
   ]

@@ -6,9 +6,9 @@ import { expect, test } from 'vitest'
 
 import { at, invoke, json, keyed, NAME, REFERENCE } from './shared'
 
-test(`${NAME} sets the five a project is promised`, async () => {
+test(`${NAME} sets the variables a project is promised`, async () => {
   const said = await json('env')
-  expect(said.set).toEqual({
+  expect(said.set).toMatchObject({
     SUPABASE_URL: true,
     SUPABASE_ANON_KEY: true,
     SUPABASE_SERVICE_ROLE_KEY: true,
@@ -17,6 +17,23 @@ test(`${NAME} sets the five a project is promised`, async () => {
   })
   expect(said.edgeRuntime).toBe('object')
   expect(said.waitUntil).toBe('function')
+})
+
+// The key maps are the newer names and they are what most of the
+// Supabase examples project reads now, by way of `@supabase/server`,
+// which builds its client before the handler runs and refuses the
+// request if it cannot find a key. Neither side is asked what the key
+// is: the reference issues `sb_publishable_` and `sb_secret_` strings
+// and zou hands over the project's own keys, and a library treats
+// either as opaque and sends it back as the apikey.
+test(`${NAME} names a default publishable and secret key`, async () => {
+  const said = await json('env')
+  expect(said.set.SUPABASE_PUBLISHABLE_KEYS).toBe(true)
+  expect(said.set.SUPABASE_SECRET_KEYS).toBe(true)
+  expect(said.defaults).toEqual({
+    SUPABASE_PUBLISHABLE_KEYS: true,
+    SUPABASE_SECRET_KEYS: true,
+  })
 })
 
 // The second divergence, and the one worth reading the comment for.
@@ -42,6 +59,20 @@ test(`${NAME} says which execution a call was`, async () => {
     // The call's.
     expect(one.execution).not.toBe(two.execution)
   }
+})
+
+// The third divergence, and the one zou is on the wrong side of.
+//
+// `supabase start` publishes the project's signing keys as a jwks, so a
+// function verifying a token itself can do it without asking the api.
+// zou signs a project's tokens with one shared secret and has nothing
+// asymmetric to publish, so the variable is unset and a function that
+// wants the keys has to ask the api for them. Asked here so that zou
+// growing project keys is a failure in this file rather than something
+// nobody notices.
+test(`${NAME} says whether the signing keys are published`, async () => {
+  const said = await json('env')
+  expect(said.set.SUPABASE_JWKS).toBe(REFERENCE)
 })
 
 test(`${NAME} has the web surface a handler is written against`, async () => {

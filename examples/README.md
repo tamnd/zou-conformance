@@ -19,7 +19,7 @@ Which of the two happened is read off the server log rather than off the status,
 
 That line is the whole measurement, so it is worth being blunt about what it does not say.
 A function that ran did not necessarily do anything useful.
-Seventeen of the twenty eight zou ran stopped at a 401 in front of the handler, and five more got as far as a library saying it has no api key.
+Seventeen of the twenty eight zou ran stopped at a 401 in front of the handler, and six more got as far as a library saying it has no api key.
 The claim being made is that the runtime got the code to its own first decision, and not that the example works.
 
 ## Running it
@@ -50,15 +50,20 @@ A status that moved is either zou getting further or a library on the network ch
 
 ## What was measured
 
-39 functions asked, on 2026-08-16.
+40 functions asked, on 2026-08-16.
 zou ran 28 of them, the reference ran 34, and they agree on 25.
+Twenty of the forty answer the same status with the same bytes on both servers.
 
-Where the 39 comes from, since a number about a corpus is mostly a number about who was counted.
+Where the 40 comes from, since a number about a corpus is mostly a number about who was counted.
 There are 42 directories under `functions/` and 39 of them have an `index.ts`: `_shared`, `mcp` and `unit-testing` have no entrypoint of their own and are not functions.
 `config.toml` adds a fortieth name that has no directory at all, `simple-mcp-server`, whose entrypoint it points two levels down at `functions/mcp/simple-mcp-server/index.ts`.
-That makes 40 names zou was asked, and 39 that both servers were asked: `wasm-modules` is left out because its build artifact `add-wasm/pkg/add_wasm.js` is not in the checkout, so the reference has nothing to serve and the comparison would be about a missing file.
 
-Five failures are shared and byte for byte identical on both servers, out of the same libraries:
+One of the forty is asked of one server only, and the reason is the most interesting row in the file.
+`wasm-modules` imports `add-wasm/pkg/add_wasm.js`, which a wasm build writes and which is not in the checkout, so on both servers there is nothing to load.
+zou serves the other thirty nine and answers 500 for that one.
+The CLI reads the whole project before it starts anything and refuses to bring the stack up at all while the function is in the directory, so the reference copy has the function taken out of it, which is the only way to ask upstream about the rest of the project.
+
+Five sentences are shared and byte for byte identical on both servers, out of the same libraries, and six functions land on them:
 
 ```
 Missing API key. Pass it to the constructor `new Resend("re_123")`
@@ -72,6 +77,16 @@ Those are the most useful rows in the file.
 They are third party npm packages, resolved and loaded and run far enough to make a decision about their own configuration, and the two runtimes reached the same sentence.
 
 `measured.json` has the rest: both servers' status, the first 300 bytes of both bodies, the log line that decided the verdict, and the verdict.
+
+## What the key maps moved
+
+Most of this corpus goes through `npm:@supabase/server` now, which builds a client out of the environment before the handler runs and refuses the request if it cannot find a key.
+zou set four variables and upstream sets more, and the two the library wants are `SUPABASE_PUBLISHABLE_KEYS` and `SUPABASE_SECRET_KEYS`, each a json object with a `default` in it.
+
+Setting them moved five answers, and none of the five is a function that started running: all five were already running and refusing.
+Four now answer what the reference answers, byte for byte, which took the identical count from sixteen to twenty: `cloudflare-turnstile`, `get-tshirt-competition`, `sentry` and `elevenlabs-speech-to-text`.
+The fifth, `custom-jwt-validation`, gets past the client it could not build and reaches `AbortSignal.timeout`, which zou does not have, so it answers 401 with a `TypeError` where the reference answers 401 with a `JOSENotSupported`.
+That is a runtime gap the corpus could not see until the environment stopped hiding it.
 
 ## Reading the difference
 
