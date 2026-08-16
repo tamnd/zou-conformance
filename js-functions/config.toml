@@ -1,7 +1,15 @@
-# The one thing this project says about its functions.
+# The two things this project says about its functions.
 #
 # Everything else is the layout: a directory per function under
 # functions/, an index.ts in each, _shared beside them. verify_jwt is on
-# unless a block turns it off, which is what this is here to prove.
+# unless a block turns it off, which is what the first block is here to
+# prove.
 [functions.open]
 verify_jwt = false
+
+# The second is a function that is not in the layout at all. There is no
+# functions/entry-elsewhere: the name comes from this block and the file
+# it starts at is two directories down, which is how the Supabase
+# examples project deploys its mcp server.
+[functions.entry-elsewhere]
+entrypoint = "./functions/nested/entry-elsewhere/index.ts"

@@ -9,7 +9,7 @@
 
 import { expect, test } from 'vitest'
 
-import { json, NAME } from './shared'
+import { invoke, json, NAME } from './shared'
 
 test(`${NAME} runs a Deno.serve handler`, async () => {
   const said = await json('entry-serve')
@@ -51,4 +51,24 @@ test(`${NAME} reaches the function with every method`, async () => {
     expect(said.sent).toBe(method)
     expect(said.body).toBe(method === 'GET' ? '' : 'a body')
   }
+})
+
+// A function the config file named rather than the listing, whose
+// entrypoint is two directories down and which imports the file next to
+// it. The Supabase examples project has one of these and the local
+// stack serves it, so a runtime that only reads the listing refuses a
+// function people already deploy.
+test(`${NAME} serves a function whose entrypoint is somewhere else`, async () => {
+  const said = await json('entry-elsewhere')
+  expect(said.said).toBe('an entrypoint somewhere else')
+  expect(said.pathname.endsWith('/entry-elsewhere')).toBe(true)
+})
+
+// And the directory it is under is not a function of its own, which is
+// the half that says this is the block adding a name rather than the
+// listing having learned to walk.
+test(`${NAME} does not serve the directory that entrypoint is under`, async () => {
+  const res = await invoke('nested')
+  expect(res.status).toBe(404)
+  expect((await res.text()).trim()).toBe('Function not found')
 })
