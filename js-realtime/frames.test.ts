@@ -115,9 +115,10 @@ async function until(what: string, ready: () => boolean): Promise<void> {
 /// whatever the server minted to tell one meta from another. Both
 /// become `<ref>`. Everything else is the server's answer and is
 /// compared as it arrived, every frame, every field and every value,
-/// with the order of the frames being part of it. The order of the keys
-/// inside one is not: json objects are compared as objects, the same
-/// way every client that reads them does.
+/// with the order of the frames being part of it as far as `golden`
+/// below says it is. The order of the keys inside one is not: json
+/// objects are compared as objects, the same way every client that
+/// reads them does.
 function normalise(raw: unknown[]): unknown[] {
   const frames: unknown[] = []
   for (const one of raw) {
@@ -193,6 +194,20 @@ function derefed(value: any): any {
 
 /// Check the recording, or write it, which is the whole of what the two
 /// tests below do with what they gathered.
+///
+/// The file is written in the order the frames came off the wire, and
+/// the check reads it as two streams rather than one. A reply carries
+/// the ref of the push it answers, and the replies are ordered against
+/// each other because the client sent those pushes one at a time and
+/// waited for each. Everything else is the server talking on its own,
+/// and those are ordered against each other because one server wrote
+/// them. A reply and an unprompted frame come off two different paths,
+/// and which of the two lands first is a race: the reply to `track` and
+/// the `presence_diff` that same track caused arrive in either order on
+/// a real `supabase start`, and a recording freezes whichever won that
+/// day. Comparing the two streams separately still compares every
+/// frame, every field and every value, and still compares the order of
+/// everything an order is a statement about.
 function golden(name: string, note: string[], seen: unknown[]) {
   const file = new URL(`./${name}`, import.meta.url)
   if (RECORDING) {
@@ -203,7 +218,15 @@ function golden(name: string, note: string[], seen: unknown[]) {
     console.warn(`recorded ${seen.length} frames into ${name}`)
     return
   }
-  expect(seen).toEqual(JSON.parse(readFileSync(file, 'utf8')).frames)
+  const recorded: unknown[] = JSON.parse(readFileSync(file, 'utf8')).frames
+  expect(seen.filter(answer)).toEqual(recorded.filter(answer))
+  expect(seen.filter((one) => !answer(one))).toEqual(recorded.filter((one) => !answer(one)))
+}
+
+/// A frame that answers a push this client sent, which is a text frame
+/// with the ref of that push on it.
+function answer(frame: any): boolean {
+  return frame.frame === 'text' && frame.ref !== null
 }
 
 describe('the frames', () => {
