@@ -85,8 +85,17 @@ zou set four variables and upstream sets more, and the two the library wants are
 
 Setting them moved five answers, and none of the five is a function that started running: all five were already running and refusing.
 Four now answer what the reference answers, byte for byte, which took the identical count from sixteen to twenty: `cloudflare-turnstile`, `get-tshirt-competition`, `sentry` and `elevenlabs-speech-to-text`.
-The fifth, `custom-jwt-validation`, gets past the client it could not build and reaches `AbortSignal.timeout`, which zou does not have, so it answers 401 with a `TypeError` where the reference answers 401 with a `JOSENotSupported`.
+The fifth, `custom-jwt-validation`, gets past the client it could not build and reaches `AbortSignal.timeout`, which zou did not have, so it answered 401 with a `TypeError` where the reference answers 401 with a `JOSENotSupported`.
 That is a runtime gap the corpus could not see until the environment stopped hiding it.
+
+## What the signal moved
+
+`AbortSignal.timeout`, `AbortSignal.any` and `AbortSignal.abort` are there now, and a signal handed to a `fetch` or to a `Request` ends the call.
+That moved one answer and no others: `custom-jwt-validation` asks for `structuredClone` instead, which is the next thing missing rather than the same thing missing, and it is still 401 with a message the reference does not send.
+The identical count is still twenty of forty.
+
+One thing worth reading the whole way is what a signal does to the connection, because the two servers differ and only the far end can tell.
+The same probe against a slow server that reports what it saw came back with a broken pipe from upstream and with an answer nobody read from zou: upstream tears the socket down and zou ends the waiting.
 
 ## Reading the difference
 

@@ -89,6 +89,46 @@ test(`${NAME} has the web surface a handler is written against`, async () => {
   expect(said.base64).toBe('aGVsbG8=')
 })
 
+// How a library bounds a call, which is one line of somebody else's
+// code deciding whether a function answers at all: `jose` fetches a
+// jwks with a timeout on it, and an sdk that retries puts a signal on
+// every attempt.
+//
+// The reasons are asserted as whole strings rather than as names,
+// because a library branching on the name is the common case and a
+// library matching the message is not rare enough to leave unmeasured.
+test(`${NAME} lets a function give up on a call`, async () => {
+  const said = await json('signal')
+  expect(said.statics).toEqual({ abort: 'function', timeout: 'function', any: 'function' })
+  expect(said.reasons).toEqual({
+    already: 'AbortError: The signal has been aborted',
+    reasoned: 'Error: no time for that',
+    either: 'Error: first',
+  })
+  expect(said.refused).toBe('TypeError')
+  expect(said.fetched).toEqual({
+    gave_up: 'AbortError: The signal has been aborted',
+    ran_out: 'TimeoutError: Signal timed out.',
+    already: 'AbortError: The signal has been aborted',
+    bounded: 'TimeoutError: Signal timed out.',
+    fine: 'answered',
+  })
+})
+
+// A signal handed to a `Request` is not the signal the request has: it
+// is a new one that follows it, which a function can tell by identity
+// and which survives a clone and a copy.
+test(`${NAME} gives a request its own signal that follows the one it was handed`, async () => {
+  const said = await json('signal')
+  expect(said.request.same).toBe(false)
+  expect(said.request.before).toEqual([null, null, null])
+  expect(said.request.after).toEqual([
+    'Error: the caller',
+    'Error: the caller',
+    'Error: the caller',
+  ])
+})
+
 test(`${NAME} sends a stream as it is made`, async () => {
   const res = await fetch(at('stream'), { headers: keyed() })
   expect(res.status).toBe(200)

@@ -26,18 +26,19 @@
     "way to ask upstream anything else about this project is to take the",
     "function out of it, which is what the reference copy has done.",
     "",
-    "Five of zou's answers moved on the day the key maps arrived. Four of",
-    "them are now the reference's answer byte for byte, and the fifth,",
-    "custom-jwt-validation, gets past the client it could not build before",
-    "and reaches a runtime api zou does not have."
+    "One of zou's answers moved on the day a signal could end a call.",
+    "custom-jwt-validation asked for AbortSignal.timeout and now asks for",
+    "structuredClone, which is the next thing missing rather than the same",
+    "thing missing. Nothing else in the corpus moved and the byte identical",
+    "count is still twenty of forty."
   ],
   "corpus": {
     "repository": "github.com/supabase/supabase",
     "path": "examples/edge-functions",
     "commit": "9be60cab63161100500bdae6dfd45501c5fd8b07"
   },
-  "measured_on": "2026-08-16",
-  "zou": "the functions-publishable-keys build, deno engine on, functions serve",
+  "measured_on": "2026-08-17",
+  "zou": "the abort-signal build, deno engine on, functions serve",
   "reference": "supabase start, edge-runtime 1.74.2, CLI 2.111.0",
   "totals": {
     "asked": 40,
@@ -126,7 +127,7 @@
       "verdict": "both",
       "zou": {
         "status": 401,
-        "body": "{\"msg\":\"TypeError: AbortSignal.timeout is not a function\"}",
+        "body": "{\"msg\":\"ReferenceError: structuredClone is not defined\"}",
         "ran": true
       },
       "reference": {
