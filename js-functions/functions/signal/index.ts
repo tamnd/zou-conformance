@@ -17,15 +17,27 @@ Deno.serve(async () => {
   const slow = `${url}/functions/v1/stream`;
   const headers = { Authorization: `Bearer ${key}`, apikey: key };
 
-  const call = async (signal: AbortSignal | undefined): Promise<string> => {
+  // The body is read as well as the headers, and that is not tidiness.
+  // Upstream hands the answer back when the headers arrive and zou
+  // collects the body first, so a question that stopped at the headers
+  // would be racing a stream that starts at once against a fifty
+  // millisecond clock, and would answer whichever won on the day.
+  // Reading the body makes both servers take the six hundred
+  // milliseconds the five chunks take, which is what the signal is
+  // being asked about.
+  const read = async (asked: Request | string, signal?: AbortSignal): Promise<string> => {
     try {
-      const res = await fetch(slow, { headers, signal });
+      const res = typeof asked === "string"
+        ? await fetch(asked, { headers, signal })
+        : await fetch(asked);
       await res.arrayBuffer();
       return "answered";
     } catch (e) {
       return `${(e as Error).name}: ${(e as Error).message}`;
     }
   };
+
+  const call = (signal: AbortSignal | undefined): Promise<string> => read(slow, signal);
 
   const statics = {
     abort: typeof AbortSignal.abort,
@@ -68,14 +80,7 @@ Deno.serve(async () => {
       gave_up: await call(cancelling.signal),
       ran_out: await call(AbortSignal.timeout(50)),
       already: await call(AbortSignal.abort()),
-      bounded: await (async () => {
-        try {
-          await fetch(new Request(slow, { headers, signal: AbortSignal.timeout(50) }));
-          return "answered";
-        } catch (e) {
-          return `${(e as Error).name}: ${(e as Error).message}`;
-        }
-      })(),
+      bounded: await read(new Request(slow, { headers, signal: AbortSignal.timeout(50) })),
       fine: await call(undefined),
     },
   });
