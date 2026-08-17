@@ -26,11 +26,14 @@
     "way to ask upstream anything else about this project is to take the",
     "function out of it, which is what the reference copy has done.",
     "",
-    "One of zou's answers moved on the day a signal could end a call.",
-    "custom-jwt-validation asked for AbortSignal.timeout and now asks for",
-    "structuredClone, which is the next thing missing rather than the same",
-    "thing missing. Nothing else in the corpus moved and the byte identical",
-    "count is still twenty of forty."
+    "One of zou's answers moved again, and it is the same function each",
+    "time. custom-jwt-validation asked for AbortSignal.timeout, then for",
+    "structuredClone, and now gets as far as upstream does: both servers",
+    "refuse the same jwks for the same reason. The bodies still differ by",
+    "the name of the error class, which is a letter here because esm.sh",
+    "serves jose minified and the class names its errors after itself.",
+    "Nothing else in the corpus moved and the byte identical count is",
+    "still twenty of forty."
   ],
   "corpus": {
     "repository": "github.com/supabase/supabase",
@@ -38,7 +41,7 @@
     "commit": "9be60cab63161100500bdae6dfd45501c5fd8b07"
   },
   "measured_on": "2026-08-17",
-  "zou": "the abort-signal build, deno engine on, functions serve",
+  "zou": "the structured-clone build, deno engine on, functions serve",
   "reference": "supabase start, edge-runtime 1.74.2, CLI 2.111.0",
   "totals": {
     "asked": 40,
@@ -127,8 +130,9 @@
       "verdict": "both",
       "zou": {
         "status": 401,
-        "body": "{\"msg\":\"ReferenceError: structuredClone is not defined\"}",
-        "ran": true
+        "body": "{\"msg\":\"I: Unsupported \\\"alg\\\" value for a JSON Web Key Set\"}",
+        "ran": true,
+        "note": "The same refusal as upstream, from the same library, with the error class named I because the registry serves it minified"
       },
       "reference": {
         "status": 401,

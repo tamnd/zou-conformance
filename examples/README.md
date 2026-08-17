@@ -50,7 +50,7 @@ A status that moved is either zou getting further or a library on the network ch
 
 ## What was measured
 
-40 functions asked, on 2026-08-16.
+40 functions asked, on 2026-08-17.
 zou ran 28 of them, the reference ran 34, and they agree on 25.
 Twenty of the forty answer the same status with the same bytes on both servers.
 
@@ -88,11 +88,15 @@ Four now answer what the reference answers, byte for byte, which took the identi
 The fifth, `custom-jwt-validation`, gets past the client it could not build and reaches `AbortSignal.timeout`, which zou did not have, so it answered 401 with a `TypeError` where the reference answers 401 with a `JOSENotSupported`.
 That is a runtime gap the corpus could not see until the environment stopped hiding it.
 
-## What the signal moved
+## What the signal and the copy moved
 
 `AbortSignal.timeout`, `AbortSignal.any` and `AbortSignal.abort` are there now, and a signal handed to a `fetch` or to a `Request` ends the call.
-That moved one answer and no others: `custom-jwt-validation` asks for `structuredClone` instead, which is the next thing missing rather than the same thing missing, and it is still 401 with a message the reference does not send.
-The identical count is still twenty of forty.
+`structuredClone` is there now too.
+Between them they moved one answer and no others, and it is the same answer twice: `custom-jwt-validation` asked for the signal, then asked for the copy, and now runs the whole way to the same refusal upstream reaches, out of the same library for the same reason.
+
+The two bodies still differ, by the name of the error class and nothing else.
+Upstream says `JOSENotSupported` and zou says `I`, because jose names an error after the class that threw it and esm.sh serves that class minified.
+That is the registry rather than the runtime, and it is the kind of difference that is worth writing down rather than counting as agreement: the identical count is still twenty of forty.
 
 One thing worth reading the whole way is what a signal does to the connection, because the two servers differ and only the far end can tell.
 The same probe against a slow server that reports what it saw came back with a broken pipe from upstream and with an answer nobody read from zou: upstream tears the socket down and zou ends the waiting.

@@ -129,6 +129,87 @@ test(`${NAME} gives a request its own signal that follows the one it was handed`
   ])
 })
 
+// A deep copy, which a library reaches for when a spread is not enough
+// and a trip through JSON would lose the shape. What is asked is the
+// shapes that survive, the graph, the sentence each refusal carries,
+// and the two things a copy loses on both servers.
+test(`${NAME} copies a value whole`, async () => {
+  const said = await json('clone')
+  expect(said.typeof).toBe('function')
+  expect(said.arity).toEqual([2, 'structuredClone'])
+  expect(said.carried).toEqual({
+    same: false,
+    nested: false,
+    deep: { d: 3 },
+    undefined_kept: true,
+    map: [true, { in: 1 }, 'two', 2],
+    set: [true, 2, true],
+    date: [true, 1700000000123],
+    re: [true, 'ab+c', 'gi'],
+    buf: [true, 3, 1],
+    u8: [true, '4,5,6'],
+    dv: [true, 9],
+    big: ['bigint', '12345678901234567890'],
+    odd: [true, true],
+  })
+  // The three JSON cannot do at all.
+  expect(said.graph).toEqual({ cycle: true, twice: true, fresh: true })
+})
+
+// What a copy refuses, and in whose words. A library catching one of
+// these branches on the name and prints the message, so both halves are
+// asked rather than only the throwing.
+test(`${NAME} refuses what cannot be copied by name`, async () => {
+  const said = await json('clone')
+  const sequence =
+    "TypeError: Failed to execute 'structuredClone': 'transfer' of " +
+    "'StructuredSerializeOptions' (Argument 2) can not be converted to sequence."
+  expect(said.refused).toEqual({
+    fn: 'DataCloneError: ()=>1 could not be cloned.',
+    sym: 'DataCloneError: Symbol(s) could not be cloned.',
+    weak: 'DataCloneError: #<WeakMap> could not be cloned.',
+    inside: 'DataCloneError: ()=>1 could not be cloned.',
+    none:
+      "TypeError: Failed to execute 'structuredClone': 1 argument required, but only 0 present",
+    dictionary:
+      "TypeError: Failed to execute 'structuredClone': Argument 2 can not be converted to a dictionary",
+    sequence,
+    // A string is iterable and is refused all the same.
+    string_sequence: sequence,
+    null_sequence: sequence,
+    not_object:
+      "TypeError: Failed to execute 'structuredClone': 'transfer' of " +
+      "'StructuredSerializeOptions' (Argument 2), index 0 is not an object",
+    second:
+      "TypeError: Failed to execute 'structuredClone': 'transfer' of " +
+      "'StructuredSerializeOptions' (Argument 2), index 1 is not an object",
+    // An ArrayBuffer is the only transferable thing on either server.
+    stream: 'DataCloneError: Value not transferable',
+    view: 'DataCloneError: Value not transferable',
+    // A getter that throws throws its own error rather than a copy's.
+    getter: 'RangeError: from the getter',
+  })
+})
+
+// The losses, which are the same losses on both. A platform object
+// keeps what it holds where a copy cannot see it, and a buffer named
+// for transfer is copied and left where it was rather than detached,
+// which is not what a browser does and is what both of these do.
+test(`${NAME} loses the same things in a copy`, async () => {
+  const said = await json('clone')
+  expect(said.lost).toEqual({
+    blob: [false, '{}', 'undefined'],
+    headers: [false, 0],
+    url: [false, 0],
+    file_own: [0, '{}'],
+    transfer: [4, 4, 1],
+    thing: [false, 'Object', 2, null],
+    getter: [7, 'undefined'],
+    error: ['TypeError', 'wrong', true, null],
+    sparse: [3, false, 'yes'],
+  })
+})
+
 test(`${NAME} sends a stream as it is made`, async () => {
   const res = await fetch(at('stream'), { headers: keyed() })
   expect(res.status).toBe(200)
