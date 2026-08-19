@@ -1,1 +1,7 @@
-[]
+[
+  {
+    "name": "a token signed with an algorithm this server does not use",
+    "why": "The stack the CLI brings up takes an HS512 token signed with the project secret and postgrest 16.1 refuses it, so this case can only match one of the two and it matches the version the suite is recorded from. A secret is a secret whatever the digest over it is, which is why the older build takes it, and refusing an algorithm nobody was asked for is the safer of the two answers. Only known against the live stack: the recording still holds zou to PGRST301 here.",
+    "against": "supabase start"
+  }
+]
