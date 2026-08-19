@@ -16,3 +16,8 @@ demo-realtime/app/node_modules/
 demo-realtime/app/.next/
 demo-realtime/test-results/
 demo-realtime/playwright-report/
+demo-functions/node_modules/
+demo-functions/app/node_modules/
+demo-functions/app/build/
+demo-functions/test-results/
+demo-functions/playwright-report/
