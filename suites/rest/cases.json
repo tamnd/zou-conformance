@@ -5,8 +5,14 @@
     "Every case that reads more than one row orders it, because a diff of two plans is not a diff of two answers.",
     "The writing cases only touch conformance.scratch, which nothing reads, so they cannot move a later answer.",
     "Nothing here sends no key at all: refusing that is the gateway in front of PostgREST rather than PostgREST, so a recording taken from PostgREST would be the wrong answer to keep.",
-    "The root of the REST surface is left out for the same reason it is not diffable: the OpenAPI document names the server it came from."
+    "The root of the REST surface is left out for the same reason it is not diffable: the OpenAPI document names the server it came from.",
+    "There is a 'user' here and no case sends the 'user' key. It is the person the four token cases are minted for: PostgREST reads the role out of a token and nothing else about who it names, so no row has to exist for one, and what the cases are about is the time claims rather than the person."
   ],
+  "user": {
+    "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+    "email": "person@zou.test",
+    "session_id": "a3f5c108-2b64-4e97-83d1-6c0a9e7b2d45"
+  },
   "cases": [
     {
       "name": "every row of a table",
@@ -490,6 +496,68 @@
       "feature": "rls",
       "path": "/rest/v1/secrets?order=id",
       "key": "service"
+    },
+    {
+      "name": "a token that does not start working for an hour",
+      "feature": "jwt.time",
+      "path": "/rest/v1/secrets?order=id",
+      "token": {"nbf": 3600},
+      "note": "the same table the rls cases read, so an answer says the token was taken and a refusal says it was not"
+    },
+    {
+      "name": "a token that started working a second ago",
+      "feature": "jwt.time",
+      "path": "/rest/v1/secrets?order=id",
+      "token": {"nbf": -1}
+    },
+    {
+      "name": "a token issued an hour from now",
+      "feature": "jwt.time",
+      "path": "/rest/v1/secrets?order=id",
+      "token": {"iat": 3600},
+      "note": "the one claim the two surfaces read differently: golang-jwt does not look at iat and jose does"
+    },
+    {
+      "name": "a token ten seconds past its exp",
+      "feature": "jwt.time",
+      "path": "/rest/v1/secrets?order=id",
+      "token": {"exp": -10},
+      "note": "jose is given a thirty second window here, so this one is inside it and is expected to be answered rather than refused. The window is the reason these four cannot be tokens written down: ten seconds ago is only ten seconds ago while the run is happening"
+    },
+    {
+      "name": "a token that ran out in 2023",
+      "feature": "jwt",
+      "path": "/rest/v1/secrets?order=id",
+      "headers": { "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMGEyYzdkNC05YjMxLTRlNTgtOGM3Ni0yYTVkMWUzZjRiNjAiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjE3MDAwMDM2MDAsImlhdCI6MTcwMDAwMDAwMH0.Q1wr-NO7ZtC2CInOGvQAUO4STQSTq7q2qlPAkRHaono" },
+      "note": "far enough outside the window that it can be written down, which is what the four above cannot do. The other side of the exp case: one inside the window is answered and this one is not"
+    },
+    {
+      "name": "a token signed with a different secret",
+      "feature": "jwt",
+      "path": "/rest/v1/secrets?order=id",
+      "headers": { "authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMGEyYzdkNC05YjMxLTRlNTgtOGM3Ni0yYTVkMWUzZjRiNjAiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjQxMDI0NDQ4MDB9.zKlrbu3cSUdj-cHJS4AnKzlamTYP-zHZ8VLYxP_308Y" },
+      "note": "a well formed token that says everything the right one says, refused only because the signature is not this server's"
+    },
+    {
+      "name": "a token signed with an algorithm this server does not use",
+      "feature": "jwt",
+      "path": "/rest/v1/secrets?order=id",
+      "headers": { "authorization": "Bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMGEyYzdkNC05YjMxLTRlNTgtOGM3Ni0yYTVkMWUzZjRiNjAiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJleHAiOjQxMDI0NDQ4MDB9.nmaO70k3O_ww65yeLRe_NAWQpNk6HQ_tUyM21eQcaTr8W8uZq0SgYsIsKihT2_8E_RdkEkUqbx_4eJsoJXMwHg" },
+      "note": "HS512 over the same secret. Refused for a different reason than the one above, and the two reasons read alike until both are in front of you"
+    },
+    {
+      "name": "a bearer that is not a token at all",
+      "feature": "jwt",
+      "path": "/rest/v1/secrets?order=id",
+      "headers": { "authorization": "Bearer not-a-token" },
+      "note": "the shape nothing can be read out of, which is a third answer again"
+    },
+    {
+      "name": "a bearer with the parts of a token and nothing in them",
+      "feature": "jwt",
+      "path": "/rest/v1/secrets?order=id",
+      "headers": { "authorization": "Bearer a.b.c" },
+      "note": "the other half of malformed: the one above is counted before anything is decoded and this one is the decode itself failing, and the two are told apart by the number of parts"
     },
     {
       "name": "a row written into a table nobody may write",

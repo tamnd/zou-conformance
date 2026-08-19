@@ -85,6 +85,30 @@
       "key": "anon",
       "headers": {"authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMGEyYzdkNC05YjMxLTRlNTgtOGM3Ni0yYTVkMWUzZjRiNjAiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJzZXNzaW9uX2lkIjoiYTNmNWMxMDgtMmI2NC00ZTk3LTgzZDEtNmMwYTllN2IyZDQ1IiwiaWF0IjoxNzAwMDAwMDAwLCJleHAiOjE3MDAwMDM2MDB9.RQEP0O8kZ6-Vh4vG9AZ3IWq8w0hpS7CvHNczLLOnMFo"}
     },
+    {
+      "name": "a token that does not start working for an hour",
+      "feature": "user",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "token": {"nbf": 3600},
+      "note": "the first of the three cases that cannot be a token written down, since an hour early is only an hour early relative to the run asking"
+    },
+    {
+      "name": "a token that started working a second ago",
+      "feature": "user",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "token": {"nbf": -1},
+      "note": "the other side of the same line, so that a server refusing every nbf it sees would fail here rather than pass both"
+    },
+    {
+      "name": "a token issued an hour from now",
+      "feature": "user",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "token": {"iat": 3600},
+      "note": "golang-jwt does not read iat, so this is a case about a claim the auth surface is expected to ignore and the rest surface is expected to refuse"
+    },
 
     {
       "name": "a password sign in",
