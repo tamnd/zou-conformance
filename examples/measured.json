@@ -60,7 +60,23 @@
     "and this reaches through a url, and then it initialises fourteen",
     "megabytes of ImageMagick and answers the same 401 upstream answers,",
     "byte for byte. Six names are left that upstream serves and this does",
-    "not, and five of the six are the registry rather than the runtime."
+    "not, and five of the six are the registry rather than the runtime.",
+    "",
+    "zou was asked again on 2026-08-19 after it learned to open a socket,",
+    "with the reference column left as it was. One name moved.",
+    "postgres-on-the-edge imports a postgres driver, which connects to the",
+    "engine on the port the project's own config names, authenticates,",
+    "runs a select and is told by postgres that the table is not there.",
+    "That is the same sentence upstream is told, byte for byte, and it is",
+    "the twenty fourth name the two servers answer identically. Five names",
+    "are left that upstream serves and this does not, and all five of them",
+    "are the registry rather than the runtime.",
+    "",
+    "One row was read twice before it was written down. oak-server came",
+    "back 546 on the first pass of that run, which is the host saying a",
+    "function spent more than the two seconds of cpu it is allowed, and it",
+    "was the first load of a module graph that large on a cold cache. Warm",
+    "it answers the 405 that is recorded here, three times out of three."
   ],
   "corpus": {
     "repository": "github.com/supabase/supabase",
@@ -68,13 +84,13 @@
     "commit": "9be60cab63161100500bdae6dfd45501c5fd8b07"
   },
   "measured_on": "2026-08-17",
-  "zou": "the package file build, deno engine on, functions serve",
+  "zou": "the socket build, deno engine on, functions serve",
   "reference": "supabase start, edge-runtime 1.74.2, CLI 2.111.0",
   "totals": {
     "asked": 40,
-    "zou_ran": 31,
+    "zou_ran": 32,
     "reference_ran": 34,
-    "both_ran": 28
+    "both_ran": 29
   },
   "functions": [
     {
@@ -407,12 +423,12 @@
     },
     {
       "name": "postgres-on-the-edge",
-      "verdict": "reference only",
+      "verdict": "both",
       "zou": {
         "status": 500,
-        "body": "{\"error\":\"Deno.connect is not a function\"}",
-        "ran": false,
-        "log": "TypeError: Deno.connect is not a function"
+        "body": "{\"error\":\"relation \\\"animals\\\" does not exist\"}",
+        "ran": true,
+        "note": "the driver opened a socket to the engine, authenticated and ran the query, and postgres answered that the table is not there"
       },
       "reference": {
         "status": 500,

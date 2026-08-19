@@ -19,7 +19,7 @@ Which of the two happened is read off the server log rather than off the status,
 
 That line is the whole measurement, so it is worth being blunt about what it does not say.
 A function that ran did not necessarily do anything useful.
-Nineteen of the thirty one zou ran stopped at a 401 in front of the handler, and six more got as far as a library saying it has no api key.
+Nineteen of the thirty two zou ran stopped at a 401 in front of the handler, and six more got as far as a library saying it has no api key.
 The claim being made is that the runtime got the code to its own first decision, and not that the example works.
 
 ## Running it
@@ -51,8 +51,8 @@ A status that moved is either zou getting further or a library on the network ch
 ## What was measured
 
 40 functions asked, the reference on 2026-08-17 and zou on 2026-08-19.
-zou ran 31 of them, the reference ran 34, and they agree on 28.
-Twenty three of the forty answer the same status with the same bytes on both servers.
+zou ran 32 of them, the reference ran 34, and they agree on 29.
+Twenty four of the forty answer the same status with the same bytes on both servers.
 
 Where the 40 comes from, since a number about a corpus is mostly a number about who was counted.
 There are 42 directories under `functions/` and 39 of them have an `index.ts`: `_shared`, `mcp` and `unit-testing` have no entrypoint of their own and are not functions.
@@ -128,14 +128,27 @@ Six names are left that upstream serves and this does not, and five of the six a
 One thing worth reading the whole way is what a signal does to the connection, because the two servers differ and only the far end can tell.
 The same probe against a slow server that reports what it saw came back with a broken pipe from upstream and with an answer nobody read from zou: upstream tears the socket down and zou ends the waiting.
 
+## What the socket moved
+
+`Deno.connect`, `Deno.connectTls` and `Deno.startTls` are there now, so a function can hold a tcp connection of its own rather than only speak http through `fetch`.
+That moved one name and it is the one that asked.
+
+`postgres-on-the-edge` imports a postgres driver off jsr, which reads `SUPABASE_DB_URL`, opens a socket to the engine on the port the project's config names, authenticates, runs a select and is told by postgres that the table is not there.
+The reference is told the same sentence, and the two bodies are the same bytes, which makes it the twenty fourth name the two servers answer identically.
+It is worth being precise about what that measures: the driver is a real client speaking the wire protocol to zou's own engine, so the row is as much about the database as it is about the runtime.
+
+Five names are left that upstream serves and this does not, and all five of them are the registry rather than the runtime.
+
+One row in that run was read twice before it was written down.
+`oak-server` came back 546 on the first pass, which is the host saying a function spent more than the two seconds of cpu it is allowed, and what it was spending it on was the first load of a module graph that size on a cold cache.
+Warm it answers the 405 that is recorded, three times out of three, so the recording keeps the 405 and this paragraph keeps the 546.
+
 ## Reading the difference
 
 The three zou answers ahead of the reference are all the same shape, which is that upstream's module graph is built ahead of time and refuses a graph it cannot complete: `kysely-postgres` on a bare specifier, `openai-image-generation` and `opengraph` on a `.d.ts` that is not there.
 zou loads a module when something asks for it, so a type only file nobody imports at runtime is never fetched.
 
-The six the reference runs and zou does not are six different things rather than one, which is why they are follow ups rather than a bug.
-One wants `Deno.connect`, and that one is the runtime.
-The other five are somebody else's: three are esm.sh answering 500 for `@vercel/og` and `@slack/web-api`, one is drizzle's browser build missing an export, and one is the mcp sdk failing inside the registry's build of itself.
+The five the reference runs and zou does not are none of them the runtime, and all five are somebody else's: three are esm.sh answering 500 for `@vercel/og` and `@slack/web-api`, one is drizzle's browser build missing an export, and one is the mcp sdk failing inside the registry's build of itself.
 
 There is one more thing in the file that is not in the file, and it belongs here because it cost the most to find.
 esm.sh serves different code for different `User-Agent` headers.
