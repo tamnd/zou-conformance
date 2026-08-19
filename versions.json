@@ -16,22 +16,22 @@
   ],
   "read_from": {
     "source": "github.com/supabase/cli, apps/cli-go/pkg/config/templates/Dockerfile",
-    "on": "2026-08-02"
+    "on": "2026-08-19"
   },
   "postgrest": {
-    "version": "14.15",
-    "image": "postgrest/postgrest:v14.15",
-    "binary": "https://github.com/PostgREST/postgrest/releases/download/v14.15/",
+    "version": "16.1",
+    "image": "postgrest/postgrest:v16.1",
+    "binary": "https://github.com/PostgREST/postgrest/releases/download/v16.1/",
     "covers": ["rest", "postgrest"]
   },
   "gotrue": {
-    "version": "2.194.0",
-    "image": "supabase/gotrue:v2.194.0",
+    "version": "2.195.0",
+    "image": "supabase/gotrue:v2.195.0",
     "covers": ["auth"]
   },
   "storage": {
-    "version": "1.67.20",
-    "image": "supabase/storage-api:v1.67.20",
+    "version": "1.69.11",
+    "image": "supabase/storage-api:v1.69.11",
     "covers": ["storage"],
     "note": [
       "No binary line, because there is no binary. storage-api is published as",
@@ -42,8 +42,8 @@
     ]
   },
   "edge_runtime": {
-    "version": "1.74.2",
-    "image": "supabase/edge-runtime:v1.74.2",
+    "version": "1.74.3",
+    "image": "supabase/edge-runtime:v1.74.3",
     "covers": ["js-functions"],
     "note": [
       "What runs a function in the local stack, and what the functions suite is",
@@ -66,12 +66,12 @@
     ]
   },
   "postgres_meta": {
-    "version": "0.96.6",
-    "image": "supabase/postgres-meta:v0.96.6",
+    "version": "0.98.0",
+    "image": "supabase/postgres-meta:v0.98.0",
     "covers": ["gen types"]
   },
   "supabase_js": {
-    "version": "2.111.0",
+    "version": "2.112.3",
     "package": "@supabase/supabase-js",
     "covers": ["js", "js-realtime"],
     "note": [
@@ -82,7 +82,7 @@
     ]
   },
   "storage_js": {
-    "version": "2.111.0",
+    "version": "2.112.3",
     "package": "@supabase/storage-js",
     "covers": ["js-storage"],
     "note": [
@@ -103,12 +103,12 @@
     ]
   },
   "supabase_cli": {
-    "version": "2.111.0",
+    "version": "2.115.0",
     "package": "supabase",
     "covers": ["the reference stack itself"]
   },
   "postgres": {
-    "supabase": "17.6.1.156",
+    "supabase": "17.6.1.159",
     "zou": "REL_18_4",
     "note": [
       "The one line where zou is deliberately ahead. supabase's local stack is",

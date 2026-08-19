@@ -1,6 +1,6 @@
 {
   "suite": "auth",
-  "recorded_from": "gotrue",
+  "recorded_from": "gotrue 2.195.0",
   "answers": [
     {
       "name": "the server says what it is",
@@ -11,9 +11,9 @@
       "body": {
         "description": "GoTrue is a user registration and authentication API",
         "name": "GoTrue",
-        "version": "v2.194.0"
+        "version": "v2.195.0"
       },
-      "raw": "{\"version\":\"v2.194.0\",\"name\":\"GoTrue\",\"description\":\"GoTrue is a user registration and authentication API\"}"
+      "raw": "{\"version\":\"v2.195.0\",\"name\":\"GoTrue\",\"description\":\"GoTrue is a user registration and authentication API\"}"
     },
     {
       "name": "what a sign in screen reads before it draws itself",

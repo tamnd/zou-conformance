@@ -2,7 +2,7 @@
   "suite": "auth",
   "note": [
     "The paths are the ones a Supabase project answers on. A bare GoTrue is asked with --reference-strip /auth/v1.",
-    "The reference is GoTrue 2.194.0 with mailer autoconfirm on, signup enabled, no external providers configured and no smtp, which is what 'supabase start' gives a project that has changed nothing.",
+    "The reference is GoTrue 2.195.0 with mailer autoconfirm on, signup enabled, no external providers configured and no smtp, which is what 'supabase start' gives a project that has changed nothing.",
     "It is also run with GOTRUE_RATE_LIMIT_EMAIL_SENT raised out of the way. A rate limit is a configured number and a clock, not a compatibility surface: recorded at the default of 30 an hour, the first case that asks for a mail would answer and the next would answer 429, and which was which would depend on how long the run before it took.",
     "Every case that changes a row says so, and the rows go back before it runs. The reading cases are written before the writing ones inside each feature for the same reason: a read after a write would be asked about whatever the write left.",
     "The values that cannot be the same twice are named in 'volatile' and compared as the shape they had. Everything else is compared byte for byte, and most of an auth answer is everything else.",

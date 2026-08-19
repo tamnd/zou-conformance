@@ -4,7 +4,7 @@ storage-js's own integration tests, pointed at something other than supabase.
 
 The second suite here of that kind, and for the same reason as the first. Everywhere else in this repository we ask the questions and a reference binary answers, and the answer becomes the expectation. These two are the other way round: upstream wrote the questions and the assertions, about a client they maintain, against the stack `supabase start` brings up. That is a written statement of what the client needs from a storage server, and it is worth running unchanged rather than paraphrasing into questions of our own.
 
-storage-js is not published on its own release cycle. It lives at `packages/core/storage-js` in [supabase-js](https://github.com/supabase/supabase-js) and goes out with it, which is why the version in `versions.json` is the same 2.111.0 the `js` suite pins.
+storage-js is not published on its own release cycle. It lives at `packages/core/storage-js` in [supabase-js](https://github.com/supabase/supabase-js) and goes out with it, which is why the version in `versions.json` is the same 2.112.3 the `js` suite pins.
 
 ## Running it
 

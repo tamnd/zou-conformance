@@ -81,7 +81,7 @@ cargo run -p zou-conformance -- record --suite postgrest \
   --suites /tmp/zou-conformance/suites \
   --url http://127.0.0.1:3998 \
   --dsn postgres://postgres@127.0.0.1:5433/pgrst_conf \
-  --strip-prefix /rest/v1 --name "postgrest 14.15"
+  --strip-prefix /rest/v1 --name "postgrest 16.1"
 ```
 
 The diff in `recorded.json` is the review. It is upstream's answer written down, and if it is surprising then the case found something.

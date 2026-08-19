@@ -1,6 +1,6 @@
 {
   "suite": "postgrest",
-  "recorded_from": "postgrest 14.15",
+  "recorded_from": "postgrest 16.1",
   "answers": [
     {
       "name": "query: should not confuse count column with pg_catalog.count aggregate",
@@ -13601,52 +13601,37 @@
         "content-type": "application/json; charset=utf-8"
       },
       "body": {
-        "code": "PGRST122",
-        "details": "Invalid preferences: timezone=Invalid/Timezone",
+        "code": "22023",
+        "details": null,
         "hint": null,
-        "message": "Invalid preferences given with handling=strict"
+        "message": "invalid value for parameter \"TimeZone\": \"Invalid/Timezone\""
       }
     },
     {
       "name": "prefer: should return with default timezone without handling or with handling=lenient",
-      "status": 200,
+      "status": 400,
       "headers": {
-        "content-range": "0-2/*",
         "content-type": "application/json; charset=utf-8"
       },
-      "body": [
-        {
-          "t": "2023-10-18T12:37:59.611+00:00"
-        },
-        {
-          "t": "2023-10-18T14:37:59.611+00:00"
-        },
-        {
-          "t": "2023-10-18T16:37:59.611+00:00"
-        }
-      ],
-      "raw": "[{\"t\":\"2023-10-18T12:37:59.611+00:00\"}, \n {\"t\":\"2023-10-18T14:37:59.611+00:00\"}, \n {\"t\":\"2023-10-18T16:37:59.611+00:00\"}]"
+      "body": {
+        "code": "22023",
+        "details": null,
+        "hint": null,
+        "message": "invalid value for parameter \"TimeZone\": \"Invalid/Timezone\""
+      }
     },
     {
       "name": "prefer: should return with default timezone without handling or with handling=lenient (2)",
-      "status": 200,
+      "status": 400,
       "headers": {
-        "content-range": "0-2/*",
-        "content-type": "application/json; charset=utf-8",
-        "preference-applied": "handling=lenient"
+        "content-type": "application/json; charset=utf-8"
       },
-      "body": [
-        {
-          "t": "2023-10-18T12:37:59.611+00:00"
-        },
-        {
-          "t": "2023-10-18T14:37:59.611+00:00"
-        },
-        {
-          "t": "2023-10-18T16:37:59.611+00:00"
-        }
-      ],
-      "raw": "[{\"t\":\"2023-10-18T12:37:59.611+00:00\"}, \n {\"t\":\"2023-10-18T14:37:59.611+00:00\"}, \n {\"t\":\"2023-10-18T16:37:59.611+00:00\"}]"
+      "body": {
+        "code": "22023",
+        "details": null,
+        "hint": null,
+        "message": "invalid value for parameter \"TimeZone\": \"Invalid/Timezone\""
+      }
     },
     {
       "name": "prefer: should fail if items deleted more than 10",
