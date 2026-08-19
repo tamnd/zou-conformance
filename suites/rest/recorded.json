@@ -1697,6 +1697,144 @@
       "raw": "[{\"id\":1,\"body\":\"the map is wrong\"}, \n {\"id\":2,\"body\":\"so is the other one\"}]"
     },
     {
+      "name": "a token that does not start working for an hour",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer error=\"invalid_token\", error_description=\"JWT not yet valid\""
+      },
+      "body": {
+        "code": "PGRST303",
+        "details": null,
+        "hint": null,
+        "message": "JWT not yet valid"
+      }
+    },
+    {
+      "name": "a token that started working a second ago",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-1/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "body": "the map is wrong",
+          "id": 1
+        },
+        {
+          "body": "so is the other one",
+          "id": 2
+        }
+      ],
+      "raw": "[{\"id\":1,\"body\":\"the map is wrong\"}, \n {\"id\":2,\"body\":\"so is the other one\"}]"
+    },
+    {
+      "name": "a token issued an hour from now",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer error=\"invalid_token\", error_description=\"JWT issued at future\""
+      },
+      "body": {
+        "code": "PGRST303",
+        "details": null,
+        "hint": null,
+        "message": "JWT issued at future"
+      }
+    },
+    {
+      "name": "a token ten seconds past its exp",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-1/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "body": "the map is wrong",
+          "id": 1
+        },
+        {
+          "body": "so is the other one",
+          "id": 2
+        }
+      ],
+      "raw": "[{\"id\":1,\"body\":\"the map is wrong\"}, \n {\"id\":2,\"body\":\"so is the other one\"}]"
+    },
+    {
+      "name": "a token that ran out in 2023",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer error=\"invalid_token\", error_description=\"JWT expired\""
+      },
+      "body": {
+        "code": "PGRST303",
+        "details": null,
+        "hint": null,
+        "message": "JWT expired"
+      }
+    },
+    {
+      "name": "a token signed with a different secret",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer error=\"invalid_token\", error_description=\"No suitable key or wrong key type\""
+      },
+      "body": {
+        "code": "PGRST301",
+        "details": "None of the keys was able to decode the JWT",
+        "hint": null,
+        "message": "No suitable key or wrong key type"
+      }
+    },
+    {
+      "name": "a token signed with an algorithm this server does not use",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer error=\"invalid_token\", error_description=\"No suitable key or wrong key type\""
+      },
+      "body": {
+        "code": "PGRST301",
+        "details": "No suitable key was found to decode the JWT",
+        "hint": null,
+        "message": "No suitable key or wrong key type"
+      }
+    },
+    {
+      "name": "a bearer that is not a token at all",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer error=\"invalid_token\", error_description=\"Expected 3 parts in JWT; got 1\""
+      },
+      "body": {
+        "code": "PGRST301",
+        "details": null,
+        "hint": null,
+        "message": "Expected 3 parts in JWT; got 1"
+      }
+    },
+    {
+      "name": "a bearer with the parts of a token and nothing in them",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer error=\"invalid_token\", error_description=\"JWT cryptographic operation failed\""
+      },
+      "body": {
+        "code": "PGRST301",
+        "details": null,
+        "hint": null,
+        "message": "JWT cryptographic operation failed"
+      }
+    },
+    {
       "name": "a row written into a table nobody may write",
       "status": 401,
       "headers": {
