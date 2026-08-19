@@ -10,5 +10,9 @@
   {
     "name": "listing accounts",
     "why": "zou fills the identity list in and upstream answers identities null here, because its ORM does not load the association on the listing query. A client reading identities off a listed account gets them from zou and has to fetch each account again from upstream, and nothing can be branching on a null that the single account fetch never returns."
+  },
+  {
+    "name": "the signing keys, which there are none of while the secret is symmetric",
+    "why": "zou publishes one EC key here and upstream publishes an empty set. A project on zou derives a P-256 key from its own jwt secret and signs its access tokens with it, the way a project created on Supabase today does, because a library that verifies a caller for itself reads this endpoint and matches on the key id in the token header. Upstream answers an empty set because a GoTrue configured with a symmetric secret and no signing keys file has nothing to publish, which is a local dev arrangement rather than what a hosted project looks like. Nothing that verifies against the secret is affected: tokens signed under the legacy format keep verifying against it."
   }
 ]
