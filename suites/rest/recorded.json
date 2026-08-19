@@ -1,6 +1,6 @@
 {
   "suite": "rest",
-  "recorded_from": "postgrest 14.15",
+  "recorded_from": "postgrest 16.1",
   "answers": [
     {
       "name": "every row of a table",

@@ -460,12 +460,12 @@
         "content-type": "application/json; charset=utf-8"
       },
       "body": {
-        "code": "NoSuchKey",
-        "error": "not_found",
-        "message": "Object not found",
+        "code": "NoSuchBucket",
+        "error": "Bucket not found",
+        "message": "Bucket not found",
         "statusCode": "404"
       },
-      "raw": "{\"statusCode\":\"404\",\"error\":\"not_found\",\"message\":\"Object not found\",\"code\":\"NoSuchKey\"}"
+      "raw": "{\"statusCode\":\"404\",\"error\":\"Bucket not found\",\"message\":\"Bucket not found\",\"code\":\"NoSuchBucket\"}"
     },
     {
       "name": "a private bucket with an anon key",
@@ -3894,19 +3894,19 @@
     },
     {
       "name": "the s3 endpoint asked with nothing at all",
-      "status": 400,
+      "status": 403,
       "headers": {
         "content-type": "application/xml; charset=utf-8"
       },
-      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>InvalidSignature</Code><Message>Unsupported authorization type</Message></Error>"
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>AccessDenied</Code><Message>Missing signature</Message></Error>"
     },
     {
       "name": "the s3 endpoint asked with a supabase key rather than a signature",
-      "status": 400,
+      "status": 403,
       "headers": {
         "content-type": "application/xml; charset=utf-8"
       },
-      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>InvalidSignature</Code><Message>Unsupported authorization type</Message></Error>"
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>AccessDenied</Code><Message>Missing signature</Message></Error>"
     },
     {
       "name": "a signature signed with a secret that is not the project's",
@@ -3926,11 +3926,11 @@
     },
     {
       "name": "an authorization header that is not a signature at all",
-      "status": 400,
+      "status": 403,
       "headers": {
         "content-type": "application/xml; charset=utf-8"
       },
-      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>InvalidSignature</Code><Message>Unsupported authorization type</Message></Error>"
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?><Error xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><Resource/><Code>AccessDenied</Code><Message>Missing signature</Message></Error>"
     },
     {
       "name": "a signature correctly computed for a day long past",
