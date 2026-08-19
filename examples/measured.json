@@ -43,7 +43,15 @@
     "connect-supabase loads, dispatches through oak and reaches its session",
     "store, which asks crypto.subtle for an AES-CBC key and is told there",
     "is only HMAC here, so it is still a name upstream serves and this does",
-    "not, for a smaller reason than before."
+    "not, for a smaller reason than before.",
+    "",
+    "zou was asked again on 2026-08-19 after crypto.subtle learned AES,",
+    "with the reference column left as it was. One name moved.",
+    "connect-supabase reaches its session store, which asks for an AES-CBC",
+    "key and now gets one, and the answer is upstream's own 405 with",
+    "upstream's own empty body. Seven names are left that upstream serves",
+    "and this does not, and five of the seven are the registry rather than",
+    "the runtime."
   ],
   "corpus": {
     "repository": "github.com/supabase/supabase",
@@ -51,13 +59,13 @@
     "commit": "9be60cab63161100500bdae6dfd45501c5fd8b07"
   },
   "measured_on": "2026-08-17",
-  "zou": "the parked-listener build, deno engine on, functions serve",
+  "zou": "the AES build, deno engine on, functions serve",
   "reference": "supabase start, edge-runtime 1.74.2, CLI 2.111.0",
   "totals": {
     "asked": 40,
-    "zou_ran": 29,
+    "zou_ran": 30,
     "reference_ran": 34,
-    "both_ran": 26
+    "both_ran": 27
   },
   "functions": [
     {
@@ -122,12 +130,11 @@
     },
     {
       "name": "connect-supabase",
-      "verdict": "reference only",
+      "verdict": "both",
       "zou": {
-        "status": 500,
-        "body": "Internal Server Error",
-        "ran": false,
-        "log": "TypeError: AES-CBC keys are not supported yet, only HMAC is"
+        "status": 405,
+        "body": "",
+        "ran": true
       },
       "reference": {
         "status": 405,
