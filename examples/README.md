@@ -19,7 +19,7 @@ Which of the two happened is read off the server log rather than off the status,
 
 That line is the whole measurement, so it is worth being blunt about what it does not say.
 A function that ran did not necessarily do anything useful.
-Seventeen of the twenty eight zou ran stopped at a 401 in front of the handler, and six more got as far as a library saying it has no api key.
+Eighteen of the twenty nine zou ran stopped at a 401 in front of the handler, and six more got as far as a library saying it has no api key.
 The claim being made is that the runtime got the code to its own first decision, and not that the example works.
 
 ## Running it
@@ -50,9 +50,9 @@ A status that moved is either zou getting further or a library on the network ch
 
 ## What was measured
 
-40 functions asked, on 2026-08-17.
-zou ran 28 of them, the reference ran 34, and they agree on 25.
-Twenty of the forty answer the same status with the same bytes on both servers.
+40 functions asked, the reference on 2026-08-17 and zou on 2026-08-19.
+zou ran 29 of them, the reference ran 34, and they agree on 26.
+Twenty one of the forty answer the same status with the same bytes on both servers.
 
 Where the 40 comes from, since a number about a corpus is mostly a number about who was counted.
 There are 42 directories under `functions/` and 39 of them have an `index.ts`: `_shared`, `mcp` and `unit-testing` have no entrypoint of their own and are not functions.
@@ -96,7 +96,19 @@ Between them they moved one answer and no others, and it is the same answer twic
 
 The two bodies still differ, by the name of the error class and nothing else.
 Upstream says `JOSENotSupported` and zou says `I`, because jose names an error after the class that threw it and esm.sh serves that class minified.
-That is the registry rather than the runtime, and it is the kind of difference that is worth writing down rather than counting as agreement: the identical count is still twenty of forty.
+That is the registry rather than the runtime, and it is the kind of difference that is worth writing down rather than counting as agreement: the identical count was still twenty of forty after it.
+
+## What the park moved
+
+zou was asked again on 2026-08-19 and the reference column was left alone, because nothing about the other server changed and it was not started for this.
+
+Two names moved and both are the same fix, which is that a module whose last line is `await app.listen({ port: 8000 })` now boots.
+That shape never finishes evaluating, because what it waits for is a request and the request is waiting for the module, and the host used to wait for the module and answer 500 when the wait ran out.
+The wait is an op now, the way an accept in real Deno is an op on a real socket, and the call arriving is what ends it.
+
+`oak-server` answers upstream's own 405 with upstream's own empty body, which makes it the twenty first name the two servers answer byte for byte.
+`connect-supabase` loads, dispatches through oak and gets as far as its session store, which asks `crypto.subtle` for an AES-CBC key and is told there is only HMAC here.
+That is still a name upstream serves and this does not, for a smaller reason than before, and it is a runtime gap rather than a deadlock.
 
 One thing worth reading the whole way is what a signal does to the connection, because the two servers differ and only the far end can tell.
 The same probe against a slow server that reports what it saw came back with a broken pipe from upstream and with an answer nobody read from zou: upstream tears the socket down and zou ends the waiting.
@@ -106,11 +118,11 @@ The same probe against a slow server that reports what it saw came back with a b
 The three zou answers ahead of the reference are all the same shape, which is that upstream's module graph is built ahead of time and refuses a graph it cannot complete: `kysely-postgres` on a bare specifier, `openai-image-generation` and `opengraph` on a `.d.ts` that is not there.
 zou loads a module when something asks for it, so a type only file nobody imports at runtime is never fetched.
 
-The nine the reference runs and zou does not are nine different things rather than one, which is why they are follow ups rather than a bug.
-Two are top level await that never settles because the thing it awaits is a server that is already listening.
-One wants `Deno.connect`, one wants `Deno.readFile` of an https url, one imports a module served with no content type, three are esm.sh answering 500 for `@vercel/og` and `@slack/web-api`, one is drizzle's browser build missing an export, and one is the mcp sdk failing inside the registry's build of itself.
+The eight the reference runs and zou does not are eight different things rather than one, which is why they are follow ups rather than a bug.
+One wants `Deno.connect`, one wants `Deno.readFile` of an https url, and one wants an AES-CBC key out of `crypto.subtle`.
+Three are esm.sh answering 500 for `@vercel/og` and `@slack/web-api`, one is drizzle's browser build missing an export, and one is the mcp sdk failing inside the registry's build of itself.
 
 There is one more thing in the file that is not in the file, and it belongs here because it cost the most to find.
 esm.sh serves different code for different `User-Agent` headers.
 Asking as Deno gets a build that expects node built ins, and asking as a browser gets one that does not.
-zou asks as a browser, deliberately, and the corpus is why: asking as Deno took it from 28 running to 21.
+zou asks as a browser, deliberately, and the corpus is why: on the build that was measured at the time, asking as Deno took it from 28 running to 21.

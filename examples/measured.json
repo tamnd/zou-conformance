@@ -33,7 +33,17 @@
     "the name of the error class, which is a letter here because esm.sh",
     "serves jose minified and the class names its errors after itself.",
     "Nothing else in the corpus moved and the byte identical count is",
-    "still twenty of forty."
+    "still twenty of forty.",
+    "",
+    "zou was asked again on 2026-08-19, with the reference column left as",
+    "it was: nothing about the other server changed and it was not started",
+    "for this. Two names moved and both are the same fix. oak-server ran,",
+    "and answers upstream's own 405 with upstream's own empty body, which",
+    "makes it the twenty first name the two servers answer byte for byte.",
+    "connect-supabase loads, dispatches through oak and reaches its session",
+    "store, which asks crypto.subtle for an AES-CBC key and is told there",
+    "is only HMAC here, so it is still a name upstream serves and this does",
+    "not, for a smaller reason than before."
   ],
   "corpus": {
     "repository": "github.com/supabase/supabase",
@@ -41,13 +51,13 @@
     "commit": "9be60cab63161100500bdae6dfd45501c5fd8b07"
   },
   "measured_on": "2026-08-17",
-  "zou": "the structured-clone build, deno engine on, functions serve",
+  "zou": "the parked-listener build, deno engine on, functions serve",
   "reference": "supabase start, edge-runtime 1.74.2, CLI 2.111.0",
   "totals": {
     "asked": 40,
-    "zou_ran": 28,
+    "zou_ran": 29,
     "reference_ran": 34,
-    "both_ran": 25
+    "both_ran": 26
   },
   "functions": [
     {
@@ -117,7 +127,7 @@
         "status": 500,
         "body": "Internal Server Error",
         "ran": false,
-        "log": "Top-level await promise never resolved"
+        "log": "TypeError: AES-CBC keys are not supported yet, only HMAC is"
       },
       "reference": {
         "status": 405,
@@ -309,12 +319,11 @@
     },
     {
       "name": "oak-server",
-      "verdict": "reference only",
+      "verdict": "both",
       "zou": {
-        "status": 500,
-        "body": "Internal Server Error",
-        "ran": false,
-        "log": "Top-level await promise never resolved"
+        "status": 405,
+        "body": "",
+        "ran": true
       },
       "reference": {
         "status": 405,
@@ -644,5 +653,6 @@
         "log": "failed to read file: open supabase/functions/wasm-modules/add-wasm/pkg/add_wasm.js: no such file or directory"
       }
     }
-  ]
+  ],
+  "zou_measured_on": "2026-08-19"
 }
