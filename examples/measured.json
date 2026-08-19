@@ -51,7 +51,16 @@
     "key and now gets one, and the answer is upstream's own 405 with",
     "upstream's own empty body. Seven names are left that upstream serves",
     "and this does not, and five of the seven are the registry rather than",
-    "the runtime."
+    "the runtime.",
+    "",
+    "zou was asked again on 2026-08-19 after it learned where a package",
+    "file is, with the reference column left as it was. One name moved.",
+    "image-manipulation reads the wasm blob that sits beside the module the",
+    "registry served, which upstream reaches through a directory on disk",
+    "and this reaches through a url, and then it initialises fourteen",
+    "megabytes of ImageMagick and answers the same 401 upstream answers,",
+    "byte for byte. Six names are left that upstream serves and this does",
+    "not, and five of the six are the registry rather than the runtime."
   ],
   "corpus": {
     "repository": "github.com/supabase/supabase",
@@ -59,13 +68,13 @@
     "commit": "9be60cab63161100500bdae6dfd45501c5fd8b07"
   },
   "measured_on": "2026-08-17",
-  "zou": "the AES build, deno engine on, functions serve",
+  "zou": "the package file build, deno engine on, functions serve",
   "reference": "supabase start, edge-runtime 1.74.2, CLI 2.111.0",
   "totals": {
     "asked": 40,
-    "zou_ran": 30,
+    "zou_ran": 31,
     "reference_ran": 34,
-    "both_ran": 27
+    "both_ran": 28
   },
   "functions": [
     {
@@ -281,12 +290,11 @@
     },
     {
       "name": "image-manipulation",
-      "verdict": "reference only",
+      "verdict": "both",
       "zou": {
-        "status": 500,
-        "body": "Internal Server Error",
-        "ran": false,
-        "log": "TypeError: a file may only be read through a file url, not https:"
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
       },
       "reference": {
         "status": 401,

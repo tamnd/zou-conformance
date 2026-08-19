@@ -19,7 +19,7 @@ Which of the two happened is read off the server log rather than off the status,
 
 That line is the whole measurement, so it is worth being blunt about what it does not say.
 A function that ran did not necessarily do anything useful.
-Eighteen of the thirty zou ran stopped at a 401 in front of the handler, and six more got as far as a library saying it has no api key.
+Nineteen of the thirty one zou ran stopped at a 401 in front of the handler, and six more got as far as a library saying it has no api key.
 The claim being made is that the runtime got the code to its own first decision, and not that the example works.
 
 ## Running it
@@ -51,8 +51,8 @@ A status that moved is either zou getting further or a library on the network ch
 ## What was measured
 
 40 functions asked, the reference on 2026-08-17 and zou on 2026-08-19.
-zou ran 30 of them, the reference ran 34, and they agree on 27.
-Twenty two of the forty answer the same status with the same bytes on both servers.
+zou ran 31 of them, the reference ran 34, and they agree on 28.
+Twenty three of the forty answer the same status with the same bytes on both servers.
 
 Where the 40 comes from, since a number about a corpus is mostly a number about who was counted.
 There are 42 directories under `functions/` and 39 of them have an `index.ts`: `_shared`, `mcp` and `unit-testing` have no entrypoint of their own and are not functions.
@@ -114,7 +114,16 @@ The wait is an op now, the way an accept in real Deno is an op on a real socket,
 `crypto.subtle` has AES now, in CBC and in GCM, at all three key lengths, with `generateKey` and `exportKey` for the keys and `importKey` reading raw as it did before.
 That moved one name and it is the one that asked: `connect-supabase` builds its cookie store and answers upstream's own 405 with upstream's own empty body, which makes it the twenty second name the two servers answer byte for byte.
 
-Seven names are left that upstream serves and this does not, and five of the seven are the registry rather than the runtime.
+## What the package file moved
+
+`import.meta.resolve` of a package answers with the module the registry served rather than with the range that was asked for, and `Deno.readFile` takes an http url and reads it through the cache the modules are already fetched into.
+Between them a package can read a file of its own, which upstream does by unpacking a tarball into a directory and this does by asking the registry for the file beside the module.
+
+That moved one name and it is the one that asked.
+`image-manipulation` reads fourteen megabytes of wasm out of `@imagemagick/magick-wasm`, initialises it, and answers the same 401 upstream answers with the same bytes, which makes it the twenty third name the two servers answer byte for byte.
+It needed one more thing on the way: emscripten reads its own heap with `new TextDecoder('utf-16le')`, and this had utf-8 and nothing else.
+
+Six names are left that upstream serves and this does not, and five of the six are the registry rather than the runtime.
 
 One thing worth reading the whole way is what a signal does to the connection, because the two servers differ and only the far end can tell.
 The same probe against a slow server that reports what it saw came back with a broken pipe from upstream and with an answer nobody read from zou: upstream tears the socket down and zou ends the waiting.
@@ -124,8 +133,8 @@ The same probe against a slow server that reports what it saw came back with a b
 The three zou answers ahead of the reference are all the same shape, which is that upstream's module graph is built ahead of time and refuses a graph it cannot complete: `kysely-postgres` on a bare specifier, `openai-image-generation` and `opengraph` on a `.d.ts` that is not there.
 zou loads a module when something asks for it, so a type only file nobody imports at runtime is never fetched.
 
-The seven the reference runs and zou does not are seven different things rather than one, which is why they are follow ups rather than a bug.
-One wants `Deno.connect` and one wants `Deno.readFile` of an https url, and those two are the runtime.
+The six the reference runs and zou does not are six different things rather than one, which is why they are follow ups rather than a bug.
+One wants `Deno.connect`, and that one is the runtime.
 The other five are somebody else's: three are esm.sh answering 500 for `@vercel/og` and `@slack/web-api`, one is drizzle's browser build missing an export, and one is the mcp sdk failing inside the registry's build of itself.
 
 There is one more thing in the file that is not in the file, and it belongs here because it cost the most to find.
