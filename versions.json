@@ -41,6 +41,23 @@
       "diffed against a live reference the way the other three are."
     ]
   },
+  "realtime": {
+    "version": "2.129.0",
+    "image": "supabase/realtime:v2.129.0",
+    "covers": ["js-realtime", "js-realtime-private", "js-realtime-changes"],
+    "note": [
+      "The reference leg of the three realtime suites. Nothing is recorded",
+      "from it in the way the auth and rest suites are recorded, but it is",
+      "asked: the questions in those suites are ours, and what makes them a",
+      "statement about Supabase rather than about zou is that this server",
+      "answers them the same way. js-realtime-changes carries a frames.json",
+      "besides, which is a recording of this server's frames and is checked",
+      "against it in the same run.",
+      "",
+      "It had no line here until the suites were re-pinned and somebody",
+      "noticed the reference was moving on its own."
+    ]
+  },
   "edge_runtime": {
     "version": "1.74.3",
     "image": "supabase/edge-runtime:v1.74.3",
