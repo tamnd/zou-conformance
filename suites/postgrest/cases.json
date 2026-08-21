@@ -17,7 +17,13 @@
     "16 more are left out on purpose: they ask for count=planned or",
     "count=estimated, and the answer to those is the planner's row estimate,",
     "which moves with the page count of the table and so is not a function",
-    "of the request. A recording of a guess is not something to compare."
+    "of the request. A recording of a guess is not something to compare.",
+    "",
+    "The aggregate cases need db-aggregates-enabled on the reference, which is",
+    "the one setting here that is not upstream's test default. zou has no such",
+    "switch and cannot be configured to refuse an aggregate, so a reference with",
+    "the flag off would be answering a different question. The four cases that",
+    "ask what the refusal looks like are not here for the same reason: see #555."
   ],
   "schemas": [
     "test"
@@ -1108,7 +1114,7 @@
       "name": "query: requesting data using many<->many relation defined by composite keys",
       "feature": "query",
       "method": "GET",
-      "path": "/rest/v1/users_tasks?user_id=eq.1&task_id=eq.1&select=user_id,files(filename,content)",
+      "path": "/rest/v1/users_tasks?user_id=eq.1&task_id=eq.1&select=user_id,files(filename,content)&files.order=filename",
       "key": "anon",
       "headers": {}
     },
@@ -1116,7 +1122,7 @@
       "name": "query: requesting data using many<->many (composite keys) relation using hint",
       "feature": "query",
       "method": "GET",
-      "path": "/rest/v1/users_tasks?user_id=eq.1&task_id=eq.1&select=user_id,files!touched_files(filename,content)",
+      "path": "/rest/v1/users_tasks?user_id=eq.1&task_id=eq.1&select=user_id,files!touched_files(filename,content)&files.order=filename",
       "key": "anon",
       "headers": {}
     },
@@ -1700,7 +1706,7 @@
       "name": "query: ordering embeded entities with alias",
       "feature": "query",
       "method": "GET",
-      "path": "/rest/v1/projects?id=eq.1&select=id, name, the_tasks:tasks(id, name)&tasks.order=name.asc",
+      "path": "/rest/v1/projects?id=eq.1&select=id, name, the_tasks:tasks(id, name)&the_tasks.order=name.asc",
       "key": "anon",
       "headers": {}
     },
@@ -1725,6 +1731,14 @@
       "feature": "query",
       "method": "GET",
       "path": "/rest/v1/items?order=id.asc.nullslasttt",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "query: filters, orders and limits aliased embeded entities using the target name",
+      "feature": "query",
+      "method": "GET",
+      "path": "/rest/v1/projects?id=eq.1&select=id, name, the_tasks:tasks(id, name)&tasks.name=like.Code*&tasks.order=name.asc&tasks.limit=1",
       "key": "anon",
       "headers": {}
     },
@@ -1772,7 +1786,7 @@
       "name": "query: should respond with CSV to 'text/csv' request",
       "feature": "query",
       "method": "GET",
-      "path": "/rest/v1/simple_pk",
+      "path": "/rest/v1/simple_pk?order=k.desc",
       "key": "anon",
       "headers": {
         "Accept": "text/csv; version=1"
@@ -2342,7 +2356,7 @@
       "name": "query: formats through join",
       "feature": "query",
       "method": "GET",
-      "path": "/rest/v1/datarep_next_two_todos?select=id,name,first_item:datarep_todos!datarep_next_two_todos_first_item_id_fkey(label_color,due_at)",
+      "path": "/rest/v1/datarep_next_two_todos?select=id,name,first_item:datarep_todos!datarep_next_two_todos_first_item_id_fkey(label_color,due_at)&order=id",
       "key": "anon",
       "headers": {}
     },
@@ -2350,7 +2364,7 @@
       "name": "query: formats through join with star select",
       "feature": "query",
       "method": "GET",
-      "path": "/rest/v1/datarep_next_two_todos?select=id,name,second_item:datarep_todos!datarep_next_two_todos_second_item_id_fkey(*)",
+      "path": "/rest/v1/datarep_next_two_todos?select=id,name,second_item:datarep_todos!datarep_next_two_todos_second_item_id_fkey(*)&order=id",
       "key": "anon",
       "headers": {}
     },
@@ -2390,7 +2404,7 @@
       "name": "query: uses text parser on value for filter across relations",
       "feature": "query",
       "method": "GET",
-      "path": "/rest/v1/datarep_next_two_todos?select=id,name,datarep_todos!datarep_next_two_todos_first_item_id_fkey(label_color,due_at)&datarep_todos.label_color=neq.000100",
+      "path": "/rest/v1/datarep_next_two_todos?select=id,name,datarep_todos!datarep_next_two_todos_first_item_id_fkey(label_color,due_at)&datarep_todos.label_color=neq.000100&order=id",
       "key": "anon",
       "headers": {}
     },
@@ -3035,6 +3049,430 @@
       "headers": {}
     },
     {
+      "name": "media: will fail if there's no aggregate defined for the table",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/lines",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/plain"
+      }
+    },
+    {
+      "name": "media: can get raw xml output with Accept: text/xml if there's an aggregate defined",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/xmltest",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/xml"
+      }
+    },
+    {
+      "name": "media: will use the application/vnd.geo2+json media type for any table",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/lines",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/vnd.geo2+json"
+      }
+    },
+    {
+      "name": "media: will use the more specific application/vnd.geo2 handler for this table",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/shop_bles",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/vnd.geo2+json"
+      }
+    },
+    {
+      "name": "media: will use the more specific application/vnd.geo2 handler for this table (2)",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/get_shop_bles",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/vnd.geo2+json"
+      }
+    },
+    {
+      "name": "media: can get raw output with Accept: text/html",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/welcome.html",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/html"
+      }
+    },
+    {
+      "name": "media: can get raw output with Accept: text/plain",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/welcome",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/plain"
+      }
+    },
+    {
+      "name": "media: can get raw xml output with Accept: text/xml",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/return_scalar_xml",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/xml"
+      }
+    },
+    {
+      "name": "media: can get raw xml output with Accept: text/xml (2)",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/welcome.xml",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/xml"
+      }
+    },
+    {
+      "name": "media: should fail with function returning text and Accept: text/xml",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/welcome",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/xml"
+      }
+    },
+    {
+      "name": "media: should not fail when the function doesn't return a row",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/get_line?id=777",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/vnd.twkb"
+      }
+    },
+    {
+      "name": "media: will err because only scalars work with media type domains",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/welcome_twice",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/plain"
+      }
+    },
+    {
+      "name": "media: fails if doesn't have an aggregate defined",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/get_lines",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/octet-stream"
+      }
+    },
+    {
+      "name": "media: works if there's an anyelement aggregate defined",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/get_lines",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/vnd.geo2+json"
+      }
+    },
+    {
+      "name": "media: will override the application/json handler for a single table",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/ov_json",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/json"
+      }
+    },
+    {
+      "name": "media: will override the application/geo+json handler for a single table",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/lines?id=eq.1",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/geo+json"
+      }
+    },
+    {
+      "name": "media: will not override vendored media types like application/vnd.pgrst.object",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/projects?id=eq.1",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/vnd.pgrst.object"
+      }
+    },
+    {
+      "name": "media: will match a custom text/tab-separated-values",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/projects?id=in.(1,2)",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/tab-separated-values"
+      }
+    },
+    {
+      "name": "media: without select",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/projects?id=in.(1,2)",
+      "key": "anon",
+      "headers": {
+        "Accept": "pg/outfunc"
+      }
+    },
+    {
+      "name": "media: with fewer columns selected",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/projects?id=in.(1,2)&select=id,name",
+      "key": "anon",
+      "headers": {
+        "Accept": "pg/outfunc"
+      }
+    },
+    {
+      "name": "media: with columns in different order",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/projects?id=in.(1,2)&select=name,id,client_id",
+      "key": "anon",
+      "headers": {
+        "Accept": "pg/outfunc"
+      }
+    },
+    {
+      "name": "media: with computed columns",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/items?id=in.(1,2)&select=id,always_true",
+      "key": "anon",
+      "headers": {
+        "Accept": "pg/outfunc"
+      }
+    },
+    {
+      "name": "media: with embedding",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/projects?id=in.(1,2)&select=*,clients(id)",
+      "key": "anon",
+      "headers": {
+        "Accept": "pg/outfunc"
+      }
+    },
+    {
+      "name": "media: will fail for specific aggregate with fewer columns",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/lines?select=id",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/vnd.twkb"
+      }
+    },
+    {
+      "name": "media: will fail for specific aggregate with more columns",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/lines?select=id,name,geom,id",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/vnd.twkb"
+      }
+    },
+    {
+      "name": "media: will fail for specific aggregate with columns in different order",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/lines?select=name,id,geom",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/vnd.twkb"
+      }
+    },
+    {
+      "name": "media: will fail for specific aggregate with columns in same order",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/lines?select=id,name,geom",
+      "key": "anon",
+      "headers": {
+        "Accept": "application/vnd.twkb"
+      }
+    },
+    {
+      "name": "media: returns application/json for */* if not explicitly set",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/ret_any_mt",
+      "key": "anon",
+      "headers": {
+        "Accept": "*/*"
+      }
+    },
+    {
+      "name": "media: accepts any media type and sets the generic octet-stream as content type",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/ret_any_mt",
+      "key": "anon",
+      "headers": {
+        "Accept": "app/bingo"
+      }
+    },
+    {
+      "name": "media: accepts any media type and sets the generic octet-stream as content type (2)",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/ret_any_mt",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/bango"
+      }
+    },
+    {
+      "name": "media: accepts any media type and sets the generic octet-stream as content type (3)",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/ret_any_mt",
+      "key": "anon",
+      "headers": {
+        "Accept": "image/boingo"
+      }
+    },
+    {
+      "name": "media: returns custom media type for */* if explicitly set",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/ret_some_mt",
+      "key": "anon",
+      "headers": {
+        "Accept": "*/*"
+      }
+    },
+    {
+      "name": "media: accepts some media types if there's conditional logic",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/ret_some_mt",
+      "key": "anon",
+      "headers": {
+        "Accept": "app/chico"
+      }
+    },
+    {
+      "name": "media: accepts some media types if there's conditional logic (2)",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/ret_some_mt",
+      "key": "anon",
+      "headers": {
+        "Accept": "app/harpo"
+      }
+    },
+    {
+      "name": "media: accepts some media types if there's conditional logic (3)",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/rpc/ret_some_mt",
+      "key": "anon",
+      "headers": {
+        "Accept": "text/csv"
+      }
+    },
+    {
+      "name": "media: returns application/json for */* if not explicitly set (2)",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/some_numbers?val=eq.1",
+      "key": "anon",
+      "headers": {
+        "Accept": "*/*"
+      }
+    },
+    {
+      "name": "media: accepts any media type and sets it as a header",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/some_numbers?val=eq.2",
+      "key": "anon",
+      "headers": {
+        "Accept": "magic/number"
+      }
+    },
+    {
+      "name": "media: accepts any media type and sets it as a header (2)",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/some_numbers?val=eq.3",
+      "key": "anon",
+      "headers": {
+        "Accept": "crazy/bingo"
+      }
+    },
+    {
+      "name": "media: accepts any media type and sets it as a header (3)",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/some_numbers?val=eq.4",
+      "key": "anon",
+      "headers": {
+        "Accept": "unknown/unknown"
+      }
+    },
+    {
+      "name": "media: sends media type as is",
+      "feature": "media",
+      "method": "GET",
+      "path": "/rest/v1/items",
+      "key": "anon",
+      "headers": {
+        "Accept": "undefined"
+      }
+    },
+    {
+      "name": "media: regression test allowing charset=utf-8",
+      "feature": "media",
+      "method": "POST",
+      "path": "/rest/v1/rpc/overloaded_default",
+      "key": "anon",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8"
+      },
+      "body": "{\"must_param\":1}",
+      "writes": true
+    },
+    {
+      "name": "media: handle unrecognized parameters leniently",
+      "feature": "media",
+      "method": "POST",
+      "path": "/rest/v1/rpc/overloaded_default",
+      "key": "anon",
+      "headers": {
+        "Content-Type": "application/json; $$ unrecognized-chars=ignored $$"
+      },
+      "body": "{\"must_param\":1}",
+      "writes": true
+    },
+    {
       "name": "computed: can define a many-to-one relationship with SETOF and ROWS 1 and embed",
       "feature": "computed",
       "method": "GET",
@@ -3644,7 +4082,7 @@
       "name": "embed: can specify a view!fk",
       "feature": "embed",
       "method": "GET",
-      "path": "/rest/v1/message?select=id,body,sender:person_detail!message_sender_fkey(name,sent),recipient:person_detail!message_recipient_fkey(name,received)&id=lt.4",
+      "path": "/rest/v1/message?select=id,body,sender:person_detail!message_sender_fkey(name,sent),recipient:person_detail!message_recipient_fkey(name,received)&id=lt.4&order=id",
       "key": "anon",
       "headers": {}
     },
@@ -3780,7 +4218,7 @@
       "name": "embed: embeds parents recursively",
       "feature": "embed",
       "method": "GET",
-      "path": "/rest/v1/family_tree?id=in.(3,4)&select=id,parent(id,name,parent(*))",
+      "path": "/rest/v1/family_tree?id=in.(3,4)&select=id,parent(id,name,parent(*))&order=id",
       "key": "anon",
       "headers": {}
     },
@@ -3804,7 +4242,7 @@
       "name": "embed: embeds parent and then embeds children on a view",
       "feature": "embed",
       "method": "GET",
-      "path": "/rest/v1/job?select=id,parent_id(*),children:job!parent_id(id,parent_id)",
+      "path": "/rest/v1/job?select=id,parent_id(*),children:job!parent_id(id,parent_id)&order=id",
       "key": "anon",
       "headers": {}
     },
@@ -3900,7 +4338,7 @@
       "name": "embed: works with self reference both ways(m2o and o2m)",
       "feature": "embed",
       "method": "GET",
-      "path": "/rest/v1/test?select=id,parent_id,parent:parent_id(id)",
+      "path": "/rest/v1/test?select=id,parent_id,parent:parent_id(id)&order=id",
       "key": "anon",
       "headers": {}
     },
@@ -3908,7 +4346,7 @@
       "name": "embed: works with self reference both ways(m2o and o2m) (2)",
       "feature": "embed",
       "method": "GET",
-      "path": "/rest/v1/test?select=id,parent_id,childs:test(id)",
+      "path": "/rest/v1/test?select=id,parent_id,childs:test(id)&order=id",
       "key": "anon",
       "headers": {}
     },
@@ -4042,7 +4480,7 @@
       "name": "embed: only affects the source table rows if his direct embedding is an inner join",
       "feature": "embed",
       "method": "GET",
-      "path": "/rest/v1/tasks?select=id,projects(id,clients!inner(id))&projects.clients.id=eq.2",
+      "path": "/rest/v1/tasks?select=id,projects(id,clients!inner(id))&projects.clients.id=eq.2&order=id",
       "key": "anon",
       "headers": {}
     },
@@ -6100,56 +6538,6 @@
       "writes": true
     },
     {
-      "name": "prefer: should change timezone with handling=strict",
-      "feature": "prefer",
-      "method": "GET",
-      "path": "/rest/v1/timestamps",
-      "key": "anon",
-      "headers": {
-        "Prefer": "handling=strict, timezone=America/Los_Angeles"
-      }
-    },
-    {
-      "name": "prefer: should change timezone without handling=strict",
-      "feature": "prefer",
-      "method": "GET",
-      "path": "/rest/v1/timestamps",
-      "key": "anon",
-      "headers": {
-        "Prefer": "timezone=America/Los_Angeles"
-      }
-    },
-    {
-      "name": "prefer: should throw error with handling=strict",
-      "feature": "prefer",
-      "method": "GET",
-      "path": "/rest/v1/timestamps",
-      "key": "anon",
-      "headers": {
-        "Prefer": "handling=strict, timezone=Invalid/Timezone"
-      }
-    },
-    {
-      "name": "prefer: should return with default timezone without handling or with handling=lenient",
-      "feature": "prefer",
-      "method": "GET",
-      "path": "/rest/v1/timestamps",
-      "key": "anon",
-      "headers": {
-        "Prefer": "timezone=Invalid/Timezone"
-      }
-    },
-    {
-      "name": "prefer: should return with default timezone without handling or with handling=lenient (2)",
-      "feature": "prefer",
-      "method": "GET",
-      "path": "/rest/v1/timestamps",
-      "key": "anon",
-      "headers": {
-        "Prefer": "handling=lenient, timezone=Invalid/Timezone"
-      }
-    },
-    {
       "name": "prefer: should fail if items deleted more than 10",
       "feature": "prefer",
       "method": "DELETE",
@@ -6304,6 +6692,86 @@
       },
       "body": "",
       "writes": true
+    },
+    {
+      "name": "prefer: should change timezone with handling=strict",
+      "feature": "prefer",
+      "method": "GET",
+      "path": "/rest/v1/timestamps",
+      "key": "anon",
+      "headers": {
+        "Prefer": "handling=strict, timezone=America/Los_Angeles"
+      }
+    },
+    {
+      "name": "prefer: should change timezone without handling=strict",
+      "feature": "prefer",
+      "method": "GET",
+      "path": "/rest/v1/timestamps",
+      "key": "anon",
+      "headers": {
+        "Prefer": "timezone=America/Los_Angeles"
+      }
+    },
+    {
+      "name": "prefer: should throw error without handling",
+      "feature": "prefer",
+      "method": "GET",
+      "path": "/rest/v1/timestamps",
+      "key": "anon",
+      "headers": {
+        "Prefer": "timezone=Invalid/Timezone"
+      }
+    },
+    {
+      "name": "prefer: should throw error with handling=strict",
+      "feature": "prefer",
+      "method": "GET",
+      "path": "/rest/v1/timestamps",
+      "key": "anon",
+      "headers": {
+        "Prefer": "handling=strict, timezone=Invalid/Timezone"
+      }
+    },
+    {
+      "name": "prefer: should throw error with handling=lenient",
+      "feature": "prefer",
+      "method": "GET",
+      "path": "/rest/v1/timestamps",
+      "key": "anon",
+      "headers": {
+        "Prefer": "handling=lenient, timezone=Invalid/Timezone"
+      }
+    },
+    {
+      "name": "prefer: should change with positive offset",
+      "feature": "prefer",
+      "method": "GET",
+      "path": "/rest/v1/timestamps",
+      "key": "anon",
+      "headers": {
+        "Prefer": "timezone=+05:30"
+      }
+    },
+    {
+      "name": "prefer: should change with negative offset",
+      "feature": "prefer",
+      "method": "GET",
+      "path": "/rest/v1/timestamps",
+      "key": "anon",
+      "headers": {
+        "Prefer": "timezone=-4"
+      }
+    },
+    {
+      "name": "prefer: fails on leap seconds",
+      "feature": "prefer",
+      "method": "GET",
+      "path": "/rest/v1/timestamps",
+      "key": "anon",
+      "headers": {
+        "Prefer": "timezone=05:30:15"
+      }
     },
     {
       "name": "range: returns whole range with status 200",
@@ -9173,7 +9641,7 @@
       "name": "spread: should select spread columns from a nested one-to-one relationship",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,...process_costs(process_costs:cost))&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,...process_costs(process_costs:cost))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9181,7 +9649,7 @@
       "name": "spread: should select spread columns from a nested many-to-one relationship",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,...process_categories(categories:name))&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,...process_categories(categories:name))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9189,7 +9657,7 @@
       "name": "spread: should select spread columns from a nested one-to-many relationship",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,...process_supervisor(supervisor_ids:supervisor_id))&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,...process_supervisor(supervisor_ids:supervisor_id))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9197,7 +9665,7 @@
       "name": "spread: should select spread columns from a nested many-to-many relationship",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,...supervisors(supervisors:name))&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,...supervisors(supervisors:name))&order=name&processes.order=name&processes.supervisors.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9205,7 +9673,7 @@
       "name": "spread: should show a nested non-spread one-to-one relationship as an array of objects",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,process_costs(cost))&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,process_costs(cost))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9213,7 +9681,7 @@
       "name": "spread: should show a nested non-spread many-to-one relationship as an array of objects",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,process_categories(name))&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,process_categories(name))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9221,7 +9689,7 @@
       "name": "spread: should show a nested non-spread one-to-many relationship as an array of arrays",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,process_supervisor(supervisor_id))&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,process_supervisor(supervisor_id))&order=name&processes.order=name&processes.process_supervisor.order=supervisor_id",
       "key": "anon",
       "headers": {}
     },
@@ -9229,7 +9697,7 @@
       "name": "spread: should show a nested non-spread many-to-many relationship as an array of arrays",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,supervisors(name))&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(process:name,supervisors(name))&order=name&processes.order=name&processes.supervisors.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9237,7 +9705,7 @@
       "name": "spread: should work when selecting all columns in a nested to-one resource",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(*,...process_costs(*))&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(*,...process_costs(*))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9245,7 +9713,7 @@
       "name": "spread: works when column filters are specified",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(*)&processes.name=not.like.*1&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(*)&processes.name=not.like.*1&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9253,7 +9721,7 @@
       "name": "spread: works with inner joins or not.is.null filters",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes!inner(name)&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes!inner(name)&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9261,7 +9729,7 @@
       "name": "spread: works with inner joins or not.is.null filters (2)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/factories?select=factory:name,...processes(name)&processes=not.is.null&order=name",
+      "path": "/rest/v1/factories?select=factory:name,...processes(name)&processes=not.is.null&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9301,7 +9769,7 @@
       "name": "spread: should spread a column as a json array (3)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(name)&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(name)&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9309,7 +9777,7 @@
       "name": "spread: should spread a column as a json array (4)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(processes:name)&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(processes:name)&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9317,7 +9785,7 @@
       "name": "spread: should spread many columns as json arrays (3)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(name,category_id)&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(name,category_id)&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9325,7 +9793,7 @@
       "name": "spread: should spread many columns as json arrays (4)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(processes:name,categories:category_id)&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(processes:name,categories:category_id)&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9349,7 +9817,7 @@
       "name": "spread: should work when selecting all columns (2)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(*)&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(*)&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9357,7 +9825,7 @@
       "name": "spread: should show spread columns from a nested one-to-one relationship",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,...process_costs(process_costs:cost))&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,...process_costs(process_costs:cost))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9365,7 +9833,7 @@
       "name": "spread: should show spread columns from a nested many-to-one relationship",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,...process_categories(categories:name))&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,...process_categories(categories:name))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9373,7 +9841,7 @@
       "name": "spread: should show spread columns from a nested one-to-many relationship",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,...process_supervisor(supervisor_ids:supervisor_id))&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,...process_supervisor(supervisor_ids:supervisor_id))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9381,7 +9849,7 @@
       "name": "spread: should show spread columns from a nested many-to-many relationship",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,...supervisors(supervisors:name))&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,...supervisors(supervisors:name))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9389,7 +9857,7 @@
       "name": "spread: should show a nested non-spread one-to-one relationship as an array of objects (2)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,process_costs(cost))&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,process_costs(cost))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9397,7 +9865,7 @@
       "name": "spread: should show a nested non-spread many-to-one relationship as an array of objects (2)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,process_categories(name))&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,process_categories(name))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9405,7 +9873,7 @@
       "name": "spread: should show a nested non-spread one-to-many relationship as an array of arrays (2)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,process_supervisor(supervisor_id))&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,process_supervisor(supervisor_id))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9413,7 +9881,7 @@
       "name": "spread: should show a nested non-spread many-to-many relationship as an array of arrays (2)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,supervisors(name))&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(process:name,supervisors(name))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9421,7 +9889,7 @@
       "name": "spread: should work when selecting all columns in a nested to-one resource (2)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/operators?select=operator:name,...processes(*,...process_costs(*))&order=name",
+      "path": "/rest/v1/operators?select=operator:name,...processes(*,...process_costs(*))&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9429,7 +9897,7 @@
       "name": "spread: works when column filters are specified (2)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/supervisors?select=supervisor:name,...processes(*)&processes.name=not.like.*1&order=name",
+      "path": "/rest/v1/supervisors?select=supervisor:name,...processes(*)&processes.name=not.like.*1&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9437,7 +9905,7 @@
       "name": "spread: works with inner joins or not.is.null filters (3)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/supervisors?select=supervisor:name,...processes!inner(name)&order=name",
+      "path": "/rest/v1/supervisors?select=supervisor:name,...processes!inner(name)&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -9445,7 +9913,7 @@
       "name": "spread: works with inner joins or not.is.null filters (4)",
       "feature": "spread",
       "method": "GET",
-      "path": "/rest/v1/supervisors?select=supervisor:name,...processes(name)&processes=not.is.null&order=name",
+      "path": "/rest/v1/supervisors?select=supervisor:name,...processes(name)&processes=not.is.null&order=name&processes.order=name",
       "key": "anon",
       "headers": {}
     },
@@ -11028,6 +11496,70 @@
       "headers": {}
     },
     {
+      "name": "error: error on jwt encoded with wrong secret",
+      "feature": "error",
+      "method": "GET",
+      "path": "/rest/v1/authors_only",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "error: when role does not exist",
+      "feature": "error",
+      "method": "GET",
+      "path": "/rest/v1/authors_only",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "error: it should return error if expired",
+      "feature": "error",
+      "method": "GET",
+      "path": "/rest/v1/authors_only",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "error: it should return error if used before it is valid",
+      "feature": "error",
+      "method": "GET",
+      "path": "/rest/v1/authors_only",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "error: it should return error if issued at future",
+      "feature": "error",
+      "method": "GET",
+      "path": "/rest/v1/authors_only",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "error: when partial token is provided",
+      "feature": "error",
+      "method": "GET",
+      "path": "/rest/v1/authors_only",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "error: when token is complete but random characters",
+      "feature": "error",
+      "method": "GET",
+      "path": "/rest/v1/authors_only",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "error: when token with algorithm 'none' is used",
+      "feature": "error",
+      "method": "GET",
+      "path": "/rest/v1/authors_only",
+      "key": "anon",
+      "headers": {}
+    },
+    {
       "name": "plan: doesn't work if db-plan-enabled=false(the default)",
       "feature": "plan",
       "method": "GET",
@@ -11078,6 +11610,374 @@
       "headers": {},
       "body": "",
       "writes": true
+    },
+    {
+      "name": "aggregate: returns the count of all rows when no other fields are selected",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/entities?select=count()",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: allows you to specify an alias for the count",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/entities?select=cnt:count()",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: allows you to cast the result of the count",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/entities?select=count()::text",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: returns the count grouped by all provided fields when other fields are selected",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/projects?select=c:count(),client_id&order=client_id.desc",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: returns the count of all rows when no other fields are selected (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/entities?select=count",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: returns the embedded count of another resource",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/clients?select=name,projects(count)'",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports sum()",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/project_invoices?select=invoice_total.sum()",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports avg()",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/project_invoices?select=invoice_total.avg()",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports min()",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/project_invoices?select=invoice_total.min()",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports max()",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/project_invoices?select=invoice_total.max()",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports count()",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/project_invoices?select=invoice_total.count()",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: groups by any fields selected that do not have an aggregate applied",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/project_invoices?select=invoice_total.sum(),invoice_total.max(),invoice_total.min(),project_id&order=project_id.desc",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports the use of aliases on fields that will be used in the group by",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/project_invoices?select=invoice_total.sum(),invoice_total.max(),invoice_total.min(),pid:project_id&order=project_id.desc",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: allows you to specify an alias for the aggregate",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/project_invoices?select=total_charged:invoice_total.sum(),project_id&order=project_id.desc",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: allows you to cast the result of the aggregate",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/project_invoices?select=total_charged:invoice_total.sum()::text,project_id&order=project_id.desc",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: allows you to cast the input argument of the aggregate",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/trash_details?select=jsonb_col->>key::integer.sum()",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: allows the combination of an alias, a before cast, and an after cast",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/trash_details?select=s:jsonb_col->>key::integer.sum()::text",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports use of aggregates on RPC functions that return table values",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/rpc/getallprojects?select=id.max()",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: allows the use of an JSON-embedded relationship column as part of the group by",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/project_invoices?select=project_id,total:invoice_total.sum(),projects(name)&order=project_id",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports sum() (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/projects?select=name,project_invoices(invoice_total.sum())",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports max() (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/projects?select=name,project_invoices(invoice_total.max())",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports avg() (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/projects?select=name,project_invoices(invoice_total.avg())",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports min() (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/projects?select=name,project_invoices(invoice_total.min())",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports all at once",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/projects?select=name,project_invoices(invoice_total.max(),invoice_total.min(),invoice_total.avg(),invoice_total.sum(),invoice_total.count())",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports the use of aggregates on spreaded fields",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/budget_expenses?select=total_expenses:expense_amount.sum(),...budget_categories(budget_owner,total_budget:budget_amount.sum())&order=budget_categories(budget_owner)",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports the use of aggregates on spreaded fields when only aggregates are supplied",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/budget_expenses?select=...budget_categories(total_budget:budget_amount.sum())",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports aggregates from a spread relationships grouped by spreaded fields from other relationships",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/processes?select=...process_costs(cost.sum()),...process_categories(name)&order=process_categories(name)",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports aggregates from a spread relationships grouped by spreaded fields from other relationships (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/processes?select=...process_costs(cost_sum:cost.sum()),...process_categories(category:name)&order=process_categories(category)",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=...processes(factory_id,...process_costs(cost.sum()))&order=processes(factory_id).desc",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=...processes(factory_id,...process_costs(cost_sum:cost.sum()))&order=processes(factory_id).desc",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by a regular nested relationship",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=...processes(factories(name),...process_costs(cost.sum()))",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by a regular nested relationship (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=...processes(factory:factories(name),...process_costs(cost_sum:cost.sum()))",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=supervisor_id,...processes(...process_costs(cost.sum()),...process_categories(name))&order=supervisor_id",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=supervisor_id,...processes(...process_costs(cost_sum:cost.sum()),...process_categories(category:name))&order=supervisor_id",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships, using a nested relationship as top parent",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/supervisors?select=name,process_supervisor(...processes(...process_costs(cost.sum()),...process_categories(name)))",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships, using a nested relationship as top parent (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/supervisors?select=name,process_supervisor(...processes(...process_costs(cost_sum:cost.sum()),...process_categories(category:name)))",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: works by itself in the embedded resource",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=supervisor_id,...processes(count())&order=supervisor_id",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: works by itself in the embedded resource (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=supervisor_id,...processes(processes_count:count())&order=supervisor_id",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: works alongside other columns in the embedded resource",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=...supervisors(id,count())&order=supervisors(id)",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: works alongside other columns in the embedded resource (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=...supervisors(supervisor:id,supervisor_count:count())&order=supervisors(supervisor)",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: works on nested resources",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=supervisor_id,...processes(...process_costs(count()))&order=supervisor_id",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: works on nested resources (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=supervisor:supervisor_id,...processes(...process_costs(process_costs_count:count()))&order=supervisor_id",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: works on nested resources grouped by spreaded fields",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=...processes(factory_id,...process_costs(count()))&order=processes(factory_id)",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: works on nested resources grouped by spreaded fields (2)",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=...processes(factory:factory_id,...process_costs(process_costs_count:count()))&order=processes(factory)",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: works on different levels of the nested resources at the same time",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/process_supervisor?select=...processes(factory:factory_id,processes_count:count(),...process_costs(process_costs_count:count()))&order=processes(factory)",
+      "key": "anon",
+      "headers": {}
+    },
+    {
+      "name": "aggregate: does not support the use of aggregates",
+      "feature": "aggregate",
+      "method": "GET",
+      "path": "/rest/v1/factories?select=name,...factory_buildings(type,size.sum())",
+      "key": "anon",
+      "headers": {}
     }
   ]
 }

@@ -4455,6 +4455,27 @@
       }
     },
     {
+      "name": "query: filters, orders and limits aliased embeded entities using the target name",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "id": 1,
+          "name": "Windows 7",
+          "the_tasks": [
+            {
+              "id": 2,
+              "name": "Code w7"
+            }
+          ]
+        }
+      ],
+      "raw": "[{\"id\":1,\"name\":\"Windows 7\",\"the_tasks\":[{\"id\": 2, \"name\": \"Code w7\"}]}]"
+    },
+    {
       "name": "query: should respond an unknown accept type with 406",
       "status": 406,
       "headers": {
@@ -4521,7 +4542,7 @@
         "content-range": "0-1/*",
         "content-type": "text/csv; charset=utf-8"
       },
-      "body": "k,extra\nxyyx,u\nxYYx,v"
+      "body": "k,extra\nxYYx,v\nxyyx,u"
     },
     {
       "name": "query: Sets Content-Location with alphabetized params",
@@ -7327,6 +7348,462 @@
         "content-type": "application/json; charset=utf-8"
       },
       "body": []
+    },
+    {
+      "name": "media: will fail if there's no aggregate defined for the table",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST205",
+        "details": null,
+        "hint": null,
+        "message": "Could not find the table 'test.lines' in the schema cache"
+      }
+    },
+    {
+      "name": "media: can get raw xml output with Accept: text/xml if there's an aggregate defined",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "text/xml; charset=utf-8"
+      },
+      "body": "<myxml>foo</myxml>bar<foobar><baz/></foobar>"
+    },
+    {
+      "name": "media: will use the application/vnd.geo2+json media type for any table",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST205",
+        "details": null,
+        "hint": null,
+        "message": "Could not find the table 'test.lines' in the schema cache"
+      }
+    },
+    {
+      "name": "media: will use the more specific application/vnd.geo2 handler for this table",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST205",
+        "details": null,
+        "hint": null,
+        "message": "Could not find the table 'test.shop_bles' in the schema cache"
+      }
+    },
+    {
+      "name": "media: will use the more specific application/vnd.geo2 handler for this table (2)",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST202",
+        "details": "Searched for the function test.get_shop_bles without parameters, but no matches were found in the schema cache.",
+        "hint": null,
+        "message": "Could not find the function test.get_shop_bles without parameters in the schema cache"
+      }
+    },
+    {
+      "name": "media: can get raw output with Accept: text/html",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "text/html"
+      },
+      "body": "\n<html>\n  <head>\n    <title>PostgREST</title>\n  </head>\n  <body>\n    <h1>Welcome to PostgREST</h1>\n  </body>\n</html>\n"
+    },
+    {
+      "name": "media: can get raw output with Accept: text/plain",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "text/plain; charset=utf-8"
+      },
+      "body": "Welcome to PostgREST"
+    },
+    {
+      "name": "media: can get raw xml output with Accept: text/xml",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "text/xml; charset=utf-8"
+      },
+      "body": "<my-xml-tag/>"
+    },
+    {
+      "name": "media: can get raw xml output with Accept: text/xml (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "text/xml; charset=utf-8"
+      },
+      "body": "<html>\n  <head>\n    <title>PostgREST</title>\n  </head>\n  <body>\n    <h1>Welcome to PostgREST</h1>\n  </body>\n</html>"
+    },
+    {
+      "name": "media: should fail with function returning text and Accept: text/xml",
+      "status": 406,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST107",
+        "details": null,
+        "hint": null,
+        "message": "None of these media types are available: text/xml"
+      }
+    },
+    {
+      "name": "media: should not fail when the function doesn't return a row",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST202",
+        "details": "Searched for the function test.get_line with parameter id, but no matches were found in the schema cache.",
+        "hint": null,
+        "message": "Could not find the function test.get_line(id) in the schema cache"
+      }
+    },
+    {
+      "name": "media: will err because only scalars work with media type domains",
+      "status": 406,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST107",
+        "details": null,
+        "hint": null,
+        "message": "None of these media types are available: text/plain"
+      }
+    },
+    {
+      "name": "media: fails if doesn't have an aggregate defined",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST202",
+        "details": "Searched for the function test.get_lines without parameters, but no matches were found in the schema cache.",
+        "hint": null,
+        "message": "Could not find the function test.get_lines without parameters in the schema cache"
+      }
+    },
+    {
+      "name": "media: works if there's an anyelement aggregate defined",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST202",
+        "details": "Searched for the function test.get_lines without parameters, but no matches were found in the schema cache.",
+        "hint": null,
+        "message": "Could not find the function test.get_lines without parameters in the schema cache"
+      }
+    },
+    {
+      "name": "media: will override the application/json handler for a single table",
+      "status": 200,
+      "headers": {
+        "content-range": "*/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "overridden": "true"
+      },
+      "raw": "{\"overridden\": \"true\"}"
+    },
+    {
+      "name": "media: will override the application/geo+json handler for a single table",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST205",
+        "details": null,
+        "hint": null,
+        "message": "Could not find the table 'test.lines' in the schema cache"
+      }
+    },
+    {
+      "name": "media: will not override vendored media types like application/vnd.pgrst.object",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/vnd.pgrst.object+json; charset=utf-8"
+      },
+      "body": {
+        "client_id": 1,
+        "id": 1,
+        "name": "Windows 7"
+      },
+      "raw": "{\"id\":1,\"name\":\"Windows 7\",\"client_id\":1}"
+    },
+    {
+      "name": "media: will match a custom text/tab-separated-values",
+      "status": 200,
+      "headers": {
+        "content-range": "0-1/*",
+        "content-type": "text/tab-separated-values"
+      },
+      "body": "id\tname\tclient_id\n1\tWindows 7\t1\n2\tWindows 10\t1\n"
+    },
+    {
+      "name": "media: without select",
+      "status": 200,
+      "headers": {
+        "content-range": "0-1/*",
+        "content-type": "pg/outfunc"
+      },
+      "body": "(1,\"Windows 7\",1)\n(2,\"Windows 10\",1)\n"
+    },
+    {
+      "name": "media: with fewer columns selected",
+      "status": 200,
+      "headers": {
+        "content-range": "0-1/*",
+        "content-type": "pg/outfunc"
+      },
+      "body": "(1,\"Windows 7\")\n(2,\"Windows 10\")\n"
+    },
+    {
+      "name": "media: with columns in different order",
+      "status": 200,
+      "headers": {
+        "content-range": "0-1/*",
+        "content-type": "pg/outfunc"
+      },
+      "body": "(\"Windows 7\",1,1)\n(\"Windows 10\",2,1)\n"
+    },
+    {
+      "name": "media: with computed columns",
+      "status": 200,
+      "headers": {
+        "content-range": "0-1/*",
+        "content-type": "pg/outfunc"
+      },
+      "body": "(1,t)\n(2,t)\n"
+    },
+    {
+      "name": "media: with embedding",
+      "status": 200,
+      "headers": {
+        "content-range": "0-1/*",
+        "content-type": "pg/outfunc"
+      },
+      "body": "(1,\"Windows 7\",1,\"{\"\"id\"\": 1}\")\n(2,\"Windows 10\",1,\"{\"\"id\"\": 1}\")\n"
+    },
+    {
+      "name": "media: will fail for specific aggregate with fewer columns",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST205",
+        "details": null,
+        "hint": null,
+        "message": "Could not find the table 'test.lines' in the schema cache"
+      }
+    },
+    {
+      "name": "media: will fail for specific aggregate with more columns",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST205",
+        "details": null,
+        "hint": null,
+        "message": "Could not find the table 'test.lines' in the schema cache"
+      }
+    },
+    {
+      "name": "media: will fail for specific aggregate with columns in different order",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST205",
+        "details": null,
+        "hint": null,
+        "message": "Could not find the table 'test.lines' in the schema cache"
+      }
+    },
+    {
+      "name": "media: will fail for specific aggregate with columns in same order",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST205",
+        "details": null,
+        "hint": null,
+        "message": "Could not find the table 'test.lines' in the schema cache"
+      }
+    },
+    {
+      "name": "media: returns application/json for */* if not explicitly set",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/octet-stream"
+      },
+      "body": "any"
+    },
+    {
+      "name": "media: accepts any media type and sets the generic octet-stream as content type",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/octet-stream"
+      },
+      "body": "any"
+    },
+    {
+      "name": "media: accepts any media type and sets the generic octet-stream as content type (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/octet-stream"
+      },
+      "body": "any"
+    },
+    {
+      "name": "media: accepts any media type and sets the generic octet-stream as content type (3)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/octet-stream"
+      },
+      "body": "any"
+    },
+    {
+      "name": "media: returns custom media type for */* if explicitly set",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "app/groucho"
+      },
+      "body": "groucho"
+    },
+    {
+      "name": "media: accepts some media types if there's conditional logic",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "app/chico"
+      },
+      "body": "chico"
+    },
+    {
+      "name": "media: accepts some media types if there's conditional logic (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "app/harpo"
+      },
+      "body": "harpo"
+    },
+    {
+      "name": "media: accepts some media types if there's conditional logic (3)",
+      "status": 406,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PT406",
+        "details": null,
+        "hint": null,
+        "message": "Not Acceptable"
+      }
+    },
+    {
+      "name": "media: returns application/json for */* if not explicitly set (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "*/*",
+        "content-type": "application/octet-stream"
+      },
+      "body": "anything"
+    },
+    {
+      "name": "media: accepts any media type and sets it as a header",
+      "status": 200,
+      "headers": {
+        "content-range": "*/*",
+        "content-type": "magic/number"
+      },
+      "body": "magic"
+    },
+    {
+      "name": "media: accepts any media type and sets it as a header (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "*/*",
+        "content-type": "crazy/bingo"
+      },
+      "body": "crazy"
+    },
+    {
+      "name": "media: accepts any media type and sets it as a header (3)",
+      "status": 200,
+      "headers": {
+        "content-range": "*/*",
+        "content-type": "application/octet-stream"
+      },
+      "body": "anything"
+    },
+    {
+      "name": "media: sends media type as is",
+      "status": 406,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST107",
+        "details": null,
+        "hint": null,
+        "message": "None of these media types are available: undefined"
+      }
+    },
+    {
+      "name": "media: regression test allowing charset=utf-8",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "val": 1
+      },
+      "raw": "{\"val\": 1}"
+    },
+    {
+      "name": "media: handle unrecognized parameters leniently",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "val": 1
+      },
+      "raw": "{\"val\": 1}"
     },
     {
       "name": "computed: can define a many-to-one relationship with SETOF and ROWS 1 and embed",
@@ -13553,87 +14030,6 @@
       "body": 1
     },
     {
-      "name": "prefer: should change timezone with handling=strict",
-      "status": 200,
-      "headers": {
-        "content-range": "0-2/*",
-        "content-type": "application/json; charset=utf-8",
-        "preference-applied": "handling=strict, timezone=America/Los_Angeles"
-      },
-      "body": [
-        {
-          "t": "2023-10-18T05:37:59.611-07:00"
-        },
-        {
-          "t": "2023-10-18T07:37:59.611-07:00"
-        },
-        {
-          "t": "2023-10-18T09:37:59.611-07:00"
-        }
-      ],
-      "raw": "[{\"t\":\"2023-10-18T05:37:59.611-07:00\"}, \n {\"t\":\"2023-10-18T07:37:59.611-07:00\"}, \n {\"t\":\"2023-10-18T09:37:59.611-07:00\"}]"
-    },
-    {
-      "name": "prefer: should change timezone without handling=strict",
-      "status": 200,
-      "headers": {
-        "content-range": "0-2/*",
-        "content-type": "application/json; charset=utf-8",
-        "preference-applied": "timezone=America/Los_Angeles"
-      },
-      "body": [
-        {
-          "t": "2023-10-18T05:37:59.611-07:00"
-        },
-        {
-          "t": "2023-10-18T07:37:59.611-07:00"
-        },
-        {
-          "t": "2023-10-18T09:37:59.611-07:00"
-        }
-      ],
-      "raw": "[{\"t\":\"2023-10-18T05:37:59.611-07:00\"}, \n {\"t\":\"2023-10-18T07:37:59.611-07:00\"}, \n {\"t\":\"2023-10-18T09:37:59.611-07:00\"}]"
-    },
-    {
-      "name": "prefer: should throw error with handling=strict",
-      "status": 400,
-      "headers": {
-        "content-type": "application/json; charset=utf-8"
-      },
-      "body": {
-        "code": "22023",
-        "details": null,
-        "hint": null,
-        "message": "invalid value for parameter \"TimeZone\": \"Invalid/Timezone\""
-      }
-    },
-    {
-      "name": "prefer: should return with default timezone without handling or with handling=lenient",
-      "status": 400,
-      "headers": {
-        "content-type": "application/json; charset=utf-8"
-      },
-      "body": {
-        "code": "22023",
-        "details": null,
-        "hint": null,
-        "message": "invalid value for parameter \"TimeZone\": \"Invalid/Timezone\""
-      }
-    },
-    {
-      "name": "prefer: should return with default timezone without handling or with handling=lenient (2)",
-      "status": 400,
-      "headers": {
-        "content-type": "application/json; charset=utf-8"
-      },
-      "body": {
-        "code": "22023",
-        "details": null,
-        "hint": null,
-        "message": "invalid value for parameter \"TimeZone\": \"Invalid/Timezone\""
-      }
-    },
-    {
       "name": "prefer: should fail if items deleted more than 10",
       "status": 400,
       "headers": {
@@ -13864,6 +14260,142 @@
         "details": null,
         "hint": null,
         "message": "Function must return SETOF or TABLE when max-affected preference is used with handling=strict"
+      }
+    },
+    {
+      "name": "prefer: should change timezone with handling=strict",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8",
+        "preference-applied": "handling=strict, timezone=America/Los_Angeles"
+      },
+      "body": [
+        {
+          "t": "2023-10-18T05:37:59.611-07:00"
+        },
+        {
+          "t": "2023-10-18T07:37:59.611-07:00"
+        },
+        {
+          "t": "2023-10-18T09:37:59.611-07:00"
+        }
+      ],
+      "raw": "[{\"t\":\"2023-10-18T05:37:59.611-07:00\"}, \n {\"t\":\"2023-10-18T07:37:59.611-07:00\"}, \n {\"t\":\"2023-10-18T09:37:59.611-07:00\"}]"
+    },
+    {
+      "name": "prefer: should change timezone without handling=strict",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8",
+        "preference-applied": "timezone=America/Los_Angeles"
+      },
+      "body": [
+        {
+          "t": "2023-10-18T05:37:59.611-07:00"
+        },
+        {
+          "t": "2023-10-18T07:37:59.611-07:00"
+        },
+        {
+          "t": "2023-10-18T09:37:59.611-07:00"
+        }
+      ],
+      "raw": "[{\"t\":\"2023-10-18T05:37:59.611-07:00\"}, \n {\"t\":\"2023-10-18T07:37:59.611-07:00\"}, \n {\"t\":\"2023-10-18T09:37:59.611-07:00\"}]"
+    },
+    {
+      "name": "prefer: should throw error without handling",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "22023",
+        "details": null,
+        "hint": null,
+        "message": "invalid value for parameter \"TimeZone\": \"Invalid/Timezone\""
+      }
+    },
+    {
+      "name": "prefer: should throw error with handling=strict",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "22023",
+        "details": null,
+        "hint": null,
+        "message": "invalid value for parameter \"TimeZone\": \"Invalid/Timezone\""
+      }
+    },
+    {
+      "name": "prefer: should throw error with handling=lenient",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "22023",
+        "details": null,
+        "hint": null,
+        "message": "invalid value for parameter \"TimeZone\": \"Invalid/Timezone\""
+      }
+    },
+    {
+      "name": "prefer: should change with positive offset",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8",
+        "preference-applied": "timezone=+05:30"
+      },
+      "body": [
+        {
+          "t": "2023-10-18T07:07:59.611-05:30"
+        },
+        {
+          "t": "2023-10-18T09:07:59.611-05:30"
+        },
+        {
+          "t": "2023-10-18T11:07:59.611-05:30"
+        }
+      ],
+      "raw": "[{\"t\":\"2023-10-18T07:07:59.611-05:30\"}, \n {\"t\":\"2023-10-18T09:07:59.611-05:30\"}, \n {\"t\":\"2023-10-18T11:07:59.611-05:30\"}]"
+    },
+    {
+      "name": "prefer: should change with negative offset",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8",
+        "preference-applied": "timezone=-4"
+      },
+      "body": [
+        {
+          "t": "2023-10-18T08:37:59.611-04:00"
+        },
+        {
+          "t": "2023-10-18T10:37:59.611-04:00"
+        },
+        {
+          "t": "2023-10-18T12:37:59.611-04:00"
+        }
+      ],
+      "raw": "[{\"t\":\"2023-10-18T08:37:59.611-04:00\"}, \n {\"t\":\"2023-10-18T10:37:59.611-04:00\"}, \n {\"t\":\"2023-10-18T12:37:59.611-04:00\"}]"
+    },
+    {
+      "name": "prefer: fails on leap seconds",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "22023",
+        "details": "PostgreSQL does not support leap seconds.",
+        "hint": null,
+        "message": "time zone \"05:30:15\" appears to use leap seconds"
       }
     },
     {
@@ -19294,14 +19826,14 @@
           "process": [
             "Process C1",
             "Process C2",
-            "Process YY",
-            "Process XX"
+            "Process XX",
+            "Process YY"
           ],
           "process_costs": [
             40.0,
             70.0,
-            40.0,
-            null
+            null,
+            40.0
           ]
         },
         {
@@ -19310,7 +19842,7 @@
           "process_costs": []
         }
       ],
-      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"process_costs\":[150.00, 200.00]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B1\", \"Process B2\"],\"process_costs\":[180.00, 70.00]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process C1\", \"Process C2\", \"Process YY\", \"Process XX\"],\"process_costs\":[40.00, 70.00, 40.00, null]}, \n {\"factory\":\"Factory D\",\"process\":[],\"process_costs\":[]}]"
+      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"process_costs\":[150.00, 200.00]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B1\", \"Process B2\"],\"process_costs\":[180.00, 70.00]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process C1\", \"Process C2\", \"Process XX\", \"Process YY\"],\"process_costs\":[40.00, 70.00, null, 40.00]}, \n {\"factory\":\"Factory D\",\"process\":[],\"process_costs\":[]}]"
     },
     {
       "name": "spread: should select spread columns from a nested many-to-one relationship",
@@ -19338,8 +19870,8 @@
           ],
           "factory": "Factory B",
           "process": [
-            "Process B2",
-            "Process B1"
+            "Process B1",
+            "Process B2"
           ]
         },
         {
@@ -19351,10 +19883,10 @@
           ],
           "factory": "Factory C",
           "process": [
-            "Process YY",
-            "Process XX",
+            "Process C1",
             "Process C2",
-            "Process C1"
+            "Process XX",
+            "Process YY"
           ]
         },
         {
@@ -19363,7 +19895,7 @@
           "process": []
         }
       ],
-      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"categories\":[\"Batch\", \"Mass\"]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B2\", \"Process B1\"],\"categories\":[\"Batch\", \"Batch\"]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process YY\", \"Process XX\", \"Process C2\", \"Process C1\"],\"categories\":[\"Mass\", \"Mass\", \"Mass\", \"Mass\"]}, \n {\"factory\":\"Factory D\",\"process\":[],\"categories\":[]}]"
+      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"categories\":[\"Batch\", \"Mass\"]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B1\", \"Process B2\"],\"categories\":[\"Batch\", \"Batch\"]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process C1\", \"Process C2\", \"Process XX\", \"Process YY\"],\"categories\":[\"Mass\", \"Mass\", \"Mass\", \"Mass\"]}, \n {\"factory\":\"Factory D\",\"process\":[],\"categories\":[]}]"
     },
     {
       "name": "spread: should select spread columns from a nested one-to-many relationship",
@@ -19467,8 +19999,8 @@
               "Sarah"
             ],
             [
-              "Mary",
-              "John"
+              "John",
+              "Mary"
             ]
           ]
         },
@@ -19497,7 +20029,7 @@
           "supervisors": []
         }
       ],
-      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"supervisors\":[[\"Mary\"], [\"John\"]]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B1\", \"Process B2\"],\"supervisors\":[[\"Peter\", \"Sarah\"], [\"Mary\", \"John\"]]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process C1\", \"Process C2\", \"Process XX\", \"Process YY\"],\"supervisors\":[[\"Peter\"], [\"Peter\"], [], []]}, \n {\"factory\":\"Factory D\",\"process\":[],\"supervisors\":[]}]"
+      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"supervisors\":[[\"Mary\"], [\"John\"]]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B1\", \"Process B2\"],\"supervisors\":[[\"Peter\", \"Sarah\"], [\"John\", \"Mary\"]]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process C1\", \"Process C2\", \"Process XX\", \"Process YY\"],\"supervisors\":[[\"Peter\"], [\"Peter\"], [], []]}, \n {\"factory\":\"Factory D\",\"process\":[],\"supervisors\":[]}]"
     },
     {
       "name": "spread: should show a nested non-spread one-to-one relationship as an array of objects",
@@ -19542,8 +20074,8 @@
           "process": [
             "Process C1",
             "Process C2",
-            "Process YY",
-            "Process XX"
+            "Process XX",
+            "Process YY"
           ],
           "process_costs": [
             {
@@ -19552,10 +20084,10 @@
             {
               "cost": 70.0
             },
+            null,
             {
               "cost": 40.0
-            },
-            null
+            }
           ]
         },
         {
@@ -19564,7 +20096,7 @@
           "process_costs": []
         }
       ],
-      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"process_costs\":[{\"cost\": 150.00}, {\"cost\": 200.00}]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B1\", \"Process B2\"],\"process_costs\":[{\"cost\": 180.00}, {\"cost\": 70.00}]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process C1\", \"Process C2\", \"Process YY\", \"Process XX\"],\"process_costs\":[{\"cost\": 40.00}, {\"cost\": 70.00}, {\"cost\": 40.00}, null]}, \n {\"factory\":\"Factory D\",\"process\":[],\"process_costs\":[]}]"
+      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"process_costs\":[{\"cost\": 150.00}, {\"cost\": 200.00}]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B1\", \"Process B2\"],\"process_costs\":[{\"cost\": 180.00}, {\"cost\": 70.00}]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process C1\", \"Process C2\", \"Process XX\", \"Process YY\"],\"process_costs\":[{\"cost\": 40.00}, {\"cost\": 70.00}, null, {\"cost\": 40.00}]}, \n {\"factory\":\"Factory D\",\"process\":[],\"process_costs\":[]}]"
     },
     {
       "name": "spread: should show a nested non-spread many-to-one relationship as an array of objects",
@@ -19592,8 +20124,8 @@
         {
           "factory": "Factory B",
           "process": [
-            "Process B2",
-            "Process B1"
+            "Process B1",
+            "Process B2"
           ],
           "process_categories": [
             {
@@ -19607,10 +20139,10 @@
         {
           "factory": "Factory C",
           "process": [
-            "Process YY",
-            "Process XX",
+            "Process C1",
             "Process C2",
-            "Process C1"
+            "Process XX",
+            "Process YY"
           ],
           "process_categories": [
             {
@@ -19633,7 +20165,7 @@
           "process_categories": []
         }
       ],
-      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"process_categories\":[{\"name\": \"Batch\"}, {\"name\": \"Mass\"}]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B2\", \"Process B1\"],\"process_categories\":[{\"name\": \"Batch\"}, {\"name\": \"Batch\"}]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process YY\", \"Process XX\", \"Process C2\", \"Process C1\"],\"process_categories\":[{\"name\": \"Mass\"}, {\"name\": \"Mass\"}, {\"name\": \"Mass\"}, {\"name\": \"Mass\"}]}, \n {\"factory\":\"Factory D\",\"process\":[],\"process_categories\":[]}]"
+      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"process_categories\":[{\"name\": \"Batch\"}, {\"name\": \"Mass\"}]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B1\", \"Process B2\"],\"process_categories\":[{\"name\": \"Batch\"}, {\"name\": \"Batch\"}]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process C1\", \"Process C2\", \"Process XX\", \"Process YY\"],\"process_categories\":[{\"name\": \"Mass\"}, {\"name\": \"Mass\"}, {\"name\": \"Mass\"}, {\"name\": \"Mass\"}]}, \n {\"factory\":\"Factory D\",\"process\":[],\"process_categories\":[]}]"
     },
     {
       "name": "spread: should show a nested non-spread one-to-many relationship as an array of arrays",
@@ -19762,10 +20294,10 @@
             ],
             [
               {
-                "name": "Mary"
+                "name": "John"
               },
               {
-                "name": "John"
+                "name": "Mary"
               }
             ]
           ]
@@ -19799,7 +20331,7 @@
           "supervisors": []
         }
       ],
-      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"supervisors\":[[{\"name\": \"Mary\"}], [{\"name\": \"John\"}]]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B1\", \"Process B2\"],\"supervisors\":[[{\"name\": \"Peter\"}, {\"name\": \"Sarah\"}], [{\"name\": \"Mary\"}, {\"name\": \"John\"}]]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process C1\", \"Process C2\", \"Process XX\", \"Process YY\"],\"supervisors\":[[{\"name\": \"Peter\"}], [{\"name\": \"Peter\"}], [], []]}, \n {\"factory\":\"Factory D\",\"process\":[],\"supervisors\":[]}]"
+      "raw": "[{\"factory\":\"Factory A\",\"process\":[\"Process A1\", \"Process A2\"],\"supervisors\":[[{\"name\": \"Mary\"}], [{\"name\": \"John\"}]]}, \n {\"factory\":\"Factory B\",\"process\":[\"Process B1\", \"Process B2\"],\"supervisors\":[[{\"name\": \"Peter\"}, {\"name\": \"Sarah\"}], [{\"name\": \"John\"}, {\"name\": \"Mary\"}]]}, \n {\"factory\":\"Factory C\",\"process\":[\"Process C1\", \"Process C2\", \"Process XX\", \"Process YY\"],\"supervisors\":[[{\"name\": \"Peter\"}], [{\"name\": \"Peter\"}], [], []]}, \n {\"factory\":\"Factory D\",\"process\":[],\"supervisors\":[]}]"
     },
     {
       "name": "spread: should work when selecting all columns in a nested to-one resource",
@@ -19873,8 +20405,8 @@
           "cost": [
             40.0,
             70.0,
-            40.0,
-            null
+            null,
+            40.0
           ],
           "factory": "Factory C",
           "factory_id": [
@@ -19886,20 +20418,20 @@
           "id": [
             5,
             6,
-            8,
-            7
+            7,
+            8
           ],
           "name": [
             "Process C1",
             "Process C2",
-            "Process YY",
-            "Process XX"
+            "Process XX",
+            "Process YY"
           ],
           "process_id": [
             5,
             6,
-            8,
-            null
+            null,
+            8
           ]
         },
         {
@@ -19912,7 +20444,7 @@
           "process_id": []
         }
       ],
-      "raw": "[{\"factory\":\"Factory A\",\"id\":[1, 2],\"name\":[\"Process A1\", \"Process A2\"],\"factory_id\":[1, 1],\"category_id\":[1, 2],\"process_id\":[1, 2],\"cost\":[150.00, 200.00]}, \n {\"factory\":\"Factory B\",\"id\":[3, 4],\"name\":[\"Process B1\", \"Process B2\"],\"factory_id\":[2, 2],\"category_id\":[1, 1],\"process_id\":[3, 4],\"cost\":[180.00, 70.00]}, \n {\"factory\":\"Factory C\",\"id\":[5, 6, 8, 7],\"name\":[\"Process C1\", \"Process C2\", \"Process YY\", \"Process XX\"],\"factory_id\":[3, 3, 3, 3],\"category_id\":[2, 2, 2, 2],\"process_id\":[5, 6, 8, null],\"cost\":[40.00, 70.00, 40.00, null]}, \n {\"factory\":\"Factory D\",\"id\":[],\"name\":[],\"factory_id\":[],\"category_id\":[],\"process_id\":[],\"cost\":[]}]"
+      "raw": "[{\"factory\":\"Factory A\",\"id\":[1, 2],\"name\":[\"Process A1\", \"Process A2\"],\"factory_id\":[1, 1],\"category_id\":[1, 2],\"process_id\":[1, 2],\"cost\":[150.00, 200.00]}, \n {\"factory\":\"Factory B\",\"id\":[3, 4],\"name\":[\"Process B1\", \"Process B2\"],\"factory_id\":[2, 2],\"category_id\":[1, 1],\"process_id\":[3, 4],\"cost\":[180.00, 70.00]}, \n {\"factory\":\"Factory C\",\"id\":[5, 6, 7, 8],\"name\":[\"Process C1\", \"Process C2\", \"Process XX\", \"Process YY\"],\"factory_id\":[3, 3, 3, 3],\"category_id\":[2, 2, 2, 2],\"process_id\":[5, 6, null, 8],\"cost\":[40.00, 70.00, null, 40.00]}, \n {\"factory\":\"Factory D\",\"id\":[],\"name\":[],\"factory_id\":[],\"category_id\":[],\"process_id\":[],\"cost\":[]}]"
     },
     {
       "name": "spread: works when column filters are specified",
@@ -24006,6 +24538,118 @@
       }
     },
     {
+      "name": "error: error on jwt encoded with wrong secret",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer"
+      },
+      "body": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for table authors_only"
+      }
+    },
+    {
+      "name": "error: when role does not exist",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer"
+      },
+      "body": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for table authors_only"
+      }
+    },
+    {
+      "name": "error: it should return error if expired",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer"
+      },
+      "body": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for table authors_only"
+      }
+    },
+    {
+      "name": "error: it should return error if used before it is valid",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer"
+      },
+      "body": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for table authors_only"
+      }
+    },
+    {
+      "name": "error: it should return error if issued at future",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer"
+      },
+      "body": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for table authors_only"
+      }
+    },
+    {
+      "name": "error: when partial token is provided",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer"
+      },
+      "body": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for table authors_only"
+      }
+    },
+    {
+      "name": "error: when token is complete but random characters",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer"
+      },
+      "body": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for table authors_only"
+      }
+    },
+    {
+      "name": "error: when token with algorithm 'none' is used",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json; charset=utf-8",
+        "www-authenticate": "Bearer"
+      },
+      "body": {
+        "code": "42501",
+        "details": null,
+        "hint": null,
+        "message": "permission denied for table authors_only"
+      }
+    },
+    {
       "name": "plan: doesn't work if db-plan-enabled=false(the default)",
       "status": 406,
       "headers": {
@@ -24064,6 +24708,1279 @@
         "content-range": "*/*"
       },
       "body": null
+    },
+    {
+      "name": "aggregate: returns the count of all rows when no other fields are selected",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "count": 4
+        }
+      ]
+    },
+    {
+      "name": "aggregate: allows you to specify an alias for the count",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "cnt": 4
+        }
+      ]
+    },
+    {
+      "name": "aggregate: allows you to cast the result of the count",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "count": "4"
+        }
+      ]
+    },
+    {
+      "name": "aggregate: returns the count grouped by all provided fields when other fields are selected",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "c": 1,
+          "client_id": null
+        },
+        {
+          "c": 2,
+          "client_id": 2
+        },
+        {
+          "c": 2,
+          "client_id": 1
+        }
+      ],
+      "raw": "[{\"c\":1,\"client_id\":null}, \n {\"c\":2,\"client_id\":2}, \n {\"c\":2,\"client_id\":1}]"
+    },
+    {
+      "name": "aggregate: returns the count of all rows when no other fields are selected (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "count": 4
+        }
+      ]
+    },
+    {
+      "name": "aggregate: returns the embedded count of another resource",
+      "status": 200,
+      "headers": {
+        "content-range": "0-1/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "Microsoft",
+          "projects": [
+            {
+              "count": 2
+            }
+          ]
+        },
+        {
+          "name": "Apple",
+          "projects": [
+            {
+              "count": 2
+            }
+          ]
+        }
+      ],
+      "raw": "[{\"name\":\"Microsoft\",\"projects\":[{\"count\": 2}]}, \n {\"name\":\"Apple\",\"projects\":[{\"count\": 2}]}]"
+    },
+    {
+      "name": "aggregate: supports sum()",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "sum": 8800
+        }
+      ]
+    },
+    {
+      "name": "aggregate: supports avg()",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "avg": 1100.0
+        }
+      ],
+      "raw": "[{\"avg\":1100.0000000000000000}]"
+    },
+    {
+      "name": "aggregate: supports min()",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "min": 100
+        }
+      ]
+    },
+    {
+      "name": "aggregate: supports max()",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "max": 4000
+        }
+      ]
+    },
+    {
+      "name": "aggregate: supports count()",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "count": 8
+        }
+      ]
+    },
+    {
+      "name": "aggregate: groups by any fields selected that do not have an aggregate applied",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "max": 4000,
+          "min": 100,
+          "project_id": 4,
+          "sum": 4100
+        },
+        {
+          "max": 2000,
+          "min": 1200,
+          "project_id": 3,
+          "sum": 3200
+        },
+        {
+          "max": 700,
+          "min": 500,
+          "project_id": 2,
+          "sum": 1200
+        },
+        {
+          "max": 200,
+          "min": 100,
+          "project_id": 1,
+          "sum": 300
+        }
+      ],
+      "raw": "[{\"sum\":4100,\"max\":4000,\"min\":100,\"project_id\":4}, \n {\"sum\":3200,\"max\":2000,\"min\":1200,\"project_id\":3}, \n {\"sum\":1200,\"max\":700,\"min\":500,\"project_id\":2}, \n {\"sum\":300,\"max\":200,\"min\":100,\"project_id\":1}]"
+    },
+    {
+      "name": "aggregate: supports the use of aliases on fields that will be used in the group by",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "max": 4000,
+          "min": 100,
+          "pid": 4,
+          "sum": 4100
+        },
+        {
+          "max": 2000,
+          "min": 1200,
+          "pid": 3,
+          "sum": 3200
+        },
+        {
+          "max": 700,
+          "min": 500,
+          "pid": 2,
+          "sum": 1200
+        },
+        {
+          "max": 200,
+          "min": 100,
+          "pid": 1,
+          "sum": 300
+        }
+      ],
+      "raw": "[{\"sum\":4100,\"max\":4000,\"min\":100,\"pid\":4}, \n {\"sum\":3200,\"max\":2000,\"min\":1200,\"pid\":3}, \n {\"sum\":1200,\"max\":700,\"min\":500,\"pid\":2}, \n {\"sum\":300,\"max\":200,\"min\":100,\"pid\":1}]"
+    },
+    {
+      "name": "aggregate: allows you to specify an alias for the aggregate",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "project_id": 4,
+          "total_charged": 4100
+        },
+        {
+          "project_id": 3,
+          "total_charged": 3200
+        },
+        {
+          "project_id": 2,
+          "total_charged": 1200
+        },
+        {
+          "project_id": 1,
+          "total_charged": 300
+        }
+      ],
+      "raw": "[{\"total_charged\":4100,\"project_id\":4}, \n {\"total_charged\":3200,\"project_id\":3}, \n {\"total_charged\":1200,\"project_id\":2}, \n {\"total_charged\":300,\"project_id\":1}]"
+    },
+    {
+      "name": "aggregate: allows you to cast the result of the aggregate",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "project_id": 4,
+          "total_charged": "4100"
+        },
+        {
+          "project_id": 3,
+          "total_charged": "3200"
+        },
+        {
+          "project_id": 2,
+          "total_charged": "1200"
+        },
+        {
+          "project_id": 1,
+          "total_charged": "300"
+        }
+      ],
+      "raw": "[{\"total_charged\":\"4100\",\"project_id\":4}, \n {\"total_charged\":\"3200\",\"project_id\":3}, \n {\"total_charged\":\"1200\",\"project_id\":2}, \n {\"total_charged\":\"300\",\"project_id\":1}]"
+    },
+    {
+      "name": "aggregate: allows you to cast the input argument of the aggregate",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "sum": 24
+        }
+      ]
+    },
+    {
+      "name": "aggregate: allows the combination of an alias, a before cast, and an after cast",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "s": "24"
+        }
+      ]
+    },
+    {
+      "name": "aggregate: supports use of aggregates on RPC functions that return table values",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "max": 5
+        }
+      ]
+    },
+    {
+      "name": "aggregate: allows the use of an JSON-embedded relationship column as part of the group by",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "project_id": 1,
+          "projects": {
+            "name": "Windows 7"
+          },
+          "total": 300
+        },
+        {
+          "project_id": 2,
+          "projects": {
+            "name": "Windows 10"
+          },
+          "total": 1200
+        },
+        {
+          "project_id": 3,
+          "projects": {
+            "name": "IOS"
+          },
+          "total": 3200
+        },
+        {
+          "project_id": 4,
+          "projects": {
+            "name": "OSX"
+          },
+          "total": 4100
+        }
+      ],
+      "raw": "[{\"project_id\":1,\"total\":300,\"projects\":{\"name\": \"Windows 7\"}}, \n {\"project_id\":2,\"total\":1200,\"projects\":{\"name\": \"Windows 10\"}}, \n {\"project_id\":3,\"total\":3200,\"projects\":{\"name\": \"IOS\"}}, \n {\"project_id\":4,\"total\":4100,\"projects\":{\"name\": \"OSX\"}}]"
+    },
+    {
+      "name": "aggregate: supports sum() (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-4/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "Windows 7",
+          "project_invoices": [
+            {
+              "sum": 300
+            }
+          ]
+        },
+        {
+          "name": "Windows 10",
+          "project_invoices": [
+            {
+              "sum": 1200
+            }
+          ]
+        },
+        {
+          "name": "IOS",
+          "project_invoices": [
+            {
+              "sum": 3200
+            }
+          ]
+        },
+        {
+          "name": "OSX",
+          "project_invoices": [
+            {
+              "sum": 4100
+            }
+          ]
+        },
+        {
+          "name": "Orphan",
+          "project_invoices": [
+            {
+              "sum": null
+            }
+          ]
+        }
+      ],
+      "raw": "[{\"name\":\"Windows 7\",\"project_invoices\":[{\"sum\": 300}]}, \n {\"name\":\"Windows 10\",\"project_invoices\":[{\"sum\": 1200}]}, \n {\"name\":\"IOS\",\"project_invoices\":[{\"sum\": 3200}]}, \n {\"name\":\"OSX\",\"project_invoices\":[{\"sum\": 4100}]}, \n {\"name\":\"Orphan\",\"project_invoices\":[{\"sum\": null}]}]"
+    },
+    {
+      "name": "aggregate: supports max() (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-4/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "Windows 7",
+          "project_invoices": [
+            {
+              "max": 200
+            }
+          ]
+        },
+        {
+          "name": "Windows 10",
+          "project_invoices": [
+            {
+              "max": 700
+            }
+          ]
+        },
+        {
+          "name": "IOS",
+          "project_invoices": [
+            {
+              "max": 2000
+            }
+          ]
+        },
+        {
+          "name": "OSX",
+          "project_invoices": [
+            {
+              "max": 4000
+            }
+          ]
+        },
+        {
+          "name": "Orphan",
+          "project_invoices": [
+            {
+              "max": null
+            }
+          ]
+        }
+      ],
+      "raw": "[{\"name\":\"Windows 7\",\"project_invoices\":[{\"max\": 200}]}, \n {\"name\":\"Windows 10\",\"project_invoices\":[{\"max\": 700}]}, \n {\"name\":\"IOS\",\"project_invoices\":[{\"max\": 2000}]}, \n {\"name\":\"OSX\",\"project_invoices\":[{\"max\": 4000}]}, \n {\"name\":\"Orphan\",\"project_invoices\":[{\"max\": null}]}]"
+    },
+    {
+      "name": "aggregate: supports avg() (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-4/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "Windows 7",
+          "project_invoices": [
+            {
+              "avg": 150.0
+            }
+          ]
+        },
+        {
+          "name": "Windows 10",
+          "project_invoices": [
+            {
+              "avg": 600.0
+            }
+          ]
+        },
+        {
+          "name": "IOS",
+          "project_invoices": [
+            {
+              "avg": 1600.0
+            }
+          ]
+        },
+        {
+          "name": "OSX",
+          "project_invoices": [
+            {
+              "avg": 2050.0
+            }
+          ]
+        },
+        {
+          "name": "Orphan",
+          "project_invoices": [
+            {
+              "avg": null
+            }
+          ]
+        }
+      ],
+      "raw": "[{\"name\":\"Windows 7\",\"project_invoices\":[{\"avg\": 150.0000000000000000}]}, \n {\"name\":\"Windows 10\",\"project_invoices\":[{\"avg\": 600.0000000000000000}]}, \n {\"name\":\"IOS\",\"project_invoices\":[{\"avg\": 1600.0000000000000000}]}, \n {\"name\":\"OSX\",\"project_invoices\":[{\"avg\": 2050.0000000000000000}]}, \n {\"name\":\"Orphan\",\"project_invoices\":[{\"avg\": null}]}]"
+    },
+    {
+      "name": "aggregate: supports min() (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-4/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "Windows 7",
+          "project_invoices": [
+            {
+              "min": 100
+            }
+          ]
+        },
+        {
+          "name": "Windows 10",
+          "project_invoices": [
+            {
+              "min": 500
+            }
+          ]
+        },
+        {
+          "name": "IOS",
+          "project_invoices": [
+            {
+              "min": 1200
+            }
+          ]
+        },
+        {
+          "name": "OSX",
+          "project_invoices": [
+            {
+              "min": 100
+            }
+          ]
+        },
+        {
+          "name": "Orphan",
+          "project_invoices": [
+            {
+              "min": null
+            }
+          ]
+        }
+      ],
+      "raw": "[{\"name\":\"Windows 7\",\"project_invoices\":[{\"min\": 100}]}, \n {\"name\":\"Windows 10\",\"project_invoices\":[{\"min\": 500}]}, \n {\"name\":\"IOS\",\"project_invoices\":[{\"min\": 1200}]}, \n {\"name\":\"OSX\",\"project_invoices\":[{\"min\": 100}]}, \n {\"name\":\"Orphan\",\"project_invoices\":[{\"min\": null}]}]"
+    },
+    {
+      "name": "aggregate: supports all at once",
+      "status": 200,
+      "headers": {
+        "content-range": "0-4/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "Windows 7",
+          "project_invoices": [
+            {
+              "avg": 150.0,
+              "count": 2,
+              "max": 200,
+              "min": 100,
+              "sum": 300
+            }
+          ]
+        },
+        {
+          "name": "Windows 10",
+          "project_invoices": [
+            {
+              "avg": 600.0,
+              "count": 2,
+              "max": 700,
+              "min": 500,
+              "sum": 1200
+            }
+          ]
+        },
+        {
+          "name": "IOS",
+          "project_invoices": [
+            {
+              "avg": 1600.0,
+              "count": 2,
+              "max": 2000,
+              "min": 1200,
+              "sum": 3200
+            }
+          ]
+        },
+        {
+          "name": "OSX",
+          "project_invoices": [
+            {
+              "avg": 2050.0,
+              "count": 2,
+              "max": 4000,
+              "min": 100,
+              "sum": 4100
+            }
+          ]
+        },
+        {
+          "name": "Orphan",
+          "project_invoices": [
+            {
+              "avg": null,
+              "count": 0,
+              "max": null,
+              "min": null,
+              "sum": null
+            }
+          ]
+        }
+      ],
+      "raw": "[{\"name\":\"Windows 7\",\"project_invoices\":[{\"avg\": 150.0000000000000000, \"max\": 200, \"min\": 100, \"sum\": 300, \"count\": 2}]}, \n {\"name\":\"Windows 10\",\"project_invoices\":[{\"avg\": 600.0000000000000000, \"max\": 700, \"min\": 500, \"sum\": 1200, \"count\": 2}]}, \n {\"name\":\"IOS\",\"project_invoices\":[{\"avg\": 1600.0000000000000000, \"max\": 2000, \"min\": 1200, \"sum\": 3200, \"count\": 2}]}, \n {\"name\":\"OSX\",\"project_invoices\":[{\"avg\": 2050.0000000000000000, \"max\": 4000, \"min\": 100, \"sum\": 4100, \"count\": 2}]}, \n {\"name\":\"Orphan\",\"project_invoices\":[{\"avg\": null, \"max\": null, \"min\": null, \"sum\": null, \"count\": 0}]}]"
+    },
+    {
+      "name": "aggregate: supports the use of aggregates on spreaded fields",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "budget_owner": "Brian Smith",
+          "total_budget": 2000.42,
+          "total_expenses": 600.52
+        },
+        {
+          "budget_owner": "Jane Clarkson",
+          "total_budget": 7000.41,
+          "total_expenses": 100.22
+        },
+        {
+          "budget_owner": "Sally Hughes",
+          "total_budget": 500.23,
+          "total_expenses": 900.27
+        }
+      ],
+      "raw": "[{\"total_expenses\":600.52,\"budget_owner\":\"Brian Smith\",\"total_budget\":2000.42}, \n {\"total_expenses\":100.22,\"budget_owner\":\"Jane Clarkson\",\"total_budget\":7000.41}, \n {\"total_expenses\":900.27,\"budget_owner\":\"Sally Hughes\",\"total_budget\":500.23}]"
+    },
+    {
+      "name": "aggregate: supports the use of aggregates on spreaded fields when only aggregates are supplied",
+      "status": 200,
+      "headers": {
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "total_budget": 9501.06
+        }
+      ]
+    },
+    {
+      "name": "aggregate: supports aggregates from a spread relationships grouped by spreaded fields from other relationships",
+      "status": 200,
+      "headers": {
+        "content-range": "0-1/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "Batch",
+          "sum": 400.0
+        },
+        {
+          "name": "Mass",
+          "sum": 350.0
+        }
+      ],
+      "raw": "[{\"sum\":400.00,\"name\":\"Batch\"}, \n {\"sum\":350.00,\"name\":\"Mass\"}]"
+    },
+    {
+      "name": "aggregate: supports aggregates from a spread relationships grouped by spreaded fields from other relationships (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-1/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "category": "Batch",
+          "cost_sum": 400.0
+        },
+        {
+          "category": "Mass",
+          "cost_sum": 350.0
+        }
+      ],
+      "raw": "[{\"cost_sum\":400.00,\"category\":\"Batch\"}, \n {\"cost_sum\":350.00,\"category\":\"Mass\"}]"
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "factory_id": 3,
+          "sum": 110.0
+        },
+        {
+          "factory_id": 2,
+          "sum": 500.0
+        },
+        {
+          "factory_id": 1,
+          "sum": 350.0
+        }
+      ],
+      "raw": "[{\"factory_id\":3,\"sum\":110.00}, \n {\"factory_id\":2,\"sum\":500.00}, \n {\"factory_id\":1,\"sum\":350.00}]"
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "cost_sum": 110.0,
+          "factory_id": 3
+        },
+        {
+          "cost_sum": 500.0,
+          "factory_id": 2
+        },
+        {
+          "cost_sum": 350.0,
+          "factory_id": 1
+        }
+      ],
+      "raw": "[{\"factory_id\":3,\"cost_sum\":110.00}, \n {\"factory_id\":2,\"cost_sum\":500.00}, \n {\"factory_id\":1,\"cost_sum\":350.00}]"
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by a regular nested relationship",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "factories": {
+            "name": "Factory A"
+          },
+          "sum": 350.0
+        },
+        {
+          "factories": {
+            "name": "Factory B"
+          },
+          "sum": 500.0
+        },
+        {
+          "factories": {
+            "name": "Factory C"
+          },
+          "sum": 110.0
+        }
+      ],
+      "raw": "[{\"factories\":{\"name\": \"Factory A\"},\"sum\":350.00}, \n {\"factories\":{\"name\": \"Factory B\"},\"sum\":500.00}, \n {\"factories\":{\"name\": \"Factory C\"},\"sum\":110.00}]"
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by a regular nested relationship (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "cost_sum": 350.0,
+          "factory": {
+            "name": "Factory A"
+          }
+        },
+        {
+          "cost_sum": 500.0,
+          "factory": {
+            "name": "Factory B"
+          }
+        },
+        {
+          "cost_sum": 110.0,
+          "factory": {
+            "name": "Factory C"
+          }
+        }
+      ],
+      "raw": "[{\"factory\":{\"name\": \"Factory A\"},\"cost_sum\":350.00}, \n {\"factory\":{\"name\": \"Factory B\"},\"cost_sum\":500.00}, \n {\"factory\":{\"name\": \"Factory C\"},\"cost_sum\":110.00}]"
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships",
+      "status": 200,
+      "headers": {
+        "content-range": "0-5/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "Batch",
+          "sum": 220.0,
+          "supervisor_id": 1
+        },
+        {
+          "name": "Batch",
+          "sum": 70.0,
+          "supervisor_id": 2
+        },
+        {
+          "name": "Mass",
+          "sum": 200.0,
+          "supervisor_id": 2
+        },
+        {
+          "name": "Batch",
+          "sum": 180.0,
+          "supervisor_id": 3
+        },
+        {
+          "name": "Mass",
+          "sum": 110.0,
+          "supervisor_id": 3
+        },
+        {
+          "name": "Batch",
+          "sum": 180.0,
+          "supervisor_id": 4
+        }
+      ],
+      "raw": "[{\"supervisor_id\":1,\"sum\":220.00,\"name\":\"Batch\"}, \n {\"supervisor_id\":2,\"sum\":70.00,\"name\":\"Batch\"}, \n {\"supervisor_id\":2,\"sum\":200.00,\"name\":\"Mass\"}, \n {\"supervisor_id\":3,\"sum\":180.00,\"name\":\"Batch\"}, \n {\"supervisor_id\":3,\"sum\":110.00,\"name\":\"Mass\"}, \n {\"supervisor_id\":4,\"sum\":180.00,\"name\":\"Batch\"}]"
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-5/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "category": "Batch",
+          "cost_sum": 220.0,
+          "supervisor_id": 1
+        },
+        {
+          "category": "Batch",
+          "cost_sum": 70.0,
+          "supervisor_id": 2
+        },
+        {
+          "category": "Mass",
+          "cost_sum": 200.0,
+          "supervisor_id": 2
+        },
+        {
+          "category": "Batch",
+          "cost_sum": 180.0,
+          "supervisor_id": 3
+        },
+        {
+          "category": "Mass",
+          "cost_sum": 110.0,
+          "supervisor_id": 3
+        },
+        {
+          "category": "Batch",
+          "cost_sum": 180.0,
+          "supervisor_id": 4
+        }
+      ],
+      "raw": "[{\"supervisor_id\":1,\"cost_sum\":220.00,\"category\":\"Batch\"}, \n {\"supervisor_id\":2,\"cost_sum\":70.00,\"category\":\"Batch\"}, \n {\"supervisor_id\":2,\"cost_sum\":200.00,\"category\":\"Mass\"}, \n {\"supervisor_id\":3,\"cost_sum\":180.00,\"category\":\"Batch\"}, \n {\"supervisor_id\":3,\"cost_sum\":110.00,\"category\":\"Mass\"}, \n {\"supervisor_id\":4,\"cost_sum\":180.00,\"category\":\"Batch\"}]"
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships, using a nested relationship as top parent",
+      "status": 200,
+      "headers": {
+        "content-range": "0-4/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "Mary",
+          "process_supervisor": [
+            {
+              "name": "Batch",
+              "sum": 220.0
+            }
+          ]
+        },
+        {
+          "name": "John",
+          "process_supervisor": [
+            {
+              "name": "Batch",
+              "sum": 70.0
+            },
+            {
+              "name": "Mass",
+              "sum": 200.0
+            }
+          ]
+        },
+        {
+          "name": "Peter",
+          "process_supervisor": [
+            {
+              "name": "Batch",
+              "sum": 180.0
+            },
+            {
+              "name": "Mass",
+              "sum": 110.0
+            }
+          ]
+        },
+        {
+          "name": "Sarah",
+          "process_supervisor": [
+            {
+              "name": "Batch",
+              "sum": 180.0
+            }
+          ]
+        },
+        {
+          "name": "Jane",
+          "process_supervisor": []
+        }
+      ],
+      "raw": "[{\"name\":\"Mary\",\"process_supervisor\":[{\"sum\": 220.00, \"name\": \"Batch\"}]}, \n {\"name\":\"John\",\"process_supervisor\":[{\"sum\": 70.00, \"name\": \"Batch\"}, {\"sum\": 200.00, \"name\": \"Mass\"}]}, \n {\"name\":\"Peter\",\"process_supervisor\":[{\"sum\": 180.00, \"name\": \"Batch\"}, {\"sum\": 110.00, \"name\": \"Mass\"}]}, \n {\"name\":\"Sarah\",\"process_supervisor\":[{\"sum\": 180.00, \"name\": \"Batch\"}]}, \n {\"name\":\"Jane\",\"process_supervisor\":[]}]"
+    },
+    {
+      "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships, using a nested relationship as top parent (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-4/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "Mary",
+          "process_supervisor": [
+            {
+              "category": "Batch",
+              "cost_sum": 220.0
+            }
+          ]
+        },
+        {
+          "name": "John",
+          "process_supervisor": [
+            {
+              "category": "Batch",
+              "cost_sum": 70.0
+            },
+            {
+              "category": "Mass",
+              "cost_sum": 200.0
+            }
+          ]
+        },
+        {
+          "name": "Peter",
+          "process_supervisor": [
+            {
+              "category": "Batch",
+              "cost_sum": 180.0
+            },
+            {
+              "category": "Mass",
+              "cost_sum": 110.0
+            }
+          ]
+        },
+        {
+          "name": "Sarah",
+          "process_supervisor": [
+            {
+              "category": "Batch",
+              "cost_sum": 180.0
+            }
+          ]
+        },
+        {
+          "name": "Jane",
+          "process_supervisor": []
+        }
+      ],
+      "raw": "[{\"name\":\"Mary\",\"process_supervisor\":[{\"category\": \"Batch\", \"cost_sum\": 220.00}]}, \n {\"name\":\"John\",\"process_supervisor\":[{\"category\": \"Batch\", \"cost_sum\": 70.00}, {\"category\": \"Mass\", \"cost_sum\": 200.00}]}, \n {\"name\":\"Peter\",\"process_supervisor\":[{\"category\": \"Batch\", \"cost_sum\": 180.00}, {\"category\": \"Mass\", \"cost_sum\": 110.00}]}, \n {\"name\":\"Sarah\",\"process_supervisor\":[{\"category\": \"Batch\", \"cost_sum\": 180.00}]}, \n {\"name\":\"Jane\",\"process_supervisor\":[]}]"
+    },
+    {
+      "name": "aggregate: works by itself in the embedded resource",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "count": 2,
+          "supervisor_id": 1
+        },
+        {
+          "count": 2,
+          "supervisor_id": 2
+        },
+        {
+          "count": 3,
+          "supervisor_id": 3
+        },
+        {
+          "count": 1,
+          "supervisor_id": 4
+        }
+      ],
+      "raw": "[{\"supervisor_id\":1,\"count\":2}, \n {\"supervisor_id\":2,\"count\":2}, \n {\"supervisor_id\":3,\"count\":3}, \n {\"supervisor_id\":4,\"count\":1}]"
+    },
+    {
+      "name": "aggregate: works by itself in the embedded resource (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "processes_count": 2,
+          "supervisor_id": 1
+        },
+        {
+          "processes_count": 2,
+          "supervisor_id": 2
+        },
+        {
+          "processes_count": 3,
+          "supervisor_id": 3
+        },
+        {
+          "processes_count": 1,
+          "supervisor_id": 4
+        }
+      ],
+      "raw": "[{\"supervisor_id\":1,\"processes_count\":2}, \n {\"supervisor_id\":2,\"processes_count\":2}, \n {\"supervisor_id\":3,\"processes_count\":3}, \n {\"supervisor_id\":4,\"processes_count\":1}]"
+    },
+    {
+      "name": "aggregate: works alongside other columns in the embedded resource",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "count": 2,
+          "id": 1
+        },
+        {
+          "count": 2,
+          "id": 2
+        },
+        {
+          "count": 3,
+          "id": 3
+        },
+        {
+          "count": 1,
+          "id": 4
+        }
+      ],
+      "raw": "[{\"id\":1,\"count\":2}, \n {\"id\":2,\"count\":2}, \n {\"id\":3,\"count\":3}, \n {\"id\":4,\"count\":1}]"
+    },
+    {
+      "name": "aggregate: works alongside other columns in the embedded resource (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "supervisor": 1,
+          "supervisor_count": 2
+        },
+        {
+          "supervisor": 2,
+          "supervisor_count": 2
+        },
+        {
+          "supervisor": 3,
+          "supervisor_count": 3
+        },
+        {
+          "supervisor": 4,
+          "supervisor_count": 1
+        }
+      ],
+      "raw": "[{\"supervisor\":1,\"supervisor_count\":2}, \n {\"supervisor\":2,\"supervisor_count\":2}, \n {\"supervisor\":3,\"supervisor_count\":3}, \n {\"supervisor\":4,\"supervisor_count\":1}]"
+    },
+    {
+      "name": "aggregate: works on nested resources",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "count": 2,
+          "supervisor_id": 1
+        },
+        {
+          "count": 2,
+          "supervisor_id": 2
+        },
+        {
+          "count": 3,
+          "supervisor_id": 3
+        },
+        {
+          "count": 1,
+          "supervisor_id": 4
+        }
+      ],
+      "raw": "[{\"supervisor_id\":1,\"count\":2}, \n {\"supervisor_id\":2,\"count\":2}, \n {\"supervisor_id\":3,\"count\":3}, \n {\"supervisor_id\":4,\"count\":1}]"
+    },
+    {
+      "name": "aggregate: works on nested resources (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-3/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "process_costs_count": 2,
+          "supervisor": 1
+        },
+        {
+          "process_costs_count": 2,
+          "supervisor": 2
+        },
+        {
+          "process_costs_count": 3,
+          "supervisor": 3
+        },
+        {
+          "process_costs_count": 1,
+          "supervisor": 4
+        }
+      ],
+      "raw": "[{\"supervisor\":1,\"process_costs_count\":2}, \n {\"supervisor\":2,\"process_costs_count\":2}, \n {\"supervisor\":3,\"process_costs_count\":3}, \n {\"supervisor\":4,\"process_costs_count\":1}]"
+    },
+    {
+      "name": "aggregate: works on nested resources grouped by spreaded fields",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "count": 2,
+          "factory_id": 1
+        },
+        {
+          "count": 4,
+          "factory_id": 2
+        },
+        {
+          "count": 2,
+          "factory_id": 3
+        }
+      ],
+      "raw": "[{\"factory_id\":1,\"count\":2}, \n {\"factory_id\":2,\"count\":4}, \n {\"factory_id\":3,\"count\":2}]"
+    },
+    {
+      "name": "aggregate: works on nested resources grouped by spreaded fields (2)",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "factory": 1,
+          "process_costs_count": 2
+        },
+        {
+          "factory": 2,
+          "process_costs_count": 4
+        },
+        {
+          "factory": 3,
+          "process_costs_count": 2
+        }
+      ],
+      "raw": "[{\"factory\":1,\"process_costs_count\":2}, \n {\"factory\":2,\"process_costs_count\":4}, \n {\"factory\":3,\"process_costs_count\":2}]"
+    },
+    {
+      "name": "aggregate: works on different levels of the nested resources at the same time",
+      "status": 200,
+      "headers": {
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "factory": 1,
+          "process_costs_count": 2,
+          "processes_count": 2
+        },
+        {
+          "factory": 2,
+          "process_costs_count": 4,
+          "processes_count": 4
+        },
+        {
+          "factory": 3,
+          "process_costs_count": 2,
+          "processes_count": 2
+        }
+      ],
+      "raw": "[{\"factory\":1,\"processes_count\":2,\"process_costs_count\":2}, \n {\"factory\":2,\"processes_count\":4,\"process_costs_count\":4}, \n {\"factory\":3,\"processes_count\":2,\"process_costs_count\":2}]"
+    },
+    {
+      "name": "aggregate: does not support the use of aggregates",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST127",
+        "details": "Aggregates are not implemented for one-to-many or many-to-many spreads.",
+        "hint": null,
+        "message": "Feature not implemented"
+      }
     }
   ]
 }

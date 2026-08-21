@@ -1,1 +1,166 @@
-[]
+[
+  {
+    "name": "media: can get raw xml output with Accept: text/xml if there's an aggregate defined",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: can get raw xml output with Accept: text/xml (2)",
+    "why": "#558, no media type handler, so what the function built is not what comes back"
+  },
+  {
+    "name": "media: will override the application/json handler for a single table",
+    "why": "#558, a handler that overrides json for one table is not used, so the default rendering answers"
+  },
+  {
+    "name": "media: will match a custom text/tab-separated-values",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: without select",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: with fewer columns selected",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: with columns in different order",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: with computed columns",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: with embedding",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: returns application/json for */* if not explicitly set",
+    "why": "#558, `*/*` is echoed back as the content type instead of being resolved to the handler"
+  },
+  {
+    "name": "media: accepts any media type and sets the generic octet-stream as content type",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: accepts any media type and sets the generic octet-stream as content type (2)",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: accepts any media type and sets the generic octet-stream as content type (3)",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: returns custom media type for */* if explicitly set",
+    "why": "#558, with no handler to render it the bytea comes back as its hex literal"
+  },
+  {
+    "name": "media: accepts some media types if there's conditional logic",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: accepts some media types if there's conditional logic (2)",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: returns application/json for */* if not explicitly set (2)",
+    "why": "#558, `*/*` is answered with json rather than being resolved to the octet-stream handler"
+  },
+  {
+    "name": "media: accepts any media type and sets it as a header",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: accepts any media type and sets it as a header (2)",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "media: accepts any media type and sets it as a header (3)",
+    "why": "#558, custom media type handlers are not served, so the request is refused with 406"
+  },
+  {
+    "name": "aggregate: supports the use of aggregates on spreaded fields",
+    "why": "#557, a spread of named columns is read as a `*`, so the aggregate is refused with PGRST100"
+  },
+  {
+    "name": "aggregate: supports the use of aggregates on spreaded fields when only aggregates are supplied",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: supports aggregates from a spread relationships grouped by spreaded fields from other relationships",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: supports aggregates from a spread relationships grouped by spreaded fields from other relationships (2)",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: supports aggregates on spreaded fields from nested relationships",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: supports aggregates on spreaded fields from nested relationships (2)",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by a regular nested relationship",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by a regular nested relationship (2)",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships (2)",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships, using a nested relationship as top parent",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: supports aggregates on spreaded fields from nested relationships, grouped by spreaded fields from other nested relationships, using a nested relationship as top parent (2)",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: works by itself in the embedded resource",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: works by itself in the embedded resource (2)",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: works alongside other columns in the embedded resource",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: works alongside other columns in the embedded resource (2)",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: works on nested resources",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: works on nested resources (2)",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: works on nested resources grouped by spreaded fields",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: works on nested resources grouped by spreaded fields (2)",
+    "why": "#557, the group by is missing, so each underlying row answers with the aggregate over itself"
+  },
+  {
+    "name": "aggregate: works on different levels of the nested resources at the same time",
+    "why": "#557, a spread of named columns is read as a `*`, so the aggregate is refused with PGRST100"
+  }
+]
