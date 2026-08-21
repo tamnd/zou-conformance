@@ -3904,6 +3904,47 @@ $$ language sql;
 create function do_nothing() returns void as $_$
 $_$ language sql;
 
+create or replace function test.get_tiobe_pls() returns setof test.tiobe_pls as $$
+  select * from test.tiobe_pls;
+$$ language sql;
+
+create type visit_type as enum ('vacation', 'work');
+
+create table places (
+  id int primary key generated always as identity,
+  name text not null
+);
+
+create table visits (
+  id int primary key generated always as identity,
+  place_id int not null references places(id),
+  start_time timestamp,
+  end_time timestamp,
+  visit_type visit_type
+);
+
+
+create or replace function custom_vary_hdr() returns void as $$
+  begin
+    perform set_config('response.headers', '[{"Vary": "X-Test-Accept"}]', false);
+  end
+$$ language plpgsql;
+
+create or replace function "true"() returns boolean as $_$
+  select true;
+$_$ language sql;
+
+create function uses_prepared_statements() returns bool as $$
+  select count(*) > 0 from pg_catalog.pg_prepared_statements;
+$$ language sql;
+
+create table never_prepared (id int);
+
+create function never_uses_prepared_statements() returns bool as $$
+  select count(*) = 0 from pg_catalog.pg_prepared_statements
+  where statement ilike '%never_prepared%';
+$$ language sql;
+
 -- jwt.sql
 
 -- From michelp/pgjwt commit c02bbd3
@@ -5297,6 +5338,21 @@ VALUES (1, 'stratosphere', 1),
        (2, 'ants from up above',2),
        (3, 'vespertine',3),
        (4, 'contemporary movement', 1);
+
+TRUNCATE TABLE places CASCADE;
+INSERT INTO places (name)
+VALUES ('Lake'), ('Mountain'), ('Beach');
+
+TRUNCATE TABLE visits CASCADE;
+INSERT INTO visits (place_id, start_time, end_time, visit_type)
+VALUES (1, '2025-01-01 10:00','2025-01-01 11:00', 'vacation'),
+       (1, '2025-01-01 15:00','2025-01-01 16:00', 'vacation'),
+       (1, '2025-01-01 20:00', '2025-01-01 21:00', 'work'),
+       (2, '2024-11-01 09:00','2024-11-01 10:00', 'vacation'),
+       (3, '2024-12-02 13:00','2024-12-02 14:00', 'vacation'),
+       (1, '2023-01-02 20:00','2023-01-01 21:00', 'work');
+
+INSERT INTO bets (id) SELECT generate_series(1,1000);
 
 
 notify pgrst, 'reload schema';
