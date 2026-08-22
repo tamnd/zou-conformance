@@ -34,7 +34,7 @@ The project is not vendored here: it is somebody else's code, it moves, and pinn
 Then serve it with one server and ask:
 
 ```
-zou functions serve --project /tmp/exproj/supabase --port 54341
+zou functions serve --config /tmp/exproj/supabase/config.toml --port 54341
 examples/probe.sh http://127.0.0.1:54341 "$ANON_KEY" /tmp/exproj/supabase /tmp/exproj/zou.tsv
 ```
 
@@ -154,3 +154,44 @@ There is one more thing in the file that is not in the file, and it belongs here
 esm.sh serves different code for different `User-Agent` headers.
 Asking as Deno gets a build that expects node built ins, and asking as a browser gets one that does not.
 zou asks as a browser, deliberately, and the corpus is why: on the build that was measured at the time, asking as Deno took it from 28 running to 21.
+
+## What the node built ins moved, and what the user agent did
+
+The built ins arrived on 2026-08-22: nineteen `node:` modules carried in the binary, `buffer`, `crypto`, `events`, `fs`, `path`, `process`, `stream`, `util` and the rest of them.
+The corpus was asked three times that afternoon on one machine, back to back, each with its own cold module cache, so the three columns are the same network and the same day and differ only in the server.
+
+The first is the server as it shipped, asking the registry as `zou-edge-runtime`.
+The second is the same server with the built ins in it, asking the same way.
+The third is the same server again, asking as `Deno/2.1.4 (variant; zou/0.0.1)`.
+
+The first two are the same run.
+Not close to the same: every status, every name and every sentence in the log is identical, and `compare.mjs` against the recording says nothing moved for either.
+32 ran, 8 did not, the same 8.
+That is worth writing down plainly, because it is the opposite of what adding the built ins was expected to do: on the browser build the registry stubs node out itself, so nothing in this corpus was waiting for them.
+
+The third ran 25.
+Seven names the browser build gets to their own first decision, the Deno build does not:
+
+```
+elevenlabs-speech-to-text    node:child_process
+elevenlabs-text-to-speech    node:child_process
+puppeteer                    node:child_process
+send-email-smtp              node:child_process
+sentry                       node:diagnostics_channel
+sentryfied                   node:diagnostics_channel
+auth-hook-react-email-resend node:module
+```
+
+Four of the seven want to start a process.
+That is not a built in nobody has written yet, it is a thing a function here is never going to do, so the answer for those four is not more javascript in the binary: it is a `child_process` that refuses the way the registry's stub refuses, at the call rather than at the import.
+`diagnostics_channel` and `module` are ordinary work and would move three of the seven.
+
+Two more names change their reason without changing their count, and both are the same one: `og-image-with-storage-cdn` and `tweet-to-image` ask `@vercel/og` for a font, the Deno build reads it with `fileURLToPath` on the url the module came from, and that is an `https:` url here rather than a file in an unpacked tarball.
+Upstream unpacks a tarball, so there it is a path.
+On the browser build both of those are esm.sh answering 500, which is the same two names not running for somebody else's reason.
+
+So the server still asks as itself, and the flip waits on the refusal rather than on the count.
+
+One thing that run found that has nothing to do with the user agent: a function that streams wasm can take the whole server down.
+`wasm streaming callback invoked before the JS handler was set` is a panic inside `deno_core`, and a panic in the isolate thread aborts the process, so every function asked after it answered nothing at all.
+It is [issue #592](https://github.com/tamnd/zou/issues/592).
