@@ -125,8 +125,8 @@ It needed one more thing on the way: emscripten reads its own heap with `new Tex
 
 Six names are left that upstream serves and this does not, and five of the six are the registry rather than the runtime.
 
-One thing worth reading the whole way is what a signal does to the connection, because the two servers differ and only the far end can tell.
-The same probe against a slow server that reports what it saw came back with a broken pipe from upstream and with an answer nobody read from zou: upstream tears the socket down and zou ends the waiting.
+What a signal does to the connection used to be one of them, because only the far end can tell and the two ends differed: the same probe against a slow server that reports what it saw came back with a broken pipe from upstream and with an answer nobody read from zou.
+Both tear the socket down now, including the socket a call was handed out of the connection pool rather than opened for itself.
 
 ## What the socket moved
 
