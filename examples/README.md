@@ -148,7 +148,7 @@ Warm it answers the 405 that is recorded, three times out of three, so the recor
 The three zou answers ahead of the reference are all the same shape, which is that upstream's module graph is built ahead of time and refuses a graph it cannot complete: `kysely-postgres` on a bare specifier, `openai-image-generation` and `opengraph` on a `.d.ts` that is not there.
 zou loads a module when something asks for it, so a type only file nobody imports at runtime is never fetched.
 
-The three the reference runs and zou does not are none of them the runtime, and all three are somebody else's: one is esm.sh answering 500 for `@slack/web-api` whichever build is asked for, one is drizzle's browser build missing an export, and one is the mcp sdk failing inside the registry's build of itself.
+The three the reference runs and zou does not are none of them the runtime, and all three are somebody else's: one is esm.sh answering 500 for `@slack/web-api` whichever build is asked for, one is drizzle's browser build missing an export, and one is the mcp sdk asking the registry's build of `zod/v4` for `custom`, which that build's export list does not carry: it is two names, `z` and `default`, because the package's own `export *` became property copying onto an object the build never exports.
 
 There is one more thing in the file that is not in the file, and it belongs here because it cost the most to find.
 esm.sh serves different code for different `User-Agent` headers.
