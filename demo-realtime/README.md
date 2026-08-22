@@ -15,10 +15,12 @@ The one thing that is not in `app/` and has to be beside it is `sass`. The app's
 The schema is the app's own too, in `app/supabase/migrations`, and it is applied rather than transcribed:
 
 ```
-for f in app/supabase/migrations/*.sql app/supabase/seed.sql
+for f in app/supabase/migrations/*.sql grants.sql app/supabase/seed.sql
 do cat "$f"; printf '\n;\n'
 done > /tmp/chat-setup.sql
 ```
+
+`grants.sql` is the one file in the middle that is not the app's. Upstream's migrations create the tables, turn row level security on and write the policies, and never grant anything, because the project they were written against handed every new table in `public` to `anon` and `authenticated` by itself. A project today gets a table the api roles may truncate and may not read, so the policies would be policies on a table nobody can reach. The file is the grants the app would carry as its next migration if it were being written now, and `app/` stays upstream's.
 
 The separator is not decoration. The Supabase CLI applies each of these files on its own and the last statement in one of them has no semicolon after it, so a plain `cat` runs it into the first line of the next file. The extra semicolons are empty statements, which postgres accepts.
 
