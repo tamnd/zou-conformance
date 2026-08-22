@@ -50,9 +50,9 @@ A status that moved is either zou getting further or a library on the network ch
 
 ## What was measured
 
-40 functions asked, the reference on 2026-08-17 and zou on 2026-08-19.
-zou ran 32 of them, the reference ran 34, and they agree on 29.
-Twenty four of the forty answer the same status with the same bytes on both servers.
+40 functions asked, the reference on 2026-08-17 and zou on 2026-08-22.
+zou ran 34 of them, the reference ran 34, and they agree on 31.
+Twenty six of the forty answer the same status with the same bytes on both servers.
 
 Where the 40 comes from, since a number about a corpus is mostly a number about who was counted.
 There are 42 directories under `functions/` and 39 of them have an `index.ts`: `_shared`, `mcp` and `unit-testing` have no entrypoint of their own and are not functions.
@@ -137,7 +137,7 @@ That moved one name and it is the one that asked.
 The reference is told the same sentence, and the two bodies are the same bytes, which makes it the twenty fourth name the two servers answer identically.
 It is worth being precise about what that measures: the driver is a real client speaking the wire protocol to zou's own engine, so the row is as much about the database as it is about the runtime.
 
-Five names are left that upstream serves and this does not, and all five of them are the registry rather than the runtime.
+Three names are left that upstream serves and this does not, and all three of them are the registry rather than the runtime.
 
 One row in that run was read twice before it was written down.
 `oak-server` came back 546 on the first pass, which is the host saying a function spent more than the two seconds of cpu it is allowed, and what it was spending it on was the first load of a module graph that size on a cold cache.
@@ -148,7 +148,7 @@ Warm it answers the 405 that is recorded, three times out of three, so the recor
 The three zou answers ahead of the reference are all the same shape, which is that upstream's module graph is built ahead of time and refuses a graph it cannot complete: `kysely-postgres` on a bare specifier, `openai-image-generation` and `opengraph` on a `.d.ts` that is not there.
 zou loads a module when something asks for it, so a type only file nobody imports at runtime is never fetched.
 
-The five the reference runs and zou does not are none of them the runtime, and all five are somebody else's: three are esm.sh answering 500 for `@vercel/og` and `@slack/web-api`, one is drizzle's browser build missing an export, and one is the mcp sdk failing inside the registry's build of itself.
+The three the reference runs and zou does not are none of them the runtime, and all three are somebody else's: one is esm.sh answering 500 for `@slack/web-api` whichever build is asked for, one is drizzle's browser build missing an export, and one is the mcp sdk failing inside the registry's build of itself.
 
 There is one more thing in the file that is not in the file, and it belongs here because it cost the most to find.
 esm.sh serves different code for different `User-Agent` headers.
@@ -195,3 +195,17 @@ So the server still asks as itself, and the flip waits on the refusal rather tha
 One thing that run found that has nothing to do with the user agent: a function that streams wasm can take the whole server down.
 `wasm streaming callback invoked before the JS handler was set` is a panic inside `deno_core`, and a panic in the isolate thread aborts the process, so every function asked after it answered nothing at all.
 It is [issue #592](https://github.com/tamnd/zou/issues/592).
+
+## What the registry fallback moved
+
+esm.sh answers 500 for `@vercel/og` asked as a browser, because that build hands esbuild a `.wasm` and esbuild has no loader for one.
+Asked as Deno the same package is a 200.
+So a 5xx from the registry is now a second ask with the runtime's own user agent, which is the one case where asking as Deno is the better build and the corpus does not have to be traded away to get it.
+Two more pieces went with it: `fileURLToPath` of an `http` or `https` url answers with the url rather than throwing, because a package here is a url and not an unpacked tarball, and a synchronous read while a module is still loading is allowed to fetch, because that is when a wasm library reads its own wasm.
+
+That moved `og-image-with-storage-cdn` and `tweet-to-image` from 500 to 401, which is the reference's status with the reference's bytes: `{"message":"Invalid credentials","code":"INVALID_CREDENTIALS"}`.
+Both were read more than once, and both came back 546 on the very first cold ask, which is the cpu limit against a cold module graph again, then 401 three times out of three warm.
+zou runs 34 of the 40 now, the same count as the reference, and the two agree on 31.
+
+`@slack/web-api` does not move, because esm.sh answers 500 for it whichever build is asked for.
+That is the registry failing to build a package rather than a build this runtime cannot use, and there is nothing on this side to fix.

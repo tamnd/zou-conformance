@@ -88,9 +88,9 @@
   "reference": "supabase start, edge-runtime 1.74.2, CLI 2.111.0",
   "totals": {
     "asked": 40,
-    "zou_ran": 32,
+    "zou_ran": 34,
     "reference_ran": 34,
-    "both_ran": 29
+    "both_ran": 31
   },
   "functions": [
     {
@@ -364,12 +364,11 @@
     },
     {
       "name": "og-image-with-storage-cdn",
-      "verdict": "reference only",
+      "verdict": "both",
       "zou": {
-        "status": 500,
-        "body": "Internal Server Error",
-        "ran": false,
-        "log": "https://esm.sh/@vercel/og@^0 answered 500 Internal Server Error"
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
       },
       "reference": {
         "status": 401,
@@ -627,12 +626,11 @@
     },
     {
       "name": "tweet-to-image",
-      "verdict": "reference only",
+      "verdict": "both",
       "zou": {
-        "status": 500,
-        "body": "Internal Server Error",
-        "ran": false,
-        "log": "https://esm.sh/@vercel/og@^0 answered 500 Internal Server Error"
+        "status": 401,
+        "body": "{\"message\":\"Invalid credentials\",\"code\":\"INVALID_CREDENTIALS\"}",
+        "ran": true
       },
       "reference": {
         "status": 401,
@@ -685,5 +683,5 @@
       }
     }
   ],
-  "zou_measured_on": "2026-08-19"
+  "zou_measured_on": "2026-08-22"
 }
