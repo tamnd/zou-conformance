@@ -2620,8 +2620,7 @@ $$;
 
 CREATE OR REPLACE FUNCTION "welcome.xml"() RETURNS "text/xml"
 LANGUAGE sql AS $_$
-select $$
-<html>
+select $$<html>
   <head>
     <title>PostgREST</title>
   </head>
