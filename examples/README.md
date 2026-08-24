@@ -209,3 +209,42 @@ zou runs 34 of the 40 now, the same count as the reference, and the two agree on
 
 `@slack/web-api` does not move, because esm.sh answers 500 for it whichever build is asked for.
 That is the registry failing to build a package rather than a build this runtime cannot use, and there is nothing on this side to fix.
+
+## What the five more built ins moved, which is nothing yet
+
+Five more `node:` modules arrived on 2026-08-23, taking the count from nineteen to twenty four: `diagnostics_channel` and `module` as real implementations, and `child_process`, `cluster` and the `Worker` half of `worker_threads` as modules that exist in order to refuse at the call rather than at the import.
+Those were the three names the last run said were standing between the Deno build and the browser build, so the corpus was asked again.
+
+Two columns this time, on one box on one afternoon, each with its own cold module cache.
+The first is the server asking as nobody, which is what ships and what the recording is.
+The second is the same binary with `ZOU_MODULE_AGENT=deno`, which is a knob now rather than a binary built to send the header, so anybody holding a release can repeat this.
+
+The first column is the recording, name for name and status for status: `compare.mjs` says nothing moved.
+34 of 40 ran.
+
+The second ran 27, and the seven it does not run are the same seven names as before.
+Every one of them got past the module it used to stop at and stopped at the next one:
+
+```
+elevenlabs-speech-to-text    node:child_process     ->  node:http
+elevenlabs-text-to-speech    node:child_process     ->  node:http
+puppeteer                    node:child_process     ->  node:readline
+send-email-smtp              node:child_process     ->  node:http
+sentry                       node:diagnostics_channel -> node:async_hooks
+sentryfied                   node:diagnostics_channel -> node:async_hooks
+auth-hook-react-email-resend node:module            ->  node:v8
+```
+
+`drizzle` is an eighth name worth reading, and it does not change the count: it fails on `node:net` here where the browser build fails on an export the registry's build does not carry, so it does not run either way for a different reason on each side.
+
+So the honest reading of the five is that they were necessary and are nowhere near sufficient, and the flip still waits.
+The next tier is a different kind of work than the last one was.
+`node:async_hooks` is an async local storage that has to survive a promise chain, and `node:http` and `node:net` are a client and a server against a socket api, which is a real surface rather than a shim that answers what is true.
+Two of the five are small, `node:readline` over a stream and `node:v8` for `serialize` and `deserialize`, and neither of them alone moves a name.
+
+One thing that had nothing to do with the built ins came out of the same afternoon, and it is the reason the first attempt at this run was thrown away.
+Every one of the forty answered 500 with `Network is unreachable` out of the module loader while `curl` to the same url in the same shell was a 200.
+The loader opens its own sockets so that an abort can reach them, and its walk over the addresses a name resolved to moved on only when one of them was refused.
+esm.sh has an AAAA and an A record, the box has a v6 default route with nothing behind it, and the address that would have served everything was never tried.
+The fix also had to put the connect budget back to being split between the addresses, because the second shape of the same bug is a route that blackholes instead of refusing and spends the whole call's thirty seconds on the address that was never going to answer.
+Both are tamnd/zou#632.
