@@ -248,3 +248,48 @@ The loader opens its own sockets so that an abort can reach them, and its walk o
 esm.sh has an AAAA and an A record, the box has a v6 default route with nothing behind it, and the address that would have served everything was never tried.
 The fix also had to put the connect budget back to being split between the addresses, because the second shape of the same bug is a route that blackholes instead of refusing and spends the whole call's thirty seconds on the address that was never going to answer.
 Both are tamnd/zou#632.
+
+## What the tarball path answers, which is not yet the default
+
+`ZOU_NPM=tarball` makes an `npm:` specifier mean the tarball npm publishes rather than a url on esm.sh, and a `jsr:` one mean the files jsr publishes.
+That is a different runtime to be, so the question of whether it becomes the default is a question for this corpus rather than for an argument, and this is the run that asks it.
+
+Two columns on 2026-08-24, one box, one binary, back to back, each with its own cold module cache.
+The first is what ships, `npm:` meaning esm.sh.
+The second is the same binary with `ZOU_NPM=tarball` in its environment.
+
+The first column ran 29 and the second ran 19, so the default does not move.
+
+The box has to be part of that sentence.
+It was somebody else's working machine with a load average around twenty, and five names in each column came back 546, which is the host saying a function spent more than the two seconds of cpu it is allowed against a cold module graph.
+Five in the first column and five in the second, and not the same five.
+On a quiet box the first column is the recording, which is 34.
+So the honest reading is a ten name gap rather than two exact numbers, and every one of the ten has a reason in the log.
+
+The reasons group into six, and they are what the tarball path has left to do rather than a verdict on it:
+
+```
+a bare built in name inside a package      drizzle, og-image-with-storage-cdn, tweet-to-image,
+                                           send-email-smtp, telegram-bot
+a module read as a script                  sentry, sentryfied, stripe-webhooks
+a package read before it finished landing  elevenlabs-speech-to-text, simple-mcp-server
+a built in this runtime does not have      slack-bot-mention (zlib), puppeteer (readline)
+a package with no main and no index        elevenlabs-text-to-speech
+the unpacking billed to the function       the whole column
+```
+
+The first is the largest and the plainest.
+`postgres/src/index.js` writes `import os from 'os'`, and node resolves a bare name that is a core module to the core module without asking the package's manifest about it.
+This asked the manifest, so five names stopped at `Relative import path "os" not prefixed with / or ./ or ../` or at `require("http"): http is imported here and this package does not depend on it`.
+
+The second is a file this decided was commonjs that is not.
+`sentry` and `sentryfied` stop at `SyntaxError: Unexpected token 'export'` and `stripe-webhooks` at `Cannot use import statement outside a module`, which are both the same mistake seen from either side.
+
+The third is two packages that were read out of the cache while they were still being written into it: `@supabase/supabase-js@2.112.4 could not be unpacked: No such file or directory` and `hono/4.13.4/package.json: No such file or directory`, on a graph where a dozen loads are in the air at once.
+
+The sixth is not a failure and is the one to watch.
+Unpacking a tarball, reading a manifest and parsing a script all happen while the function's own cpu budget is running, so the tarball column pays for the package on the first call in a way the registry column does not.
+Five of its 546s are that.
+
+The reference column was not started for this run and the recording it holds is unchanged.
+Nothing in this moves what ships: `ZOU_NPM` stays off, and the corpus gets asked again when the six above are fewer.
