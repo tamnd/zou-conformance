@@ -6,7 +6,8 @@
     "The writing cases only touch conformance.scratch, which nothing reads, so they cannot move a later answer.",
     "Nothing here sends no key at all: refusing that is the gateway in front of PostgREST rather than PostgREST, so a recording taken from PostgREST would be the wrong answer to keep.",
     "The root of the REST surface is left out for the same reason it is not diffable: the OpenAPI document names the server it came from.",
-    "There is a 'user' here and no case sends the 'user' key. It is the person the four token cases are minted for: PostgREST reads the role out of a token and nothing else about who it names, so no row has to exist for one, and what the cases are about is the time claims rather than the person."
+    "There is a 'user' here and no case sends the 'user' key. It is the person the four token cases are minted for: PostgREST reads the role out of a token and nothing else about who it names, so no row has to exist for one, and what the cases are about is the time claims rather than the person.",
+    "The aggregate cases need db-aggregates-enabled on the reference, the same as the derived suite does. zou has no such switch and cannot be configured to refuse an aggregate, so a reference with the flag off would be answering a question about the flag rather than about the surface."
   ],
   "user": {
     "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
@@ -238,6 +239,42 @@
       "path": "/rest/v1/projects?select=id,people(id)"
     },
     {
+      "name": "an aggregate over a whole table",
+      "feature": "aggregate",
+      "path": "/rest/v1/tasks?select=count()"
+    },
+    {
+      "name": "an aggregate grouped by the column beside it",
+      "feature": "aggregate",
+      "path": "/rest/v1/tasks?select=project_id,rank.sum()&order=project_id"
+    },
+    {
+      "name": "an aggregate beside the row on the other end of a foreign key",
+      "feature": "aggregate",
+      "path": "/rest/v1/tasks?select=project_id,rank.sum(),projects(name)&order=project_id",
+      "note": "an embed is a group key, and a group key needs an equality operator, which json has and jsonb has: this is the shape #165 broke"
+    },
+    {
+      "name": "a count beside the row on the other end of a foreign key",
+      "feature": "aggregate",
+      "path": "/rest/v1/tasks?select=id,projects(name),count()&order=id"
+    },
+    {
+      "name": "an aggregate beside the rows that point back",
+      "feature": "aggregate",
+      "path": "/rest/v1/projects?select=id,budget.sum(),tasks(title)&tasks.order=title&order=id"
+    },
+    {
+      "name": "an aggregate inside the rows that point back",
+      "feature": "aggregate",
+      "path": "/rest/v1/projects?select=name,tasks(rank.sum())&order=id"
+    },
+    {
+      "name": "an aggregate beside a spread",
+      "feature": "aggregate",
+      "path": "/rest/v1/tasks?select=rank.sum(),...projects(name)&order=projects(name)"
+    },
+    {
       "name": "a row put in and handed back",
       "feature": "insert",
       "method": "POST",
@@ -449,6 +486,37 @@
       "name": "a column nobody has, in the order",
       "feature": "error",
       "path": "/rest/v1/tasks?order=nope"
+    },
+    {
+      "name": "a bracket inside a name in an embed",
+      "feature": "error",
+      "path": "/rest/v1/tasks?select=id,projects(name[])",
+      "note": "pFieldName upstream, and the six cases from here down are the ones crates/zou-rest/tests/upstream_errors.rs names and does not check: the two ends read the same input differently, so what each says is worth writing down"
+    },
+    {
+      "name": "a hint hung off a star",
+      "feature": "error",
+      "path": "/rest/v1/tasks?select=*!hint"
+    },
+    {
+      "name": "a json path on the name of an embed",
+      "feature": "error",
+      "path": "/rest/v1/tasks?select=projects->name(*)"
+    },
+    {
+      "name": "a json path on the name of a spread embed",
+      "feature": "error",
+      "path": "/rest/v1/tasks?select=...projects->name(*)"
+    },
+    {
+      "name": "two columns inside an order on an embed",
+      "feature": "error",
+      "path": "/rest/v1/tasks?order=projects(name,id)"
+    },
+    {
+      "name": "a spread embed under another name",
+      "feature": "error",
+      "path": "/rest/v1/tasks?select=alias:...projects(*)"
     },
     {
       "name": "a table in another schema, named in a header",
