@@ -23,5 +23,40 @@
   {
     "name": "a spread embed under another name",
     "why": "Both refuse with PGRST100 at the same character. Upstream's list of what it would have taken names the colon its alias branch could still have taken and zou's does not, so the two messages differ by three words. tamnd/zou#167."
+  },
+  {
+    "name": "an aggregate over a whole table",
+    "why": "The PostgREST the CLI starts is given no db-aggregates-enabled, so it keeps the default and refuses every aggregate with PGRST123, where zou has no such switch and answers. Only known against that stack: the recording is taken from a reference with the flag on, and it still holds zou to the rows. packages/stack/src/services/postgrest.ts in supabase/cli is the whole list of what that container is configured with. tamnd/zou#555.",
+    "against": "supabase start"
+  },
+  {
+    "name": "an aggregate grouped by the column beside it",
+    "why": "The PostgREST the CLI starts is given no db-aggregates-enabled, so it keeps the default and refuses every aggregate with PGRST123, where zou has no such switch and answers. Only known against that stack: the recording is taken from a reference with the flag on, and it still holds zou to the rows. packages/stack/src/services/postgrest.ts in supabase/cli is the whole list of what that container is configured with. tamnd/zou#555.",
+    "against": "supabase start"
+  },
+  {
+    "name": "an aggregate beside the row on the other end of a foreign key",
+    "why": "The PostgREST the CLI starts is given no db-aggregates-enabled, so it keeps the default and refuses every aggregate with PGRST123, where zou has no such switch and answers. Only known against that stack: the recording is taken from a reference with the flag on, and it still holds zou to the rows. packages/stack/src/services/postgrest.ts in supabase/cli is the whole list of what that container is configured with. tamnd/zou#555.",
+    "against": "supabase start"
+  },
+  {
+    "name": "a count beside the row on the other end of a foreign key",
+    "why": "The PostgREST the CLI starts is given no db-aggregates-enabled, so it keeps the default and refuses every aggregate with PGRST123, where zou has no such switch and answers. Only known against that stack: the recording is taken from a reference with the flag on, and it still holds zou to the rows. packages/stack/src/services/postgrest.ts in supabase/cli is the whole list of what that container is configured with. tamnd/zou#555.",
+    "against": "supabase start"
+  },
+  {
+    "name": "an aggregate beside the rows that point back",
+    "why": "The PostgREST the CLI starts is given no db-aggregates-enabled, so it keeps the default and refuses every aggregate with PGRST123, where zou has no such switch and answers. Only known against that stack: the recording is taken from a reference with the flag on, and it still holds zou to the rows. packages/stack/src/services/postgrest.ts in supabase/cli is the whole list of what that container is configured with. tamnd/zou#555.",
+    "against": "supabase start"
+  },
+  {
+    "name": "an aggregate inside the rows that point back",
+    "why": "The PostgREST the CLI starts is given no db-aggregates-enabled, so it keeps the default and refuses every aggregate with PGRST123, where zou has no such switch and answers. Only known against that stack: the recording is taken from a reference with the flag on, and it still holds zou to the rows. packages/stack/src/services/postgrest.ts in supabase/cli is the whole list of what that container is configured with. tamnd/zou#555.",
+    "against": "supabase start"
+  },
+  {
+    "name": "an aggregate beside a spread",
+    "why": "The PostgREST the CLI starts is given no db-aggregates-enabled, so it keeps the default and refuses every aggregate with PGRST123, where zou has no such switch and answers. Only known against that stack: the recording is taken from a reference with the flag on, and it still holds zou to the rows. packages/stack/src/services/postgrest.ts in supabase/cli is the whole list of what that container is configured with. tamnd/zou#555.",
+    "against": "supabase start"
   }
 ]
