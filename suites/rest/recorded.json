@@ -1189,6 +1189,229 @@
       }
     },
     {
+      "name": "an aggregate over a whole table",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-0/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "count": 5
+        }
+      ]
+    },
+    {
+      "name": "an aggregate grouped by the column beside it",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "project_id": 1,
+          "sum": 3
+        },
+        {
+          "project_id": 2,
+          "sum": 3
+        },
+        {
+          "project_id": 3,
+          "sum": 1
+        }
+      ],
+      "raw": "[{\"project_id\":1,\"sum\":3}, \n {\"project_id\":2,\"sum\":3}, \n {\"project_id\":3,\"sum\":1}]"
+    },
+    {
+      "name": "an aggregate beside the row on the other end of a foreign key",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "project_id": 1,
+          "projects": {
+            "name": "orbit"
+          },
+          "sum": 3
+        },
+        {
+          "project_id": 2,
+          "projects": {
+            "name": "anvil"
+          },
+          "sum": 3
+        },
+        {
+          "project_id": 3,
+          "projects": {
+            "name": "kite"
+          },
+          "sum": 1
+        }
+      ],
+      "raw": "[{\"project_id\":1,\"sum\":3,\"projects\":{\"name\": \"orbit\"}}, \n {\"project_id\":2,\"sum\":3,\"projects\":{\"name\": \"anvil\"}}, \n {\"project_id\":3,\"sum\":1,\"projects\":{\"name\": \"kite\"}}]"
+    },
+    {
+      "name": "a count beside the row on the other end of a foreign key",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-4/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "count": 1,
+          "id": 1,
+          "projects": {
+            "name": "orbit"
+          }
+        },
+        {
+          "count": 1,
+          "id": 2,
+          "projects": {
+            "name": "orbit"
+          }
+        },
+        {
+          "count": 1,
+          "id": 3,
+          "projects": {
+            "name": "orbit"
+          }
+        },
+        {
+          "count": 1,
+          "id": 4,
+          "projects": {
+            "name": "anvil"
+          }
+        },
+        {
+          "count": 1,
+          "id": 5,
+          "projects": {
+            "name": "kite"
+          }
+        }
+      ],
+      "raw": "[{\"id\":1,\"count\":1,\"projects\":{\"name\": \"orbit\"}}, \n {\"id\":2,\"count\":1,\"projects\":{\"name\": \"orbit\"}}, \n {\"id\":3,\"count\":1,\"projects\":{\"name\": \"orbit\"}}, \n {\"id\":4,\"count\":1,\"projects\":{\"name\": \"anvil\"}}, \n {\"id\":5,\"count\":1,\"projects\":{\"name\": \"kite\"}}]"
+    },
+    {
+      "name": "an aggregate beside the rows that point back",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "id": 1,
+          "sum": 1200.5,
+          "tasks": [
+            {
+              "title": "draw the map"
+            },
+            {
+              "title": "name the roads"
+            },
+            {
+              "title": "walk them"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "sum": null,
+          "tasks": [
+            {
+              "title": "sharpen"
+            }
+          ]
+        },
+        {
+          "id": 3,
+          "sum": 30.0,
+          "tasks": [
+            {
+              "title": "fly it"
+            }
+          ]
+        }
+      ],
+      "raw": "[{\"id\":1,\"sum\":1200.50,\"tasks\":[{\"title\": \"draw the map\"}, {\"title\": \"name the roads\"}, {\"title\": \"walk them\"}]}, \n {\"id\":2,\"sum\":null,\"tasks\":[{\"title\": \"sharpen\"}]}, \n {\"id\":3,\"sum\":30.00,\"tasks\":[{\"title\": \"fly it\"}]}]"
+    },
+    {
+      "name": "an aggregate inside the rows that point back",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "orbit",
+          "tasks": [
+            {
+              "sum": 3
+            }
+          ]
+        },
+        {
+          "name": "anvil",
+          "tasks": [
+            {
+              "sum": 3
+            }
+          ]
+        },
+        {
+          "name": "kite",
+          "tasks": [
+            {
+              "sum": 1
+            }
+          ]
+        }
+      ],
+      "raw": "[{\"name\":\"orbit\",\"tasks\":[{\"sum\": 3}]}, \n {\"name\":\"anvil\",\"tasks\":[{\"sum\": 3}]}, \n {\"name\":\"kite\",\"tasks\":[{\"sum\": 1}]}]"
+    },
+    {
+      "name": "an aggregate beside a spread",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-2/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "name": "anvil",
+          "sum": 3
+        },
+        {
+          "name": "kite",
+          "sum": 1
+        },
+        {
+          "name": "orbit",
+          "sum": 3
+        }
+      ],
+      "raw": "[{\"sum\":3,\"name\":\"anvil\"}, \n {\"sum\":1,\"name\":\"kite\"}, \n {\"sum\":3,\"name\":\"orbit\"}]"
+    },
+    {
       "name": "a row put in and handed back",
       "status": 201,
       "headers": {
@@ -1585,6 +1808,162 @@
         "details": null,
         "hint": "Perhaps you meant to reference the column \"tasks.done\".",
         "message": "column tasks.nope does not exist"
+      }
+    },
+    {
+      "name": "a bracket inside a name in an embed",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST100",
+        "details": "unexpected '[' expecting letter, digit, \"-\", \"->>\", \"->\", \"::\", \".\", \")\", \",\" or end of input",
+        "hint": null,
+        "message": "\"failed to parse select parameter (id,projects(name[]))\" (line 1, column 17)"
+      }
+    },
+    {
+      "name": "a hint hung off a star",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-4/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "done": true,
+          "due": "2024-01-05",
+          "id": 1,
+          "project_id": 1,
+          "rank": 2,
+          "title": "draw the map"
+        },
+        {
+          "done": false,
+          "due": "2024-02-11",
+          "id": 2,
+          "project_id": 1,
+          "rank": 1,
+          "title": "name the roads"
+        },
+        {
+          "done": false,
+          "due": null,
+          "id": 3,
+          "project_id": 1,
+          "rank": null,
+          "title": "walk them"
+        },
+        {
+          "done": true,
+          "due": "2023-12-24",
+          "id": 4,
+          "project_id": 2,
+          "rank": 3,
+          "title": "sharpen"
+        },
+        {
+          "done": false,
+          "due": "2024-06-30",
+          "id": 5,
+          "project_id": 3,
+          "rank": 1,
+          "title": "fly it"
+        }
+      ],
+      "raw": "[{\"id\":1,\"project_id\":1,\"title\":\"draw the map\",\"done\":true,\"rank\":2,\"due\":\"2024-01-05\"}, \n {\"id\":2,\"project_id\":1,\"title\":\"name the roads\",\"done\":false,\"rank\":1,\"due\":\"2024-02-11\"}, \n {\"id\":3,\"project_id\":1,\"title\":\"walk them\",\"done\":false,\"rank\":null,\"due\":null}, \n {\"id\":4,\"project_id\":2,\"title\":\"sharpen\",\"done\":true,\"rank\":3,\"due\":\"2023-12-24\"}, \n {\"id\":5,\"project_id\":3,\"title\":\"fly it\",\"done\":false,\"rank\":1,\"due\":\"2024-06-30\"}]"
+    },
+    {
+      "name": "a json path on the name of an embed",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST100",
+        "details": "unexpected '(' expecting \"-\", \"->>\", \"->\", \"::\", \".\", \")\", \",\" or end of input",
+        "hint": null,
+        "message": "\"failed to parse select parameter (projects->name(*))\" (line 1, column 15)"
+      }
+    },
+    {
+      "name": "a json path on the name of a spread embed",
+      "status": 200,
+      "headers": {
+        "content-profile": "conformance",
+        "content-range": "0-4/*",
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": [
+        {
+          "done": true,
+          "due": "2024-01-05",
+          "id": 1,
+          "project_id": 1,
+          "rank": 2,
+          "title": "draw the map"
+        },
+        {
+          "done": false,
+          "due": "2024-02-11",
+          "id": 2,
+          "project_id": 1,
+          "rank": 1,
+          "title": "name the roads"
+        },
+        {
+          "done": false,
+          "due": null,
+          "id": 3,
+          "project_id": 1,
+          "rank": null,
+          "title": "walk them"
+        },
+        {
+          "done": true,
+          "due": "2023-12-24",
+          "id": 4,
+          "project_id": 2,
+          "rank": 3,
+          "title": "sharpen"
+        },
+        {
+          "done": false,
+          "due": "2024-06-30",
+          "id": 5,
+          "project_id": 3,
+          "rank": 1,
+          "title": "fly it"
+        }
+      ],
+      "raw": "[{\"id\":1,\"project_id\":1,\"title\":\"draw the map\",\"done\":true,\"rank\":2,\"due\":\"2024-01-05\"}, \n {\"id\":2,\"project_id\":1,\"title\":\"name the roads\",\"done\":false,\"rank\":1,\"due\":\"2024-02-11\"}, \n {\"id\":3,\"project_id\":1,\"title\":\"walk them\",\"done\":false,\"rank\":null,\"due\":null}, \n {\"id\":4,\"project_id\":2,\"title\":\"sharpen\",\"done\":true,\"rank\":3,\"due\":\"2023-12-24\"}, \n {\"id\":5,\"project_id\":3,\"title\":\"fly it\",\"done\":false,\"rank\":1,\"due\":\"2024-06-30\"}]"
+    },
+    {
+      "name": "two columns inside an order on an embed",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST100",
+        "details": "unexpected '(' expecting letter, digit, \"-\", \"->>\", \"->\", delimiter (.), \",\" or end of input",
+        "hint": null,
+        "message": "\"failed to parse order (projects(name,id))\" (line 1, column 9)"
+      }
+    },
+    {
+      "name": "a spread embed under another name",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json; charset=utf-8"
+      },
+      "body": {
+        "code": "PGRST100",
+        "details": "unexpected \".\" expecting \":\" or field name (* or [a..z0..9_$])",
+        "hint": null,
+        "message": "\"failed to parse select parameter (alias:...projects(*))\" (line 1, column 7)"
       }
     },
     {
