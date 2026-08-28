@@ -342,6 +342,15 @@ wasm-modules                  reads add-wasm/pkg/add_wasm.js, which the corpus s
 `slack-bot-mention` is worth one more line, because it is the first name the tarball column serves that neither registry column can.
 esm.sh answers 500 for `@slack/web-api` whichever build is asked for, and the tarball is npm's own bytes, so the package loads and the function prints that it is up before it reads a field off a body the probe was never going to send.
 
+## So the default moved
+
+tamnd/zou#596 opened on the three names the registry could not serve and asked for a resolver that does not need it, and the count above is the answer to the question it was opened with.
+`ZOU_NPM` no longer has to be set: an `npm:` import is the tarball and a `jsr:` one is the files jsr publishes, and `ZOU_NPM=registry` is the escape hatch back to esm.sh.
+
+One name is worth saying plainly about a margin of one.
+The tarball column is ahead on `slack-bot-mention` and on `simple-mcp-server`, and neither of those is a thing the registry columns could be fixed into serving: esm.sh answers 500 for `@slack/web-api` whichever build is asked for, and the mcp sdk asks the registry's build of `zod/v4` for an export that build does not carry.
+The registry columns are ahead on nothing that is not somebody's network on the day.
+
 ## What no local project can have
 
 Two of the forty want a credential that is not a secret somebody forgot to set, and they are worth naming so nobody spends an afternoon on them.
