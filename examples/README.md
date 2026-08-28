@@ -293,3 +293,63 @@ Five of its 546s are that.
 
 The reference column was not started for this run and the recording it holds is unchanged.
 Nothing in this moves what ships: `ZOU_NPM` stays off, and the corpus gets asked again when the six above are fewer.
+
+## The six are fewer, and the three columns are within one of each other
+
+Asked again on 2026-08-28, one box, one binary, three columns back to back, each with its own cold module cache: the registry as nobody, the registry as Deno, and the tarball.
+
+The count here is a different one and the two should not be put in the same table.
+A function is counted loaded when the probe's answer is not a 500 and not a connection failure, which is stricter than the ran metric this file uses everywhere above.
+A function whose own library refuses for want of an api key ran, by the definition at the top, and answers 500, so it is not counted loaded.
+
+```
+browser   25 of 40
+deno      25 of 40
+tarball   26 of 40
+```
+
+The tarball column is the one to read, because it was ten names behind in August and is now one name ahead.
+What moved it is `process.env`, `node:perf_hooks`, `Buffer` as a global and a package reading its own files, then `node:punycode`, a `node:http2` that exists in order to refuse at the call, and `import.meta.resolve` answering a file rather than the range it was asked for.
+
+All six reasons the 2026-08-24 run listed are gone from the log.
+A bare built in name inside a package resolves to the built in, a module is read as what it is rather than as a script, a package is not read while it is still landing, a package with no main and no index finds its entry, and none of the forty came back 546 on any of the three columns, so the unpacking is no longer taking the function's whole cpu budget with it.
+That last one is a hundred and sixty asks with no 546 in them, against five in one column in August.
+
+Eight of the fourteen the tarball column answers 500 for are the function's own decision with the graph up and running:
+
+```
+background-upload-storage   Missing credentials
+drizzle                     Failed query, there is no database behind it
+elevenlabs-speech-to-text   Empty token
+elevenlabs-text-to-speech   please pass in your ElevenLabs API key
+postgres-on-the-edge        connecting to 127.0.0.1:54322, connection refused
+slack-bot-mention           the probe body is not a slack event
+stripe-webhooks             neither apiKey nor config.authenticator provided
+telegram-bot                Empty token
+```
+
+Six do not load, and two of those were the network on the day rather than the runtime:
+
+```
+auth-hook-react-email-resend  registry.npmjs.org reset the connection
+discord-bot                   cdn.skypack.dev/http-cache-semantics?dts is not identified as a module
+file-upload-storage           npm:supabase-js@2, and npm's supabase-js has no 2
+image-manipulation            magick-wasm 0.0.43 ships the wasm under dist/x64, not beside its entry
+kysely-postgres               deno.land reset the connection, and the paragraph below when it does not
+wasm-modules                  reads add-wasm/pkg/add_wasm.js, which the corpus ships a build script for and not the file
+```
+
+`slack-bot-mention` is worth one more line, because it is the first name the tarball column serves that neither registry column can.
+esm.sh answers 500 for `@slack/web-api` whichever build is asked for, and the tarball is npm's own bytes, so the package loads and the function prints that it is up before it reads a field off a body the probe was never going to send.
+
+## What no local project can have
+
+Two of the forty want a credential that is not a secret somebody forgot to set, and they are worth naming so nobody spends an afternoon on them.
+
+`kysely-postgres` reads `DB_HOSTNAME`, `DB_USER`, `DB_PASSWORD` and `DB_SSL_CERT`, hardcodes port 6543, and hands the driver a `tls` object unconditionally.
+That is Supabase's pooler with a project's own CA certificate, and 6543 is the pooler's port rather than postgres's.
+With no hostname and no `PGHOST`, `deno-postgres` v0.17.0 defaults the host type to `socket` and then refuses the pair, `No TLS options are allowed when host type is set to "socket"`, from `new Pool` at module scope.
+There is no local endpoint that satisfies it and no runtime change that makes it connect, on any column.
+
+`wasm-modules` imports `add-wasm/pkg/add_wasm.js`, which `wasm-pack` writes and which is not in the checkout, so there is nothing to load on either server.
+That one is already in the file above and belongs in the same list: it is the corpus, not the runtime.
