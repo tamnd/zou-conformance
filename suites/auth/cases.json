@@ -210,6 +210,43 @@
       "headers": {"content-type": "application/json"},
       "body": "{\"refresh_token\":\"zouconform01\"}",
       "writes": true,
+      "holds": {"rotated": "body:/refresh_token"},
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/updated_at"
+      ]
+    },
+    {
+      "name": "spending the same refresh token again straight away",
+      "feature": "token.refresh",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform01\"}",
+      "note": "A token that was just spent is spent again, which is a client that retried rather than an attacker replaying one. Upstream answers it inside a reuse window and hands back the same child instead of revoking the session, and this asks for that. The window is ten seconds by default and two requests in a row are milliseconds apart, so the case is not asking about the clock, but it is the one case here that would answer differently if a run were paused in the middle of it.",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/updated_at"
+      ]
+    },
+    {
+      "name": "spending the token the refresh answered with",
+      "feature": "token.refresh",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"{rotated}\"}",
+      "note": "The rotation, asked from outside. Nothing here can name the token the server minted, so the case before it holds one and this one spends it, which is the whole of what a client does with the answer.",
+      "writes": true,
+      "chained": true,
       "volatile": [
         "/access_token",
         "/refresh_token",
@@ -435,12 +472,64 @@
       "writes": true
     },
     {
+      "name": "the access token after a logout with no scope",
+      "feature": "logout",
+      "method": "GET",
+      "path": "/auth/v1/user",
+      "key": "user"
+    },
+    {
+      "name": "another session of the same person after a logout with no scope",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform03\"}",
+      "writes": true,
+      "chained": true
+    },
+    {
       "name": "ending every session the person has",
       "feature": "logout",
       "method": "POST",
       "path": "/auth/v1/logout?scope=global",
       "key": "user",
       "writes": true
+    },
+    {
+      "name": "this session's refresh token after a global logout",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform01\"}",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "another session's refresh token after a global logout",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform03\"}",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "somebody else's refresh token after a global logout",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform05\"}",
+      "writes": true,
+      "chained": true,
+      "volatile": ["/access_token", "/refresh_token", "/expires_at", "/user/updated_at"]
     },
     {
       "name": "ending the others and keeping this one",
@@ -451,12 +540,88 @@
       "writes": true
     },
     {
+      "name": "the access token after ending the others",
+      "feature": "logout",
+      "method": "GET",
+      "path": "/auth/v1/user",
+      "key": "user"
+    },
+    {
+      "name": "this session's refresh token after ending the others",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform01\"}",
+      "writes": true,
+      "chained": true,
+      "volatile": ["/access_token", "/refresh_token", "/expires_at", "/user/updated_at"]
+    },
+    {
+      "name": "another session's refresh token after ending the others",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform03\"}",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "ending only this session",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/logout?scope=local",
+      "key": "user",
+      "writes": true
+    },
+    {
+      "name": "the access token after ending only this session",
+      "feature": "logout",
+      "method": "GET",
+      "path": "/auth/v1/user",
+      "key": "user"
+    },
+    {
+      "name": "this session's refresh token after ending only this session",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform01\"}",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "another session's refresh token after ending only this session",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform03\"}",
+      "writes": true,
+      "chained": true,
+      "volatile": ["/access_token", "/refresh_token", "/expires_at", "/user/updated_at"]
+    },
+    {
       "name": "ending a session without a token",
       "feature": "logout",
       "method": "POST",
       "path": "/auth/v1/logout",
       "key": "anon",
       "headers": {"authorization": ""},
+      "writes": true
+    },
+    {
+      "name": "a logout scope nobody supports",
+      "feature": "logout",
+      "method": "POST",
+      "path": "/auth/v1/logout?scope=bogus",
+      "key": "user",
       "writes": true
     },
 

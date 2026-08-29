@@ -175,6 +175,108 @@ insert into auth.refresh_tokens (
   '2026-01-01 00:00:15+00'
 );
 
+-- Two more sessions for the first person and one for the second, so
+-- that a logout has something to be narrow about. With a single session
+-- in the database every scope does the same thing and the answer is 204
+-- either way, and the difference between them is which rows are still
+-- there afterwards.
+--
+-- Nothing reads these over http directly. What reads them is the
+-- refresh token hanging off each one, which is the only way to ask from
+-- outside whether a session is still alive: a session that was deleted
+-- takes its refresh tokens with it, and spending one afterwards is the
+-- question 'is it still there' with an answer a case can compare.
+--
+-- The one on the second account is there so that a global logout has
+-- somebody to leave alone. A logout that deleted every session in the
+-- database would pass every case that only looks at the person doing
+-- it.
+insert into auth.sessions (
+  id, user_id, created_at, updated_at, aal, not_after
+) values (
+  'b8c6d219-3a75-4f08-94e2-7d1b0f8c3e56',
+  'f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60',
+  '2026-01-01 00:00:23+00',
+  '2026-01-01 00:00:24+00',
+  'aal1',
+  null
+), (
+  'c9d7e320-4b86-4a19-a5f3-8e2c1a9d4f67',
+  'f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60',
+  '2026-01-01 00:00:27+00',
+  '2026-01-01 00:00:28+00',
+  'aal1',
+  null
+), (
+  'd0e8f431-5c97-4b20-b604-9f3d2b0e5a78',
+  'b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51',
+  '2026-01-02 00:00:08+00',
+  '2026-01-02 00:00:09+00',
+  'aal1',
+  null
+);
+
+-- One claim each, the same shape the first session has, so that a
+-- refresh spent against any of them mints the same kind of token and a
+-- difference between two of these cases is about the session rather
+-- than about how it says it was authenticated.
+insert into auth.mfa_amr_claims (
+  id, session_id, authentication_method, created_at, updated_at
+) values (
+  '5b8e3a72-9d40-4f16-a3b8-1e7f2a4d6c03',
+  'b8c6d219-3a75-4f08-94e2-7d1b0f8c3e56',
+  'password',
+  '2026-01-01 00:00:25+00',
+  '2026-01-01 00:00:26+00'
+), (
+  '6c9f4b83-0e51-4a27-b4c9-2f8a3b5e7d14',
+  'c9d7e320-4b86-4a19-a5f3-8e2c1a9d4f67',
+  'password',
+  '2026-01-01 00:00:29+00',
+  '2026-01-01 00:00:30+00'
+), (
+  '7d0a5c94-1f62-4b38-85da-3a9b4c6f8e25',
+  'd0e8f431-5c97-4b20-b604-9f3d2b0e5a78',
+  'password',
+  '2026-01-02 00:00:10+00',
+  '2026-01-02 00:00:11+00'
+);
+
+-- One live refresh token per extra session. These are what the cases
+-- after a logout spend, and which of them still answers is the whole of
+-- what the scopes differ by.
+insert into auth.refresh_tokens (
+  instance_id, token, user_id, session_id, revoked, parent,
+  created_at, updated_at
+) values (
+  '00000000-0000-0000-0000-000000000000',
+  'zouconform03',
+  'f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60',
+  'b8c6d219-3a75-4f08-94e2-7d1b0f8c3e56',
+  false,
+  '',
+  '2026-01-01 00:00:31+00',
+  '2026-01-01 00:00:32+00'
+), (
+  '00000000-0000-0000-0000-000000000000',
+  'zouconform04',
+  'f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60',
+  'c9d7e320-4b86-4a19-a5f3-8e2c1a9d4f67',
+  false,
+  '',
+  '2026-01-01 00:00:33+00',
+  '2026-01-01 00:00:34+00'
+), (
+  '00000000-0000-0000-0000-000000000000',
+  'zouconform05',
+  'b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51',
+  'd0e8f431-5c97-4b20-b604-9f3d2b0e5a78',
+  false,
+  '',
+  '2026-01-02 00:00:12+00',
+  '2026-01-02 00:00:13+00'
+);
+
 -- Three entries in the audit trail, so that the listing has something
 -- to page through, something to filter out, and both shapes of actor.
 --
