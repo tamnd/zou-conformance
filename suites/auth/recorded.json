@@ -3596,6 +3596,420 @@
         "error_code": "not_admin",
         "msg": "User not allowed"
       }
+    },
+    {
+      "name": "a code grant with nothing in the body",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "invalid request: both auth code and code verifier should be non-empty"
+      }
+    },
+    {
+      "name": "a code with no verifier behind it",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "invalid request: both auth code and code verifier should be non-empty"
+      }
+    },
+    {
+      "name": "a verifier with no code in front of it",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "invalid request: both auth code and code verifier should be non-empty"
+      }
+    },
+    {
+      "name": "a code nobody issued",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "flow_state_not_found",
+        "msg": "invalid flow state, no valid flow state found"
+      }
+    },
+    {
+      "name": "a code that is not a uuid",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "flow_state_not_found",
+        "msg": "invalid flow state, no valid flow state found"
+      }
+    },
+    {
+      "name": "a code on a flow state with nobody on it",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "flow_state_not_found",
+        "msg": "invalid flow state, no valid flow state found"
+      }
+    },
+    {
+      "name": "a code that has been sitting for more than five minutes",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "flow_state_expired",
+        "msg": "invalid flow state, flow state has expired"
+      }
+    },
+    {
+      "name": "a verifier that is not the one the challenge was made from",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "bad_code_verifier",
+        "msg": "code challenge does not match previously saved code verifier"
+      }
+    },
+    {
+      "name": "the plain method, where the verifier is the challenge",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {
+            "provider": "email",
+            "providers": [
+              "email"
+            ]
+          },
+          "aud": "authenticated",
+          "confirmed_at": "2026-01-01T00:00:01Z",
+          "created_at": "2026-01-01T00:00:03Z",
+          "email": "person@zou.test",
+          "email_confirmed_at": "2026-01-01T00:00:01Z",
+          "factors": [
+            {
+              "created_at": "2026-01-01T00:00:19Z",
+              "factor_type": "totp",
+              "friendly_name": "the-one-in-use",
+              "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+              "last_challenged_at": null,
+              "phone": "",
+              "status": "unverified",
+              "updated_at": "2026-01-01T00:00:20Z"
+            },
+            {
+              "created_at": "2026-01-01T00:00:21Z",
+              "factor_type": "totp",
+              "friendly_name": "the-one-half-set-up",
+              "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+              "last_challenged_at": null,
+              "phone": "",
+              "status": "unverified",
+              "updated_at": "2026-01-01T00:00:22Z"
+            }
+          ],
+          "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+          "identities": [
+            {
+              "created_at": "2026-01-01T00:00:06Z",
+              "email": "person@zou.test",
+              "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+              "identity_data": {
+                "email": "person@zou.test",
+                "email_verified": true,
+                "phone_verified": false,
+                "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+              },
+              "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+              "last_sign_in_at": "2026-01-01T00:00:05Z",
+              "provider": "email",
+              "updated_at": "2026-01-01T00:00:07Z",
+              "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            }
+          ],
+          "is_anonymous": false,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email": "person@zou.test",
+            "email_verified": true,
+            "phone_verified": false,
+            "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        }
+      }
+    },
+    {
+      "name": "the s256 method, where the challenge is the hash of the verifier",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {
+            "provider": "email",
+            "providers": [
+              "email"
+            ]
+          },
+          "aud": "authenticated",
+          "confirmed_at": "2026-01-01T00:00:01Z",
+          "created_at": "2026-01-01T00:00:03Z",
+          "email": "person@zou.test",
+          "email_confirmed_at": "2026-01-01T00:00:01Z",
+          "factors": [
+            {
+              "created_at": "2026-01-01T00:00:19Z",
+              "factor_type": "totp",
+              "friendly_name": "the-one-in-use",
+              "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+              "last_challenged_at": null,
+              "phone": "",
+              "status": "unverified",
+              "updated_at": "2026-01-01T00:00:20Z"
+            },
+            {
+              "created_at": "2026-01-01T00:00:21Z",
+              "factor_type": "totp",
+              "friendly_name": "the-one-half-set-up",
+              "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+              "last_challenged_at": null,
+              "phone": "",
+              "status": "unverified",
+              "updated_at": "2026-01-01T00:00:22Z"
+            }
+          ],
+          "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+          "identities": [
+            {
+              "created_at": "2026-01-01T00:00:06Z",
+              "email": "person@zou.test",
+              "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+              "identity_data": {
+                "email": "person@zou.test",
+                "email_verified": true,
+                "phone_verified": false,
+                "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+              },
+              "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+              "last_sign_in_at": "2026-01-01T00:00:05Z",
+              "provider": "email",
+              "updated_at": "2026-01-01T00:00:07Z",
+              "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            }
+          ],
+          "is_anonymous": false,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email": "person@zou.test",
+            "email_verified": true,
+            "phone_verified": false,
+            "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        }
+      }
+    },
+    {
+      "name": "the same code again straight after redeeming it",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "flow_state_not_found",
+        "msg": "invalid flow state, no valid flow state found"
+      }
+    },
+    {
+      "name": "a challenge with no method beside it",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "PKCE flow requires code_challenge_method and code_challenge"
+      }
+    },
+    {
+      "name": "a method with no challenge beside it",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "PKCE flow requires code_challenge_method and code_challenge"
+      }
+    },
+    {
+      "name": "a challenge one character short of the floor",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "code challenge has to be between 43 and 128 characters"
+      }
+    },
+    {
+      "name": "a challenge one character over the ceiling",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "code challenge has to be between 43 and 128 characters"
+      }
+    },
+    {
+      "name": "a challenge with characters the rule leaves out",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "code challenge can only contain alphanumeric characters, hyphens, periods, underscores and tildes"
+      }
+    },
+    {
+      "name": "a method nobody supports",
+      "status": 500,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 500,
+        "error_code": "unexpected_failure",
+        "msg": "Unexpected failure, please check server logs for more information"
+      }
+    },
+    {
+      "name": "the plain method spelled in capitals",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {}
+    },
+    {
+      "name": "a challenge a client could really come back for",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {}
+    },
+    {
+      "name": "the same rule on a signup",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "code challenge has to be between 43 and 128 characters"
+      }
+    },
+    {
+      "name": "the same rule on a one time password",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "code challenge has to be between 43 and 128 characters"
+      }
+    },
+    {
+      "name": "the same rule on a magic link",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "code challenge has to be between 43 and 128 characters"
+      }
+    },
+    {
+      "name": "the same rule on a mail sent again",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "code challenge has to be between 43 and 128 characters"
+      }
+    },
+    {
+      "name": "a challenge on a signup by phone",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "PKCE not supported for phone signups"
+      }
     }
   ]
 }
