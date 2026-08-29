@@ -23,6 +23,7 @@
 -- row behind, and the next run has to see the database the last one
 -- started with rather than the one it finished with. Order is the
 -- order the foreign keys allow.
+delete from auth.audit_log_entries;
 delete from auth.mfa_amr_claims;
 delete from auth.refresh_tokens;
 delete from auth.sessions;
@@ -183,4 +184,44 @@ insert into auth.refresh_tokens (
   'zouconform01',
   '2026-01-01 00:00:14+00',
   '2026-01-01 00:00:15+00'
+);
+
+-- Three entries in the audit trail, so that the listing has something
+-- to page through, something to filter out, and both shapes of actor.
+--
+-- The payload keys are written in the order Go writes them, which is
+-- alphabetical, because upstream reads the column into a map and
+-- marshals it out again and a map writes its keys sorted. The order is
+-- the answer's rather than the row's on both sides, but a row that
+-- already agrees is one less thing in a diff.
+--
+-- The third entry is an admin acting on somebody else's account. Its
+-- actor is the synthetic one upstream uses for that, the nil uuid under
+-- the name of the role, and its log_type is the other family, so the
+-- filter cases have a row to leave out as well as rows to find.
+--
+-- Only the second one has an empty ip_address, which is the column
+-- upstream leaves empty on everything except the factor and identity
+-- events, so the trail carries both a filled one and an empty one.
+insert into auth.audit_log_entries (instance_id, id, payload, created_at, ip_address) values
+(
+  '00000000-0000-0000-0000-000000000000',
+  '9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14',
+  '{"action":"login","actor_id":"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60","actor_username":"person@zou.test","actor_via_sso":false,"log_type":"account","traits":{"provider":"email"}}',
+  '2026-01-01 00:00:16+00',
+  '198.51.100.7'
+),
+(
+  '00000000-0000-0000-0000-000000000000',
+  'c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38',
+  '{"action":"logout","actor_id":"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60","actor_username":"person@zou.test","actor_via_sso":false,"log_type":"account"}',
+  '2026-01-01 00:00:17+00',
+  ''
+),
+(
+  '00000000-0000-0000-0000-000000000000',
+  '2d5e8b14-7c60-4f92-a3d8-5b1f0e9c7a26',
+  '{"action":"user_modified","actor_id":"00000000-0000-0000-0000-000000000000","actor_username":"service_role","actor_via_sso":false,"log_type":"team","traits":{"user_email":"person@zou.test","user_id":"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60","user_phone":""}}',
+  '2026-01-01 00:00:18+00',
+  ''
 );

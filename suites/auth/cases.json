@@ -809,6 +809,88 @@
       "headers": {"content-type": "application/json"},
       "body": "{\"email\":\"invited@zou.test\"}",
       "writes": true
+    },
+
+    {
+      "name": "the audit trail",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit",
+      "key": "service",
+      "note": "newest first, which is the only order this endpoint has"
+    },
+    {
+      "name": "the audit trail without the service role",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit",
+      "key": "anon"
+    },
+    {
+      "name": "the audit trail as the person themselves",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit",
+      "key": "user"
+    },
+    {
+      "name": "a page of the audit trail",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit?page=2&per_page=1",
+      "key": "service"
+    },
+    {
+      "name": "a page past the end of the audit trail",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit?page=99",
+      "key": "service"
+    },
+    {
+      "name": "the trail filtered by what happened",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit?query=action:login",
+      "key": "service"
+    },
+    {
+      "name": "the trail filtered by who did it",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit?query=author:person@zou.test",
+      "key": "service"
+    },
+    {
+      "name": "the trail filtered by the kind of event",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit?query=type:team",
+      "key": "service"
+    },
+    {
+      "name": "a filter that matches part of a word",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit?query=action:LOG",
+      "key": "service",
+      "note": "all three scopes match a substring and ignore case, so this finds the login and the logout and leaves the third entry out"
+    },
+    {
+      "name": "a filter with a scope but no colon",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit?query=login",
+      "key": "service"
+    },
+    {
+      "name": "a filter whose scope is not one",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit?query=nonsense:x",
+      "key": "service"
+    },
+    {
+      "name": "a page of the trail that is not a number",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit?page=abc",
+      "key": "service"
+    },
+    {
+      "name": "a sort the trail does not read",
+      "feature": "admin.audit",
+      "path": "/auth/v1/admin/audit?sort=bogus",
+      "key": "service",
+      "note": "the account listing refuses this and the trail ignores it, because upstream reads no sort on this endpoint at all"
     }
   ]
 }
