@@ -140,8 +140,7 @@
           "phone_verified": false,
           "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
         }
-      },
-      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"factors\":[{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null},{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}],\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+      }
     },
     {
       "name": "no token at all",
@@ -297,8 +296,7 @@
           "phone_verified": false,
           "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
         }
-      },
-      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"factors\":[{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null},{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}],\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+      }
     },
     {
       "name": "a token issued an hour from now",
@@ -370,8 +368,7 @@
           "phone_verified": false,
           "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
         }
-      },
-      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"factors\":[{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null},{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}],\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+      }
     },
     {
       "name": "a password sign in",
@@ -1519,8 +1516,7 @@
           "phone_verified": false,
           "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
         }
-      },
-      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"factors\":[{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null},{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}],\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+      }
     },
     {
       "name": "this session's refresh token after ending the others",
@@ -1980,6 +1976,569 @@
       }
     },
     {
+      "name": "enrolling a factor of a type nobody has",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "factor_type needs to be totp, phone, or webauthn"
+      }
+    },
+    {
+      "name": "enrolling a phone factor",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "mfa_phone_enroll_not_enabled",
+        "msg": "MFA enroll is disabled for Phone"
+      }
+    },
+    {
+      "name": "enrolling with no body at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "bad_json",
+        "msg": "Could not parse request body as JSON: unexpected end of JSON input"
+      }
+    },
+    {
+      "name": "challenging a factor without a token",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "no_authorization",
+        "msg": "This endpoint requires a valid Bearer token"
+      }
+    },
+    {
+      "name": "challenging a factor id that is not a uuid",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "validation_failed",
+        "msg": "factor_id must be an UUID"
+      }
+    },
+    {
+      "name": "challenging a factor nobody enrolled",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "mfa_factor_not_found",
+        "msg": "Factor not found"
+      }
+    },
+    {
+      "name": "verifying a factor without a token",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "no_authorization",
+        "msg": "This endpoint requires a valid Bearer token"
+      }
+    },
+    {
+      "name": "verifying with no body at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "bad_json",
+        "msg": "Could not parse request body as JSON: unexpected end of JSON input"
+      }
+    },
+    {
+      "name": "enrolling a factor",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "friendly_name": "the-new-one",
+        "id": "<uuid>",
+        "totp": {
+          "qr_code": "<string>",
+          "secret": "<string>",
+          "uri": "otpauth://totp/zou.test:person@zou.test?algorithm=SHA1&digits=6&issuer=zou.test&period=30&secret=<string>"
+        },
+        "type": "totp"
+      }
+    },
+    {
+      "name": "enrolling a factor under a name already in use",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "mfa_factor_name_conflict",
+        "msg": "A factor with the friendly name \"the-new-one\" for this user already exists"
+      }
+    },
+    {
+      "name": "challenging the factor just enrolled",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "expires_at": "<number>",
+        "id": "<uuid>",
+        "type": "totp"
+      }
+    },
+    {
+      "name": "verifying with a code that is not the one",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "mfa_verification_failed",
+        "msg": "Invalid TOTP code entered"
+      }
+    },
+    {
+      "name": "verifying against a challenge nobody made",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "mfa_factor_not_found",
+        "msg": "MFA factor with the provided challenge ID not found"
+      }
+    },
+    {
+      "name": "verifying with the code the secret is showing",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {
+            "provider": "email",
+            "providers": [
+              "email"
+            ]
+          },
+          "aud": "authenticated",
+          "confirmed_at": "2026-01-01T00:00:01Z",
+          "created_at": "2026-01-01T00:00:03Z",
+          "email": "person@zou.test",
+          "email_confirmed_at": "2026-01-01T00:00:01Z",
+          "factors": [
+            {
+              "created_at": "<timestamp>",
+              "factor_type": "totp",
+              "friendly_name": "the-new-one",
+              "id": "<uuid>",
+              "last_challenged_at": "<timestamp>",
+              "phone": "",
+              "status": "verified",
+              "updated_at": "<timestamp>"
+            }
+          ],
+          "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+          "identities": [
+            {
+              "created_at": "2026-01-01T00:00:06Z",
+              "email": "person@zou.test",
+              "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+              "identity_data": {
+                "email": "person@zou.test",
+                "email_verified": true,
+                "phone_verified": false,
+                "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+              },
+              "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+              "last_sign_in_at": "2026-01-01T00:00:05Z",
+              "provider": "email",
+              "updated_at": "2026-01-01T00:00:07Z",
+              "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            }
+          ],
+          "is_anonymous": false,
+          "last_sign_in_at": "2026-01-01T00:00:02Z",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email": "person@zou.test",
+            "email_verified": true,
+            "phone_verified": false,
+            "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        }
+      }
+    },
+    {
+      "name": "verifying against the same challenge twice",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "mfa_ip_address_mismatch",
+        "msg": "Challenge and verify IP addresses mismatch."
+      }
+    },
+    {
+      "name": "the account after the factor was verified",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "confirmed_at": "2026-01-01T00:00:01Z",
+        "created_at": "2026-01-01T00:00:03Z",
+        "email": "person@zou.test",
+        "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "<timestamp>",
+            "factor_type": "totp",
+            "friendly_name": "the-new-one",
+            "id": "<uuid>",
+            "last_challenged_at": "<timestamp>",
+            "phone": "",
+            "status": "verified",
+            "updated_at": "<timestamp>"
+          }
+        ],
+        "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+        "identities": [
+          {
+            "created_at": "2026-01-01T00:00:06Z",
+            "email": "person@zou.test",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identity_data": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            },
+            "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+            "last_sign_in_at": "2026-01-01T00:00:05Z",
+            "provider": "email",
+            "updated_at": "2026-01-01T00:00:07Z",
+            "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "2026-01-01T00:00:02Z",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email": "person@zou.test",
+          "email_verified": true,
+          "phone_verified": false,
+          "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+        }
+      }
+    },
+    {
+      "name": "another session of the same person after the factor was verified",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "refresh_token_not_found",
+        "msg": "Invalid Refresh Token: Refresh Token Not Found"
+      }
+    },
+    {
+      "name": "somebody else's session after the factor was verified",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {
+            "provider": "email",
+            "providers": [
+              "email"
+            ]
+          },
+          "aud": "authenticated",
+          "confirmed_at": "2026-01-02T00:00:01Z",
+          "created_at": "2026-01-02T00:00:03Z",
+          "email": "other@zou.test",
+          "email_confirmed_at": "2026-01-02T00:00:01Z",
+          "id": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51",
+          "identities": [
+            {
+              "created_at": "2026-01-02T00:00:06Z",
+              "email": "other@zou.test",
+              "id": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51",
+              "identity_data": {
+                "email": "other@zou.test",
+                "email_verified": true,
+                "phone_verified": false,
+                "sub": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51"
+              },
+              "identity_id": "2e5c9033-7d1f-4b80-ae64-9f3c1d2b7a48",
+              "last_sign_in_at": "2026-01-02T00:00:05Z",
+              "provider": "email",
+              "updated_at": "2026-01-02T00:00:07Z",
+              "user_id": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51"
+            }
+          ],
+          "is_anonymous": false,
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email": "other@zou.test",
+            "email_verified": true,
+            "phone_verified": false,
+            "sub": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51"
+          }
+        }
+      }
+    },
+    {
+      "name": "a sign in after a factor is verified",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {
+            "provider": "email",
+            "providers": [
+              "email"
+            ]
+          },
+          "aud": "authenticated",
+          "confirmed_at": "2026-01-01T00:00:01Z",
+          "created_at": "2026-01-01T00:00:03Z",
+          "email": "person@zou.test",
+          "email_confirmed_at": "2026-01-01T00:00:01Z",
+          "factors": [
+            {
+              "created_at": "<timestamp>",
+              "factor_type": "totp",
+              "friendly_name": "the-new-one",
+              "id": "<uuid>",
+              "last_challenged_at": "<timestamp>",
+              "phone": "",
+              "status": "verified",
+              "updated_at": "<timestamp>"
+            }
+          ],
+          "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+          "identities": [
+            {
+              "created_at": "2026-01-01T00:00:06Z",
+              "email": "person@zou.test",
+              "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+              "identity_data": {
+                "email": "person@zou.test",
+                "email_verified": true,
+                "phone_verified": false,
+                "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+              },
+              "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+              "last_sign_in_at": "2026-01-01T00:00:05Z",
+              "provider": "email",
+              "updated_at": "2026-01-01T00:00:07Z",
+              "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            }
+          ],
+          "is_anonymous": false,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email": "person@zou.test",
+            "email_verified": true,
+            "phone_verified": false,
+            "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        },
+        "weak_password": null
+      }
+    },
+    {
+      "name": "changing the password from a session that has not passed the factor",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "insufficient_aal",
+        "msg": "AAL2 session is required to update email or password when MFA is enabled."
+      }
+    },
+    {
+      "name": "changing the address from a session that has not passed the factor",
+      "status": 401,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 401,
+        "error_code": "insufficient_aal",
+        "msg": "AAL2 session is required to update email or password when MFA is enabled."
+      }
+    },
+    {
+      "name": "changing the metadata from a session that has not passed the factor",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {
+          "provider": "email",
+          "providers": [
+            "email"
+          ]
+        },
+        "aud": "authenticated",
+        "confirmed_at": "2026-01-01T00:00:01Z",
+        "created_at": "2026-01-01T00:00:03Z",
+        "email": "person@zou.test",
+        "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "<timestamp>",
+            "factor_type": "totp",
+            "friendly_name": "the-new-one",
+            "id": "<uuid>",
+            "last_challenged_at": "<timestamp>",
+            "phone": "",
+            "status": "verified",
+            "updated_at": "<timestamp>"
+          }
+        ],
+        "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+        "identities": [
+          {
+            "created_at": "2026-01-01T00:00:06Z",
+            "email": "person@zou.test",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identity_data": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            },
+            "identity_id": "1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37",
+            "last_sign_in_at": "2026-01-01T00:00:05Z",
+            "provider": "email",
+            "updated_at": "2026-01-01T00:00:07Z",
+            "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "<timestamp>",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email": "person@zou.test",
+          "email_verified": true,
+          "nickname": "one",
+          "phone_verified": false,
+          "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+        }
+      }
+    },
+    {
+      "name": "enrolling another factor from a session that has not passed the factor",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "insufficient_aal",
+        "msg": "AAL2 required to enroll a new factor"
+      }
+    },
+    {
+      "name": "unenrolling the verified factor from a session that has not passed it",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "insufficient_aal",
+        "msg": "AAL2 required to unenroll verified factor"
+      }
+    },
+    {
+      "name": "unenrolling the verified factor from the session that passed it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "id": "<uuid>"
+      }
+    },
+    {
       "name": "listing accounts without the service role",
       "status": 403,
       "headers": {
@@ -2137,8 +2696,7 @@
           "phone_verified": false,
           "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
         }
-      },
-      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"factors\":[{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null},{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}],\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+      }
     },
     {
       "name": "an id nobody has",
