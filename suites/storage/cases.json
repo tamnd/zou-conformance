@@ -265,19 +265,22 @@
       "name": "the file that was just uploaded",
       "feature": "object.download",
       "path": "/storage/v1/object/notes/hello.txt",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "the same file over the route that names the audience",
       "feature": "object.download",
       "path": "/storage/v1/object/authenticated/notes/hello.txt",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "the same file from a public bucket with no key at all",
       "feature": "object.download",
       "path": "/storage/v1/object/public/notes/hello.txt",
-      "key": "none"
+      "key": "none",
+      "chained": true
     },
     {
       "name": "the first four bytes of it",
@@ -287,6 +290,7 @@
       "headers": {
         "range": "bytes=0-3"
       },
+      "chained": true,
       "note": "a range request is the one download detail a client library depends on and nobody reads the spec for"
     },
     {
@@ -294,13 +298,15 @@
       "feature": "object.download",
       "method": "HEAD",
       "path": "/storage/v1/object/notes/hello.txt",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "what is known about it",
       "feature": "object.info",
       "path": "/storage/v1/object/info/notes/hello.txt",
       "key": "service",
+      "chained": true,
       "volatile": [
         "/id",
         "/created_at",
@@ -313,6 +319,7 @@
       "feature": "object.info",
       "path": "/storage/v1/object/info/public/notes/hello.txt",
       "key": "none",
+      "chained": true,
       "volatile": [
         "/id",
         "/created_at",
@@ -324,13 +331,15 @@
       "name": "an object that is not there",
       "feature": "object.download",
       "path": "/storage/v1/object/notes/missing.txt",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "a private bucket over the public route",
       "feature": "object.download",
       "path": "/storage/v1/object/public/photos/nothing.txt",
       "key": "none",
+      "chained": true,
       "note": "photos is not public, so this is refused before anything is looked for"
     },
     {
@@ -338,19 +347,22 @@
       "feature": "object.download",
       "path": "/storage/v1/object/photos/holiday/beach.txt",
       "key": "anon",
+      "chained": true,
       "note": "no policy on storage.objects in a project that has changed nothing, so the row is not visible and the bytes are never reached"
     },
     {
       "name": "a download with no key at all",
       "feature": "object.download",
       "path": "/storage/v1/object/notes/hello.txt",
-      "key": "none"
+      "key": "none",
+      "chained": true
     },
     {
       "name": "a private bucket with no key at all",
       "feature": "object.download",
       "path": "/storage/v1/object/photos/holiday/beach.txt",
       "key": "none",
+      "chained": true,
       "note": "the pair of the public one above: the same route, the same absence of a token, and a bucket that is not public"
     },
     {
@@ -359,6 +371,7 @@
       "method": "HEAD",
       "path": "/storage/v1/object/notes/missing.txt",
       "key": "service",
+      "chained": true,
       "note": "a head has no body to carry the refusal in, so the status is the whole answer"
     },
     {
@@ -398,7 +411,8 @@
       "name": "the replacement, read back",
       "feature": "object.download",
       "path": "/storage/v1/object/notes/hello.txt",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "a put over the same path",
@@ -436,7 +450,8 @@
       "name": "what the form upload left",
       "feature": "object.download",
       "path": "/storage/v1/object/notes/form.txt",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "a file into a bucket that is not there",
@@ -771,6 +786,7 @@
       "method": "GET",
       "path": "/storage/v1/object/notes/moved/movable.txt",
       "key": "service",
+      "chained": true,
       "note": "the bytes rather than the row, which is the half of a move a table cannot answer"
     },
     {
@@ -778,7 +794,8 @@
       "feature": "object.move",
       "method": "GET",
       "path": "/storage/v1/object/notes/movable.txt",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "moving it on to a bucket of its own",
@@ -914,7 +931,8 @@
       "feature": "object.copy",
       "method": "GET",
       "path": "/storage/v1/object/notes/copies/copyable.txt",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "reading the one it was copied from",
@@ -922,6 +940,7 @@
       "method": "GET",
       "path": "/storage/v1/object/notes/copyable.txt",
       "key": "service",
+      "chained": true,
       "note": "a copy that took the bytes with it would be a move, so the source is asked for as well"
     },
     {
@@ -1604,6 +1623,7 @@
       "feature": "object.render",
       "path": "/storage/v1/object/notes/cat.jpg",
       "key": "service",
+      "chained": true,
       "note": "not a transform at all, and the only case here whose bytes are compared as bytes: a download hands back what was uploaded, so the digest of the answer is the digest of the file"
     },
     {
@@ -1611,6 +1631,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=contain",
       "key": "service",
+      "chained": true,
       "note": "the original is 350 by 206, so a box of 100 the whole image has to fit inside is filled in one direction only",
       "volatile": [
         "/binary/bytes",
@@ -1622,6 +1643,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=cover",
       "key": "service",
+      "chained": true,
       "volatile": [
         "/binary/bytes",
         "/binary/sha256"
@@ -1632,6 +1654,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=fill",
       "key": "service",
+      "chained": true,
       "volatile": [
         "/binary/bytes",
         "/binary/sha256"
@@ -1642,6 +1665,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100",
       "key": "service",
+      "chained": true,
       "note": "one side named and the other left to the aspect ratio, which is what most callers ask for",
       "volatile": [
         "/binary/bytes",
@@ -1653,6 +1677,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?height=100",
       "key": "service",
+      "chained": true,
       "volatile": [
         "/binary/bytes",
         "/binary/sha256"
@@ -1663,6 +1688,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=700",
       "key": "service",
+      "chained": true,
       "note": "whether asking for more than there is enlarges the image or hands back the size it already had",
       "volatile": [
         "/binary/bytes",
@@ -1674,6 +1700,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&quality=20",
       "key": "service",
+      "chained": true,
       "volatile": [
         "/binary/bytes",
         "/binary/sha256"
@@ -1684,6 +1711,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&format=origin",
       "key": "service",
+      "chained": true,
       "note": "origin is the one format this surface takes, and it means do not turn it into a webp",
       "volatile": [
         "/binary/bytes",
@@ -1695,6 +1723,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg",
       "key": "service",
+      "chained": true,
       "note": "the render route with an empty query, which transforms nothing and still goes through the transformer",
       "volatile": [
         "/binary/bytes",
@@ -1709,6 +1738,7 @@
       "headers": {
         "accept": "image/jpeg"
       },
+      "chained": true,
       "note": "the format is negotiated as well as asked for, so a client that says what it takes may be a different answer from one that says nothing",
       "volatile": [
         "/binary/bytes",
@@ -1723,6 +1753,7 @@
       "headers": {
         "accept": "image/webp,image/apng,image/*,*/*;q=0.8"
       },
+      "chained": true,
       "note": "the header every browser sends, so this is the answer most of the traffic on this route gets",
       "volatile": [
         "/binary/bytes",
@@ -1737,6 +1768,7 @@
       "headers": {
         "accept": "image/webp,image/apng,image/*,*/*;q=0.8"
       },
+      "chained": true,
       "note": "which of the two wins when the query and the header disagree",
       "volatile": [
         "/binary/bytes",
@@ -1765,6 +1797,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.png?width=100",
       "key": "service",
+      "chained": true,
       "note": "whether a transform hands back the format it was given or one format for everything",
       "volatile": [
         "/binary/bytes",
@@ -1779,6 +1812,7 @@
       "headers": {
         "accept": "image/webp,image/apng,image/*,*/*;q=0.8"
       },
+      "chained": true,
       "volatile": [
         "/binary/bytes",
         "/binary/sha256"
@@ -1789,6 +1823,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.png?width=100&format=origin",
       "key": "service",
+      "chained": true,
       "volatile": [
         "/binary/bytes",
         "/binary/sha256"
@@ -1799,6 +1834,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=cover",
       "key": "service",
+      "chained": true,
       "note": "the second time is the cached one, and a cache that answers something else is the whole reason this case is here",
       "volatile": [
         "/binary/bytes",
@@ -1810,6 +1846,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&cacheNonce=zou",
       "key": "service",
+      "chained": true,
       "note": "the nonce is how a client asks past the cache, and what matters here is that a query the transformer does not read is not a refusal",
       "volatile": [
         "/binary/bytes",
@@ -1821,6 +1858,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/public/notes/cat.jpg?width=100&height=100&resize=cover",
       "key": "none",
+      "chained": true,
       "note": "notes is public, so this is the url getPublicUrl builds and a browser asks it with nothing on it",
       "volatile": [
         "/binary/bytes",
@@ -1833,6 +1871,7 @@
       "method": "HEAD",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100",
       "key": "service",
+      "chained": true,
       "note": "nothing here is volatile, because a head that carries no bytes is the same answer whichever server sent it, and whether it carries any is the question"
     },
     {
@@ -1845,6 +1884,7 @@
         "content-type": "application/json"
       },
       "body": "{\"expiresIn\": 3600, \"transform\": {\"width\": 100, \"height\": 100, \"resize\": \"cover\"}}",
+      "chained": true,
       "note": "the transform is signed into the token rather than left in the url, so what comes back points at the render route rather than at the object one",
       "holds": {
         "signed": "body:/signedURL"
@@ -1858,6 +1898,7 @@
       "feature": "object.render",
       "path": "/storage/v1{signed}",
       "key": "none",
+      "chained": true,
       "note": "the token was minted by the case above and cannot be minted from here, which is what the hold is for",
       "volatile": [
         "/binary/bytes",
@@ -1869,6 +1910,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=0",
       "key": "service",
+      "chained": true,
       "volatile": [
         "/binary/bytes",
         "/binary/sha256"
@@ -1879,6 +1921,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=2501",
       "key": "service",
+      "chained": true,
       "note": "whether there is a ceiling on a side, and what is said when it is passed",
       "volatile": [
         "/binary/bytes",
@@ -1890,6 +1933,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?height=9000",
       "key": "service",
+      "chained": true,
       "note": "whether the ceiling a width is quietly held to is the same one a height is",
       "volatile": [
         "/binary/bytes",
@@ -1901,6 +1945,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?quality=50",
       "key": "service",
+      "chained": true,
       "note": "whether the resizing type is said when neither side was asked about",
       "volatile": [
         "/binary/bytes",
@@ -1912,6 +1957,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?height=0",
       "key": "service",
+      "chained": true,
       "volatile": [
         "/binary/bytes",
         "/binary/sha256"
@@ -1921,32 +1967,37 @@
       "name": "a width that is not a number",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=wide",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "a quality under the floor",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&quality=1",
       "key": "service",
+      "chained": true,
       "note": "twenty is the lowest quality the client library documents"
     },
     {
       "name": "a quality over the ceiling",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&quality=101",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "a resize mode that is not one of the three",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&height=100&resize=squash",
-      "key": "service"
+      "key": "service",
+      "chained": true
     },
     {
       "name": "a format that is not origin",
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/cat.jpg?width=100&format=avif",
       "key": "service",
+      "chained": true,
       "volatile": [
         "/binary/bytes",
         "/binary/sha256"
@@ -2018,6 +2069,7 @@
       "feature": "object.render",
       "path": "/storage/v1/render/image/authenticated/notes/plain.txt?width=100",
       "key": "service",
+      "chained": true,
       "note": "the row is there and the bytes are there and they are eleven bytes of text, so this is the transformer refusing rather than the table"
     },
     {
@@ -3410,6 +3462,7 @@
       "method": "GET",
       "path": "/storage/v1/s3/notes/from-a-signature.txt",
       "key": "s3",
+      "chained": true,
       "note": "GetObject, read back through the door it went in. The fixture cannot write this case's object for it, since a fixture writes rows and bytes live in a store no statement reaches, so the read is asked against what the put above left."
     },
     {
@@ -3418,6 +3471,7 @@
       "method": "HEAD",
       "path": "/storage/v1/s3/notes/from-a-signature.txt",
       "key": "s3",
+      "chained": true,
       "note": "HeadObject, which is the same answer with the bytes taken off it. Whether it really is the same answer is the question, since the two are separate handlers in every implementation of this protocol."
     },
     {
@@ -3429,6 +3483,7 @@
       "headers": {
         "range": "bytes=0-4"
       },
+      "chained": true,
       "note": "A range, which is how every download manager and every parallel client reads. The header is not signed, because a client signs host and the x-amz headers and nothing else, so this also says that a header outside the signature still reaches the server."
     },
     {
@@ -3437,6 +3492,7 @@
       "method": "GET",
       "path": "/storage/v1/s3/notes?list-type=2",
       "key": "s3",
+      "chained": true,
       "volatile": [
         "element:LastModified"
       ],
@@ -3461,7 +3517,8 @@
       "feature": "s3.object",
       "method": "GET",
       "path": "/storage/v1/s3/notes/from-a-signature.txt",
-      "key": "s3"
+      "key": "s3",
+      "chained": true
     },
     {
       "name": "deleting a file with a signature",
@@ -3547,6 +3604,7 @@
       "method": "GET",
       "path": "/storage/v1/s3/notes/untyped",
       "key": "s3",
+      "chained": true,
       "note": "The answer to the case above, which is a header on a read rather than anything the put said. A put answers an etag and nothing else, so the only way to see what type was written down is to ask for the object back."
     },
     {
@@ -3554,6 +3612,7 @@
       "feature": "s3.object",
       "path": "/storage/v1/object/info/notes/untyped",
       "key": "service",
+      "chained": true,
       "note": "The row the case above put, read on the json route, because a put over the s3 protocol answers an etag and the rest of what it decided is only visible from the other side. The cache control nobody sent and the metadata column an upload with no x-amz-meta headers leaves are both here.",
       "volatile": [
         "/id",
@@ -3596,6 +3655,7 @@
       "feature": "s3.copy",
       "path": "/storage/v1/s3/notes/duplicate.txt",
       "key": "s3",
+      "chained": true,
       "note": "Whether the bytes really followed the row, and what type and etag the copy carries. A copy that made a row and no bytes would answer 500 here, which is what a row the fixture inserted answers."
     },
     {
@@ -3603,6 +3663,7 @@
       "feature": "s3.copy",
       "path": "/storage/v1/s3/notes?list-type=2",
       "key": "s3",
+      "chained": true,
       "volatile": [
         "element:LastModified"
       ],
@@ -3712,6 +3773,7 @@
       "feature": "s3.delete-many",
       "path": "/storage/v1/s3/notes?list-type=2",
       "key": "s3",
+      "chained": true,
       "volatile": [
         "element:LastModified"
       ],
