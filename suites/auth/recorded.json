@@ -1670,6 +1670,330 @@
         "error_code": "not_admin",
         "msg": "User not allowed"
       }
+    },
+    {
+      "name": "the audit trail",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": [
+        {
+          "created_at": "2026-01-01T00:00:18Z",
+          "id": "2d5e8b14-7c60-4f92-a3d8-5b1f0e9c7a26",
+          "ip_address": "",
+          "payload": {
+            "action": "user_modified",
+            "actor_id": "00000000-0000-0000-0000-000000000000",
+            "actor_username": "service_role",
+            "actor_via_sso": false,
+            "log_type": "team",
+            "traits": {
+              "user_email": "person@zou.test",
+              "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+              "user_phone": ""
+            }
+          }
+        },
+        {
+          "created_at": "2026-01-01T00:00:17Z",
+          "id": "c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38",
+          "ip_address": "",
+          "payload": {
+            "action": "logout",
+            "actor_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "actor_username": "person@zou.test",
+            "actor_via_sso": false,
+            "log_type": "account"
+          }
+        },
+        {
+          "created_at": "2026-01-01T00:00:16Z",
+          "id": "9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14",
+          "ip_address": "198.51.100.7",
+          "payload": {
+            "action": "login",
+            "actor_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "actor_username": "person@zou.test",
+            "actor_via_sso": false,
+            "log_type": "account",
+            "traits": {
+              "provider": "email"
+            }
+          }
+        }
+      ],
+      "raw": "[{\"id\":\"2d5e8b14-7c60-4f92-a3d8-5b1f0e9c7a26\",\"payload\":{\"action\":\"user_modified\",\"actor_id\":\"00000000-0000-0000-0000-000000000000\",\"actor_username\":\"service_role\",\"actor_via_sso\":false,\"log_type\":\"team\",\"traits\":{\"user_email\":\"person@zou.test\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_phone\":\"\"}},\"created_at\":\"2026-01-01T00:00:18Z\",\"ip_address\":\"\"},{\"id\":\"c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38\",\"payload\":{\"action\":\"logout\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\"},\"created_at\":\"2026-01-01T00:00:17Z\",\"ip_address\":\"\"},{\"id\":\"9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14\",\"payload\":{\"action\":\"login\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\",\"traits\":{\"provider\":\"email\"}},\"created_at\":\"2026-01-01T00:00:16Z\",\"ip_address\":\"198.51.100.7\"}]"
+    },
+    {
+      "name": "the audit trail without the service role",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "not_admin",
+        "msg": "User not allowed"
+      }
+    },
+    {
+      "name": "the audit trail as the person themselves",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "not_admin",
+        "msg": "User not allowed"
+      }
+    },
+    {
+      "name": "a page of the audit trail",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": [
+        {
+          "created_at": "2026-01-01T00:00:17Z",
+          "id": "c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38",
+          "ip_address": "",
+          "payload": {
+            "action": "logout",
+            "actor_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "actor_username": "person@zou.test",
+            "actor_via_sso": false,
+            "log_type": "account"
+          }
+        }
+      ],
+      "raw": "[{\"id\":\"c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38\",\"payload\":{\"action\":\"logout\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\"},\"created_at\":\"2026-01-01T00:00:17Z\",\"ip_address\":\"\"}]"
+    },
+    {
+      "name": "a page past the end of the audit trail",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": []
+    },
+    {
+      "name": "the trail filtered by what happened",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": [
+        {
+          "created_at": "2026-01-01T00:00:16Z",
+          "id": "9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14",
+          "ip_address": "198.51.100.7",
+          "payload": {
+            "action": "login",
+            "actor_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "actor_username": "person@zou.test",
+            "actor_via_sso": false,
+            "log_type": "account",
+            "traits": {
+              "provider": "email"
+            }
+          }
+        }
+      ],
+      "raw": "[{\"id\":\"9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14\",\"payload\":{\"action\":\"login\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\",\"traits\":{\"provider\":\"email\"}},\"created_at\":\"2026-01-01T00:00:16Z\",\"ip_address\":\"198.51.100.7\"}]"
+    },
+    {
+      "name": "the trail filtered by who did it",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": [
+        {
+          "created_at": "2026-01-01T00:00:17Z",
+          "id": "c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38",
+          "ip_address": "",
+          "payload": {
+            "action": "logout",
+            "actor_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "actor_username": "person@zou.test",
+            "actor_via_sso": false,
+            "log_type": "account"
+          }
+        },
+        {
+          "created_at": "2026-01-01T00:00:16Z",
+          "id": "9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14",
+          "ip_address": "198.51.100.7",
+          "payload": {
+            "action": "login",
+            "actor_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "actor_username": "person@zou.test",
+            "actor_via_sso": false,
+            "log_type": "account",
+            "traits": {
+              "provider": "email"
+            }
+          }
+        }
+      ],
+      "raw": "[{\"id\":\"c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38\",\"payload\":{\"action\":\"logout\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\"},\"created_at\":\"2026-01-01T00:00:17Z\",\"ip_address\":\"\"},{\"id\":\"9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14\",\"payload\":{\"action\":\"login\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\",\"traits\":{\"provider\":\"email\"}},\"created_at\":\"2026-01-01T00:00:16Z\",\"ip_address\":\"198.51.100.7\"}]"
+    },
+    {
+      "name": "the trail filtered by the kind of event",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": [
+        {
+          "created_at": "2026-01-01T00:00:18Z",
+          "id": "2d5e8b14-7c60-4f92-a3d8-5b1f0e9c7a26",
+          "ip_address": "",
+          "payload": {
+            "action": "user_modified",
+            "actor_id": "00000000-0000-0000-0000-000000000000",
+            "actor_username": "service_role",
+            "actor_via_sso": false,
+            "log_type": "team",
+            "traits": {
+              "user_email": "person@zou.test",
+              "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+              "user_phone": ""
+            }
+          }
+        }
+      ],
+      "raw": "[{\"id\":\"2d5e8b14-7c60-4f92-a3d8-5b1f0e9c7a26\",\"payload\":{\"action\":\"user_modified\",\"actor_id\":\"00000000-0000-0000-0000-000000000000\",\"actor_username\":\"service_role\",\"actor_via_sso\":false,\"log_type\":\"team\",\"traits\":{\"user_email\":\"person@zou.test\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_phone\":\"\"}},\"created_at\":\"2026-01-01T00:00:18Z\",\"ip_address\":\"\"}]"
+    },
+    {
+      "name": "a filter that matches part of a word",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": [
+        {
+          "created_at": "2026-01-01T00:00:17Z",
+          "id": "c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38",
+          "ip_address": "",
+          "payload": {
+            "action": "logout",
+            "actor_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "actor_username": "person@zou.test",
+            "actor_via_sso": false,
+            "log_type": "account"
+          }
+        },
+        {
+          "created_at": "2026-01-01T00:00:16Z",
+          "id": "9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14",
+          "ip_address": "198.51.100.7",
+          "payload": {
+            "action": "login",
+            "actor_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "actor_username": "person@zou.test",
+            "actor_via_sso": false,
+            "log_type": "account",
+            "traits": {
+              "provider": "email"
+            }
+          }
+        }
+      ],
+      "raw": "[{\"id\":\"c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38\",\"payload\":{\"action\":\"logout\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\"},\"created_at\":\"2026-01-01T00:00:17Z\",\"ip_address\":\"\"},{\"id\":\"9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14\",\"payload\":{\"action\":\"login\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\",\"traits\":{\"provider\":\"email\"}},\"created_at\":\"2026-01-01T00:00:16Z\",\"ip_address\":\"198.51.100.7\"}]"
+    },
+    {
+      "name": "a filter with a scope but no colon",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Invalid query scope: login"
+      }
+    },
+    {
+      "name": "a filter whose scope is not one",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Invalid query scope: nonsense:x"
+      }
+    },
+    {
+      "name": "a page of the trail that is not a number",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "validation_failed",
+        "msg": "Bad Pagination Parameters: strconv.ParseUint: parsing \"abc\": invalid syntax"
+      }
+    },
+    {
+      "name": "a sort the trail does not read",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": [
+        {
+          "created_at": "2026-01-01T00:00:18Z",
+          "id": "2d5e8b14-7c60-4f92-a3d8-5b1f0e9c7a26",
+          "ip_address": "",
+          "payload": {
+            "action": "user_modified",
+            "actor_id": "00000000-0000-0000-0000-000000000000",
+            "actor_username": "service_role",
+            "actor_via_sso": false,
+            "log_type": "team",
+            "traits": {
+              "user_email": "person@zou.test",
+              "user_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+              "user_phone": ""
+            }
+          }
+        },
+        {
+          "created_at": "2026-01-01T00:00:17Z",
+          "id": "c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38",
+          "ip_address": "",
+          "payload": {
+            "action": "logout",
+            "actor_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "actor_username": "person@zou.test",
+            "actor_via_sso": false,
+            "log_type": "account"
+          }
+        },
+        {
+          "created_at": "2026-01-01T00:00:16Z",
+          "id": "9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14",
+          "ip_address": "198.51.100.7",
+          "payload": {
+            "action": "login",
+            "actor_id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "actor_username": "person@zou.test",
+            "actor_via_sso": false,
+            "log_type": "account",
+            "traits": {
+              "provider": "email"
+            }
+          }
+        }
+      ],
+      "raw": "[{\"id\":\"2d5e8b14-7c60-4f92-a3d8-5b1f0e9c7a26\",\"payload\":{\"action\":\"user_modified\",\"actor_id\":\"00000000-0000-0000-0000-000000000000\",\"actor_username\":\"service_role\",\"actor_via_sso\":false,\"log_type\":\"team\",\"traits\":{\"user_email\":\"person@zou.test\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_phone\":\"\"}},\"created_at\":\"2026-01-01T00:00:18Z\",\"ip_address\":\"\"},{\"id\":\"c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38\",\"payload\":{\"action\":\"logout\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\"},\"created_at\":\"2026-01-01T00:00:17Z\",\"ip_address\":\"\"},{\"id\":\"9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14\",\"payload\":{\"action\":\"login\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\",\"traits\":{\"provider\":\"email\"}},\"created_at\":\"2026-01-01T00:00:16Z\",\"ip_address\":\"198.51.100.7\"}]"
     }
   ]
 }
