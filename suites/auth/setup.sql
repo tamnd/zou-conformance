@@ -13,6 +13,10 @@
 -- anything reads back, because an answer that is not the same twice
 -- cannot be diffed. The timestamps are all distinct so that two fields
 -- swapped over would show up as a difference rather than as nothing.
+-- The one exception is the flow states at the bottom, which are only
+-- good for five minutes from the moment they were written and so have
+-- to be written now. Nothing reads that column back into an answer, and
+-- the note above the rows says why.
 --
 -- The password hash is a real bcrypt hash written by GoTrue 2.194.0 at
 -- its own default cost for the password 'conformance-password'. Taken
@@ -30,6 +34,7 @@ delete from auth.refresh_tokens;
 delete from auth.sessions;
 delete from auth.identities;
 delete from auth.one_time_tokens;
+delete from auth.flow_state;
 delete from auth.users;
 
 -- The token columns are written empty rather than left null. GoTrue
@@ -367,4 +372,91 @@ insert into auth.mfa_factors (
   '2026-01-01 00:00:21+00',
   '2026-01-01 00:00:22+00',
   'KRSXG5CTMVRXEZLU'
+);
+
+-- Four flow states, which are the rows a PKCE grant is answered out of.
+--
+-- There is no way to reach the grant without them. A flow state is
+-- written when a mail goes out and the code that redeems it is in the
+-- link in that mail, so a suite with no mailer in front of it can either
+-- read somebody's inbox or write the row the mail would have left
+-- behind. The row is the smaller of the two, and it is the same row on
+-- both sides: the table comes from GoTrue's migrations at one end and
+-- from zou's bootstrap at the other, and it has these columns in both.
+--
+-- created_at is the only thing in this file that is not a fixed instant.
+-- A flow state is good for five minutes from the moment it was written,
+-- so a fixed one would leave every row here expired, and the expiry is
+-- the difference between two of the cases rather than something they all
+-- share. Nothing reads the column back into an answer, so nothing is
+-- made undiffable by it. The expired row is fixed, because a row that is
+-- already past its five minutes stays past them.
+--
+-- The two provider token columns are written empty rather than left
+-- null for the same reason the user's token columns are: GoTrue reads
+-- both into a Go string, and a null in either takes the request down
+-- before it can answer anything at all.
+--
+-- The challenge on the s256 rows is the sha256 of the verifier
+-- 'zou-conformance-code-verifier-0123456789abcdefghijklmnop', base64url
+-- and unpadded, which is what a client sends first and what the case
+-- sends back to be checked against it. The plain row carries its
+-- verifier directly, which is what plain means.
+insert into auth.flow_state (
+  id, user_id, auth_code, code_challenge_method, code_challenge,
+  provider_type, provider_access_token, provider_refresh_token,
+  authentication_method, created_at, updated_at
+) values
+-- The one a grant is redeemed against, and the one the wrong verifier
+-- is offered to.
+(
+  '11111111-1111-4111-8111-111111111111',
+  'f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60',
+  'aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa',
+  's256',
+  'Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHymD8',
+  'email', '', '',
+  'magiclink',
+  now(),
+  now()
+),
+-- The same thing with the other method, so that both halves of the
+-- comparison are asked about rather than only the one clients use.
+(
+  '22222222-2222-4222-8222-222222222222',
+  'f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60',
+  'bbbbbbbb-2222-4222-8222-bbbbbbbbbbbb',
+  'plain',
+  'zou-conformance-plain-code-verifier-0123456789',
+  'email', '', '',
+  'magiclink',
+  now(),
+  now()
+),
+-- Written long enough ago that it is past its five minutes whenever it
+-- is read, which is what the expiry case asks about.
+(
+  '33333333-3333-4333-8333-333333333333',
+  'f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60',
+  'cccccccc-3333-4333-8333-cccccccccccc',
+  's256',
+  'Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHymD8',
+  'email', '', '',
+  'magiclink',
+  '2026-01-01 00:00:23+00',
+  '2026-01-01 00:00:23+00'
+),
+-- A row with nobody on it. The lookup that reads these asks for a flow
+-- state with a user, so this one is not found rather than found and
+-- refused, and a case says which of the two it is.
+(
+  '44444444-4444-4444-8444-444444444444',
+  null,
+  'dddddddd-4444-4444-8444-dddddddddddd',
+  's256',
+  'Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHymD8',
+  'email', '', '',
+  'magiclink',
+  now(),
+  now()
 );

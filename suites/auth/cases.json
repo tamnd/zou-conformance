@@ -1538,6 +1538,262 @@
       "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors/6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
       "key": "user",
       "writes": true
+    },
+
+    {
+      "name": "a code grant with nothing in the body",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{}",
+      "note": "the two fields are asked for together, so a body with neither of them is the same refusal as a body with one"
+    },
+    {
+      "name": "a code with no verifier behind it",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"auth_code\":\"aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa\"}"
+    },
+    {
+      "name": "a verifier with no code in front of it",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"code_verifier\":\"zou-conformance-code-verifier-0123456789abcdefghijklmnop\"}"
+    },
+    {
+      "name": "a code nobody issued",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"auth_code\":\"eeeeeeee-5555-4555-8555-eeeeeeeeeeee\",\"code_verifier\":\"zou-conformance-code-verifier-0123456789abcdefghijklmnop\"}"
+    },
+    {
+      "name": "a code that is not a uuid",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"auth_code\":\"not-a-uuid\",\"code_verifier\":\"zou-conformance-code-verifier-0123456789abcdefghijklmnop\"}",
+      "note": "the column is text rather than a uuid, so a code that could not be one is looked up and not found rather than refused for its shape"
+    },
+    {
+      "name": "a code on a flow state with nobody on it",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"auth_code\":\"dddddddd-4444-4444-8444-dddddddddddd\",\"code_verifier\":\"zou-conformance-code-verifier-0123456789abcdefghijklmnop\"}",
+      "note": "the lookup asks for a flow state that has a user on it, so a row with none is not found rather than found and then argued with"
+    },
+    {
+      "name": "a code that has been sitting for more than five minutes",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"auth_code\":\"cccccccc-3333-4333-8333-cccccccccccc\",\"code_verifier\":\"zou-conformance-code-verifier-0123456789abcdefghijklmnop\"}",
+      "writes": true,
+      "note": "expired rather than missing, which is a different status and a different code, so a client can tell somebody to ask for another mail"
+    },
+    {
+      "name": "a verifier that is not the one the challenge was made from",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"auth_code\":\"aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa\",\"code_verifier\":\"zou-conformance-some-other-verifier-0123456789\"}",
+      "writes": true,
+      "note": "the whole point of the flow: the code alone is not enough, and somebody who read the link out of the mail cannot spend it"
+    },
+    {
+      "name": "the plain method, where the verifier is the challenge",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"auth_code\":\"bbbbbbbb-2222-4222-8222-bbbbbbbbbbbb\",\"code_verifier\":\"zou-conformance-plain-code-verifier-0123456789\"}",
+      "writes": true,
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/last_sign_in_at",
+        "/user/updated_at"
+      ],
+      "sorted": ["/user/factors"]
+    },
+    {
+      "name": "the s256 method, where the challenge is the hash of the verifier",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"auth_code\":\"aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa\",\"code_verifier\":\"zou-conformance-code-verifier-0123456789abcdefghijklmnop\"}",
+      "writes": true,
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/last_sign_in_at",
+        "/user/updated_at"
+      ],
+      "sorted": ["/user/factors"],
+      "note": "the one a client really does, and the answer is a session like any other sign in"
+    },
+    {
+      "name": "the same code again straight after redeeming it",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=pkce",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"auth_code\":\"aaaaaaaa-1111-4111-8111-aaaaaaaaaaaa\",\"code_verifier\":\"zou-conformance-code-verifier-0123456789abcdefghijklmnop\"}",
+      "chained": true,
+      "writes": true,
+      "note": "chained on purpose. The rows are not put back first, because the question is what the case before it left, and what it left is nothing: a code is spent once and the row goes with it"
+    },
+    {
+      "name": "a challenge with no method beside it",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"code_challenge\":\"Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHymD8\"}",
+      "note": "the challenge cases are asked on recover because it is the shortest endpoint that takes one, and the rule is the same on all of them"
+    },
+    {
+      "name": "a method with no challenge beside it",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"code_challenge_method\":\"s256\"}"
+    },
+    {
+      "name": "a challenge one character short of the floor",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"code_challenge\":\"Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHym\",\"code_challenge_method\":\"s256\"}",
+      "note": "forty two. The floor is forty three because that is what a sha256 comes to in base64url without its padding"
+    },
+    {
+      "name": "a challenge one character over the ceiling",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"code_challenge\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"code_challenge_method\":\"s256\"}",
+      "note": "a hundred and twenty nine"
+    },
+    {
+      "name": "a challenge with characters the rule leaves out",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"code_challenge\":\"Zi76wyCmlhAZQNfbQt7C0o+OfboKlvCLgrZ/zUHymD8\",\"code_challenge_method\":\"s256\"}",
+      "note": "the same challenge in base64 rather than base64url, which is the mistake this rule is really about"
+    },
+    {
+      "name": "a method nobody supports",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"code_challenge\":\"Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHymD8\",\"code_challenge_method\":\"sha512\"}",
+      "writes": true
+    },
+    {
+      "name": "the plain method spelled in capitals",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"code_challenge\":\"zou-conformance-plain-code-verifier-0123456789\",\"code_challenge_method\":\"PLAIN\"}",
+      "writes": true,
+      "note": "accepted. The method is read case insensitively, and a client that sends the word the way the rfc writes it is not turned away"
+    },
+    {
+      "name": "a challenge a client could really come back for",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/recover",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"code_challenge\":\"Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHymD8\",\"code_challenge_method\":\"s256\"}",
+      "writes": true,
+      "note": "the answer is the same empty object a recover without a challenge gives. What is different is the flow state row it left behind, and the only way to ask about that from outside is the mail, which there is no mailer for here"
+    },
+    {
+      "name": "the same rule on a signup",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"pkce@zou.test\",\"password\":\"conformance-password\",\"code_challenge\":\"Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHym\",\"code_challenge_method\":\"s256\"}"
+    },
+    {
+      "name": "the same rule on a one time password",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/otp",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"code_challenge\":\"Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHym\",\"code_challenge_method\":\"s256\"}"
+    },
+    {
+      "name": "the same rule on a magic link",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/magiclink",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"code_challenge\":\"Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHym\",\"code_challenge_method\":\"s256\"}"
+    },
+    {
+      "name": "the same rule on a mail sent again",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/resend",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"type\":\"signup\",\"email\":\"person@zou.test\",\"code_challenge\":\"Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHym\",\"code_challenge_method\":\"s256\"}"
+    },
+    {
+      "name": "a challenge on a signup by phone",
+      "feature": "pkce",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"phone\":\"+15550001111\",\"password\":\"conformance-password\",\"code_challenge\":\"Zi76wyCmlhAZQNfbQt7C0o_OfboKlvCLgrZ-zUHymD8\",\"code_challenge_method\":\"s256\"}",
+      "note": "refused before the phone provider is even asked whether it is on, because a phone signup answers with the session in the body and has nowhere to send anybody back from"
     }
   ]
 }
