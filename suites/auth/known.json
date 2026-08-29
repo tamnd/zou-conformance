@@ -9,7 +9,7 @@
   },
   {
     "name": "listing accounts",
-    "why": "zou fills the identity list in and upstream answers identities null here, because its ORM does not load the association on the listing query. A client reading identities off a listed account gets them from zou and has to fetch each account again from upstream, and nothing can be branching on a null that the single account fetch never returns."
+    "why": "zou fills the identity list in and upstream answers identities null here, because its ORM does not load the association on the listing query. Factors are the same story on the same query: zou lists them and upstream leaves the key out. A client reading either off a listed account gets it from zou and has to fetch each account again from upstream, and nothing can be branching on a null that the single account fetch never returns."
   },
   {
     "name": "the signing keys, which there are none of while the secret is symmetric",

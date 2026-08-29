@@ -88,6 +88,28 @@
         "created_at": "2026-01-01T00:00:03Z",
         "email": "person@zou.test",
         "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "2026-01-01T00:00:19Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-in-use",
+            "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:20Z"
+          },
+          {
+            "created_at": "2026-01-01T00:00:21Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-half-set-up",
+            "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:22Z"
+          }
+        ],
         "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
         "identities": [
           {
@@ -119,7 +141,7 @@
           "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
         }
       },
-      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"factors\":[{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null},{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}],\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
     },
     {
       "name": "no token at all",
@@ -223,6 +245,28 @@
         "created_at": "2026-01-01T00:00:03Z",
         "email": "person@zou.test",
         "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "2026-01-01T00:00:19Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-in-use",
+            "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:20Z"
+          },
+          {
+            "created_at": "2026-01-01T00:00:21Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-half-set-up",
+            "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:22Z"
+          }
+        ],
         "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
         "identities": [
           {
@@ -254,7 +298,7 @@
           "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
         }
       },
-      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"factors\":[{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null},{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}],\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
     },
     {
       "name": "a token issued an hour from now",
@@ -274,6 +318,28 @@
         "created_at": "2026-01-01T00:00:03Z",
         "email": "person@zou.test",
         "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "2026-01-01T00:00:19Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-in-use",
+            "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:20Z"
+          },
+          {
+            "created_at": "2026-01-01T00:00:21Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-half-set-up",
+            "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:22Z"
+          }
+        ],
         "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
         "identities": [
           {
@@ -305,7 +371,7 @@
           "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
         }
       },
-      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"factors\":[{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null},{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}],\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
     },
     {
       "name": "a password sign in",
@@ -331,6 +397,28 @@
           "created_at": "2026-01-01T00:00:03Z",
           "email": "person@zou.test",
           "email_confirmed_at": "2026-01-01T00:00:01Z",
+          "factors": [
+            {
+              "created_at": "2026-01-01T00:00:19Z",
+              "factor_type": "totp",
+              "friendly_name": "the-one-in-use",
+              "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+              "last_challenged_at": null,
+              "phone": "",
+              "status": "unverified",
+              "updated_at": "2026-01-01T00:00:20Z"
+            },
+            {
+              "created_at": "2026-01-01T00:00:21Z",
+              "factor_type": "totp",
+              "friendly_name": "the-one-half-set-up",
+              "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+              "last_challenged_at": null,
+              "phone": "",
+              "status": "unverified",
+              "updated_at": "2026-01-01T00:00:22Z"
+            }
+          ],
           "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
           "identities": [
             {
@@ -413,6 +501,28 @@
           "created_at": "2026-01-01T00:00:03Z",
           "email": "person@zou.test",
           "email_confirmed_at": "2026-01-01T00:00:01Z",
+          "factors": [
+            {
+              "created_at": "2026-01-01T00:00:19Z",
+              "factor_type": "totp",
+              "friendly_name": "the-one-in-use",
+              "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+              "last_challenged_at": null,
+              "phone": "",
+              "status": "unverified",
+              "updated_at": "2026-01-01T00:00:20Z"
+            },
+            {
+              "created_at": "2026-01-01T00:00:21Z",
+              "factor_type": "totp",
+              "friendly_name": "the-one-half-set-up",
+              "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+              "last_challenged_at": null,
+              "phone": "",
+              "status": "unverified",
+              "updated_at": "2026-01-01T00:00:22Z"
+            }
+          ],
           "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
           "identities": [
             {
@@ -519,6 +629,28 @@
           "created_at": "2026-01-01T00:00:03Z",
           "email": "person@zou.test",
           "email_confirmed_at": "2026-01-01T00:00:01Z",
+          "factors": [
+            {
+              "created_at": "2026-01-01T00:00:19Z",
+              "factor_type": "totp",
+              "friendly_name": "the-one-in-use",
+              "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+              "last_challenged_at": null,
+              "phone": "",
+              "status": "unverified",
+              "updated_at": "2026-01-01T00:00:20Z"
+            },
+            {
+              "created_at": "2026-01-01T00:00:21Z",
+              "factor_type": "totp",
+              "friendly_name": "the-one-half-set-up",
+              "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+              "last_challenged_at": null,
+              "phone": "",
+              "status": "unverified",
+              "updated_at": "2026-01-01T00:00:22Z"
+            }
+          ],
           "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
           "identities": [
             {
@@ -809,6 +941,28 @@
         "created_at": "2026-01-01T00:00:03Z",
         "email": "person@zou.test",
         "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "2026-01-01T00:00:19Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-in-use",
+            "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:20Z"
+          },
+          {
+            "created_at": "2026-01-01T00:00:21Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-half-set-up",
+            "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:22Z"
+          }
+        ],
         "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
         "identities": [
           {
@@ -860,6 +1014,28 @@
         "created_at": "2026-01-01T00:00:03Z",
         "email": "person@zou.test",
         "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "2026-01-01T00:00:19Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-in-use",
+            "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:20Z"
+          },
+          {
+            "created_at": "2026-01-01T00:00:21Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-half-set-up",
+            "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:22Z"
+          }
+        ],
         "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
         "identities": [
           {
@@ -927,6 +1103,28 @@
         "created_at": "2026-01-01T00:00:03Z",
         "email": "person@zou.test",
         "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "2026-01-01T00:00:19Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-in-use",
+            "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:20Z"
+          },
+          {
+            "created_at": "2026-01-01T00:00:21Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-half-set-up",
+            "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:22Z"
+          }
+        ],
         "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
         "identities": [
           {
@@ -1340,6 +1538,28 @@
         "created_at": "2026-01-01T00:00:03Z",
         "email": "person@zou.test",
         "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "2026-01-01T00:00:19Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-in-use",
+            "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:20Z"
+          },
+          {
+            "created_at": "2026-01-01T00:00:21Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-half-set-up",
+            "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:22Z"
+          }
+        ],
         "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
         "identities": [
           {
@@ -1371,7 +1591,7 @@
           "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
         }
       },
-      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
+      "raw": "{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"factors\":[{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null},{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}],\"identities\":[{\"identity_id\":\"1d4b8f22-6c0e-4a7f-9d53-8e2b0c1a6f37\",\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"identity_data\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"provider\":\"email\",\"last_sign_in_at\":\"2026-01-01T00:00:05Z\",\"created_at\":\"2026-01-01T00:00:06Z\",\"updated_at\":\"2026-01-01T00:00:07Z\",\"email\":\"person@zou.test\"}],\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}"
     },
     {
       "name": "an id nobody has",
@@ -1460,6 +1680,28 @@
         "created_at": "2026-01-01T00:00:03Z",
         "email": "person@zou.test",
         "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "2026-01-01T00:00:19Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-in-use",
+            "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:20Z"
+          },
+          {
+            "created_at": "2026-01-01T00:00:21Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-half-set-up",
+            "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:22Z"
+          }
+        ],
         "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
         "identities": [
           {
@@ -1512,6 +1754,28 @@
         "created_at": "2026-01-01T00:00:03Z",
         "email": "person@zou.test",
         "email_confirmed_at": "2026-01-01T00:00:01Z",
+        "factors": [
+          {
+            "created_at": "2026-01-01T00:00:19Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-in-use",
+            "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:20Z"
+          },
+          {
+            "created_at": "2026-01-01T00:00:21Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-half-set-up",
+            "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:22Z"
+          }
+        ],
         "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
         "identities": [
           {
@@ -1572,6 +1836,28 @@
         "email": "person@zou.test",
         "email_confirmed_at": "2026-01-01T00:00:01Z",
         "email_otp": "<string>",
+        "factors": [
+          {
+            "created_at": "2026-01-01T00:00:19Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-in-use",
+            "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:20Z"
+          },
+          {
+            "created_at": "2026-01-01T00:00:21Z",
+            "factor_type": "totp",
+            "friendly_name": "the-one-half-set-up",
+            "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+            "last_challenged_at": null,
+            "phone": "",
+            "status": "unverified",
+            "updated_at": "2026-01-01T00:00:22Z"
+          }
+        ],
         "hashed_token": "<string>",
         "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
         "identities": [
@@ -1994,6 +2280,217 @@
         }
       ],
       "raw": "[{\"id\":\"2d5e8b14-7c60-4f92-a3d8-5b1f0e9c7a26\",\"payload\":{\"action\":\"user_modified\",\"actor_id\":\"00000000-0000-0000-0000-000000000000\",\"actor_username\":\"service_role\",\"actor_via_sso\":false,\"log_type\":\"team\",\"traits\":{\"user_email\":\"person@zou.test\",\"user_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"user_phone\":\"\"}},\"created_at\":\"2026-01-01T00:00:18Z\",\"ip_address\":\"\"},{\"id\":\"c48b6e29-3f17-4a5d-8b90-1e7d2c4a6f38\",\"payload\":{\"action\":\"logout\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\"},\"created_at\":\"2026-01-01T00:00:17Z\",\"ip_address\":\"\"},{\"id\":\"9f2c1a70-5d84-4b31-9e62-7a0c3f5d8e14\",\"payload\":{\"action\":\"login\",\"actor_id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"actor_username\":\"person@zou.test\",\"actor_via_sso\":false,\"log_type\":\"account\",\"traits\":{\"provider\":\"email\"}},\"created_at\":\"2026-01-01T00:00:16Z\",\"ip_address\":\"198.51.100.7\"}]"
+    },
+    {
+      "name": "somebody's second factors",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": [
+        {
+          "created_at": "2026-01-01T00:00:19Z",
+          "factor_type": "totp",
+          "friendly_name": "the-one-in-use",
+          "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+          "last_challenged_at": null,
+          "phone": "",
+          "status": "unverified",
+          "updated_at": "2026-01-01T00:00:20Z"
+        },
+        {
+          "created_at": "2026-01-01T00:00:21Z",
+          "factor_type": "totp",
+          "friendly_name": "the-one-half-set-up",
+          "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+          "last_challenged_at": null,
+          "phone": "",
+          "status": "unverified",
+          "updated_at": "2026-01-01T00:00:22Z"
+        }
+      ],
+      "raw": "[{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null},{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}]"
+    },
+    {
+      "name": "the second factors of somebody who has none",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": []
+    },
+    {
+      "name": "the factors of an id nobody has",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "user_not_found",
+        "msg": "User not found"
+      }
+    },
+    {
+      "name": "the factors of an id that is not a uuid",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "validation_failed",
+        "msg": "user_id must be an UUID"
+      }
+    },
+    {
+      "name": "somebody's factors without the service role",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "not_admin",
+        "msg": "User not allowed"
+      }
+    },
+    {
+      "name": "somebody's factors as the person themselves",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "not_admin",
+        "msg": "User not allowed"
+      }
+    },
+    {
+      "name": "renaming a factor",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "created_at": "2026-01-01T00:00:21Z",
+        "factor_type": "totp",
+        "friendly_name": "renamed",
+        "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+        "last_challenged_at": null,
+        "phone": "",
+        "status": "unverified",
+        "updated_at": "<timestamp>"
+      }
+    },
+    {
+      "name": "an update with nothing in it to apply",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "created_at": "2026-01-01T00:00:21Z",
+        "factor_type": "totp",
+        "friendly_name": "the-one-half-set-up",
+        "id": "7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+        "last_challenged_at": null,
+        "phone": "",
+        "status": "unverified",
+        "updated_at": "2026-01-01T00:00:22Z"
+      },
+      "raw": "{\"id\":\"7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60\",\"created_at\":\"2026-01-01T00:00:21Z\",\"updated_at\":\"2026-01-01T00:00:22Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-half-set-up\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}"
+    },
+    {
+      "name": "renaming a factor with no body at all",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "bad_json",
+        "msg": "Could not parse request body as JSON: unexpected end of JSON input"
+      }
+    },
+    {
+      "name": "renaming a factor nobody has",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "mfa_factor_not_found",
+        "msg": "Factor not found"
+      }
+    },
+    {
+      "name": "renaming a factor id that is not a uuid",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "validation_failed",
+        "msg": "factor_id must be an UUID"
+      }
+    },
+    {
+      "name": "renaming somebody else's factor",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "mfa_factor_not_found",
+        "msg": "Factor not found"
+      }
+    },
+    {
+      "name": "taking a factor away",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "created_at": "2026-01-01T00:00:19Z",
+        "factor_type": "totp",
+        "friendly_name": "the-one-in-use",
+        "id": "6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+        "last_challenged_at": null,
+        "phone": "",
+        "status": "unverified",
+        "updated_at": "2026-01-01T00:00:20Z"
+      },
+      "raw": "{\"id\":\"6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59\",\"created_at\":\"2026-01-01T00:00:19Z\",\"updated_at\":\"2026-01-01T00:00:20Z\",\"status\":\"unverified\",\"friendly_name\":\"the-one-in-use\",\"factor_type\":\"totp\",\"phone\":\"\",\"last_challenged_at\":null}"
+    },
+    {
+      "name": "taking away a factor nobody has",
+      "status": 404,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 404,
+        "error_code": "mfa_factor_not_found",
+        "msg": "Factor not found"
+      }
+    },
+    {
+      "name": "taking a factor away without the service role",
+      "status": 403,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 403,
+        "error_code": "not_admin",
+        "msg": "User not allowed"
+      }
     }
   ]
 }

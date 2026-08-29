@@ -13,6 +13,7 @@
 -- order the foreign keys allow.
 delete from auth.audit_log_entries;
 delete from auth.mfa_amr_claims;
+delete from auth.mfa_factors;
 delete from auth.refresh_tokens;
 delete from auth.sessions;
 delete from auth.identities;
@@ -212,4 +213,44 @@ insert into auth.audit_log_entries (instance_id, id, payload, created_at, ip_add
   '{"action":"user_modified","actor_id":"00000000-0000-0000-0000-000000000000","actor_username":"service_role","actor_via_sso":false,"log_type":"team","traits":{"user_email":"person@zou.test","user_id":"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60","user_phone":""}}',
   '2026-01-01 00:00:18+00',
   ''
+);
+
+-- Two second factors on the first account, so the admin factor listing
+-- has an order to keep and two rows to rename and delete one of, and
+-- none on the second, so there is an account whose list is empty rather
+-- than missing.
+--
+-- Both are unverified, and that is not for want of a verified one to
+-- look at. An account with a verified factor is behind AAL2 for its own
+-- email and password changes, so a verified row here would turn the
+-- case about changing a password into a case about that refusal
+-- instead. It is a real difference and it is worth a case, on the
+-- endpoint it belongs to rather than on this one.
+--
+-- Both are totp because that is the only kind a factor can have without
+-- a phone number or a credential blob, and the point of the rows is the
+-- listing rather than the enrolment. The secrets are the two base32
+-- strings every totp library's own tests use, so nothing here looks
+-- like somebody's real key.
+insert into auth.mfa_factors (
+  id, user_id, friendly_name, factor_type, status,
+  created_at, updated_at, secret
+) values (
+  '6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59',
+  'f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60',
+  'the-one-in-use',
+  'totp',
+  'unverified',
+  '2026-01-01 00:00:19+00',
+  '2026-01-01 00:00:20+00',
+  'JBSWY3DPEHPK3PXP'
+), (
+  '7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60',
+  'f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60',
+  'the-one-half-set-up',
+  'totp',
+  'unverified',
+  '2026-01-01 00:00:21+00',
+  '2026-01-01 00:00:22+00',
+  'KRSXG5CTMVRXEZLU'
 );

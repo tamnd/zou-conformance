@@ -891,6 +891,131 @@
       "path": "/auth/v1/admin/audit?sort=bogus",
       "key": "service",
       "note": "the account listing refuses this and the trail ignores it, because upstream reads no sort on this endpoint at all"
+    },
+    {
+      "name": "somebody's second factors",
+      "feature": "admin.factors",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors",
+      "key": "service",
+      "note": "a plain array, oldest first, and the secret is in neither answer"
+    },
+    {
+      "name": "the second factors of somebody who has none",
+      "feature": "admin.factors",
+      "path": "/auth/v1/admin/users/b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51/factors",
+      "key": "service",
+      "note": "an empty array rather than nothing at all, which is where this differs from the list hanging off a user object"
+    },
+    {
+      "name": "the factors of an id nobody has",
+      "feature": "admin.factors",
+      "path": "/auth/v1/admin/users/00000000-0000-4000-8000-000000000000/factors",
+      "key": "service"
+    },
+    {
+      "name": "the factors of an id that is not a uuid",
+      "feature": "admin.factors",
+      "path": "/auth/v1/admin/users/not-a-uuid/factors",
+      "key": "service"
+    },
+    {
+      "name": "somebody's factors without the service role",
+      "feature": "admin.factors",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors",
+      "key": "anon"
+    },
+    {
+      "name": "somebody's factors as the person themselves",
+      "feature": "admin.factors",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors",
+      "key": "user"
+    },
+    {
+      "name": "renaming a factor",
+      "feature": "admin.factors",
+      "method": "PUT",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors/7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"friendly_name\":\"renamed\"}",
+      "writes": true,
+      "volatile": ["/updated_at"]
+    },
+    {
+      "name": "an update with nothing in it to apply",
+      "feature": "admin.factors",
+      "method": "PUT",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors/7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{}",
+      "writes": true,
+      "note": "not a refusal and not a write, so updated_at is the one the fixture set and is compared rather than masked"
+    },
+    {
+      "name": "renaming a factor with no body at all",
+      "feature": "admin.factors",
+      "method": "PUT",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors/7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "writes": true
+    },
+    {
+      "name": "renaming a factor nobody has",
+      "feature": "admin.factors",
+      "method": "PUT",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors/00000000-0000-4000-8000-000000000000",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"friendly_name\":\"renamed\"}",
+      "writes": true
+    },
+    {
+      "name": "renaming a factor id that is not a uuid",
+      "feature": "admin.factors",
+      "method": "PUT",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors/not-a-uuid",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"friendly_name\":\"renamed\"}",
+      "writes": true
+    },
+    {
+      "name": "renaming somebody else's factor",
+      "feature": "admin.factors",
+      "method": "PUT",
+      "path": "/auth/v1/admin/users/b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51/factors/7c4f1e58-0b32-4d97-a6a1-4e8d9f2b3c60",
+      "key": "service",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"friendly_name\":\"renamed\"}",
+      "writes": true,
+      "note": "not found rather than forbidden, so the endpoint says nothing about whose factor it is"
+    },
+    {
+      "name": "taking a factor away",
+      "feature": "admin.factors",
+      "method": "DELETE",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors/6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+      "key": "service",
+      "writes": true,
+      "note": "the answer is the factor that is no longer there"
+    },
+    {
+      "name": "taking away a factor nobody has",
+      "feature": "admin.factors",
+      "method": "DELETE",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors/00000000-0000-4000-8000-000000000000",
+      "key": "service",
+      "writes": true
+    },
+    {
+      "name": "taking a factor away without the service role",
+      "feature": "admin.factors",
+      "method": "DELETE",
+      "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60/factors/6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59",
+      "key": "user",
+      "writes": true
     }
   ]
 }
