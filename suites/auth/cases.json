@@ -41,7 +41,8 @@
       "name": "the person a token names",
       "feature": "user",
       "path": "/auth/v1/user",
-      "key": "user"
+      "key": "user",
+      "sorted": ["/factors"]
     },
     {
       "name": "no token at all",
@@ -99,7 +100,8 @@
       "path": "/auth/v1/user",
       "key": "anon",
       "token": {"nbf": -1},
-      "note": "the other side of the same line, so that a server refusing every nbf it sees would fail here rather than pass both"
+      "note": "the other side of the same line, so that a server refusing every nbf it sees would fail here rather than pass both",
+      "sorted": ["/factors"]
     },
     {
       "name": "a token issued an hour from now",
@@ -107,7 +109,8 @@
       "path": "/auth/v1/user",
       "key": "anon",
       "token": {"iat": 3600},
-      "note": "golang-jwt does not read iat, so this is a case about a claim the auth surface is expected to ignore and the rest surface is expected to refuse"
+      "note": "golang-jwt does not read iat, so this is a case about a claim the auth surface is expected to ignore and the rest surface is expected to refuse",
+      "sorted": ["/factors"]
     },
 
     {
@@ -125,7 +128,8 @@
         "/expires_at",
         "/user/last_sign_in_at",
         "/user/updated_at"
-      ]
+      ],
+      "sorted": ["/user/factors"]
     },
     {
       "name": "the wrong password",
@@ -162,7 +166,8 @@
         "/expires_at",
         "/user/last_sign_in_at",
         "/user/updated_at"
-      ]
+      ],
+      "sorted": ["/user/factors"]
     },
     {
       "name": "no password at all",
@@ -216,7 +221,8 @@
         "/refresh_token",
         "/expires_at",
         "/user/updated_at"
-      ]
+      ],
+      "sorted": ["/user/factors"]
     },
     {
       "name": "spending the same refresh token again straight away",
@@ -234,7 +240,8 @@
         "/refresh_token",
         "/expires_at",
         "/user/updated_at"
-      ]
+      ],
+      "sorted": ["/user/factors"]
     },
     {
       "name": "spending the token the refresh answered with",
@@ -252,7 +259,8 @@
         "/refresh_token",
         "/expires_at",
         "/user/updated_at"
-      ]
+      ],
+      "sorted": ["/user/factors"]
     },
     {
       "name": "a refresh token that was already spent",
@@ -418,7 +426,8 @@
       "headers": {"content-type": "application/json"},
       "body": "{\"data\":{\"nickname\":\"anne\"}}",
       "writes": true,
-      "volatile": ["/updated_at"]
+      "volatile": ["/updated_at"],
+      "sorted": ["/factors"]
     },
     {
       "name": "changing the password",
@@ -429,7 +438,8 @@
       "headers": {"content-type": "application/json"},
       "body": "{\"password\":\"a-different-password\"}",
       "writes": true,
-      "volatile": ["/updated_at"]
+      "volatile": ["/updated_at"],
+      "sorted": ["/factors"]
     },
     {
       "name": "changing the password to a weak one",
@@ -450,7 +460,8 @@
       "headers": {"content-type": "application/json"},
       "body": "{}",
       "writes": true,
-      "volatile": ["/updated_at"]
+      "volatile": ["/updated_at"],
+      "sorted": ["/factors"]
     },
     {
       "name": "changing an account without a token",
@@ -476,7 +487,8 @@
       "feature": "logout",
       "method": "GET",
       "path": "/auth/v1/user",
-      "key": "user"
+      "key": "user",
+      "chained": true
     },
     {
       "name": "another session of the same person after a logout with no scope",
@@ -544,7 +556,9 @@
       "feature": "logout",
       "method": "GET",
       "path": "/auth/v1/user",
-      "key": "user"
+      "key": "user",
+      "chained": true,
+      "sorted": ["/factors"]
     },
     {
       "name": "this session's refresh token after ending the others",
@@ -556,7 +570,8 @@
       "body": "{\"refresh_token\":\"zouconform01\"}",
       "writes": true,
       "chained": true,
-      "volatile": ["/access_token", "/refresh_token", "/expires_at", "/user/updated_at"]
+      "volatile": ["/access_token", "/refresh_token", "/expires_at", "/user/updated_at"],
+      "sorted": ["/user/factors"]
     },
     {
       "name": "another session's refresh token after ending the others",
@@ -582,7 +597,8 @@
       "feature": "logout",
       "method": "GET",
       "path": "/auth/v1/user",
-      "key": "user"
+      "key": "user",
+      "chained": true
     },
     {
       "name": "this session's refresh token after ending only this session",
@@ -605,7 +621,8 @@
       "body": "{\"refresh_token\":\"zouconform03\"}",
       "writes": true,
       "chained": true,
-      "volatile": ["/access_token", "/refresh_token", "/expires_at", "/user/updated_at"]
+      "volatile": ["/access_token", "/refresh_token", "/expires_at", "/user/updated_at"],
+      "sorted": ["/user/factors"]
     },
     {
       "name": "ending a session without a token",
@@ -817,6 +834,342 @@
       "key": "user",
       "writes": true
     },
+    {
+      "name": "enrolling a factor of a type nobody has",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"factor_type\":\"sms\"}",
+      "note": "the three that exist are named in the refusal, which is how a client finds out that sms is spelled phone",
+      "writes": true
+    },
+    {
+      "name": "enrolling a phone factor",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"factor_type\":\"phone\"}",
+      "note": "a type that exists and is switched off, which is a different answer from one that does not exist",
+      "writes": true
+    },
+    {
+      "name": "enrolling with no body at all",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "writes": true
+    },
+    {
+      "name": "challenging a factor without a token",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors/6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59/challenge",
+      "key": "anon",
+      "headers": {"authorization": "", "content-type": "application/json"},
+      "body": "{}",
+      "writes": true
+    },
+    {
+      "name": "challenging a factor id that is not a uuid",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors/not-a-uuid/challenge",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{}",
+      "note": "404 rather than 400, because upstream reads the id on the way into the route and a route it cannot read the id for is a route that is not there",
+      "writes": true
+    },
+    {
+      "name": "challenging a factor nobody enrolled",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors/8f1c0d2e-4a6b-4c8d-9e0f-1a2b3c4d5e6f/challenge",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{}",
+      "writes": true
+    },
+    {
+      "name": "verifying a factor without a token",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors/6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59/verify",
+      "key": "anon",
+      "headers": {"authorization": "", "content-type": "application/json"},
+      "body": "{\"challenge_id\":\"9e0f1a2b-3c4d-4e5f-8a9b-0c1d2e3f4a5b\",\"code\":\"000000\"}",
+      "writes": true
+    },
+    {
+      "name": "verifying with no body at all",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors/6b3e0d47-9a21-4c86-b5f0-3d7c8e1a2b59/verify",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "writes": true
+    },
+    {
+      "name": "enrolling a factor",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"factor_type\":\"totp\",\"friendly_name\":\"the-new-one\",\"issuer\":\"zou.test\"}",
+      "note": "The secret is held rather than compared, because the whole point of a secret is that it is different every time. The uri around it is still compared, with the secret taken out of it, since the issuer, the account, the algorithm, the digit count and the period are what an authenticator app has to have agreed on for any code to match.",
+      "writes": true,
+      "holds": {"factor": "body:/id", "secret": "body:/totp/secret"},
+      "volatile": [
+        "/id",
+        "/totp/qr_code",
+        "/totp/secret",
+        "/totp/uri"
+      ]
+    },
+    {
+      "name": "enrolling a factor under a name already in use",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"factor_type\":\"totp\",\"friendly_name\":\"the-new-one\",\"issuer\":\"zou.test\"}",
+      "note": "The name is the one the case before it took, which is why this is chained rather than asked off the fixture. The fixture's own factors are months old and unverified and nobody ever challenged them, and an enroll sweeps those out before it looks at the name, so asking about the fixture's names would be asking about factors that are no longer there.",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "challenging the factor just enrolled",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors/{factor}/challenge",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{}",
+      "writes": true,
+      "chained": true,
+      "holds": {"challenge": "body:/id"},
+      "volatile": [
+        "/id",
+        "/expires_at"
+      ]
+    },
+    {
+      "name": "verifying with a code that is not the one",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors/{factor}/verify",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"challenge_id\":\"{challenge}\",\"code\":\"000000\"}",
+      "note": "a wrong code leaves the challenge where it was, which is what the two cases after it depend on",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "verifying against a challenge nobody made",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors/{factor}/verify",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"challenge_id\":\"9e0f1a2b-3c4d-4e5f-8a9b-0c1d2e3f4a5b\",\"code\":\"000000\"}",
+      "note": "the factor is there and the challenge is not, and the refusal is worded about the factor, which is upstream's wording rather than a mistake in this case",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "verifying with the code the secret is showing",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors/{factor}/verify",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"challenge_id\":\"{challenge}\",\"code\":\"{totp:secret}\"}",
+      "note": "The code is worked out by the harness from the secret the enroll answered with, at the second the request goes out. It cannot be written down here, which is why this is the one placeholder that stands for something other than the value that was held.",
+      "writes": true,
+      "chained": true,
+      "holds": {"upgraded": "body:/access_token"},
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/factors/0/id",
+        "/user/factors/0/created_at",
+        "/user/factors/0/updated_at",
+        "/user/factors/0/last_challenged_at",
+        "/user/updated_at"
+      ]
+    },
+    {
+      "name": "verifying against the same challenge twice",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors/{factor}/verify",
+      "key": "user",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"challenge_id\":\"{challenge}\",\"code\":\"{totp:secret}\"}",
+      "note": "a challenge that has been spent and one that was made from another address are tested in the same branch upstream, so a replay from the machine that made it is reported as an address that does not match",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "the account after the factor was verified",
+      "feature": "mfa",
+      "method": "GET",
+      "path": "/auth/v1/user",
+      "key": "user",
+      "chained": true,
+      "headers": {"authorization": "Bearer {upgraded}"},
+      "note": "one factor, verified, carrying the moment it was challenged. The two the fixture seeded are not here: they are months old and nobody ever challenged them, and the enroll at the top of this chain swept them out on its way past.",
+      "volatile": [
+        "/factors/0/id",
+        "/factors/0/created_at",
+        "/factors/0/updated_at",
+        "/factors/0/last_challenged_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "another session of the same person after the factor was verified",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform03\"}",
+      "note": "a session that never passed the factor would be a way back in around it, so the verify takes the person's other sessions with it",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "somebody else's session after the factor was verified",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"zouconform05\"}",
+      "note": "the other account has nothing to do with this factor and is left alone",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/updated_at"
+      ]
+    },
+    {
+      "name": "a sign in after a factor is verified",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=password",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"email\":\"person@zou.test\",\"password\":\"conformance-password\"}",
+      "note": "a password still signs in, and the session it makes is aal1, which is the state the five cases after it are about",
+      "writes": true,
+      "chained": true,
+      "holds": {"plain": "body:/access_token"},
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/last_sign_in_at",
+        "/user/factors/0/id",
+        "/user/factors/0/created_at",
+        "/user/factors/0/updated_at",
+        "/user/factors/0/last_challenged_at",
+        "/user/updated_at"
+      ]
+    },
+    {
+      "name": "changing the password from a session that has not passed the factor",
+      "feature": "mfa",
+      "method": "PUT",
+      "path": "/auth/v1/user",
+      "key": "user",
+      "headers": {"authorization": "Bearer {plain}", "content-type": "application/json"},
+      "body": "{\"password\":\"another-one-entirely\"}",
+      "note": "read off the session row rather than off the aal claim in the token, which is why the token the verify answered with gets through this and the one a fresh sign in answered with does not",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "changing the address from a session that has not passed the factor",
+      "feature": "mfa",
+      "method": "PUT",
+      "path": "/auth/v1/user",
+      "key": "user",
+      "headers": {"authorization": "Bearer {plain}", "content-type": "application/json"},
+      "body": "{\"email\":\"moved@zou.test\"}",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "changing the metadata from a session that has not passed the factor",
+      "feature": "mfa",
+      "method": "PUT",
+      "path": "/auth/v1/user",
+      "key": "user",
+      "headers": {"authorization": "Bearer {plain}", "content-type": "application/json"},
+      "body": "{\"data\":{\"nickname\":\"one\"}}",
+      "note": "the guard is over the password and the two addresses a reset would go to, and over nothing else the endpoint does",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/last_sign_in_at",
+        "/factors/0/id",
+        "/factors/0/created_at",
+        "/factors/0/updated_at",
+        "/factors/0/last_challenged_at",
+        "/updated_at"
+      ]
+    },
+    {
+      "name": "enrolling another factor from a session that has not passed the factor",
+      "feature": "mfa",
+      "method": "POST",
+      "path": "/auth/v1/factors",
+      "key": "user",
+      "headers": {"authorization": "Bearer {plain}", "content-type": "application/json"},
+      "body": "{\"factor_type\":\"totp\",\"friendly_name\":\"one-more\",\"issuer\":\"zou.test\"}",
+      "note": "403 here, 401 on the user endpoint and 422 on the unenroll, all three saying insufficient_aal, which is upstream's spread rather than one rule written once",
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "unenrolling the verified factor from a session that has not passed it",
+      "feature": "mfa",
+      "method": "DELETE",
+      "path": "/auth/v1/factors/{factor}",
+      "key": "user",
+      "headers": {"authorization": "Bearer {plain}"},
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "unenrolling the verified factor from the session that passed it",
+      "feature": "mfa",
+      "method": "DELETE",
+      "path": "/auth/v1/factors/{factor}",
+      "key": "user",
+      "headers": {"authorization": "Bearer {upgraded}"},
+      "note": "the id and nothing else, which is the whole answer",
+      "writes": true,
+      "chained": true,
+      "volatile": [
+        "/id"
+      ]
+    },
 
     {
       "name": "listing accounts without the service role",
@@ -840,7 +1193,8 @@
       "name": "one account by id",
       "feature": "admin",
       "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
-      "key": "service"
+      "key": "service",
+      "sorted": ["/factors"]
     },
     {
       "name": "an id nobody has",
@@ -887,7 +1241,8 @@
       "headers": {"content-type": "application/json"},
       "body": "{\"user_metadata\":{\"nickname\":\"anne\"}}",
       "writes": true,
-      "volatile": ["/updated_at"]
+      "volatile": ["/updated_at"],
+      "sorted": ["/factors"]
     },
     {
       "name": "banning an account",
@@ -898,7 +1253,8 @@
       "headers": {"content-type": "application/json"},
       "body": "{\"ban_duration\":\"24h\"}",
       "writes": true,
-      "volatile": ["/updated_at", "/banned_until"]
+      "volatile": ["/updated_at", "/banned_until"],
+      "sorted": ["/factors"]
     },
     {
       "name": "deleting an account",
@@ -925,7 +1281,8 @@
         "/recovery_sent_at",
         "/confirmation_sent_at",
         "/email_change_sent_at"
-      ]
+      ],
+      "sorted": ["/user/factors"]
     },
     {
       "name": "a link for a kind of mail that does not exist",
