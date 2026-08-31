@@ -1,0 +1,320 @@
+{
+  "suite": "auth-anon",
+  "recorded_from": "gotrue 2.195.0 with anonymous sign in on",
+  "answers": [
+    {
+      "name": "what a sign in screen reads when it may offer a way in with no name",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "disable_signup": false,
+        "external": {
+          "anonymous_users": true,
+          "apple": false,
+          "azure": false,
+          "bitbucket": false,
+          "discord": false,
+          "email": true,
+          "facebook": false,
+          "figma": false,
+          "fly": false,
+          "github": false,
+          "gitlab": false,
+          "google": false,
+          "kakao": false,
+          "keycloak": false,
+          "linkedin": false,
+          "linkedin_oidc": false,
+          "notion": false,
+          "phone": false,
+          "slack": false,
+          "slack_oidc": false,
+          "snapchat": false,
+          "spotify": false,
+          "twitch": false,
+          "twitter": false,
+          "workos": false,
+          "zoom": false
+        },
+        "mailer_autoconfirm": true,
+        "passkeys_enabled": false,
+        "phone_autoconfirm": false,
+        "saml_enabled": false,
+        "saml_private_key_next_configured": true,
+        "sms_provider": ""
+      },
+      "raw": "{\"external\":{\"anonymous_users\":true,\"apple\":false,\"azure\":false,\"bitbucket\":false,\"discord\":false,\"facebook\":false,\"snapchat\":false,\"figma\":false,\"fly\":false,\"github\":false,\"gitlab\":false,\"google\":false,\"keycloak\":false,\"kakao\":false,\"linkedin\":false,\"linkedin_oidc\":false,\"notion\":false,\"spotify\":false,\"slack\":false,\"slack_oidc\":false,\"workos\":false,\"twitch\":false,\"twitter\":false,\"email\":true,\"phone\":false,\"zoom\":false},\"disable_signup\":false,\"mailer_autoconfirm\":true,\"phone_autoconfirm\":false,\"sms_provider\":\"\",\"saml_enabled\":false,\"saml_private_key_next_configured\":true,\"passkeys_enabled\":false}"
+    },
+    {
+      "name": "somebody signs in without saying who they are",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {},
+          "aud": "authenticated",
+          "created_at": "<timestamp>",
+          "email": "",
+          "id": "<uuid>",
+          "identities": [],
+          "is_anonymous": true,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {}
+        }
+      }
+    },
+    {
+      "name": "what the account nobody vouched for looks like to itself",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {},
+        "aud": "authenticated",
+        "created_at": "<timestamp>",
+        "email": "",
+        "id": "<uuid>",
+        "identities": [],
+        "is_anonymous": true,
+        "last_sign_in_at": "<timestamp>",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {}
+      }
+    },
+    {
+      "name": "spending the refresh token an anonymous session was handed",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {},
+          "aud": "authenticated",
+          "created_at": "<timestamp>",
+          "email": "",
+          "id": "<uuid>",
+          "identities": [],
+          "is_anonymous": true,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {}
+        }
+      }
+    },
+    {
+      "name": "a password with no address behind it",
+      "status": 422,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 422,
+        "error_code": "validation_failed",
+        "msg": "Updating password of an anonymous user without an email or phone is not allowed"
+      }
+    },
+    {
+      "name": "the account says who it is",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {},
+        "aud": "authenticated",
+        "created_at": "<timestamp>",
+        "email": "anon-becomes@zou.test",
+        "email_confirmed_at": "<timestamp>",
+        "id": "<uuid>",
+        "identities": [
+          {
+            "created_at": "<timestamp>",
+            "email": "anon-becomes@zou.test",
+            "id": "<uuid>",
+            "identity_data": {
+              "email": "anon-becomes@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "<uuid>"
+            },
+            "identity_id": "<uuid>",
+            "last_sign_in_at": "<timestamp>",
+            "provider": "email",
+            "updated_at": "<timestamp>",
+            "user_id": "<uuid>"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "<timestamp>",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email_verified": true
+        }
+      }
+    },
+    {
+      "name": "what is left of the anonymous account once it has an address",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "app_metadata": {},
+        "aud": "authenticated",
+        "confirmed_at": "<timestamp>",
+        "created_at": "<timestamp>",
+        "email": "anon-becomes@zou.test",
+        "email_confirmed_at": "<timestamp>",
+        "id": "<uuid>",
+        "identities": [
+          {
+            "created_at": "<timestamp>",
+            "email": "anon-becomes@zou.test",
+            "id": "<uuid>",
+            "identity_data": {
+              "email": "anon-becomes@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "<uuid>"
+            },
+            "identity_id": "<uuid>",
+            "last_sign_in_at": "<timestamp>",
+            "provider": "email",
+            "updated_at": "<timestamp>",
+            "user_id": "<uuid>"
+          }
+        ],
+        "is_anonymous": false,
+        "last_sign_in_at": "<timestamp>",
+        "phone": "",
+        "role": "authenticated",
+        "updated_at": "<timestamp>",
+        "user_metadata": {
+          "email_verified": true
+        }
+      }
+    },
+    {
+      "name": "the token endpoint stops calling it anonymous",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {},
+          "aud": "authenticated",
+          "confirmed_at": "<timestamp>",
+          "created_at": "<timestamp>",
+          "email": "anon-becomes@zou.test",
+          "email_confirmed_at": "<timestamp>",
+          "id": "<uuid>",
+          "identities": [
+            {
+              "created_at": "<timestamp>",
+              "email": "anon-becomes@zou.test",
+              "id": "<uuid>",
+              "identity_data": {
+                "email": "anon-becomes@zou.test",
+                "email_verified": true,
+                "phone_verified": false,
+                "sub": "<uuid>"
+              },
+              "identity_id": "<uuid>",
+              "last_sign_in_at": "<timestamp>",
+              "provider": "email",
+              "updated_at": "<timestamp>",
+              "user_id": "<uuid>"
+            }
+          ],
+          "is_anonymous": false,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "email_verified": true
+          }
+        }
+      }
+    },
+    {
+      "name": "somebody else, with something to say about themselves",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "access_token": "<jwt>",
+        "expires_at": "<number>",
+        "expires_in": 3600,
+        "refresh_token": "<string>",
+        "token_type": "bearer",
+        "user": {
+          "app_metadata": {},
+          "aud": "authenticated",
+          "created_at": "<timestamp>",
+          "email": "",
+          "id": "<uuid>",
+          "identities": [],
+          "is_anonymous": true,
+          "last_sign_in_at": "<timestamp>",
+          "phone": "",
+          "role": "authenticated",
+          "updated_at": "<timestamp>",
+          "user_metadata": {
+            "nickname": "anne"
+          }
+        }
+      }
+    },
+    {
+      "name": "a guest leaves",
+      "status": 204,
+      "headers": {},
+      "body": null
+    },
+    {
+      "name": "the refresh token of a session a guest left",
+      "status": 400,
+      "headers": {
+        "content-type": "application/json"
+      },
+      "body": {
+        "code": 400,
+        "error_code": "refresh_token_not_found",
+        "msg": "Invalid Refresh Token: Refresh Token Not Found"
+      }
+    }
+  ]
+}

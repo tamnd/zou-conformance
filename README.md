@@ -10,9 +10,10 @@ The harness that reads these files lives in the zou repository, in `conformance/
 
 ```
 versions.json          what compatibility is measured against
-suites/rest/           82 questions about the surface a supabase project uses
-suites/postgrest/      1217 questions, derived from PostgREST's own spec files
-suites/auth/           77 questions about the endpoints a sign in flow uses
+suites/rest/           104 questions about the surface a supabase project uses
+suites/postgrest/      1317 questions, derived from PostgREST's own spec files
+suites/auth/           176 questions about the endpoints a sign in flow uses
+suites/auth-anon/      11 more, asked of a project that lets a guest in
 suites/storage/        478 questions about buckets, objects, transforms and the S3 protocol
 js/                    supabase-js's own integration tests, run against zou
 js-storage/            storage-js's own integration tests, run against zou
@@ -58,6 +59,8 @@ The `rest` suite is hand written, about the endpoints and the headers a Supabase
 
 The `auth` suite is hand written too, and it is the one where most of the answer cannot be the same twice. A token, a session id, an issued-at, a row's created_at: every one of them is different on the second run, and comparing them byte for byte would fail every case for a reason that is not a difference. Each case names the values that move, by json pointer, and a named value is compared as the shape it had rather than as what it said. Everything else is still compared byte for byte, and most of an auth answer is everything else.
 
+`auth-anon` is the same suite asked of a project that has changed one setting. Anonymous sign in is off in a project that has changed nothing, so next door a signup with no identifier is a refusal and the refusal is a case there. The flow behind it needs the setting on, and a suite is asked against one server, so it is a directory of its own. Nothing in it is seeded, because what makes an account anonymous is the session it was handed at the moment it was made, which no fixture can write. That makes the whole suite one chain: the signup at the top holds its own tokens and the cases under it spend them, up to the one this is all for, where the account puts an address on itself, keeps its id, and stops being called anonymous by the token endpoint.
+
 ## Using it
 
 ```
@@ -88,6 +91,8 @@ The diff in `recorded.json` is the review. It is upstream's answer written down,
 
 A bare GoTrue answers on `/` where a project answers on `/auth/v1`, so the auth suite is recorded with `--reference-strip /auth/v1` and the paths stay the ones a client actually types. It is recorded against the configuration `supabase start` gives a project that has changed nothing, with one exception: `GOTRUE_RATE_LIMIT_EMAIL_SENT` is raised out of the way. A rate limit is a configured number and a clock rather than a compatibility surface, and at the default of 30 an hour which case got the 429 would depend on how long the run before it took.
 
+`auth-anon` is the second exception, and it is a suite rather than a flag on the one above because the flag it needs is a property of a server. Its reference is the same binary in the same configuration with `GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED=true` added and a database of its own, and zou is told the same thing by `"anonymous_users": true` in the suite's `cases.json`. Recording it means a second GoTrue on a second port, which is what zou's CI brings up next to the first.
+
 Bumping a version in `versions.json` means re-recording every suite it covers, and the re-recording is the point: the diff is upstream changing its mind, and it should be read rather than merged.
 
 ## Known differences
@@ -102,12 +107,13 @@ The numbers move, so the file that has them is [docs/scoreboard.md](https://gith
 
 | suite | cases | zou passes | known |
 | --- | ---: | ---: | ---: |
-| rest | 82 | 82, 100% | 0 |
-| postgrest | 1217 | 1217, 100% | 0 |
-| auth | 77 | 74, 96% | 3 |
+| rest | 104 | 99, 95% | 5 |
+| postgrest | 1317 | 1317, 100% | 0 |
+| auth | 176 | 168, 95% | 8 |
+| auth-anon | 11 | 9, 81% | 2 |
 | storage | 478 | 478, 100% | 0 |
 
-The supabase-js suite runs 17 of its 34 tests and zou passes all 17. The other 17 are Realtime, which zou does not serve yet. The storage-js suite runs 133 of its 135 and zou passes all 133, the other two being skips upstream wrote itself.
+The supabase-js suite runs 33 tests and zou passes all 33, the Realtime half of them included. The storage-js suite runs 133 of its 135 and zou passes all 133, the other two being skips upstream wrote itself.
 
 ## Provenance
 
