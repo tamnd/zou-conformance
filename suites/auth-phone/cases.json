@@ -3,9 +3,10 @@
   "note": [
     "The flows that need a telephone. Phone sign in is off in a Supabase project that has changed nothing, the auth suite is recorded against a project that has changed nothing, and so every phone endpoint there is a refusal and the refusals are cases in it already. Everything past them needs the provider on, a provider is a property of a server rather than of a request, and a suite is asked against one server. So this is a suite of its own rather than a handful of cases in the one next door.",
     "The reference is the same GoTrue 2.195.0 in the same configuration, in a database of its own, with GOTRUE_EXTERNAL_PHONE_ENABLED=true, a Twilio provider, and GOTRUE_SMS_TEST_OTP naming the ten numbers below. zou is told the same thing by 'sms' here, and those two settings are the whole difference between this suite's targets and the auth suite's.",
-    "Nothing here can read an sms, so every number this suite uses has its code written down on both servers. That is a real GoTrue feature rather than a hole cut for the harness: a number on the list is never texted, gets the code next to it, and the code is stored hashed the same way a drawn one is. So no provider is ever called, the credentials both sides carry are not credentials, and a case can send the code the server is about to expect.",
+    "Nothing here can read an sms, so every number this suite uses has its code written down on both servers. That is a real GoTrue feature rather than a hole cut for the harness: a number on the list is never texted, gets the code next to it, and the code is what a verify for that number is checked against whether or not one was ever asked for. So no provider is ever called, the credentials both sides carry are not credentials, and a case can send the code the server is about to expect.",
     "The numbers are all in 555 0100 through 555 0199, the range set aside so that nothing in a test can ring somebody's telephone.",
-    "Two people are seeded, both of them a phone and nothing else, because that is what an account made by a phone signup looks like. Everything a case needs beyond those two it makes for itself, which is why most of the file is chains: a code can only be verified by the account that was just sent one, and a number can only be changed by somebody who is signed in.",
+    "Two people are seeded, both of them a phone and nothing else, because that is what an account made by a phone signup looks like. Everything a case needs beyond those two it makes for itself, which is why most of the file is chains: a number can only be changed by somebody who is signed in, and a resend can only be refused as too soon if something was sent first.",
+    "Neither side has the wait between codes turned off. A minute is what a project that changed nothing has, it is what the reference is on, and so the case that asks for a second code inside that minute is recorded as being told to wait rather than being run against a server that would not have said so.",
     "The values that cannot be the same twice are named in 'volatile' and compared as the shape they had. Everything else is compared byte for byte."
   ],
   "schemas": ["public"],
@@ -48,6 +49,7 @@
         "/created_at",
         "/updated_at",
         "/confirmation_sent_at",
+        "/user_metadata/sub",
         "/identities/0/identity_id",
         "/identities/0/id",
         "/identities/0/user_id",
@@ -76,7 +78,9 @@
         "/user/updated_at",
         "/user/last_sign_in_at",
         "/user/confirmed_at",
+        "/user/confirmation_sent_at",
         "/user/phone_confirmed_at",
+        "/user/user_metadata/sub",
         "/user/identities/0/identity_id",
         "/user/identities/0/id",
         "/user/identities/0/user_id",
@@ -100,7 +104,9 @@
         "/updated_at",
         "/last_sign_in_at",
         "/confirmed_at",
+        "/confirmation_sent_at",
         "/phone_confirmed_at",
+        "/user_metadata/sub",
         "/identities/0/identity_id",
         "/identities/0/id",
         "/identities/0/user_id",
@@ -113,7 +119,7 @@
     },
 
     {
-      "name": "the same code a second time",
+      "name": "a written code for a number nobody sent one to",
       "feature": "verify.sms",
       "method": "POST",
       "path": "/auth/v1/verify",
@@ -121,7 +127,17 @@
       "headers": {"content-type": "application/json"},
       "body": "{\"type\":\"sms\",\"phone\":\"15550100000\",\"token\":\"313370\"}",
       "writes": true,
-      "note": "the seeded person was never sent one, so this is a code being offered for a number with nothing outstanding rather than a code being spent twice"
+      "note": "the seeded person was never sent one, and the answer is a session all the same. A number whose code was written down is checked against what was written, because nothing was ever drawn for it, so there is no column holding a code and no minute for one to run out in",
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/updated_at",
+        "/user/last_sign_in_at",
+        "/user/confirmed_at",
+        "/user/phone_confirmed_at"
+      ],
+      "sorted": ["/user/factors"]
     },
     {
       "name": "a code that is not the one",
@@ -142,7 +158,7 @@
       "headers": {"content-type": "application/json"},
       "body": "{\"type\":\"sms\",\"phone\":\"15550100009\",\"token\":\"828282\"}",
       "writes": true,
-      "note": "the same words as a code that is wrong, on purpose: telling the two apart tells a stranger which numbers have accounts"
+      "note": "the code is the written one and the answer is still a refusal, in the same words as a wrong code: the list decides what a number's code is, not whether the number has an account"
     },
     {
       "name": "a code with no number to check it against",
@@ -201,15 +217,7 @@
       "headers": {"content-type": "application/json"},
       "body": "{\"phone\":\"+1 (555) 010-0000\",\"password\":\"conformance-password\"}",
       "writes": true,
-      "note": "the punctuation a person types is not the digits a row holds, and what a server does with the difference is the whole of this case",
-      "volatile": [
-        "/access_token",
-        "/refresh_token",
-        "/expires_at",
-        "/user/last_sign_in_at",
-        "/user/updated_at"
-      ],
-      "sorted": ["/user/factors"]
+      "note": "the punctuation a person types is not the digits a row holds, and what a server does with the difference is the whole of this case"
     },
 
     {
@@ -237,7 +245,10 @@
         "/refresh_token",
         "/expires_at",
         "/user/updated_at",
-        "/user/last_sign_in_at"
+        "/user/last_sign_in_at",
+        "/user/confirmed_at",
+        "/user/confirmation_sent_at",
+        "/user/phone_confirmed_at"
       ],
       "sorted": ["/user/factors"]
     },
@@ -257,6 +268,9 @@
       "volatile": [
         "/updated_at",
         "/last_sign_in_at",
+        "/confirmed_at",
+        "/confirmation_sent_at",
+        "/phone_confirmed_at",
         "/phone_change_sent_at"
       ],
       "sorted": ["/factors"]
@@ -276,7 +290,10 @@
         "/expires_at",
         "/user/updated_at",
         "/user/last_sign_in_at",
+        "/user/confirmed_at",
+        "/user/confirmation_sent_at",
         "/user/phone_confirmed_at",
+        "/user/phone_change_sent_at",
         "/user/identities/0/last_sign_in_at",
         "/user/identities/0/updated_at"
       ],
@@ -312,7 +329,9 @@
         "/user/updated_at",
         "/user/last_sign_in_at",
         "/user/confirmed_at",
+        "/user/confirmation_sent_at",
         "/user/phone_confirmed_at",
+        "/user/user_metadata/sub",
         "/user/identities/0/identity_id",
         "/user/identities/0/id",
         "/user/identities/0/user_id",
@@ -358,6 +377,7 @@
         "/created_at",
         "/updated_at",
         "/confirmation_sent_at",
+        "/user_metadata/sub",
         "/identities/0/identity_id",
         "/identities/0/id",
         "/identities/0/user_id",
@@ -368,17 +388,18 @@
       ]
     },
     {
-      "name": "sending the code again because the first one never arrived",
+      "name": "sending the code again a moment after the signup",
       "feature": "resend.sms",
       "method": "POST",
       "path": "/auth/v1/resend",
       "key": "anon",
       "headers": {"content-type": "application/json"},
       "body": "{\"type\":\"sms\",\"phone\":\"15550100005\"}",
-      "chained": true
+      "chained": true,
+      "note": "inside the minute a number waits between codes, so the answer is how long is left rather than a second code. The number in the message is the whole of what a client shows somebody"
     },
     {
-      "name": "the code that arrived the second time",
+      "name": "the code the signup sent, after the resend was refused",
       "feature": "resend.sms",
       "method": "POST",
       "path": "/auth/v1/verify",
@@ -395,7 +416,9 @@
         "/user/updated_at",
         "/user/last_sign_in_at",
         "/user/confirmed_at",
+        "/user/confirmation_sent_at",
         "/user/phone_confirmed_at",
+        "/user/user_metadata/sub",
         "/user/identities/0/identity_id",
         "/user/identities/0/id",
         "/user/identities/0/user_id",
@@ -506,6 +529,7 @@
         "/updated_at",
         "/confirmed_at",
         "/phone_confirmed_at",
+        "/user_metadata/sub",
         "/identities/0/identity_id",
         "/identities/0/id",
         "/identities/0/user_id",
