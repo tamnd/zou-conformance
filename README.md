@@ -14,6 +14,7 @@ suites/rest/           104 questions about the surface a supabase project uses
 suites/postgrest/      1317 questions, derived from PostgREST's own spec files
 suites/auth/           176 questions about the endpoints a sign in flow uses
 suites/auth-anon/      11 more, asked of a project that lets a guest in
+suites/auth-phone/     32 more, asked of a project that signs people in by telephone
 suites/storage/        478 questions about buckets, objects, transforms and the S3 protocol
 js/                    supabase-js's own integration tests, run against zou
 js-storage/            storage-js's own integration tests, run against zou
@@ -61,6 +62,8 @@ The `auth` suite is hand written too, and it is the one where most of the answer
 
 `auth-anon` is the same suite asked of a project that has changed one setting. Anonymous sign in is off in a project that has changed nothing, so next door a signup with no identifier is a refusal and the refusal is a case there. The flow behind it needs the setting on, and a suite is asked against one server, so it is a directory of its own. Nothing in it is seeded, because what makes an account anonymous is the session it was handed at the moment it was made, which no fixture can write. That makes the whole suite one chain: the signup at the top holds its own tokens and the cases under it spend them, up to the one this is all for, where the account puts an address on itself, keeps its id, and stops being called anonymous by the token endpoint.
 
+`auth-phone` is the third of these, and the setting it needs is a text message provider. A project that has changed nothing has none, so `/settings` next door says `sms_provider` is empty and every endpoint that would send a code refuses, which is why none of the cases above are about telephones. The reference for this one is the same binary with Twilio configured and a list of numbers whose codes are written down in advance, and zou is told the same by the `sms` block at the top of its `cases.json`. Nothing real is carried on either side: the credentials are strings and the api root is a closed port, so a case that ever fell through to a send fails rather than reaching a network.
+
 ## Using it
 
 ```
@@ -93,6 +96,8 @@ A bare GoTrue answers on `/` where a project answers on `/auth/v1`, so the auth 
 
 `auth-anon` is the second exception, and it is a suite rather than a flag on the one above because the flag it needs is a property of a server. Its reference is the same binary in the same configuration with `GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED=true` added and a database of its own, and zou is told the same thing by `"anonymous_users": true` in the suite's `cases.json`. Recording it means a second GoTrue on a second port, which is what zou's CI brings up next to the first.
 
+`auth-phone` is the third, on a third port and a third database, with `GOTRUE_SMS_PROVIDER=twilio`, credentials that are only the right shape, and `GOTRUE_SMS_TEST_OTP` naming ten numbers and the code each of them answers. That last one is what makes the suite recordable at all: a code that arrives on a telephone is not a code a recording can spend. Two things came out of the recording rather than out of anybody's reading of it, and both are now zou's behaviour: a written down code verifies a number that was never sent one, and the minute a number waits between codes is on, which the harness used to turn off.
+
 Bumping a version in `versions.json` means re-recording every suite it covers, and the re-recording is the point: the diff is upstream changing its mind, and it should be read rather than merged.
 
 ## Known differences
@@ -111,6 +116,7 @@ The numbers move, so the file that has them is [docs/scoreboard.md](https://gith
 | postgrest | 1317 | 1317, 100% | 0 |
 | auth | 176 | 168, 95% | 8 |
 | auth-anon | 11 | 9, 81% | 2 |
+| auth-phone | 32 | 31, 96% | 1 |
 | storage | 478 | 478, 100% | 0 |
 
 The supabase-js suite runs 33 tests and zou passes all 33, the Realtime half of them included. The storage-js suite runs 133 of its 135 and zou passes all 133, the other two being skips upstream wrote itself.
