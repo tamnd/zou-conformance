@@ -1,0 +1,6 @@
+[
+  {
+    "name": "what a sign in screen reads when a number is a way in",
+    "why": "saml_private_key_next_configured, the same difference as on the settings read in the auth and auth-anon suites and for the same reason. Upstream answers true with SAML off and no key of any kind configured, which reads as an inverted flag, and zou answers false. The two fields this case is here for, external.phone and sms_provider, match."
+  }
+]
