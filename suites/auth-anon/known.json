@@ -1,0 +1,10 @@
+[
+  {
+    "name": "what a sign in screen reads when it may offer a way in with no name",
+    "why": "saml_private_key_next_configured, the same difference as on the settings read in the auth suite and for the same reason. Upstream answers true with SAML off and no key of any kind configured, which reads as an inverted flag, and zou answers false. The field this case is here for, external.anonymous_users, matches."
+  },
+  {
+    "name": "the account says who it is",
+    "why": "confirmed_at. It is a generated column, the earlier of the two confirmation times, and this is the request that sets one of them. zou reads the row back and answers with the value the request just wrote, upstream answers off the struct it loaded before the update and so leaves the field out, then puts it in every answer after this one. email_confirmed_at, which upstream does set on that struct, matches, and so does everything else here including the id that did not move."
+  }
+]

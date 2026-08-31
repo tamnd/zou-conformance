@@ -1,0 +1,231 @@
+{
+  "suite": "auth-anon",
+  "note": [
+    "The one flow next door cannot ask. Anonymous sign in is off in a Supabase project that has changed nothing, the auth suite is recorded against a project that has changed nothing, and so a signup with no identifier there is a refusal and the refusal is a case in it already. Everything past the refusal needs the flag on, a flag is a property of a server rather than of a request, and a suite is asked against one server. So this is a suite of its own rather than a handful of cases in the one next door.",
+    "The reference is the same GoTrue 2.195.0 in the same configuration, in a database of its own, with GOTRUE_EXTERNAL_ANONYMOUS_USERS_ENABLED=true added and nothing else changed. zou is told the same thing by 'anonymous_users' below, and the two flags are the whole difference between this suite's targets and the auth suite's.",
+    "Nothing is seeded. An anonymous account cannot be written into a fixture in a way that means anything, because what makes it one is the session it was handed at the moment it was made, so setup.sql empties the tables and stops.",
+    "That makes the suite one chain. The signup at the top holds its own tokens and the cases after it spend them, which is the only way from outside to ask what the token endpoints say about an account nobody vouched for. A case that is a continuation says 'chained', and the two that are not are the settings read and the first signup.",
+    "The admin surface is not asked here. What an operator sees of an account is the listing next door, and the one field this suite is about is on the account itself, which every case below reads.",
+    "The values that cannot be the same twice are named in 'volatile' and compared as the shape they had. Everything else is compared byte for byte, and an anonymous account's answer is mostly everything else: no email, no identities, and a user_metadata nobody filled in."
+  ],
+  "schemas": ["public"],
+  "anonymous_users": true,
+  "cases": [
+    {
+      "name": "what a sign in screen reads when it may offer a way in with no name",
+      "feature": "settings",
+      "path": "/auth/v1/settings",
+      "key": "anon",
+      "note": "the same read as in the auth suite, against the same server with the one flag flipped, so that a client which draws a guest button off this answer is drawing it off something that was measured"
+    },
+
+    {
+      "name": "somebody signs in without saying who they are",
+      "feature": "signup.anonymous",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{}",
+      "writes": true,
+      "holds": {
+        "token": "body:/access_token",
+        "refresh": "body:/refresh_token"
+      },
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/id",
+        "/user/created_at",
+        "/user/updated_at",
+        "/user/last_sign_in_at"
+      ]
+    },
+    {
+      "name": "what the account nobody vouched for looks like to itself",
+      "feature": "user.anonymous",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {"authorization": "Bearer {token}"},
+      "chained": true,
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/updated_at",
+        "/last_sign_in_at"
+      ],
+      "sorted": ["/factors"]
+    },
+    {
+      "name": "spending the refresh token an anonymous session was handed",
+      "feature": "token.anonymous",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"{refresh}\"}",
+      "writes": true,
+      "chained": true,
+      "note": "the claim follows the account through the token endpoints, so a refresh hands back a session that still says what the first one said",
+      "holds": {"rotated": "body:/refresh_token"},
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/id",
+        "/user/created_at",
+        "/user/updated_at",
+        "/user/last_sign_in_at"
+      ]
+    },
+
+    {
+      "name": "a password with no address behind it",
+      "feature": "user.anonymous",
+      "method": "PUT",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {
+        "authorization": "Bearer {token}",
+        "content-type": "application/json"
+      },
+      "body": "{\"password\":\"conformance-password\"}",
+      "writes": true,
+      "chained": true,
+      "note": "a password is the way back into an account and an anonymous account has nowhere to send a reset, so setting one would lock somebody out of a session rather than secure it"
+    },
+    {
+      "name": "the account says who it is",
+      "feature": "user.anonymous",
+      "method": "PUT",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {
+        "authorization": "Bearer {token}",
+        "content-type": "application/json"
+      },
+      "body": "{\"email\":\"anon-becomes@zou.test\"}",
+      "writes": true,
+      "chained": true,
+      "note": "the id does not move, which is the whole point of signing in without a name first: whatever rows a policy wrote for that id are still that person's afterwards. Autoconfirm is on here as it is next door, so the address is taken at once rather than mailed for.",
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/updated_at",
+        "/last_sign_in_at",
+        "/confirmed_at",
+        "/email_confirmed_at",
+        "/identities/*/id",
+        "/identities/*/identity_id",
+        "/identities/*/user_id",
+        "/identities/*/created_at",
+        "/identities/*/updated_at",
+        "/identities/*/last_sign_in_at",
+        "/identities/*/identity_data/sub"
+      ]
+    },
+    {
+      "name": "what is left of the anonymous account once it has an address",
+      "feature": "user.anonymous",
+      "path": "/auth/v1/user",
+      "key": "anon",
+      "headers": {"authorization": "Bearer {token}"},
+      "chained": true,
+      "volatile": [
+        "/id",
+        "/created_at",
+        "/updated_at",
+        "/last_sign_in_at",
+        "/confirmed_at",
+        "/email_confirmed_at",
+        "/identities/*/id",
+        "/identities/*/identity_id",
+        "/identities/*/user_id",
+        "/identities/*/created_at",
+        "/identities/*/updated_at",
+        "/identities/*/last_sign_in_at",
+        "/identities/*/identity_data/sub"
+      ],
+      "sorted": ["/factors"]
+    },
+    {
+      "name": "the token endpoint stops calling it anonymous",
+      "feature": "token.anonymous",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"{rotated}\"}",
+      "writes": true,
+      "chained": true,
+      "note": "the same session, refreshed once more, now that the account behind it has said who it is. This is the case the claim is for: a policy that lets guests read and members write reads it off the token, and it has to stop being true the moment the account stops being one.",
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/id",
+        "/user/created_at",
+        "/user/updated_at",
+        "/user/last_sign_in_at",
+        "/user/confirmed_at",
+        "/user/email_confirmed_at",
+        "/user/identities/*/id",
+        "/user/identities/*/identity_id",
+        "/user/identities/*/user_id",
+        "/user/identities/*/created_at",
+        "/user/identities/*/updated_at",
+        "/user/identities/*/last_sign_in_at",
+        "/user/identities/*/identity_data/sub"
+      ]
+    },
+
+    {
+      "name": "somebody else, with something to say about themselves",
+      "feature": "signup.anonymous",
+      "method": "POST",
+      "path": "/auth/v1/signup",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"data\":{\"nickname\":\"anne\"}}",
+      "writes": true,
+      "chained": true,
+      "note": "metadata is the only thing an anonymous signup can carry, and it is what an application puts a guest's chosen name in",
+      "holds": {
+        "second": "body:/access_token",
+        "spent": "body:/refresh_token"
+      },
+      "volatile": [
+        "/access_token",
+        "/refresh_token",
+        "/expires_at",
+        "/user/id",
+        "/user/created_at",
+        "/user/updated_at",
+        "/user/last_sign_in_at"
+      ]
+    },
+    {
+      "name": "a guest leaves",
+      "feature": "logout.anonymous",
+      "method": "POST",
+      "path": "/auth/v1/logout",
+      "key": "anon",
+      "headers": {"authorization": "Bearer {second}"},
+      "writes": true,
+      "chained": true
+    },
+    {
+      "name": "the refresh token of a session a guest left",
+      "feature": "logout.anonymous",
+      "method": "POST",
+      "path": "/auth/v1/token?grant_type=refresh_token",
+      "key": "anon",
+      "headers": {"content-type": "application/json"},
+      "body": "{\"refresh_token\":\"{spent}\"}",
+      "writes": true,
+      "chained": true,
+      "note": "every logout answers 204, so the only way from outside to ask which rows it took is to spend a token off a session it should have ended"
+    }
+  ]
+}
