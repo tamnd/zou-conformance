@@ -1190,6 +1190,33 @@
       "key": "service"
     },
     {
+      "name": "listing accounts a page at a time",
+      "feature": "admin",
+      "path": "/auth/v1/admin/users?page=1&per_page=1",
+      "key": "service",
+      "note": "the page is in the body and the paging is in the headers, how many accounts there are in total and where the next page and the last page are"
+    },
+    {
+      "name": "the last page of a listing",
+      "feature": "admin",
+      "path": "/auth/v1/admin/users?page=2&per_page=1",
+      "key": "service",
+      "note": "the last page has nowhere to go after it, so the link says where the last page is and nothing about a next one"
+    },
+    {
+      "name": "a page past the last one",
+      "feature": "admin",
+      "path": "/auth/v1/admin/users?page=9&per_page=1",
+      "key": "service"
+    },
+    {
+      "name": "the total when a filter narrows the listing",
+      "feature": "admin",
+      "path": "/auth/v1/admin/users?filter=other&per_page=1",
+      "key": "service",
+      "note": "the count is of the rows the filter left rather than of the accounts that exist, which is what a client paging through a search reads"
+    },
+    {
       "name": "one account by id",
       "feature": "admin",
       "path": "/auth/v1/admin/users/f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",

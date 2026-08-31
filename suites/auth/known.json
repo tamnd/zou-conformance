@@ -12,6 +12,18 @@
     "why": "zou fills the identity list in and upstream answers identities null here, because its ORM does not load the association on the listing query. Factors are the same story on the same query: zou lists them and upstream leaves the key out. A client reading either off a listed account gets it from zou and has to fetch each account again from upstream, and nothing can be branching on a null that the single account fetch never returns."
   },
   {
+    "name": "listing accounts a page at a time",
+    "why": "Asking for a page does not change which columns the listing loads, so this is the identities and factors difference above on a page of one. The link and the total the case is here for both match."
+  },
+  {
+    "name": "the last page of a listing",
+    "why": "The identities and factors difference above, on the page after the first. The link the case is here for, which names a previous page and no next one, matches."
+  },
+  {
+    "name": "the total when a filter narrows the listing",
+    "why": "The identities and factors difference above, with a filter in front of it. The count the case is here for, which is the filtered rows and not all of them, matches."
+  },
+  {
     "name": "a method nobody supports",
     "why": "zou answers 400 validation_failed and upstream answers 500. Upstream's check on a challenge never looks at the method at all, so a method it does not know gets through validation and falls over later, inside the code that writes the flow state, where the failure is reported as an internal one. There are only two methods and a client that sent a third made a mistake it can be told about, so zou tells it. Nothing that sends s256 or plain sees a difference, and a 400 is the answer a 500 was standing in for."
   },

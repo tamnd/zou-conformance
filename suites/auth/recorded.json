@@ -2566,7 +2566,9 @@
       "name": "listing accounts",
       "status": 200,
       "headers": {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "link": "</admin/users?page=1>; rel=\"last\"",
+        "x-total-count": "2"
       },
       "body": {
         "aud": "authenticated",
@@ -2625,6 +2627,141 @@
         ]
       },
       "raw": "{\"users\":[{\"id\":\"b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"other@zou.test\",\"email_confirmed_at\":\"2026-01-02T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-02T00:00:01Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"other@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51\"},\"identities\":null,\"created_at\":\"2026-01-02T00:00:03Z\",\"updated_at\":\"2026-01-02T00:00:04Z\",\"is_anonymous\":false},{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"identities\":null,\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}],\"aud\":\"authenticated\"}"
+    },
+    {
+      "name": "listing accounts a page at a time",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json",
+        "link": "</admin/users?page=2&per_page=1>; rel=\"next\", </admin/users?page=2&per_page=1>; rel=\"last\"",
+        "x-total-count": "2"
+      },
+      "body": {
+        "aud": "authenticated",
+        "users": [
+          {
+            "app_metadata": {
+              "provider": "email",
+              "providers": [
+                "email"
+              ]
+            },
+            "aud": "authenticated",
+            "confirmed_at": "2026-01-02T00:00:01Z",
+            "created_at": "2026-01-02T00:00:03Z",
+            "email": "other@zou.test",
+            "email_confirmed_at": "2026-01-02T00:00:01Z",
+            "id": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51",
+            "identities": null,
+            "is_anonymous": false,
+            "phone": "",
+            "role": "authenticated",
+            "updated_at": "2026-01-02T00:00:04Z",
+            "user_metadata": {
+              "email": "other@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51"
+            }
+          }
+        ]
+      },
+      "raw": "{\"users\":[{\"id\":\"b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"other@zou.test\",\"email_confirmed_at\":\"2026-01-02T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-02T00:00:01Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"other@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51\"},\"identities\":null,\"created_at\":\"2026-01-02T00:00:03Z\",\"updated_at\":\"2026-01-02T00:00:04Z\",\"is_anonymous\":false}],\"aud\":\"authenticated\"}"
+    },
+    {
+      "name": "the last page of a listing",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json",
+        "link": "</admin/users?page=2&per_page=1>; rel=\"last\"",
+        "x-total-count": "2"
+      },
+      "body": {
+        "aud": "authenticated",
+        "users": [
+          {
+            "app_metadata": {
+              "provider": "email",
+              "providers": [
+                "email"
+              ]
+            },
+            "aud": "authenticated",
+            "confirmed_at": "2026-01-01T00:00:01Z",
+            "created_at": "2026-01-01T00:00:03Z",
+            "email": "person@zou.test",
+            "email_confirmed_at": "2026-01-01T00:00:01Z",
+            "id": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60",
+            "identities": null,
+            "is_anonymous": false,
+            "last_sign_in_at": "2026-01-01T00:00:02Z",
+            "phone": "",
+            "role": "authenticated",
+            "updated_at": "2026-01-01T00:00:04Z",
+            "user_metadata": {
+              "email": "person@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60"
+            }
+          }
+        ]
+      },
+      "raw": "{\"users\":[{\"id\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"person@zou.test\",\"email_confirmed_at\":\"2026-01-01T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-01T00:00:01Z\",\"last_sign_in_at\":\"2026-01-01T00:00:02Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"person@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"f0a2c7d4-9b31-4e58-8c76-2a5d1e3f4b60\"},\"identities\":null,\"created_at\":\"2026-01-01T00:00:03Z\",\"updated_at\":\"2026-01-01T00:00:04Z\",\"is_anonymous\":false}],\"aud\":\"authenticated\"}"
+    },
+    {
+      "name": "a page past the last one",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json",
+        "link": "</admin/users?page=2&per_page=1>; rel=\"last\"",
+        "x-total-count": "2"
+      },
+      "body": {
+        "aud": "authenticated",
+        "users": []
+      },
+      "raw": "{\"users\":[],\"aud\":\"authenticated\"}"
+    },
+    {
+      "name": "the total when a filter narrows the listing",
+      "status": 200,
+      "headers": {
+        "content-type": "application/json",
+        "link": "</admin/users?filter=other&page=1&per_page=1>; rel=\"last\"",
+        "x-total-count": "1"
+      },
+      "body": {
+        "aud": "authenticated",
+        "users": [
+          {
+            "app_metadata": {
+              "provider": "email",
+              "providers": [
+                "email"
+              ]
+            },
+            "aud": "authenticated",
+            "confirmed_at": "2026-01-02T00:00:01Z",
+            "created_at": "2026-01-02T00:00:03Z",
+            "email": "other@zou.test",
+            "email_confirmed_at": "2026-01-02T00:00:01Z",
+            "id": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51",
+            "identities": null,
+            "is_anonymous": false,
+            "phone": "",
+            "role": "authenticated",
+            "updated_at": "2026-01-02T00:00:04Z",
+            "user_metadata": {
+              "email": "other@zou.test",
+              "email_verified": true,
+              "phone_verified": false,
+              "sub": "b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51"
+            }
+          }
+        ]
+      },
+      "raw": "{\"users\":[{\"id\":\"b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"other@zou.test\",\"email_confirmed_at\":\"2026-01-02T00:00:01Z\",\"phone\":\"\",\"confirmed_at\":\"2026-01-02T00:00:01Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"email\":\"other@zou.test\",\"email_verified\":true,\"phone_verified\":false,\"sub\":\"b7e14d09-5f82-4a36-9c40-1e8b3d7a2f51\"},\"identities\":null,\"created_at\":\"2026-01-02T00:00:03Z\",\"updated_at\":\"2026-01-02T00:00:04Z\",\"is_anonymous\":false}],\"aud\":\"authenticated\"}"
     },
     {
       "name": "one account by id",
@@ -3066,7 +3203,9 @@
       "name": "the audit trail",
       "status": 200,
       "headers": {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "link": "</admin/audit?page=1>; rel=\"last\"",
+        "x-total-count": "3"
       },
       "body": [
         {
@@ -3144,7 +3283,9 @@
       "name": "a page of the audit trail",
       "status": 200,
       "headers": {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "link": "</admin/audit?page=3&per_page=1>; rel=\"next\", </admin/audit?page=3&per_page=1>; rel=\"last\"",
+        "x-total-count": "3"
       },
       "body": [
         {
@@ -3166,7 +3307,9 @@
       "name": "a page past the end of the audit trail",
       "status": 200,
       "headers": {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "link": "</admin/audit?page=1>; rel=\"last\"",
+        "x-total-count": "3"
       },
       "body": []
     },
@@ -3174,7 +3317,9 @@
       "name": "the trail filtered by what happened",
       "status": 200,
       "headers": {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "link": "</admin/audit?page=1&query=action%3Alogin>; rel=\"last\"",
+        "x-total-count": "1"
       },
       "body": [
         {
@@ -3199,7 +3344,9 @@
       "name": "the trail filtered by who did it",
       "status": 200,
       "headers": {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "link": "</admin/audit?page=1&query=author%3Aperson%40zou.test>; rel=\"last\"",
+        "x-total-count": "2"
       },
       "body": [
         {
@@ -3236,7 +3383,9 @@
       "name": "the trail filtered by the kind of event",
       "status": 200,
       "headers": {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "link": "</admin/audit?page=1&query=type%3Ateam>; rel=\"last\"",
+        "x-total-count": "1"
       },
       "body": [
         {
@@ -3263,7 +3412,9 @@
       "name": "a filter that matches part of a word",
       "status": 200,
       "headers": {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "link": "</admin/audit?page=1&query=action%3ALOG>; rel=\"last\"",
+        "x-total-count": "2"
       },
       "body": [
         {
@@ -3336,7 +3487,9 @@
       "name": "a sort the trail does not read",
       "status": 200,
       "headers": {
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "link": "</admin/audit?page=1&sort=bogus>; rel=\"last\"",
+        "x-total-count": "3"
       },
       "body": [
         {
